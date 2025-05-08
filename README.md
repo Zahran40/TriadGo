@@ -8,3 +8,6 @@ NAMA ANGGOTA KELOMPOK
 3. Reagan Brian Siahaan (241402099)
 4. Abbil Rizki Abdillah (241402033)
 5. Daniele C.H Siahaan (241402060)
+
+itu adalah nama kelompok kami
+dan ini adalah project kami

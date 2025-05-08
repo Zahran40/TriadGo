@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TriadGO</title>
 
-    <link rel="stylesheet" href="node_modules/flowbite/dist/flowbite.min.css" rel="stylesheet" href="custom.css" />
+    <link rel="stylesheet" href="custom.css" />
 
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script type="module">
@@ -75,7 +75,7 @@
         </a>
     </div>
     <div class="md:w-1/2 mt-10 md:mt-0">
-        <img src="/node_modules/flowbite/dist/images/triadgo.jpg" alt="Ekspor Impor" class="rounded-lg shadow-lg mx-auto max-w-full" />
+        <img src="triadgo.jpg" alt="Ekspor Impor" class="rounded-lg shadow-lg mx-auto max-w-full" />
     </div>
 </section>
 

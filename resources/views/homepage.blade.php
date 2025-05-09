@@ -9,8 +9,7 @@
    
 
 
-
-    <link rel="stylesheet" href="../resources/css/custom.css" />
+<link rel="stylesheet" href="{{ asset('css/custom.css') }}">
 
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script type="module">

@@ -1,16 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TriadGO</title>
+    @vite('resources/css/app.css')
+    @vite(['resources/css/input.css', 'resources/js/app.js'])
 
-    <link rel="stylesheet" href="custom.css" />
+
+
+    <link rel="stylesheet" href="../resources/css/custom.css" />
 
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script type="module">
-        import 'https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4'
+        
+      
 
         tailwind.config = {
             theme: {
@@ -25,6 +30,7 @@
 
         tailwind.scan()
     </script>
+    
 </head>
 
 <body class="bg-gray-100 dark:text-gray-100 font-sans"></body>
@@ -46,8 +52,8 @@
             </button>
         </nav>
         <div class="flex items-center space-x-4">
-            <button id="darkModeToggle"
-                class="flex items-center px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-full focus:outline-none transition">
+           <button id="darkModeToggle"
+           class="flex items-center px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-full focus:outline-none transition">
                 <span id="darkModeText" class="mr-2">☀️</span>
                 <span id="darkModeLabel">Light Mode</span>
             </button>

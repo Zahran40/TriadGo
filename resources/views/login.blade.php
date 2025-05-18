@@ -27,65 +27,6 @@
         <button type="submit" class="signup-btn" id="signupBtn" disabled>Login</button>
         <a href="{{ route('signup') }}" class="login-link">Belum punya akun? Daftar</a>
     </form>
-    <script>
-        // Kode negara untuk nomor hp
-        const negaraSelect = document.getElementById('negara');
-        const kodeNegaraInput = document.getElementById('kodeNegara');
-        const nohpInput = document.getElementById('nohp');
-
-        const kodeNegaraMap = {
-            "Indonesia": "+62",
-            "Malaysia": "+60",
-            "Singapore": "+65",
-            "Thailand": "+66",
-            "Vietnam": "+84",
-            "Brunei": "+673",
-            "Philippines": "+63",
-            "Cambodia": "+855",
-            "Laos": "+856",
-            "Myanmar": "+95",
-            "Timor-Leste": "+670"
-        };
-
-        negaraSelect.addEventListener('change', function () {
-            const kode = kodeNegaraMap[negaraSelect.value] || "";
-            kodeNegaraInput.value = kode;
-            nohpInput.value = "";
-            nohpInput.disabled = !kode;
-        });
-
-        // Khusus angka di field nomor hp
-        nohpInput.addEventListener('input', function () {
-            this.value = this.value.replace(/[^0-9]/g, '');
-        });
-
-        // Validasi password + tidak bisa submit jika password tidak sama
-        const password = document.getElementById('password');
-        const confirm = document.getElementById('password_confirmation');
-        const btn = document.getElementById('signupBtn');
-        const error = document.getElementById('password-error');
-
-        function validatePassword() {
-            if (password.value && confirm.value && password.value !== confirm.value) {
-                btn.disabled = true;
-                error.style.display = 'block';
-            } else if (password.value && confirm.value && password.value === confirm.value) {
-                btn.disabled = false;
-                error.style.display = 'none';
-            } else {
-                btn.disabled = true;
-                error.style.display = 'none';
-            }
-        }
-
-        password.addEventListener('input', validatePassword);
-        confirm.addEventListener('input', validatePassword);
-        window.addEventListener('DOMContentLoaded', function () {
-            validatePassword();
-            kodeNegaraInput.value = "";
-            nohpInput.disabled = true;
-        });
-    </script>
 </body>
 
 </html>

@@ -5,6 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sign Up</title>
+    @vite(['resources/css/app.css'])
     <link href="custom.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 </head>
@@ -48,8 +49,7 @@
                 <input type="text" id="kodeNegara" name="kodeNegara"
                     class="w-20 px-2 py-2 rounded-l-lg border border-[#186094] bg-[#FAF9F9] text-[#003355] font-semibold text-center"
                     value="" readonly tabindex="-1">
-                <input type="text" id="nohp" name="nohp" required autocomplete="off"
-                    placeholder="Nomor HP"
+                <input type="text" id="nohp" name="nohp" required autocomplete="off" placeholder="Nomor HP"
                     class="flex-1 px-4 py-2 rounded-r-lg border-t border-b border-r border-[#186094] bg-[#FAF9F9] text-[#003355] focus:outline-none focus:border-[#EEA133] transition"
                     pattern="[0-9]+" inputmode="numeric">
             </div>

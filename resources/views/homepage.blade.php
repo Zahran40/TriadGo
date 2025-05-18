@@ -6,15 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TriadGO</title>
     @vite('resources/css/app.css')
-   
 
 
-<link rel="stylesheet" href="{{ asset('css/custom.css') }}">
+
+    <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
 
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script type="module">
-        
-      
+
+
 
         tailwind.config = {
             theme: {
@@ -29,7 +29,7 @@
 
         tailwind.scan()
     </script>
-    
+
 </head>
 
 <body class="bg-gray-100 dark:text-gray-100 font-sans"></body>
@@ -45,14 +45,16 @@
                 class="ml-6 px-4 py-1.5 bg-blue-700 text-white rounded-md font-semibold hover:bg-blue-800 transition">
                 Masuk
             </button>
-            <button
-                class="ml-3 px-4 py-1.5 bg-orange-500 text-white rounded-md font-semibold hover:bg-orange-600 transition">
-                Daftar
-            </button>
+            <a href="{{ route('signup') }}">
+                <button
+                    class="ml-3 px-4 py-1.5 bg-orange-500 text-white rounded-md font-semibold hover:bg-orange-600 transition">
+                    Daftar
+                </button>
+            </a>
         </nav>
         <div class="flex items-center space-x-4">
-           <button id="darkModeToggle"
-           class="flex items-center px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-full focus:outline-none transition">
+            <button id="darkModeToggle"
+                class="flex items-center px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-full focus:outline-none transition">
                 <span id="darkModeText" class="mr-2">☀️</span>
                 <span id="darkModeLabel">Light Mode</span>
             </button>

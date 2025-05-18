@@ -9,3 +9,4 @@ Route::get('/', function () {
 
 
 Route::get('/sign-up', [PageController::class, 'signup'])->name('signup');
+Route::get('/login', [PageController::class, 'login'])->name('login');

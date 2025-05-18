@@ -71,7 +71,7 @@
             </div>
         </div>
         <button type="submit" class="signup-btn" id="signupBtn" disabled>Daftar</button>
-        <a href="login.html" class="login-link">Sudah punya akun? Login</a>
+        <a href="{{ route('login') }}" class="login-link">Sudah punya akun? Login</a>
     </form>
     <script>
         // Kode negara untuk nomor hp

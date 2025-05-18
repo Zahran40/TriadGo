@@ -236,9 +236,13 @@
         if (htmlElement.classList.contains('dark')) {
             darkModeToggle.checked = true;
             darkModeThumb.style.transform = 'translateX(1.25rem)';
+            darkModeThumb.style.backgroundColor = '#003355'; // dark mode
+            darkModeThumb.style.borderColor = '#003355';
         } else {
             darkModeToggle.checked = false;
             darkModeThumb.style.transform = 'translateX(0)';
+            darkModeThumb.style.backgroundColor = '#fff'; // white mode
+            darkModeThumb.style.borderColor = '#ccc';
         }
     }
 

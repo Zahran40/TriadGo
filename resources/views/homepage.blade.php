@@ -51,7 +51,8 @@
         </nav>
         <div class="flex items-center space-x-4">
             <label for="darkModeToggle" class="flex items-center cursor-pointer select-none">
-                <span class="mr-2 text-sm font-medium text-gray-700 dark:text-gray-200" style="font-size: 30px">☀️</span>
+                <span class="mr-2 text-sm font-medium text-gray-700 dark:text-gray-200"
+                    style="font-size: 30px">☀️</span>
                 <div class="relative">
                     <input type="checkbox" id="darkModeToggle" class="sr-only" />
                     <div class="block w-12 h-7 rounded-full bg-gray-300 dark:bg-gray-600 transition"></div>
@@ -59,7 +60,8 @@
                         class="dot absolute left-1 top-1 w-5 h-5 rounded-full bg-white border border-gray-400 dark:bg-[#003355] transition-transform duration-300">
                     </div>
                 </div>
-                <span class="ml-2 text-sm font-medium text-gray-700 dark:text-gray-200" style="font-size: 30px">🌙</span>
+                <span class="ml-2 text-sm font-medium text-gray-700 dark:text-gray-200"
+                    style="font-size: 30px">🌙</span>
             </label>
             <button class="md:hidden text-blue-700 focus:outline-none" aria-label="Open Menu">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
@@ -147,6 +149,38 @@
             TriadGO merupakan website tubes kelompok 3 KOM C TI '24 yang terdiri dari Andre (ketua), Abbil, Vincent,
             Reagan, dan Dan Dan Dan Dandragnel.
         </p>
+    </div>
+</section>
+
+<section id="testimoni" class="bg-white py-16">
+    <div class="container mx-auto px-6 md:px-12">
+        <h3 class="text-3xl font-bold text-blue-900 mb-12 text-center">Testimoni Pelanggan</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            <div class="bg-blue-50 p-8 rounded-lg shadow hover:shadow-lg transition text-center">
+                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Pelanggan 1"
+                    class="w-16 h-16 rounded-full mx-auto mb-4">
+                <p class="text-blue-700 mb-4">Kece abis. Beli perlengkapan duduk duduk dari negara ASEAN mana aja jadi
+                    simple</p>
+                <h4 class="font-semibold text-blue-800">Andre Sebayang</h4>
+                <span class="text-sm text-blue-800">Pengusaha Teteng</span>
+            </div>
+            <div class="bg-blue-50 p-8 rounded-lg shadow hover:shadow-lg transition text-center">
+                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Pelanggan 1"
+                    class="w-16 h-16 rounded-full mx-auto mb-4">
+                <p class="text-blue-700 mb-4">Kece parah sih. Mau top up Football Manager jadi gampang. Makasih TriadGO.
+                    Sukses!</p>
+                <h4 class="font-semibold text-blue-800">Daniele Siahaan</h4>
+                <span class="text-sm text-blue-800">Appara Reagan</span>
+            </div>
+            <div class="bg-blue-50 p-8 rounded-lg shadow hover:shadow-lg transition text-center">
+                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Pelanggan 1"
+                    class="w-16 h-16 rounded-full mx-auto mb-4">
+                <p class="text-blue-700 mb-4">Bener kata appara gw. Bukan cuma top up, tapi ekspor impor WDP pun bisa.
+                    Mudah + aman</p>
+                <h4 class="font-semibold text-blue-800">Reagan Siahaan</h4>
+                <span class="text-sm text-blue-800">Appara Daniele</span>
+            </div>
+        </div>
     </div>
 </section>
 

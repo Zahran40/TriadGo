@@ -19,6 +19,16 @@ body {
     color: #1a202c;
 }
 
+#testimoni {
+    background-coolor: white;
+    color: #1a202c;
+}
+
+#testimoni .bg-blue-50 {
+    background-color: #f0f9ff;
+    color: #1a202c;
+}
+
 input,
 textarea {
     transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
@@ -96,8 +106,23 @@ html.dark #services .bg-blue-50 {
 /* Override text color for specific sections */
 html.dark #services .bg-blue-50 h4,
 html.dark #services .bg-blue-50 p {
-    color: #f6ad55;
+    color: #eea133;
     /* Orange text color for headings and paragraphs in dark mode */
+}
+
+html.dark #testimoni {
+    background-color: #2d3748;
+    color: #f7fafc;
+}
+
+html.dark #testimoni .bg-blue-50 {
+    background-color: #4a5568;
+    color: #f7fafc;
+}
+
+html.dark #testimoni .bg-blue-50 h4,
+html.dark #testimoni .bg-blue-50 p {
+    color: #eea133;
 }
 
 html.dark input,

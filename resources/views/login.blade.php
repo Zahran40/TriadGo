@@ -8,7 +8,7 @@
     @vite('resources/css/app.css')
 </head>
 
-<body class="min-h-screen flex items-center justify-center relative overflow-x-hidden font-['Inter',Arial,sans-serif]">
+<body class="auth-bg">
     <div class="circle circle1"></div>
     <div class="circle circle2"></div>
     <div class="circle circle3"></div>

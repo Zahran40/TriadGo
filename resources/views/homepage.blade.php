@@ -28,7 +28,7 @@
     </script>
 </head>
 
-<body class="bg-gray-100 dark:text-gray-100 font-sans"></body>
+<body class="home-bg"></body>
 
 <header class="bg-white shadow-md sticky top-0 z-50">
     <div class="container mx-auto px-6 py-4 flex justify-between items-center">

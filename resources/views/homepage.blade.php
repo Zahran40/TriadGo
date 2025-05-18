@@ -37,10 +37,12 @@
             <a href="#services" class="hover:text-orange-500 transition">Services</a>
             <a href="#about" class="hover:text-orange-500 transition">About Us</a>
             <a href="#contact" class="hover:text-orange-500 transition">Contact</a>
-            <button
-                class="ml-6 px-4 py-1.5 bg-blue-700 text-white rounded-md font-semibold hover:bg-blue-800 transition">
-                Masuk
-            </button>
+            <a href="{{ route('login') }}">
+                <button
+                    class="ml-6 px-4 py-1.5 bg-blue-700 text-white rounded-md font-semibold hover:bg-blue-800 transition">
+                    Masuk
+                </button>
+            </a>
             <a href="{{ route('signup') }}">
                 <button
                     class="ml-3 px-4 py-1.5 bg-orange-500 text-white rounded-md font-semibold hover:bg-orange-600 transition">

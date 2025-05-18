@@ -1,20 +1,17 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en" class="{{ (session('darkMode') ?? 'light') === 'dark' ? 'dark' : '' }}">
 
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TriadGO</title>
-    @vite('resources/css/app.css')
+    @vite ('resources/css/app.css')
 
-
-
-    <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}" />
 
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script type="module">
-
-
+        import 'https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4'
 
         tailwind.config = {
             theme: {
@@ -29,7 +26,6 @@
 
         tailwind.scan()
     </script>
-
 </head>
 
 <body class="bg-gray-100 dark:text-gray-100 font-sans"></body>
@@ -45,7 +41,7 @@
                 class="ml-6 px-4 py-1.5 bg-blue-700 text-white rounded-md font-semibold hover:bg-blue-800 transition">
                 Masuk
             </button>
-            <a href="{{ route('signup') }}">
+            <a href="sign-up.html">
                 <button
                     class="ml-3 px-4 py-1.5 bg-orange-500 text-white rounded-md font-semibold hover:bg-orange-600 transition">
                     Daftar

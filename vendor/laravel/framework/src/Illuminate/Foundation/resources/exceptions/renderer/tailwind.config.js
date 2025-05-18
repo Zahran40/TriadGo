@@ -1,15 +1,16 @@
-const defaultTheme = require('tailwindcss/defaultTheme');
-
-/** @type {import('tailwindcss').Config} */
 module.exports = {
-    content: ['./**/*.blade.php'],
-    darkMode: 'class',
-    theme: {
-        extend: {
-            fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
-            },
-        },
+  darkMode: 'class',
+  content: [
+    './resources/views/**/*.blade.php',
+    './resources/js/**/*.js',
+  ],
+  theme: {
+    extend: {
+      colors: {
+        primary: '#2563eb',
+        accent: '#f97316',
+      },
     },
-    plugins: [],
-};
+  },
+  plugins: [],
+}

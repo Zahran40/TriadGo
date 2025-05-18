@@ -50,11 +50,17 @@
                 </a>
         </nav>
         <div class="flex items-center space-x-4">
-            <button id="darkModeToggle"
-                class="flex items-center px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-full focus:outline-none transition">
-                <span id="darkModeText" class="mr-2">☀️</span>
-                <span id="darkModeLabel">Light Mode</span>
-            </button>
+            <label for="darkModeToggle" class="flex items-center cursor-pointer select-none">
+                <span class="mr-2 text-sm font-medium text-gray-700 dark:text-gray-200" style="font-size: 30px">☀️</span>
+                <div class="relative">
+                    <input type="checkbox" id="darkModeToggle" class="sr-only" />
+                    <div class="block w-12 h-7 rounded-full bg-gray-300 dark:bg-gray-600 transition"></div>
+                    <div id="darkModeThumb"
+                        class="dot absolute left-1 top-1 w-5 h-5 rounded-full bg-white border border-gray-400 dark:bg-[#003355] transition-transform duration-300">
+                    </div>
+                </div>
+                <span class="ml-2 text-sm font-medium text-gray-700 dark:text-gray-200" style="font-size: 30px">🌙</span>
+            </label>
             <button class="md:hidden text-blue-700 focus:outline-none" aria-label="Open Menu">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor" stroke-width="2">
@@ -188,19 +194,17 @@
 </footer>
 
 <script>
-    // Dark mode toggle
     const darkModeToggle = document.getElementById('darkModeToggle');
-    const darkModeText = document.getElementById('darkModeText');
-    const darkModeLabel = document.getElementById('darkModeLabel');
+    const darkModeThumb = document.getElementById('darkModeThumb');
     const htmlElement = document.documentElement;
 
-    function updateDarkModeToggle() {
+    function updateDarkModeSwitch() {
         if (htmlElement.classList.contains('dark')) {
-            darkModeText.textContent = '🌙';
-            darkModeLabel.textContent = 'Dark Mode';
+            darkModeToggle.checked = true;
+            darkModeThumb.style.transform = 'translateX(1.25rem)';
         } else {
-            darkModeText.textContent = '☀️';
-            darkModeLabel.textContent = 'Light Mode';
+            darkModeToggle.checked = false;
+            darkModeThumb.style.transform = 'translateX(0)';
         }
     }
 
@@ -208,16 +212,16 @@
         htmlElement.classList.add('dark');
     }
 
-    updateDarkModeToggle();
+    updateDarkModeSwitch();
 
-    darkModeToggle.addEventListener('click', () => {
+    darkModeToggle.addEventListener('change', () => {
         htmlElement.classList.toggle('dark');
         if (htmlElement.classList.contains('dark')) {
             localStorage.setItem('darkMode', 'enabled');
         } else {
             localStorage.setItem('darkMode', 'disabled');
         }
-        updateDarkModeToggle();
+        updateDarkModeSwitch();
     });
 </script>
 <script>

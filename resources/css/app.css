@@ -185,7 +185,7 @@ html.dark .text-blue-700 {
     /* Change blue text to white in dark mode */
 }
 
-@keyframes slideInFromLeft {
+/* @keyframes slideInFromLeft {
     0% {
         opacity: 0;
         transform: translateX(-50px);
@@ -195,14 +195,14 @@ html.dark .text-blue-700 {
         opacity: 1;
         transform: translateX(0);
     }
-}
+} */
 
-body {
+/* body {
     animation: bg-pallete 16s infinite linear;
     background-size: 400% 400%;
-}
+} */
 
-@keyframes bg-pallete {
+/* @keyframes bg-pallete {
     0% {
         background: #FAF9F9;
     }
@@ -226,7 +226,7 @@ body {
     100% {
         background: #FAF9F9;
     }
-}
+} */
 
 .slide-in {
     animation: slideInFromLeft 0.5s ease forwards;
@@ -289,7 +289,7 @@ body {
     animation: fadeInUp 1s cubic-bezier(.23, 1.01, .32, 1) both;
 }
 
-@keyframes fadeInUp {
+/* @keyframes fadeInUp {
     from {
         opacity: 0;
         transform: translateY(40px) scale(0.98);
@@ -299,7 +299,7 @@ body {
         opacity: 1;
         transform: translateY(0) scale(1);
     }
-}
+} */
 
 .signup-title {
     text-align: center;

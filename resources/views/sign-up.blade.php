@@ -13,12 +13,23 @@
     <div class="circle circle2"></div>
     <div class="circle circle3"></div>
 
-    <form class="signup-container z-10" id="signupForm">
+    @if ($errors->any())
+    <div style="color:red; margin-bottom:10px;">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
+    <form class="signup-container z-10" id="signupForm" action="{{ route('signup.store') }}" method='POST' >
+        @csrf
         <div class="signup-title">Sign Up</div>
         <div class="signup-subtitle">Bergabunglah dengan TriadGO untuk ekspor & impor lebih mudah!</div>
         <div class="form-group">
             <label for="nama">Nama</label>
-            <input type="text" id="nama" name="nama" required autocomplete="off" placeholder="Nama lengkap">
+            <input type="text" id="name" name="name" required autocomplete="off" placeholder="Nama lengkap">
         </div>
         <div class="form-group">
             <label for="email">Email</label>
@@ -26,7 +37,7 @@
         </div>
         <div class="form-group">
             <label for="negara">Negara</label>
-            <select id="negara" name="negara" required>
+            <select id="address" name="address" required>
                 <option value="">Pilih negara</option>
                 <option value="Indonesia" data-code="+62">Indonesia</option>
                 <option value="Malaysia" data-code="+60">Malaysia</option>
@@ -41,13 +52,13 @@
                 <option value="Timor-Leste" data-code="+670">Timor-Leste</option>
             </select>
         </div>
-        <div class="form-group">
+        <div class="form-group" id='phone' name='phone'>
             <label for="nohp">No. HP</label>
             <div class="flex">
                 <input type="text" id="kodeNegara" name="kodeNegara"
                     class="w-20 px-2 py-2 rounded-l-lg border border-[#186094] bg-[#FAF9F9] text-[#003355] font-semibold text-center"
                     value="" readonly tabindex="-1">
-                <input type="text" id="nohp" name="nohp" required autocomplete="off"
+                <input type="text" id="phone" name="phone" required autocomplete="off"
                     placeholder="Nomor HP"  
                     class="flex-1 px-4 py-2 rounded-r-lg border-t border-b border-r border-[#186094] bg-[#FAF9F9] text-[#003355] focus:outline-none focus:border-[#EEA133] transition"
                     pattern="[0-9]+" inputmode="numeric">
@@ -75,9 +86,9 @@
     </form>
     <script>
         // Kode negara untuk nomor hp
-        const negaraSelect = document.getElementById('negara');
+        const negaraSelect = document.getElementById('address');
         const kodeNegaraInput = document.getElementById('kodeNegara');
-        const nohpInput = document.getElementById('nohp');
+        const nohpInput = document.getElementById('phone');
 
         const kodeNegaraMap = {
             "Indonesia": "+62",

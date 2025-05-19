@@ -13,7 +13,17 @@
     <div class="circle circle2"></div>
     <div class="circle circle3"></div>
 
-    <form class="signup-container z-10" id="signupForm">
+    <form class="signup-container z-10" id="signupForm" action="{{ route('login.authenticate') }}" method='POST'>
+        @csrf
+           @if ($errors->any())
+        <div style="color:red; margin-bottom:10px;">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
         <div class="signup-title">Login</div>
         <div class="signup-subtitle">Selamat Datang Kembali</div>
         <div class="form-group">
@@ -24,7 +34,7 @@
             <label for="password">Password</label>
             <input type="password" id="password" name="password" required autocomplete="off" placeholder="Password">
         </div>
-        <button type="submit" class="btn-gradient-move signup-btn" id="signupBtn" disabled>Login</button>
+        <button type="submit" class="btn-gradient-move signup-btn" id="signupBtn" >Login</button>
         <a href="{{ route('signup') }}" class="login-link">Belum punya akun? Daftar</a>
     </form>
 </body>

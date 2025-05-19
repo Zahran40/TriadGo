@@ -33,8 +33,9 @@
 <header class="bg-white shadow-md sticky top-0 z-50">
     <div class="container mx-auto px-6 py-4 flex justify-between items-center">
         <div class="flex items-center">
-            <img src=".../././public/tglogo.png" alt="Logo" class="h-12 w-12 mr-2" />
-            <h1 class="text-2xl font-bold text-blue-800 gradient-move">TriadGO</h1>
+            <img src="tglogo.png" alt="Logo" class="h-12 w-12 mr-2" style="width: 65px;  height: 65px" />
+            <h1 class="text-2xl font-bold text-blue-900 gradient-move">Triad</h1>
+            <h1 class="text-2xl font-bold text-orange-500 gradient-move">Go</h1>
         </div>
         <nav class="hidden md:flex items-center space-x-6 text-blue-700 font-semibold">
             <a href="#services" class="hover:text-orange-500 transition nav-gradient-move">Services</a>

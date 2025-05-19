@@ -24,7 +24,7 @@
             <label for="password">Password</label>
             <input type="password" id="password" name="password" required autocomplete="off" placeholder="Password">
         </div>
-        <button type="submit" class="signup-btn" id="signupBtn" disabled>Login</button>
+        <button type="submit" class="btn-gradient-move signup-btn" id="signupBtn" disabled>Login</button>
         <a href="{{ route('signup') }}" class="login-link">Belum punya akun? Daftar</a>
     </form>
 </body>

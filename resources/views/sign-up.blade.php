@@ -70,7 +70,7 @@
                 <label><input type="radio" name="role" value="impor" required> Impor</label>
             </div>
         </div>
-        <button type="submit" class="signup-btn" id="signupBtn" disabled>Daftar</button>
+        <button type="submit" class="btn-gradient-move signup-btn" id="signupBtn" disabled>Daftar</button>
         <a href="{{ route('login') }}" class="login-link">Sudah punya akun? Login</a>
     </form>
     <script>

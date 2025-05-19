@@ -298,9 +298,17 @@ label {
 }
 
 @keyframes pulse {
-    0% {transform: scale(1);}
-    50% {transform: scale(1.08);}
-    100% {transform: scale(1);}
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.08);
+    }
+
+    100% {
+        transform: scale(1);
+    }
 }
 
 /* Slide In Animation */
@@ -321,9 +329,97 @@ label {
 }
 
 @keyframes wiggle {
-    0% { transform: rotate(-5deg);}
-    25% { transform: rotate(5deg);}
-    50% { transform: rotate(-3deg);}
-    75% { transform: rotate(3deg);}
-    100% { transform: rotate(0);}
+    0% {
+        transform: rotate(-5deg);
+    }
+
+    25% {
+        transform: rotate(5deg);
+    }
+
+    50% {
+        transform: rotate(-3deg);
+    }
+
+    75% {
+        transform: rotate(3deg);
+    }
+
+    100% {
+        transform: rotate(0);
+    }
+}
+
+/* Animasi Card */
+.card-animate {
+    transition: transform 0.25s cubic-bezier(.23, 1.02, .57, 1.01), box-shadow 0.25s;
+    will-change: transform;
+}
+
+.card-animate:hover {
+    transform: translateY(-10px) scale(1.04) rotate(-1deg);
+    box-shadow: 0 8px 32px #00335533;
+}
+
+/* Input Focus */
+.input-animate:focus {
+    box-shadow: 0 0 0 3px #EEA13355;
+    border-color: #EEA133;
+    transition: box-shadow 0.2s, border-color 0.2s;
+}
+
+/* Gradient untuk Text TriadGo */
+.gradient-move {
+    background: linear-gradient(90deg, #186094, #EEA133, #186094);
+    background-size: 200% 200%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradientMove 3s ease-in-out infinite alternate;
+}
+
+@keyframes gradientMove {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    100% {
+        background-position: 100% 50%;
+    }
+}
+
+/* Gradient untuk Tombol Login & Daftar */
+.btn-gradient-move {
+    background: linear-gradient(90deg, #186094, #EEA133, #186094);
+    background-size: 200% 200%;
+    color: #fff;
+    border: none;
+    animation: gradientMove 3s ease-in-out infinite alternate;
+    transition: transform 0.2s ease-in-out;
+}
+
+.btn-gradient-move:hover,
+.btn-gradient-move:focus {
+    transform: scale(1.08);
+}
+
+/* Gradient untuk Tombol di Navbar */
+.nav-gradient-move {
+    position: relative;
+    display: inline-block;
+    color: #186094;
+    /* Warna default */
+    transition: color 0.18s, transform 0.18s;
+}
+
+.nav-gradient-move:hover,
+.nav-gradient-move:focus {
+    color: transparent;
+    background: linear-gradient(90deg, #186094, #EEA133, #186094);
+    background-size: 200% 200%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradientMove 3s ease-in-out infinite alternate;
+    transform: scale(1.08);
 }

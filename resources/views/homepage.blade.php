@@ -32,19 +32,19 @@
 
 <header class="bg-white shadow-md sticky top-0 z-50">
     <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-        <h1 class="text-2xl font-bold text-blue-800">TriadGO</h1>
+        <h1 class="text-2xl font-bold text-blue-800 gradient-move">TriadGO</h1>
         <nav class="hidden md:flex items-center space-x-6 text-blue-700 font-semibold">
-            <a href="#services" class="hover:text-orange-500 transition">Services</a>
-            <a href="#about" class="hover:text-orange-500 transition">About Us</a>
-            <a href="#contact" class="hover:text-orange-500 transition">Contact</a>
+            <a href="#services" class="hover:text-orange-500 transition nav-gradient-move">Services</a>
+            <a href="#about" class="hover:text-orange-500 transition nav-gradient-move">About Us</a>
+            <a href="#contact" class="hover:text-orange-500 transition nav-gradient-move">Contact</a>
             <a href="{{ route('login') }}">
                 <button
-                    class="ml-6 px-4 py-1.5 bg-blue-700 text-white rounded-md font-semibold hover:bg-blue-800 transition">
+                    class="ml-6 px-4 py-1.5 bg-blue-700 text-white rounded-md font-semibold hover:bg-blue-800 transition pulse-on-hover">
                     Masuk
                 </button>
                 <a href="{{ route('signup') }}">
                     <button
-                        class="ml-3 px-4 py-1.5 bg-orange-500 text-white rounded-md font-semibold hover:bg-orange-600 transition">
+                        class="ml-3 px-4 py-1.5 bg-orange-500 text-white rounded-md font-semibold hover:bg-orange-600 transition pulse-on-hover">
                         Daftar
                     </button>
                 </a>
@@ -156,7 +156,7 @@
     <div class="container mx-auto px-6 md:px-12">
         <h3 class="text-3xl font-bold text-blue-900 mb-12 text-center">Testimoni Pelanggan</h3>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            <div class="bg-blue-50 p-8 rounded-lg shadow hover:shadow-lg transition text-center">
+            <div class="bg-blue-50 p-8 rounded-lg shadow hover:shadow-lg transition text-center card-animate">
                 <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Pelanggan 1"
                     class="w-16 h-16 rounded-full mx-auto mb-4">
                 <p class="text-blue-700 mb-4">Kece abis. Beli perlengkapan duduk duduk dari negara ASEAN mana aja jadi
@@ -164,7 +164,7 @@
                 <h4 class="font-semibold text-blue-800">Andre Sebayang</h4>
                 <span class="text-sm text-blue-800">Pengusaha Teteng</span>
             </div>
-            <div class="bg-blue-50 p-8 rounded-lg shadow hover:shadow-lg transition text-center">
+            <div class="bg-blue-50 p-8 rounded-lg shadow hover:shadow-lg transition text-center card-animate">
                 <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Pelanggan 1"
                     class="w-16 h-16 rounded-full mx-auto mb-4">
                 <p class="text-blue-700 mb-4">Kece parah sih. Mau top up Football Manager jadi gampang. Makasih TriadGO.
@@ -172,7 +172,7 @@
                 <h4 class="font-semibold text-blue-800">Daniele Siahaan</h4>
                 <span class="text-sm text-blue-800">Appara Reagan</span>
             </div>
-            <div class="bg-blue-50 p-8 rounded-lg shadow hover:shadow-lg transition text-center">
+            <div class="bg-blue-50 p-8 rounded-lg shadow hover:shadow-lg transition text-center card-animate">
                 <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Pelanggan 1"
                     class="w-16 h-16 rounded-full mx-auto mb-4">
                 <p class="text-blue-700 mb-4">Bener kata appara gw. Bukan cuma top up, tapi ekspor impor WDP pun bisa.
@@ -190,11 +190,11 @@
         <p class="mb-6 text-orange-600">Send us a message and we’ll get back to you soon.</p>
     </div>
     <form class="space-y-4">
-        <input class="w-full border dark:text-black border-gray-300 p-3 rounded focus:border-primary " type="text"
+        <input class="w-full border dark:text-black border-gray-300 p-3 rounded focus:border-primary input-animate" type="text"
             placeholder="Your Name" />
-        <input class="w-full border dark:text-black border-gray-300 p-3 rounded focus:border-primary" type="email"
+        <input class="w-full border dark:text-black border-gray-300 p-3 rounded focus:border-primary input-animate" type="email"
             placeholder="Email" />
-        <textarea class="w-full border dark:text-black border-gray-300 p-3 rounded focus:border-primary" rows="5"
+        <textarea class="w-full border dark:text-black border-gray-300 p-3 rounded focus:border-primary input-animate" rows="5"
             placeholder="Message"></textarea>
         <button class="bg-orange-500 text-white px-6 py-3 rounded hover:bg-blue-600 transition-colors w-full"
             type="submit">Send</button>

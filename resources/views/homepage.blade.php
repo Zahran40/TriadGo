@@ -194,12 +194,12 @@
         <p class="mb-6 text-orange-600">Send us a message and we’ll get back to you soon.</p>
     </div>
     <form class="space-y-4">
-        <input class="w-full border dark:text-black border-gray-300 p-3 rounded focus:border-primary input-animate" type="text"
-            placeholder="Your Name" />
-        <input class="w-full border dark:text-black border-gray-300 p-3 rounded focus:border-primary input-animate" type="email"
-            placeholder="Email" />
-        <textarea class="w-full border dark:text-black border-gray-300 p-3 rounded focus:border-primary input-animate" rows="5"
-            placeholder="Message"></textarea>
+        <input class="w-full border dark:text-black border-gray-300 p-3 rounded focus:border-primary input-animate"
+            type="text" placeholder="Your Name" />
+        <input class="w-full border dark:text-black border-gray-300 p-3 rounded focus:border-primary input-animate"
+            type="email" placeholder="Email" />
+        <textarea class="w-full border dark:text-black border-gray-300 p-3 rounded focus:border-primary input-animate"
+            rows="5" placeholder="Message"></textarea>
         <button class="bg-orange-500 text-white px-6 py-3 rounded hover:bg-blue-600 transition-colors w-full"
             type="submit">Send</button>
     </form>
@@ -210,21 +210,25 @@
         <p>© 2025 TriadGO. All rights reserved.</p>
         <div class="space-x-4 mt-4 md:mt-0">
             <a href="#" aria-label="Facebook" class="hover:text-orange-400 transition">
-                <svg xmlns="http://www.w3.org/2000/svg" class="inline h-6 w-6 wiggle" fill="currentColor" viewBox="0 0 24 24">
+                <svg xmlns="http://www.w3.org/2000/svg" class="inline h-6 w-6 wiggle" fill="currentColor"
+                    viewBox="0 0 24 24">
                     <path
                         d="M22 12.07c0-5.52-4.48-10-10-10s-10 4.48-10 10c0 4.99 3.66 9.12 8.44 9.88v-6.99h-2.54v-2.89h2.54v-2.21c0-2.5 1.49-3.89 3.78-3.89 1.1 0 2.25.2 2.25.2v2.49h-1.27c-1.25 0-1.64.78-1.64 1.57v1.84h2.78l-.44 2.89h-2.34v6.99c4.78-.76 8.44-4.89 8.44-9.88z" />
                 </svg>
             </a>
-            <a href="#" aria-label="Twitter" class="hover:text-orange-400 transition">
-                <svg xmlns="http://www.w3.org/2000/svg" class="inline h-6 w-6 wiggle" fill="currentColor" viewBox="0 0 24 24">
+            <a href="https://github.com/Zahran40/TriadGo" aria-label="GitHub" class="hover:text-orange-400 transition">
+                <svg xmlns="http://www.w3.org/2000/svg" class="inline h-6 w-6 wiggle" fill="currentColor"
+                    viewBox="0 0 24 24">
                     <path
-                        d="M23 3a10.9 10.9 0 01-3.14.86 4.48 4.48 0 001.96-2.48 9.05 9.05 0 01-2.88 1.1 4.52 4.52 0 00-7.71 4.13 12.85 12.85 0 01-9.29-4.71 4.53 4.53 0 001.4 6.03 4.48 4.48 0 01-2.05-.57v.06a4.51 4.51 0 003.63 4.43 4.5 4.5 0 01-2.03.08 4.5 4.5 0 004.2 3.14 9.07 9.07 0 01-6.66 1.85 12.8 12.8 0 006.92 2.03c8.3 0 12.84-6.88 12.84-12.84 0-.2 0-.42-.02-.63a9.17 9.17 0 002.25-2.34z" />
+                        d="M12 2C6.477 2 2 6.484 2 12.021c0 4.428 2.865 8.184 6.839 9.504.5.092.682-.217.682-.482 0-.237-.009-.868-.014-1.703-2.782.605-3.369-1.342-3.369-1.342-.454-1.157-1.11-1.465-1.11-1.465-.908-.62.069-.608.069-.608 1.004.07 1.532 1.032 1.532 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.339-2.221-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.025A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.295 2.748-1.025 2.748-1.025.546 1.378.202 2.397.1 2.65.64.7 1.028 1.595 1.028 2.688 0 3.847-2.337 4.695-4.566 4.944.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.744 0 .267.18.579.688.481C19.138 20.203 22 16.447 22 12.021 22 6.484 17.523 2 12 2z" />
                 </svg>
             </a>
-            <a href="#" aria-label="LinkedIn" class="hover:text-orange-400 transition">
-                <svg xmlns="http://www.w3.org/2000/svg" class="inline h-6 w-6 wiggle" fill="currentColor" viewBox="0 0 24 24">
+            <a href="https://www.instagram.com/official.usu" aria-label="Instagram"
+                class="hover:text-orange-400 transition">
+                <svg xmlns="http://www.w3.org/2000/svg" class="inline h-6 w-6 wiggle" fill="currentColor"
+                    viewBox="0 0 24 24">
                     <path
-                        d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-4 0v7h-4v-7a6 6 0 016-6zM2 9h4v12H2zM4 3a2 2 0 11-.001 3.999A2 2 0 014 3z" />
+                        d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5A4.25 4.25 0 0 0 20.5 16.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5zm4.25 3.25a5.25 5.25 0 1 1 0 10.5 5.25 5.25 0 0 1 0-10.5zm0 1.5a3.75 3.75 0 1 0 0 7.5 3.75 3.75 0 0 0 0-7.5zm5.13.62a1.13 1.13 0 1 1-2.25 0 1.13 1.13 0 0 1 2.25 0z" />
                 </svg>
             </a>
         </div>

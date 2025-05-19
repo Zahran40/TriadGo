@@ -403,7 +403,7 @@ label {
     background: linear-gradient(90deg, #186094, #EEA133, #186094);
     background-size: 200% 200%;
     animation: gradientMove 3s ease-in-out infinite alternate;
-    transform: scale(1.08);
+    transform: scale(1.08);
 }
 
 /* Gradient untuk Tombol di Navbar */

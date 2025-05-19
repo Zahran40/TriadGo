@@ -14,16 +14,16 @@
     <div class="circle circle3"></div>
 
     @if ($errors->any())
-    <div style="color:red; margin-bottom:10px;">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
+        <div style="color:red; margin-bottom:10px;">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
-    <form class="signup-container z-10" id="signupForm" action="{{ route('signup.store') }}" method='POST' >
+    <form class="signup-container z-10" id="signupForm" action="{{ route('signup.store') }}" method='POST'>
         @csrf
         <div class="signup-title">Sign Up</div>
         <div class="signup-subtitle">Bergabunglah dengan TriadGO untuk ekspor & impor lebih mudah!</div>
@@ -58,8 +58,7 @@
                 <input type="text" id="kodeNegara" name="kodeNegara"
                     class="w-20 px-2 py-2 rounded-l-lg border border-[#186094] bg-[#FAF9F9] text-[#003355] font-semibold text-center"
                     value="" readonly tabindex="-1">
-                <input type="text" id="phone" name="phone" required autocomplete="off"
-                    placeholder="Nomor HP"  
+                <input type="text" id="phone" name="phone" required autocomplete="off" placeholder="Nomor HP"
                     class="flex-1 px-4 py-2 rounded-r-lg border-t border-b border-r border-[#186094] bg-[#FAF9F9] text-[#003355] focus:outline-none focus:border-[#EEA133] transition"
                     pattern="[0-9]+" inputmode="numeric">
             </div>
@@ -67,6 +66,8 @@
         <div class="form-group">
             <label for="password">Password</label>
             <input type="password" id="password" name="password" required autocomplete="off" placeholder="Password">
+            <span id="password-length-error" style="color:#EEA133; font-size:0.95em; display:none;">Password minimal 8
+                karakter</span>
         </div>
         <div class="form-group">
             <label for="password_confirmation">Confirm Password</label>
@@ -122,18 +123,33 @@
         const btn = document.getElementById('signupBtn');
         const error = document.getElementById('password-error');
 
+        // ...existing code...
         function validatePassword() {
+            let isValid = true;
+
+            // Validasi panjang password
+            if (password.value && password.value.length < 8) {
+                document.getElementById('password-length-error').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('password-length-error').style.display = 'none';
+            }
+
+            // Validasi konfirmasi password
             if (password.value && confirm.value && password.value !== confirm.value) {
                 btn.disabled = true;
                 error.style.display = 'block';
+                isValid = false;
             } else if (password.value && confirm.value && password.value === confirm.value) {
-                btn.disabled = false;
                 error.style.display = 'none';
             } else {
-                btn.disabled = true;
                 error.style.display = 'none';
             }
+
+            // Tombol hanya aktif jika password cukup panjang dan konfirmasi sama
+            btn.disabled = !(password.value.length >= 8 && password.value === confirm.value);
         }
+        // ...existing code...
 
         password.addEventListener('input', validatePassword);
         confirm.addEventListener('input', validatePassword);

@@ -38,17 +38,20 @@
             <h1 class="text-2xl font-bold text-orange-500 gradient-move">Go</h1>
         </div>
         <nav class="hidden md:flex items-center space-x-6 text-blue-700 font-semibold">
-            <a href="#services" class="hover:text-amber-500 transition nav-gradient-move">Services</a>
-            <a href="#about" class="hover:text-amber-500 transition nav-gradient-move">About Us</a>
-            <a href="#contact" class="hover:text-amber-500 transition nav-gradient-move">Contact</a>
-            <a href="{{ route('login') }}"
-        class="ml-6 px-4 py-1.5 bg-blue-700 text-amber-500 dark:text-white rounded-md font-semibold hover:bg-blue-800 transition pulse-on-hover">
-            Masuk
-        </a>
-        <a href="{{ route('signup') }}"
-        class="ml-3 px-4 py-1.5 bg-amber-500 text-blue-700 dark:text-white rounded-md font-semibold hover:bg-amber-600 transition pulse-on-hover">
-            Daftar
-        </a>
+            <a href="#services" class="hover:text-orange-500 transition nav-gradient-move">Services</a>
+            <a href="#about" class="hover:text-orange-500 transition nav-gradient-move">About Us</a>
+            <a href="#contact" class="hover:text-orange-500 transition nav-gradient-move">Contact</a>
+            <a href="{{ route('login') }}">
+                <button
+                    class="ml-6 px-4 py-1.5 bg-blue-700 text-white rounded-md font-semibold hover:bg-blue-800 transition pulse-on-hover">
+                    Masuk
+                </button>
+                <a href="{{ route('signup') }}">
+                    <button
+                        class="ml-3 px-4 py-1.5 bg-orange-500 text-white rounded-md font-semibold hover:bg-orange-600 transition pulse-on-hover">
+                        Daftar
+                    </button>
+                </a>
         </nav>
         <div class="flex items-center space-x-4">
             <label for="darkModeToggle" class="flex items-center cursor-pointer select-none">
@@ -83,7 +86,7 @@
             Memudahkan koneksi bisnis Anda dengan pasar global, layanan ekspor-impor yang andal dan cepat.
         </p>
         <a href="#contact"
-            class="inline-block bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-8 rounded-md shadow-md transition pulse-on-hover">
+            class="inline-block bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-8 rounded-md shadow-md transition pulse-on-hover">
             Contact Us
         </a>
     </div>
@@ -188,7 +191,7 @@
 <section id="contact" class="bg-white py-12 px-6 max-w-2xl mx-auto my-8 slide-in">
     <div class="text-center">
         <h2 class="text-3xl font-bold mb-2 text-blue-800 text-primary">Contact Us</h2>
-        <p class="mb-6 text-amber-600">Send us a message and we’ll get back to you soon.</p>
+        <p class="mb-6 text-orange-600">Send us a message and we’ll get back to you soon.</p>
     </div>
     <form class="space-y-4">
         <input class="w-full border dark:text-black border-gray-300 p-3 rounded focus:border-primary input-animate"
@@ -197,7 +200,7 @@
             type="email" placeholder="Email" />
         <textarea class="w-full border dark:text-black border-gray-300 p-3 rounded focus:border-primary input-animate"
             rows="5" placeholder="Message"></textarea>
-        <button class="bg-amber-500 text-white px-6 py-3 rounded hover:bg-blue-600 transition-colors w-full"
+        <button class="bg-orange-500 text-white px-6 py-3 rounded hover:bg-blue-600 transition-colors w-full"
             type="submit">Send</button>
     </form>
 </section>

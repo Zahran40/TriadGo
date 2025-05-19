@@ -45,13 +45,13 @@
                 <button
                     class="ml-6 px-4 py-1.5 bg-blue-700 text-white rounded-md font-semibold hover:bg-blue-800 transition pulse-on-hover">
                     Masuk
+                </button></a>
+            <a href="{{ route('signup') }}">
+                <button
+                    class="ml-3 px-4 py-1.5 bg-orange-500 text-white rounded-md font-semibold hover:bg-orange-600 transition pulse-on-hover">
+                    Daftar
                 </button>
-                <a href="{{ route('signup') }}">
-                    <button
-                        class="ml-3 px-4 py-1.5 bg-orange-500 text-white rounded-md font-semibold hover:bg-orange-600 transition pulse-on-hover">
-                        Daftar
-                    </button>
-                </a>
+            </a>
         </nav>
         <div class="flex items-center space-x-4">
             <label for="darkModeToggle" class="flex items-center cursor-pointer select-none">

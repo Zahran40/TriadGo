@@ -11,7 +11,8 @@
 /* Home Page */
 .home-bg {
     min-height: 100vh;
-    background: #FAF9F9; /* warna solid dari palet */
+    background: #FAF9F9;
+    /* warna solid dari palet */
     /* Atau jika ingin gradient: */
     /* background: linear-gradient(120deg, #003355 0%, #186094 100%); */
 }
@@ -258,4 +259,71 @@ label {
         padding: 1.2rem 0.7rem 1.2rem 0.7rem;
         max-width: 98vw;
     }
+}
+
+/* Floating Image */
+.floating-img {
+    animation: floatY 3.5s ease-in-out infinite;
+}
+
+@keyframes floatY {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-18px);
+    }
+}
+
+/* Fade-in Up Animation */
+.fade-in-up {
+    opacity: 0;
+    transform: translateY(40px);
+    animation: fadeInUp 1s cubic-bezier(.23, 1.02, .57, 1.01) 0.2s forwards;
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Button Pulse Animation */
+.pulse-on-hover:hover {
+    animation: pulse 0.4s
+}
+
+@keyframes pulse {
+    0% {transform: scale(1);}
+    50% {transform: scale(1.08);}
+    100% {transform: scale(1);}
+}
+
+/* Slide In Animation */
+.slide-in {
+    opacity: 0;
+    transform: translateY(60px);
+    transition: opacity 0.7s, transform 0.7s;
+}
+
+.slide-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Wiggle untuk Icon SVG */
+.wiggle:hover {
+    animation: wiggle 0.4s;
+}
+
+@keyframes wiggle {
+    0% { transform: rotate(-5deg);}
+    25% { transform: rotate(5deg);}
+    50% { transform: rotate(-3deg);}
+    75% { transform: rotate(3deg);}
+    100% { transform: rotate(0);}
 }

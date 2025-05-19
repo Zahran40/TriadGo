@@ -64,7 +64,7 @@
                     style="font-size: 30px">🌙</span>
             </label>
             <button class="md:hidden text-blue-700 focus:outline-none" aria-label="Open Menu">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 wiggle" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M4 8h16M4 16h16" />
                 </svg>
@@ -75,29 +75,29 @@
 
 <section class="flex-grow container mx-auto px-6 md:px-12 py-16 flex flex-col md:flex-row items-center">
     <div class="md:w-1/2 text-center md:text-left">
-        <h2 class="text-4xl font-extrabold text-blue-900 mb-6 leading-tight">
+        <h2 class="text-4xl font-extrabold text-blue-900 mb-6 leading-tight fade-in-up">
             Solusi Terpercaya untuk Ekspor & Impor Anda
         </h2>
-        <p class="text-lg text-blue-700 mb-8 max-w-xl">
+        <p class="text-lg text-blue-700 mb-8 max-w-xl fade-in-up" style="animation-delay:0.4s">
             Memudahkan koneksi bisnis Anda dengan pasar global, layanan ekspor-impor yang andal dan cepat.
         </p>
         <a href="#contact"
-            class="inline-block bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-8 rounded-md shadow-md transition">
+            class="inline-block bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-8 rounded-md shadow-md transition pulse-on-hover">
             Contact Us
         </a>
     </div>
     <div class="md:w-1/2 mt-10 md:mt-0">
-        <img src="triadgo.jpg" alt="Ekspor Impor" class="rounded-lg shadow-lg mx-auto max-w-full" />
+        <img src="triadgo.jpg" alt="Ekspor Impor" class="floating-img" />
     </div>
 </section>
 
-<section id="services" class="bg-white py-16">
+<section id="services" class="bg-white py-16 slide-in">
     <div class="container mx-auto px-6 md:px-12">
         <h3 class="text-3xl font-bold text-blue-900 mb-12 text-center">Our Services</h3>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-6xl mx-auto">
             <div class="bg-blue-50 p-8 rounded-lg shadow hover:shadow-lg transition">
                 <div class="text-orange-500 mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto md:mx-0" fill="none"
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto md:mx-0 wiggle" fill="none"
                         viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h4l3 9 4-18 3 9h4" />
                     </svg>
@@ -111,7 +111,7 @@
             </div>
             <div class="bg-blue-50 p-8 rounded-lg shadow hover:shadow-lg transition">
                 <div class="text-orange-500 mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto md:mx-0" fill="none"
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto md:mx-0 wiggle" fill="none"
                         viewBox="5 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round"
                             d="M12 8c-1.105 0-2 .895-2 2h4a2 2 0 00-2-2z" />
@@ -127,7 +127,7 @@
             </div>
             <div class="bg-blue-50 p-8 rounded-lg shadow hover:shadow-lg transition">
                 <div class="text-orange-500 mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto md:mx-0" fill="none"
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto md:mx-0 wiggle" fill="none"
                         viewBox="0 -5 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-6a1 1 0 012 0v6a1 1 0 11-2 0z" />
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 12h3l3 9m-3-9v-7a7 7 0 00-14 0v7" />
@@ -142,7 +142,7 @@
     </div>
 </section>
 
-<section id="about" class="container mx-auto px-6 md:px-12 py-16">
+<section id="about" class="container mx-auto px-6 md:px-12 py-16 slide-in">
     <div class="max-w-4xl mx-auto text-center">
         <h3 class="text-3xl font-bold mb-6 text-blue-900">About Us</h3>
         <p class="text-blue-700 text-lg leading-relaxed">
@@ -152,7 +152,7 @@
     </div>
 </section>
 
-<section id="testimoni" class="bg-white py-16">
+<section id="testimoni" class="bg-white py-16 slide-in">
     <div class="container mx-auto px-6 md:px-12">
         <h3 class="text-3xl font-bold text-blue-900 mb-12 text-center">Testimoni Pelanggan</h3>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
@@ -184,7 +184,7 @@
     </div>
 </section>
 
-<section id="contact" class="bg-white py-12 px-6 max-w-2xl mx-auto my-8">
+<section id="contact" class="bg-white py-12 px-6 max-w-2xl mx-auto my-8 slide-in">
     <div class="text-center">
         <h2 class="text-3xl font-bold mb-2 text-blue-800 text-primary">Contact Us</h2>
         <p class="mb-6 text-orange-600">Send us a message and we’ll get back to you soon.</p>
@@ -206,19 +206,19 @@
         <p>© 2025 TriadGO. All rights reserved.</p>
         <div class="space-x-4 mt-4 md:mt-0">
             <a href="#" aria-label="Facebook" class="hover:text-orange-400 transition">
-                <svg xmlns="http://www.w3.org/2000/svg" class="inline h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                <svg xmlns="http://www.w3.org/2000/svg" class="inline h-6 w-6 wiggle" fill="currentColor" viewBox="0 0 24 24">
                     <path
                         d="M22 12.07c0-5.52-4.48-10-10-10s-10 4.48-10 10c0 4.99 3.66 9.12 8.44 9.88v-6.99h-2.54v-2.89h2.54v-2.21c0-2.5 1.49-3.89 3.78-3.89 1.1 0 2.25.2 2.25.2v2.49h-1.27c-1.25 0-1.64.78-1.64 1.57v1.84h2.78l-.44 2.89h-2.34v6.99c4.78-.76 8.44-4.89 8.44-9.88z" />
                 </svg>
             </a>
             <a href="#" aria-label="Twitter" class="hover:text-orange-400 transition">
-                <svg xmlns="http://www.w3.org/2000/svg" class="inline h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                <svg xmlns="http://www.w3.org/2000/svg" class="inline h-6 w-6 wiggle" fill="currentColor" viewBox="0 0 24 24">
                     <path
                         d="M23 3a10.9 10.9 0 01-3.14.86 4.48 4.48 0 001.96-2.48 9.05 9.05 0 01-2.88 1.1 4.52 4.52 0 00-7.71 4.13 12.85 12.85 0 01-9.29-4.71 4.53 4.53 0 001.4 6.03 4.48 4.48 0 01-2.05-.57v.06a4.51 4.51 0 003.63 4.43 4.5 4.5 0 01-2.03.08 4.5 4.5 0 004.2 3.14 9.07 9.07 0 01-6.66 1.85 12.8 12.8 0 006.92 2.03c8.3 0 12.84-6.88 12.84-12.84 0-.2 0-.42-.02-.63a9.17 9.17 0 002.25-2.34z" />
                 </svg>
             </a>
             <a href="#" aria-label="LinkedIn" class="hover:text-orange-400 transition">
-                <svg xmlns="http://www.w3.org/2000/svg" class="inline h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                <svg xmlns="http://www.w3.org/2000/svg" class="inline h-6 w-6 wiggle" fill="currentColor" viewBox="0 0 24 24">
                     <path
                         d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-4 0v7h-4v-7a6 6 0 016-6zM2 9h4v12H2zM4 3a2 2 0 11-.001 3.999A2 2 0 014 3z" />
                 </svg>
@@ -291,6 +291,17 @@
             const targetId = this.getAttribute('href').substring(1);
             scrollToSectionWithSlide(targetId);
         });
+    });
+
+    document.querySelectorAll('.slide-in').forEach(section => {
+        function checkSlide() {
+            const rect = section.getBoundingClientRect();
+            if (rect.top < window.innerHeight - 100) {
+                section.classList.add('visible');
+            }
+        }
+        window.addEventListener('scroll', checkSlide);
+        checkSlide();
     });
 </script>
 </body>

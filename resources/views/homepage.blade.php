@@ -91,7 +91,7 @@
         </a>
     </div>
     <div class="md:w-1/2 mt-10 md:mt-0">
-        <img src="triadgo.jpg" alt="Ekspor Impor" class="floating-img" />
+        <img src="triadgo.jpg" alt="Ekspor Impor" class="floating-img ml-7" />
     </div>
 </section>
 

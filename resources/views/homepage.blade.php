@@ -43,12 +43,12 @@
             <a href="#contact" class="hover:text-orange-500 transition nav-gradient-move">Contact</a>
             <a href="{{ route('login') }}">
                 <button
-                    class="ml-6 px-4 py-1.5 bg-blue-700 text-white rounded-md font-semibold hover:bg-blue-800 transition pulse-on-hover">
+                    class="ml-6 px-4 py-1.5 bg-blue-400 text-white rounded-md font-semibold hover:bg-blue-600 transition pulse-on-hover">
                     Masuk
                 </button></a>
             <a href="{{ route('signup') }}">
                 <button
-                    class="ml-3 px-4 py-1.5 bg-orange-500 text-white rounded-md font-semibold hover:bg-orange-600 transition pulse-on-hover">
+                    class="ml-3 px-4 py-1.5 bg-amber-500 text-white rounded-md font-semibold hover:bg-amber-600 transition pulse-on-hover">
                     Daftar
                 </button>
             </a>
@@ -86,7 +86,7 @@
             Memudahkan koneksi bisnis Anda dengan pasar global, layanan ekspor-impor yang andal dan cepat.
         </p>
         <a href="#contact"
-            class="inline-block bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-8 rounded-md shadow-md transition pulse-on-hover">
+            class="inline-block bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-8 rounded-md shadow-md transition pulse-on-hover">
             Contact Us
         </a>
     </div>
@@ -191,7 +191,7 @@
 <section id="contact" class="bg-white py-12 px-6 max-w-2xl mx-auto my-8 slide-in">
     <div class="text-center">
         <h2 class="text-3xl font-bold mb-2 text-blue-800 text-primary">Contact Us</h2>
-        <p class="mb-6 text-orange-600">Send us a message and we’ll get back to you soon.</p>
+        <p class="mb-6 text-amber-600">Send us a message and we’ll get back to you soon.</p>
     </div>
     <form class="space-y-4">
         <input class="w-full border dark:text-black border-gray-300 p-3 rounded focus:border-primary input-animate"
@@ -200,7 +200,7 @@
             type="email" placeholder="Email" />
         <textarea class="w-full border dark:text-black border-gray-300 p-3 rounded focus:border-primary input-animate"
             rows="5" placeholder="Message"></textarea>
-        <button class="bg-orange-500 text-white px-6 py-3 rounded hover:bg-blue-600 transition-colors w-full"
+        <button class="bg-amber-500 text-white px-6 py-3 rounded hover:bg-blue-600 transition-colors w-full"
             type="submit">Send</button>
     </form>
 </section>
@@ -209,14 +209,14 @@
     <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
         <p>© 2025 TriadGO. All rights reserved.</p>
         <div class="space-x-4 mt-4 md:mt-0">
-            <a href="#" aria-label="Facebook" class="hover:text-orange-400 transition">
+            <a href="#" aria-label="Facebook" class="hover:text-amber-400 transition">
                 <svg xmlns="http://www.w3.org/2000/svg" class="inline h-6 w-6 wiggle" fill="currentColor"
                     viewBox="0 0 24 24">
                     <path
                         d="M22 12.07c0-5.52-4.48-10-10-10s-10 4.48-10 10c0 4.99 3.66 9.12 8.44 9.88v-6.99h-2.54v-2.89h2.54v-2.21c0-2.5 1.49-3.89 3.78-3.89 1.1 0 2.25.2 2.25.2v2.49h-1.27c-1.25 0-1.64.78-1.64 1.57v1.84h2.78l-.44 2.89h-2.34v6.99c4.78-.76 8.44-4.89 8.44-9.88z" />
                 </svg>
             </a>
-            <a href="https://github.com/Zahran40/TriadGo" aria-label="GitHub" class="hover:text-orange-400 transition">
+            <a href="https://github.com/Zahran40/TriadGo" aria-label="GitHub" class="hover:text-amber-400 transition">
                 <svg xmlns="http://www.w3.org/2000/svg" class="inline h-6 w-6 wiggle" fill="currentColor"
                     viewBox="0 0 24 24">
                     <path
@@ -224,7 +224,7 @@
                 </svg>
             </a>
             <a href="https://www.instagram.com/official.usu" aria-label="Instagram"
-                class="hover:text-orange-400 transition">
+                class="hover:text-amber-400 transition">
                 <svg xmlns="http://www.w3.org/2000/svg" class="inline h-6 w-6 wiggle" fill="currentColor"
                     viewBox="0 0 24 24">
                     <path

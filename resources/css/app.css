@@ -69,8 +69,10 @@ header {
 
 header a,
 header button {
-    color: #1a202c;
+    color: #364153;
+    font-size: 18px;
 }
+
 
 /* Dark mode styles */
 html.dark body {

@@ -7,8 +7,8 @@
     <title>TriadGO</title>
     @vite('resources/css/app.css')
 
-    <!-- <link rel="stylesheet" href="{{ asset('css/app.css') }}" />
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script> -->
+    {{-- <!-- <link rel="stylesheet" href="{{ asset('css/app.css') }}" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script> --> --}}
 
     <script type="module">
         import 'https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4'
@@ -67,6 +67,15 @@
                     <path stroke-linecap="round" stroke-linejoin="round" d="M4 8h16M4 16h16" />
                 </svg>
             </button>
+            <!-- Tambahkan di dalam <nav> atau di tempat yang diinginkan -->
+<form action="{{ route('logout') }}" method="POST" style="display:inline;">
+    @csrf
+    <button type="submit"
+        class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition"
+        onclick="return confirm('Yakin ingin logout?')">
+        Logout
+    </button>
+</form>
         </div>
     </div>
 </header>

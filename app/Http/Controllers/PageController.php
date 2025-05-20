@@ -55,12 +55,68 @@ class PageController extends Controller
     ]);
 
     if (Auth::attempt($credentials)) {
-        $request->session()->regenerate();
-        return redirect()->intended('/'); // ke halaman utama
-    }
+            $request->session()->regenerate();
 
-    return back()->withErrors([
-        'email' => 'Email atau password salah.',
-    ])->onlyInput('email');
+            $role = Auth::user()->role;
+
+            if ($role === 'ekspor') {
+                return redirect()->route('ekspor');
+            } elseif ($role === 'impor') {
+                return redirect()->route('importir');
+            } else {
+                return redirect('/');
+            }
+        }
+
+        return back()->withErrors([
+            'email' => 'Email atau password salah.',
+        ]);
+
+    
 }
+
+
+      public function logout(Request $request)
+{
+    Auth::logout();
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+
+    return redirect('/')->with('success', 'Anda telah berhasil keluar.');
+
+}
+
+    //Halaman untuk Importir
+    public function homeimportir()
+{
+    if (!Auth::check()) {
+        return redirect('/')->with('error', 'Anda harus login terlebih dahulu.');
+    }
+    if (Auth::user()->role === 'ekspor') {
+        return redirect()->route('ekspor')->with('error', 'Anda tidak bisa mengakses halaman importir.');
+    }
+    if (Auth::user()->role !== 'impor') {
+        return redirect('/')->with('error', 'Anda tidak bisa mengakses halaman tersebut.');
+    }
+    return view('importir');
+}
+
+
+
+    //Halaman untuk Eksportir
+    public function homeeksportir()
+{
+    if (!Auth::check()) {
+        return redirect('/')->with('error', 'Anda harus login terlebih dahulu.');
+    }
+    if (Auth::user()->role === 'impor') {
+        return redirect()->route('importir')->with('error', 'Anda tidak bisa mengakses halaman eksportir.');
+    }
+    if (Auth::user()->role !== 'ekspor') {
+        return redirect('/')->with('error', 'Anda tidak bisa mengakses halaman tersebut.');
+    }
+    return view('eksportir');
+}
+
+
 }

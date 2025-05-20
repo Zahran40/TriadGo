@@ -13,3 +13,13 @@ Route::get('/sign-up', [PageController::class, 'signup'])->name('signup');
 Route::get('/login', [PageController::class, 'login'])->name('login');
 Route::post('/sign-up/data', [PageController::class, 'store'])->name('signup.store');
 Route::post('/login', [PageController::class, 'authenticate'])->name('login.authenticate');
+
+Route::post('/logout', [PageController::class, 'logout'])->name('logout');
+
+
+//Route Halaman Importir
+Route::get('Importir', [PageController::class, 'homeimportir'])->name('importir');
+
+
+//Route Halaman Ekspor
+Route::get('Ekspor', [PageController::class, 'homeeksportir'])->name('ekspor');

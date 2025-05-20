@@ -153,9 +153,20 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="M4 8h16M4 16h16" />
                     </svg>
                 </button>
+                <!-- Tambahkan di dalam <nav> atau di tempat yang diinginkan -->
+<form action="{{ route('logout') }}" method="POST" style="display:inline;">
+    @csrf
+    <button type="submit"
+        class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition"
+        onclick="return confirm('Yakin ingin logout?')">
+        Logout
+    </button>
+</form>
             </div>
         </div>
     </header>
+
+    
 
     <section class="flex-grow container mx-auto px-6 md:px-12 py-16 flex flex-col md:flex-row items-center">
         <div class="md:w-1/2 text-center md:text-left">

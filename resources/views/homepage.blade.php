@@ -7,8 +7,8 @@
     <title>TriadGO</title>
     @vite('resources/css/app.css')
 
-    <!-- <link rel="stylesheet" href="{{ asset('css/app.css') }}" />
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script> -->
+    {{-- <!-- <link rel="stylesheet" href="{{ asset('css/app.css') }}" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script> --> --}}
 
     <script type="module">
         import 'https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4'

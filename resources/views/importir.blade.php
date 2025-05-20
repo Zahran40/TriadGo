@@ -38,20 +38,14 @@
             <h1 class="text-2xl font-bold text-orange-500 gradient-move">Go</h1>
         </div>
         <nav class="hidden md:flex items-center space-x-6 text-blue-700 font-semibold">
-            <a href="#services" class="hover:text-orange-500 transition nav-gradient-move">Services</a>
-            <a href="#about" class="hover:text-orange-500 transition nav-gradient-move">About Us</a>
-            <a href="#contact" class="hover:text-orange-500 transition nav-gradient-move">Contact</a>
-            <a href="{{ route('login') }}">
-                <button
-                    class="ml-6 px-4 py-1.5 bg-blue-400 text-white rounded-md font-semibold hover:bg-blue-600 transition pulse-on-hover">
-                    Masuk
-                </button></a>
-            <a href="{{ route('signup') }}">
-                <button
-                    class="ml-3 px-4 py-1.5 bg-amber-500 text-white rounded-md font-semibold hover:bg-amber-600 transition pulse-on-hover">
-                    Daftar
-                </button>
+            <a href="#services" class="hover:text-orange-500 transition nav-gradient-move">Request</a>
+            <a href="#about" class="hover:text-orange-500 transition nav-gradient-move">Transaksi</a>
+            <a href="#contact" class="hover:text-orange-500 transition nav-gradient-move">Account
+                <img src="https://cdn-icons-png.freepik.com/512/8345/8345339.png" alt="" style="width: 40px; height: 40px;"
+                    class="inline-block ml-2" />
             </a>
+            
+             
         </nav>
         <div class="flex items-center space-x-4">
             <label for="darkModeToggle" class="flex items-center cursor-pointer select-none">
@@ -77,7 +71,79 @@
     </div>
 </header>
 
+<section class="flex-grow container mx-auto px-6 md:px-12 py-16 flex flex-col md:flex-row items-center">
+    <div class="md:w-1/2 text-center md:text-left">
+        <h2 class="text-4xl font-extrabold text-blue-900 mb-6 leading-tight fade-in-up">
+            <span class="text-amber-500">Hai Importir !</span> <br>Selamat datang di TriadGO
+        </h2>
 
+        <p class="text-lg text-blue-700 mb-8 max-w-xl fade-in-up" style="animation-delay:0.4s">
+            Temukan solusi terbaik untuk kebutuhan impor Anda. Kami menyediakan platform yang
+            memudahkan Anda dalam melakukan transaksi internasional dengan aman dan efisien.
+        </p>
+        <a href="#cari"
+            class="inline-block bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-8 rounded-md shadow-md transition pulse-on-hover">
+            Temukan Barang Impor
+        </a>
+    </div>
+    <div class="md:w-1/2 mt-10 md:mt-0">
+        <img src="triadgo.jpg" alt="Ekspor Impor" class="floating-img ml-7" />
+    </div>
+</section>
+
+<section id="cari" class="container mx-auto px-6 py-16 slide-in">
+    <h2 class="text-3xl font-bold text-blue-900 mb-6 text-center">Temukan Barang yang ingin diimpor</h2>
+    <form action="" class="flex flex-col md:flex-row items-center">
+        <input type="text" name="" placeholder="Masukkan nama barang"  
+            class="flex-grow px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-500 mr-4 mb-4 md:mb-0"
+            required />
+        <button type="submit"
+            class="bg-blue-700 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md transition pulse-on-hover">
+            <img src="https://img.icons8.com/m_outlined/512/FFFFFF/search.png" alt="" style="width: 30px; height: 30px;" />
+        </button>
+    </form>
+
+    <div class="mt-8">
+        <h3 class="text-2xl font-bold text-blue-900 mb-4">Hasil Pencarian</h3>
+        <div class="mt-8">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-white shadow-md rounded-lg p-4">
+                        <h4 class="text-xl font-semibold text-amber-500">Nama Barang 1</h4>
+                        <img src="https://png.pngtree.com/png-vector/20231023/ourmid/pngtree-mystery-box-with-question-mark-3d-illustration-png-image_10313605.png" alt="" class="w-50 h-50" />
+                        <p class="text-gray-600">Deskripsi Singkat 1</p>
+                        <a href="#" class="mt-4 inline-block bg-blue-700 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md transition pulse-on-hover">
+                            Lihat Detail
+                        </a>
+                    </div>
+                    <div class="bg-white shadow-md rounded-lg p-4">
+                        <h4 class="text-xl font-semibold text-amber-500">Nama Barang 2</h4>
+                        <img src="https://png.pngtree.com/png-vector/20231023/ourmid/pngtree-mystery-box-with-question-mark-3d-illustration-png-image_10313605.png" alt="" class="w-50 h-50" />
+                        <p class="text-gray-600">Deskripsi Singkat 2</p>
+                        <a href="#" class="mt-4 inline-block bg-blue-700 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md transition pulse-on-hover">
+                            Lihat Detail
+                        </a>
+                    </div>
+                    <div class="bg-white shadow-md rounded-lg p-4">
+                        <h4 class="text-xl font-semibold text-amber-500">Nama Barang 3</h4>
+                        <img src="https://png.pngtree.com/png-vector/20231023/ourmid/pngtree-mystery-box-with-question-mark-3d-illustration-png-image_10313605.png" alt="" class="w-50 h-50" />
+                        <p class="text-gray-600">Deskripsi Singkat 3</p>
+                        <a href="#" class="mt-4 inline-block bg-blue-700 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md transition pulse-on-hover">
+                            Lihat Detail
+                        </a>
+                    </div>
+                </div>
+        </div>
+    </div>
+    <div class="mt-14 text-center">
+    <h3 class="text-2xl font-bold text-red-400 mb-4 mt-12">Tidak ada barang yang cocok ditemukan</h3>
+    <img src="https://cdn-icons-png.flaticon.com/512/6134/6134051.png" alt="" style="width: 100px; height: 100px;" class="mx-auto mb-10 mt-7" />
+    <p class="text-blue-700 mb-4">Kami tidak dapat menemukan barang yang sesuai dengan pencarian Anda.</p>
+    <p class="text-blue-700 mb-4">Silakan coba dengan kata kunci lain atau lakukan request untuk barang yang Anda cari.</p>
+    <button class="bg-amber-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md transition pulse-on-hover">
+        Request sekarang
+    </button>
+</div>
+</section>
 
 <footer class="bg-blue-800 text-blue-100 py-6 mt-auto">
     <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center">

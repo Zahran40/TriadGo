@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -29,93 +30,6 @@
             },
         }
     </script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-        
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #ffffff;
-        }
-        
-        .home-bg {
-            background: linear-gradient(to bottom, #f0f9ff, #ffffff);
-        }
-        
-        .gradient-move {
-            background: linear-gradient(90deg, #2563eb, #3b82f6, #60a5fa);
-            background-size: 200% auto;
-            color: transparent;
-            -webkit-background-clip: text;
-            background-clip: text;
-            animation: gradient 3s linear infinite;
-        }
-        
-        .nav-gradient-move:hover {
-            background: linear-gradient(90deg, #f97316, #fb923c);
-            background-size: 200% auto;
-            color: transparent;
-            -webkit-background-clip: text;
-            background-clip: text;
-            animation: gradient 3s linear infinite;
-        }
-        
-        @keyframes gradient {
-            0% { background-position: 0% center; }
-            100% { background-position: 200% center; }
-        }
-        
-        .floating-img {
-            animation: float 6s ease-in-out infinite;
-        }
-        
-        .pulse-on-hover:hover {
-            animation: pulse 1.5s infinite;
-        }
-        
-        .wiggle:hover {
-            animation: wiggle 0.5s ease-in-out infinite;
-        }
-        
-        @keyframes wiggle {
-            0%, 100% { transform: rotate(-3deg); }
-            50% { transform: rotate(3deg); }
-        }
-        
-        .fade-in-up {
-            animation: fadeInUp 0.8s ease-out forwards;
-        }
-        
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .slide-in {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.6s ease-out;
-        }
-        
-        .slide-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
-        .export-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-        }
-        
-        .glow-on-hover:hover {
-            box-shadow: 0 0 15px rgba(249, 115, 22, 0.5);
-        }
-    </style>
 </head>
 
 <body class="home-bg min-h-screen flex flex-col">
@@ -123,15 +37,15 @@
         <div class="container mx-auto px-6 py-4 flex justify-between items-center">
             <div class="flex items-center">
                 <img src="tglogo.png" alt="Logo" class="h-12 w-12 mr-2" style="width: 65px; height: 65px" />
-                <h1 class="text-2xl font-bold text-blue-900 nav-gradient-move">Triad</h1>
-                <h1 class="text-2xl font-bold text-orange-500 nav-gradient-move">Go</h1>
+                <h1 class="text-2xl font-bold text-blue-900 gradient-move">Triad</h1>
+                <h1 class="text-2xl font-bold text-orange-500 gradient-move">Go</h1>
             </div>
             <nav class="hidden md:flex items-center space-x-6 text-blue-700 font-semibold">
-                <a href="#services" class="hover:text-orange-500 transition nav-gradient-move">Request</a>
-                <a href="#export" class="hover:text-orange-500 transition nav-gradient-move">Transactions</a>
-                <a href="#contact" class="hover:text-orange-500 transition nav-gradient-move">Account
-                    <img src="https://cdn-icons-png.freepik.com/512/8345/8345339.png" alt="" style="width: 40px; height: 40px;"
-                        class="inline-block ml-2" />
+                <a href="#" class="hover:text-orange-500 transition nav-gradient-move">Request</a>
+                <a href="#" class="hover:text-orange-500 transition nav-gradient-move">Transactions</a>
+                <a href="#" class="hover:text-orange-500 transition nav-gradient-move">Account
+                    <img src="https://cdn-icons-png.freepik.com/512/8345/8345339.png" alt=""
+                        style="width: 40px; height: 40px;" class="inline-block ml-2" />
                 </a>
             </nav>
             <div class="flex items-center space-x-4">
@@ -155,28 +69,29 @@
                     </svg>
                 </button>
                 <!-- Tambahkan di dalam <nav> atau di tempat yang diinginkan -->
-<form action="{{ route('logout') }}" method="POST" style="display:inline;">
-    @csrf
-    <button type="submit"
-        class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition"
-        onclick="return confirm('Yakin ingin logout?')">
-        Logout
-    </button>
-</form>
+                <form action="{{ route('logout') }}" method="POST" style="display:inline;">
+                    @csrf
+                    <button type="submit"
+                        class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition"
+                        onclick="return confirm('Yakin ingin logout?')">
+                        Logout
+                    </button>
+                </form>
             </div>
         </div>
     </header>
 
-    
+
 
     <section class="flex-grow container mx-auto px-6 md:px-12 py-16 flex flex-col md:flex-row items-center">
         <div class="md:w-1/2 text-center md:text-left">
-            <h2 class="text-4xl font-extrabold text-blue-900 mb-6 leading-tight fade-in-up">
+            <h2 class="text-4xl font-extrabold text-blue-900 mb-6 leading-tight">
                 <span class="text-amber-500">Hello Exporter!</span> <br>Welcome to TriadGO Export Hub
             </h2>
 
             <p class="text-lg text-blue-700 mb-8 max-w-xl fade-in-up" style="animation-delay:0.4s">
-                Expand your business globally with our comprehensive export solutions. We provide the platform and tools you need to connect with international buyers and streamline your export operations.
+                Expand your business globally with our comprehensive export solutions. We provide the platform and tools
+                you need to connect with international buyers and streamline your export operations.
             </p>
             <div class="flex flex-col sm:flex-row gap-4">
                 <a href="#export-services"
@@ -190,57 +105,80 @@
             </div>
         </div>
         <div class="md:w-1/2 mt-10 md:mt-0">
-            <img src="https://img.freepik.com/free-vector/international-trade-abstract-concept-illustration_335657-3739.jpg" alt="Export Illustration" class="floating-img w-full max-w-lg" />
+            <img src="https://img.freepik.com/free-vector/international-trade-abstract-concept-illustration_335657-3739.jpg"
+                alt="Export Illustration" class="floating-img w-full max-w-lg" />
         </div>
     </section>
 
-    <section id="export-services" class="bg-blue-50 py-16 slide-in">
-        <div class="container mx-auto px-6">
-            <h2 class="text-3xl font-bold text-blue-900 mb-12 text-center">Our Export Solutions</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="export-card bg-white rounded-xl shadow-md p-6 transition-all duration-300 hover:border-orange-500 border-2 border-transparent">
+    <section id="services" class="bg-white py-16 slide-in">
+        <div class="container mx-auto px-6 md:px-12 ">
+            <h3 class="text-3xl font-bold text-blue-900 mb-12 text-center">Our Export Solutions</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-6xl mx-auto">
+                <div
+                    class="export-card bg-blue-50 p-8 rounded-lg shadow hover:shadow-lg transition hover:border-orange-500 border-2 border-transparent">
                     <div class="text-orange-500 mb-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto md:mx-0 wiggle" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
                         </svg>
                     </div>
-                    <h3 class="text-xl font-bold text-blue-900 mb-3">Global Market Access</h3>
-                    <p class="text-gray-600 mb-4">Connect with buyers from 50+ countries through our extensive international network.</p>
-                    <a href="#" class="text-orange-500 font-semibold inline-flex items-center">
+                    <h4 class="text-2xl font-semibold text-blue-800 mb-2 text-center md:text-left">Global Market Access
+                    </h4>
+                    <p class="text-blue-700 text-center md:text-left">
+                        Connect with buyers from all SEA countries through our extensive
+                        international network.
+                    </p>
+                    <a href="#" class="text-blue-800 font-semibold inline-flex items-center mt-4">
                         Learn more
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                         </svg>
                     </a>
                 </div>
-                
-                <div class="export-card bg-white rounded-xl shadow-md p-6 transition-all duration-300 hover:border-orange-500 border-2 border-transparent">
+                <div
+                    class="export-card bg-blue-50 p-8 rounded-lg shadow hover:shadow-lg transition hover:border-orange-500 border-2 border-transparent">
                     <div class="text-orange-500 mb-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto md:mx-0 wiggle" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                         </svg>
                     </div>
-                    <h3 class="text-xl font-bold text-blue-900 mb-3">Secure Transactions</h3>
-                    <p class="text-gray-600 mb-4">Our escrow system ensures safe and reliable international payments for your exports.</p>
-                    <a href="#" class="text-orange-500 font-semibold inline-flex items-center">
+                    <h4 class="text-2xl font-semibold text-blue-800 mb-2 text-center md:text-left">Secure Transactions
+                    </h4>
+                    <p class="text-blue-700 text-center md:text-left">
+                        Our escrow system ensures safe and reliable international payments for your exports.
+                    </p>
+                    <a href="#" class="text-blue-800 font-semibold inline-flex items-center mt-4">
                         Learn more
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                         </svg>
                     </a>
                 </div>
-                
-                <div class="export-card bg-white rounded-xl shadow-md p-6 transition-all duration-300 hover:border-orange-500 border-2 border-transparent">
+                <div
+                    class="export-card bg-blue-50 p-8 rounded-lg shadow hover:shadow-lg transition hover:border-orange-500 border-2 border-transparent">
                     <div class="text-orange-500 mb-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto md:mx-0 wiggle" fill="none"
+                            viewBox="0 -5 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M9 17v-6a1 1 0 012 0v6a1 1 0 11-2 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M12 12h3l3 9m-3-9v-7a7 7 0 00-14 0v7" />
                         </svg>
                     </div>
-                    <h3 class="text-xl font-bold text-blue-900 mb-3">Logistics Support</h3>
-                    <p class="text-gray-600 mb-4">End-to-end logistics solutions including shipping, customs clearance, and documentation.</p>
-                    <a href="#" class="text-orange-500 font-semibold inline-flex items-center">
+                    <h4 class="text-2xl font-semibold text-blue-800 mb-2 text-center md:text-left">Logistics Support
+                    </h4>
+                    <p class="text-blue-700 text-center md:text-left">
+                        End-to-end logistics solutions including shipping, customs clearance, and documentation.
+                    </p>
+                    <a href="#" class="text-blue-800 font-semibold inline-flex items-center mt-4">
                         Learn more
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                         </svg>
                     </a>
@@ -252,12 +190,13 @@
     <section id="find-buyers" class="container mx-auto px-6 py-16 slide-in">
         <h2 class="text-3xl font-bold text-blue-900 mb-6 text-center">Find International Buyers</h2>
         <form action="" class="flex flex-col md:flex-row items-center max-w-2xl mx-auto">
-            <input type="text" name="" placeholder="Search for buyers or products..."  
+            <input type="text" name="" placeholder="Search for buyers or products..."
                 class="flex-grow px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 mr-4 mb-4 md:mb-0"
                 required />
             <button type="submit"
                 class="bg-blue-700 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-md transition pulse-on-hover flex items-center">
-                <img src="https://img.icons8.com/m_outlined/512/FFFFFF/search.png" alt="" style="width: 20px; height: 20px;" class="mr-2" />
+                <img src="https://img.icons8.com/m_outlined/512/FFFFFF/search.png" alt=""
+                    style="width: 20px; height: 20px;" class="mr-2" />
                 Search
             </button>
         </form>
@@ -268,7 +207,8 @@
                 <div class="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transition">
                     <div class="p-4">
                         <div class="flex items-center mb-4">
-                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Buyer" class="w-12 h-12 rounded-full mr-4">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Buyer"
+                                class="w-12 h-12 rounded-full mr-4">
                             <div>
                                 <h4 class="font-semibold text-lg">Global Trade Inc.</h4>
                                 <p class="text-orange-500 text-sm">United States</p>
@@ -277,17 +217,19 @@
                         <p class="text-gray-600 mb-4">Looking for: Agricultural products, spices, and organic foods</p>
                         <div class="flex justify-between items-center">
                             <span class="text-sm text-gray-500">Last active: 2 days ago</span>
-                            <button class="bg-blue-700 hover:bg-blue-600 text-white text-sm py-1 px-3 rounded transition">
+                            <button
+                                class="bg-blue-700 hover:bg-blue-600 text-white text-sm py-1 px-3 rounded transition">
                                 Contact
                             </button>
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transition">
                     <div class="p-4">
                         <div class="flex items-center mb-4">
-                            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Buyer" class="w-12 h-12 rounded-full mr-4">
+                            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Buyer"
+                                class="w-12 h-12 rounded-full mr-4">
                             <div>
                                 <h4 class="font-semibold text-lg">Euro Import Co.</h4>
                                 <p class="text-orange-500 text-sm">Germany</p>
@@ -296,17 +238,19 @@
                         <p class="text-gray-600 mb-4">Seeking: Handicrafts, textiles, and home decor items</p>
                         <div class="flex justify-between items-center">
                             <span class="text-sm text-gray-500">Last active: 1 day ago</span>
-                            <button class="bg-blue-700 hover:bg-blue-600 text-white text-sm py-1 px-3 rounded transition">
+                            <button
+                                class="bg-blue-700 hover:bg-blue-600 text-white text-sm py-1 px-3 rounded transition">
                                 Contact
                             </button>
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transition">
                     <div class="p-4">
                         <div class="flex items-center mb-4">
-                            <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Buyer" class="w-12 h-12 rounded-full mr-4">
+                            <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Buyer"
+                                class="w-12 h-12 rounded-full mr-4">
                             <div>
                                 <h4 class="font-semibold text-lg">Asia Pacific Trading</h4>
                                 <p class="text-orange-500 text-sm">Singapore</p>
@@ -315,18 +259,21 @@
                         <p class="text-gray-600 mb-4">Interested in: Electronics components and automotive parts</p>
                         <div class="flex justify-between items-center">
                             <span class="text-sm text-gray-500">Last active: Today</span>
-                            <button class="bg-blue-700 hover:bg-blue-600 text-white text-sm py-1 px-3 rounded transition">
+                            <button
+                                class="bg-blue-700 hover:bg-blue-600 text-white text-sm py-1 px-3 rounded transition">
                                 Contact
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
-            
+
             <div class="text-center mt-10">
-                <button class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-6 rounded-md transition pulse-on-hover inline-flex items-center">
+                <button
+                    class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-6 rounded-md transition pulse-on-hover inline-flex items-center">
                     View All Buyers
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                     </svg>
                 </button>
@@ -334,15 +281,18 @@
         </div>
     </section>
 
-    <section class="bg-blue-800 text-white py-16 slide-in">
+    <section id="services" class="bg-blue-800 text-white py-16 slide-in">
         <div class="container mx-auto px-6 text-center">
             <h2 class="text-3xl font-bold mb-6">Ready to Start Exporting?</h2>
-            <p class="text-xl mb-8 max-w-2xl mx-auto">Join thousands of businesses expanding their reach globally with TriadGO</p>
+            <p class="text-xl mb-8 max-w-2xl mx-auto">Join thousands of businesses expanding their reach globally with
+                TriadGO</p>
             <div class="flex flex-col sm:flex-row justify-center gap-4">
-                <button class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-8 rounded-md shadow-md transition pulse-on-hover">
+                <button
+                    class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-8 rounded-md shadow-md transition pulse-on-hover">
                     Create Export Profile
                 </button>
-                <button class="bg-white hover:bg-gray-100 text-blue-800 font-bold py-3 px-8 rounded-md shadow-md transition">
+                <button
+                    class="bg-blue-800 hover:bg-orange-600 text-white font-bold py-3 px-8 rounded-md shadow-md transition pulse-on-hover">
                     Schedule Consultation
                 </button>
             </div>
@@ -360,7 +310,8 @@
                             d="M22 12.07c0-5.52-4.48-10-10-10s-10 4.48-10 10c0 4.99 3.66 9.12 8.44 9.88v-6.99h-2.54v-2.89h2.54v-2.21c0-2.5 1.49-3.89 3.78-3.89 1.1 0 2.25.2 2.25.2v2.49h-1.27c-1.25 0-1.64.78-1.64 1.57v1.84h2.78l-.44 2.89h-2.34v6.99c4.78-.76 8.44-4.89 8.44-9.88z" />
                     </svg>
                 </a>
-                <a href="https://github.com/Zahran40/TriadGo" aria-label="GitHub" class="hover:text-amber-400 transition">
+                <a href="https://github.com/Zahran40/TriadGo" aria-label="GitHub"
+                    class="hover:text-amber-400 transition">
                     <svg xmlns="http://www.w3.org/2000/svg" class="inline h-6 w-6 wiggle" fill="currentColor"
                         viewBox="0 0 24 24">
                         <path
@@ -458,4 +409,5 @@
         });
     </script>
 </body>
+
 </html>

@@ -146,7 +146,7 @@
     </div>
 </section>
 
-<section id="about" class="container mx-auto px-6 md:px-12 py-16 slide-in">
+<section id="about" class="container mx-autof px-6 md:px-12 py-16 slide-in">
     <div class="max-w-4xl mx-auto text-center">
         <h3 class="text-3xl font-bold mb-6 text-blue-900">About Us</h3>
         <p class="text-blue-700 text-lg leading-relaxed">
@@ -191,7 +191,7 @@
 <section id="contact" class="bg-white py-12 px-6 max-w-2xl mx-auto my-8 slide-in">
     <div class="text-center">
         <h2 class="text-3xl font-bold mb-2 text-blue-800 text-primary">Contact Us</h2>
-        <p class="mb-6 text-amber-600">Send us a message and we’ll get back to you soon.</p>
+        <p class="mb-6 text-amber-600">Send us a message and we'll get back to you soon.</p>
     </div>
     <form class="space-y-4">
         <input class="w-full border dark:text-black border-gray-300 p-3 rounded focus:border-primary input-animate"

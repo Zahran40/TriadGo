@@ -105,7 +105,7 @@
             </div>
         </div>
         <div class="md:w-1/2 mt-10 md:mt-0">
-            <img src="https://img.freepik.com/free-vector/international-trade-abstract-concept-illustration_335657-3739.jpg"
+            <img src="eksportir.png"
                 alt="Export Illustration" class="floating-img w-full max-w-lg" />
         </div>
     </section>

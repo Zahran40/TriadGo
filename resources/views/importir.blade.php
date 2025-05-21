@@ -6,7 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TriadGO</title>
     @vite('resources/css/app.css')
-
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        .body {
+            font-family: poppins, sans-serif;
+        }
+    </style>
     {{-- <!-- <link rel="stylesheet" href="{{ asset('css/app.css') }}" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script> --> --}}
 
@@ -33,13 +38,13 @@
 <header class="bg-white shadow-md sticky top-0 z-50">
     <div class="container mx-auto px-6 py-4 flex justify-between items-center">
         <div class="flex items-center">
-            <img src="tglogo.png" alt="Logo" class="h-12 w-12 mr-2" style="width: 65px;  height: 65px" />
-            <h1 class="text-2xl font-bold text-blue-900 gradient-move">Triad</h1>
-            <h1 class="text-2xl font-bold text-orange-500 gradient-move">Go</h1>
+            <img src="tglogo.png" alt="Logo" class="h-12 w-12 mr-2 " style="width: 65px;  height: 65px" />
+            <h1 class="text-2xl font-bold text-blue-900 nav-gradient-move">Triad</h1>
+            <h1 class="text-2xl font-bold text-orange-500 nav-gradient-move">Go</h1>
         </div>
         <nav class="hidden md:flex items-center space-x-6 text-blue-700 font-semibold">
             <a href="#services" class="hover:text-orange-500 transition nav-gradient-move">Request</a>
-            <a href="#about" class="hover:text-orange-500 transition nav-gradient-move">Transaksi</a>
+            <a href="#about" class="hover:text-orange-500 transition nav-gradient-move">Transaction</a>
             <a href="#contact" class="hover:text-orange-500 transition nav-gradient-move">Account
                 <img src="https://cdn-icons-png.freepik.com/512/8345/8345339.png" alt="" style="width: 40px; height: 40px;"
                     class="inline-block ml-2" />
@@ -83,12 +88,12 @@
 <section class="flex-grow container mx-auto px-6 md:px-12 py-16 flex flex-col md:flex-row items-center">
     <div class="md:w-1/2 text-center md:text-left">
         <h2 class="text-4xl font-extrabold text-blue-900 mb-6 leading-tight fade-in-up">
-            <span class="text-amber-500">Hai Importir !</span> <br>Selamat datang di TriadGO
+            <span class="text-amber-500">Hello Importer !</span> <br>Welcome to TriadGO Import Hub
         </h2>
 
         <p class="text-lg text-blue-700 mb-8 max-w-xl fade-in-up" style="animation-delay:0.4s">
-            Temukan solusi terbaik untuk kebutuhan impor Anda. Kami menyediakan platform yang
-            memudahkan Anda dalam melakukan transaksi internasional dengan aman dan efisien.
+            Find the best solution for your import needs. We provide a platform that makes it easy for you to 
+            conduct international transactions safely and efficiently.
         </p>
         <a href="#cari"
             class="inline-block bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-8 rounded-md shadow-md transition pulse-on-hover">
@@ -101,9 +106,9 @@
 </section>
 
 <section id="cari" class="container mx-auto px-6 py-16 slide-in">
-    <h2 class="text-3xl font-bold text-blue-900 mb-6 text-center">Temukan Barang yang ingin diimpor</h2>
+    <h2 class="text-3xl font-bold text-blue-900 mb-6 text-center">Find the product you want to import</h2>
     <form action="" class="flex flex-col md:flex-row items-center">
-        <input type="text" name="" placeholder="Masukkan nama barang"  
+        <input type="text" name="" placeholder="Search for products..."  
             class="flex-grow px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-500 mr-4 mb-4 md:mb-0"
             required />
         <button type="submit"
@@ -113,43 +118,47 @@
     </form>
 
     <div class="mt-8">
-        <h3 class="text-2xl font-bold text-blue-900 mb-4">Hasil Pencarian</h3>
+        <h3 class="text-2xl font-bold text-blue-900 mb-4">Search Result</h3>
         <div class="mt-8">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div class="bg-white shadow-md rounded-lg p-4">
-                        <h4 class="text-xl font-semibold text-amber-500">Nama Barang 1</h4>
+                        <h4 class="text-xl font-semibold text-amber-500">Product 1</h4>
                         <img src="https://png.pngtree.com/png-vector/20231023/ourmid/pngtree-mystery-box-with-question-mark-3d-illustration-png-image_10313605.png" alt="" class="w-50 h-50" />
-                        <p class="text-gray-600">Deskripsi Singkat 1</p>
+                        <p class="text-gray-600">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Libero culpa quam quas numquam hic tempore autem, 
+                            velit voluptate sit illum molestiae nemo dicta doloremque fugit recusandae ex at! Quam, quae.
+                        </p>
                         <a href="#" class="mt-4 inline-block bg-blue-700 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md transition pulse-on-hover">
-                            Lihat Detail
+                            See Detail
                         </a>
                     </div>
                     <div class="bg-white shadow-md rounded-lg p-4">
-                        <h4 class="text-xl font-semibold text-amber-500">Nama Barang 2</h4>
+                        <h4 class="text-xl font-semibold text-amber-500">Product 2</h4>
                         <img src="https://png.pngtree.com/png-vector/20231023/ourmid/pngtree-mystery-box-with-question-mark-3d-illustration-png-image_10313605.png" alt="" class="w-50 h-50" />
-                        <p class="text-gray-600">Deskripsi Singkat 2</p>
+                        <p class="text-gray-600">Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur rerum totam nam, vero fugiat sit corporis, 
+                            quod possimus similique ad voluptate recusandae unde suscipit delectus aperiam fugit provident iusto laboriosam?</p>
                         <a href="#" class="mt-4 inline-block bg-blue-700 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md transition pulse-on-hover">
-                            Lihat Detail
+                            See Detail
                         </a>
                     </div>
                     <div class="bg-white shadow-md rounded-lg p-4">
-                        <h4 class="text-xl font-semibold text-amber-500">Nama Barang 3</h4>
+                        <h4 class="text-xl font-semibold text-amber-500">Product 3</h4>
                         <img src="https://png.pngtree.com/png-vector/20231023/ourmid/pngtree-mystery-box-with-question-mark-3d-illustration-png-image_10313605.png" alt="" class="w-50 h-50" />
-                        <p class="text-gray-600">Deskripsi Singkat 3</p>
+                        <p class="text-gray-600">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam atque aut explicabo cupiditate culpa saepe, 
+                            suscipit consequuntur iure fugiat fugit. Repellat voluptatibus labore unde ad. Voluptatibus qui eius pariatur dolorum!</p>
                         <a href="#" class="mt-4 inline-block bg-blue-700 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md transition pulse-on-hover">
-                            Lihat Detail
+                            See Detail
                         </a>
                     </div>
                 </div>
         </div>
     </div>
     <div class="mt-14 text-center">
-    <h3 class="text-2xl font-bold text-red-400 mb-4 mt-12">Tidak ada barang yang cocok ditemukan</h3>
+    <h3 class="text-2xl font-bold text-red-400 mb-4 mt-12">No Matching Items found</h3>
     <img src="https://cdn-icons-png.flaticon.com/512/6134/6134051.png" alt="" style="width: 100px; height: 100px;" class="mx-auto mb-10 mt-7" />
-    <p class="text-blue-700 mb-4">Kami tidak dapat menemukan barang yang sesuai dengan pencarian Anda.</p>
-    <p class="text-blue-700 mb-4">Silakan coba dengan kata kunci lain atau lakukan request untuk barang yang Anda cari.</p>
+    <p class="text-blue-700 mb-4">We were unable to find any items that matched your search.</p>
+    <p class="text-blue-700 mb-4">Please try with other keywords or make a request for the item you are looking for.</p>
     <button class="bg-amber-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md transition pulse-on-hover">
-        Request sekarang
+        Request now
     </button>
 </div>
 </section>

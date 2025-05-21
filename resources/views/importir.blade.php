@@ -123,11 +123,11 @@
         <h3 class="text-2xl font-bold text-blue-900 mb-4">Search Result</h3>
         <div class="mt-8">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="bg-white shadow-md rounded-lg p-4">
+                <div class="product shadow-md rounded-lg p-4">
                     <h4 class="text-xl font-semibold text-amber-500">Product 1</h4>
                     <img src="https://png.pngtree.com/png-vector/20231023/ourmid/pngtree-mystery-box-with-question-mark-3d-illustration-png-image_10313605.png"
                         alt="" class="w-50 h-50" />
-                    <p class="text-gray-600">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Libero culpa quam
+                    <p class="product-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Libero culpa quam
                         quas numquam hic tempore autem,
                         velit voluptate sit illum molestiae nemo dicta doloremque fugit recusandae ex at! Quam, quae.
                     </p>
@@ -136,11 +136,11 @@
                         See Detail
                     </a>
                 </div>
-                <div class="bg-white shadow-md rounded-lg p-4">
+                <div class="product shadow-md rounded-lg p-4">
                     <h4 class="text-xl font-semibold text-amber-500">Product 2</h4>
                     <img src="https://png.pngtree.com/png-vector/20231023/ourmid/pngtree-mystery-box-with-question-mark-3d-illustration-png-image_10313605.png"
                         alt="" class="w-50 h-50" />
-                    <p class="text-gray-600">Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur rerum
+                    <p class="product-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur rerum
                         totam nam, vero fugiat sit corporis,
                         quod possimus similique ad voluptate recusandae unde suscipit delectus aperiam fugit provident
                         iusto laboriosam?</p>
@@ -149,11 +149,11 @@
                         See Detail
                     </a>
                 </div>
-                <div class="bg-white shadow-md rounded-lg p-4">
+                <div class="product shadow-md rounded-lg p-4">
                     <h4 class="text-xl font-semibold text-amber-500">Product 3</h4>
                     <img src="https://png.pngtree.com/png-vector/20231023/ourmid/pngtree-mystery-box-with-question-mark-3d-illustration-png-image_10313605.png"
                         alt="" class="w-50 h-50" />
-                    <p class="text-gray-600">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam atque aut
+                    <p class="product-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam atque aut
                         explicabo cupiditate culpa saepe,
                         suscipit consequuntur iure fugiat fugit. Repellat voluptatibus labore unde ad. Voluptatibus qui
                         eius pariatur dolorum!</p>

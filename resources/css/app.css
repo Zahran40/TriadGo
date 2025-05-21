@@ -491,3 +491,20 @@ html.dark .buyer-card-text {
     color: #fff;
     transition: background-color 0.3s;
 }
+
+/* Product */
+.product {
+    background-color: #fff;
+    transition: background-color 0.3s;
+}
+html.dark .product {
+    background-color: #2d3748;
+}
+
+.product-text {
+    background-color: #fff;
+    transition: background-color 0.3s;
+}
+html.dark .product-text {
+    background-color: #2d3748;
+}

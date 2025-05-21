@@ -23,12 +23,32 @@
                 },
             },
         }
+        
 
         tailwind.scan()
     </script>
 </head>
 
-<body class="home-bg"></body>
+
+
+
+
+<body class="home-bg">
+    @if(session('success'))
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Berhasil!',
+            text: "{{ session('success') }}",
+            background: '#2563eb',
+            color: '#fff',
+            confirmButtonColor: '#2563eb',
+            confirmButtonText: 'OK'
+        });
+    </script>
+@endif
+</body>
 
 <header class="bg-white shadow-md sticky top-0 z-50">
     <div class="container mx-auto px-6 py-4 flex justify-between items-center">
@@ -193,15 +213,16 @@
         <h2 class="text-3xl font-bold mb-2 text-blue-800 text-primary">Contact Us</h2>
         <p class="mb-6 text-amber-600">Send us a message and we'll get back to you soon.</p>
     </div>
-    <form class="space-y-4">
-        <input class="w-full border dark:text-black border-gray-300 p-3 rounded focus:border-primary input-animate"
+    <form action="{{ route('contactus.store') }}" method="POST" class="space-y-4">
+        @csrf
+        <input class="w-full border dark:text-black border-gray-300 p-3 rounded focus:border-primary input-animate" name="name"
             type="text" placeholder="Your Name" />
-        <input class="w-full border dark:text-black border-gray-300 p-3 rounded focus:border-primary input-animate"
+        <input class="w-full border dark:text-black border-gray-300 p-3 rounded focus:border-primary input-animate" name="email"
             type="email" placeholder="Email" />
-        <textarea class="w-full border dark:text-black border-gray-300 p-3 rounded focus:border-primary input-animate"
+        <textarea class="w-full border dark:text-black border-gray-300 p-3 rounded focus:border-primary input-animate" name="message"
             rows="5" placeholder="Message"></textarea>
         <button class="bg-amber-500 text-white px-6 py-3 rounded hover:bg-blue-600 transition-colors w-full"
-            type="submit">Send</button>
+            type="submit" >Send</button>
     </form>
 </section>
 

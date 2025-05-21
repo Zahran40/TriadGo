@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\ContactusController;
 
 Route::get('/', function () {
     return view('homepage');
@@ -16,6 +17,10 @@ Route::post('/login', [PageController::class, 'authenticate'])->name('login.auth
 
 Route::post('/logout', [PageController::class, 'logout'])->name('logout');
 
+//Route Contact us di homepage
+
+Route::post('/contactus', [ContactusController::class, 'store'])->name('contactus.store');
+
 
 //Route Halaman Importir
 Route::get('Importir', [PageController::class, 'homeimportir'])->name('importir');
@@ -23,3 +28,4 @@ Route::get('Importir', [PageController::class, 'homeimportir'])->name('importir'
 
 //Route Halaman Ekspor
 Route::get('Ekspor', [PageController::class, 'homeeksportir'])->name('ekspor');
+

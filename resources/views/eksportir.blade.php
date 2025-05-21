@@ -201,20 +201,21 @@
             </button>
         </form>
 
+        <!-- Featured Buyers -->
         <div class="mt-12">
             <h3 class="text-2xl font-bold text-blue-900 mb-6 text-center">Featured Buyers</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transition">
+                <div class="buyer-card shadow-md rounded-lg overflow-hidden hover:shadow-lg transition">
                     <div class="p-4">
                         <div class="flex items-center mb-4">
                             <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Buyer"
                                 class="w-12 h-12 rounded-full mr-4">
                             <div>
-                                <h4 class="font-semibold text-lg">Global Trade Inc.</h4>
-                                <p class="text-orange-500 text-sm">United States</p>
+                                <h4 class="font-semibold text-lg">Vincent Simbolon</h4>
+                                <p class="text-orange-500 text-sm">Indonesia</p>
                             </div>
                         </div>
-                        <p class="text-gray-600 mb-4">Looking for: Agricultural products, spices, and organic foods</p>
+                        <p class="buyer-card-text mb-4">Looking for: Agricultural products, spices, and organic foods</p>
                         <div class="flex justify-between items-center">
                             <span class="text-sm text-gray-500">Last active: 2 days ago</span>
                             <button
@@ -225,17 +226,17 @@
                     </div>
                 </div>
 
-                <div class="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transition">
+                <div class="buyer-card shadow-md rounded-lg overflow-hidden hover:shadow-lg transition">
                     <div class="p-4">
                         <div class="flex items-center mb-4">
                             <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Buyer"
                                 class="w-12 h-12 rounded-full mr-4">
                             <div>
-                                <h4 class="font-semibold text-lg">Euro Import Co.</h4>
-                                <p class="text-orange-500 text-sm">Germany</p>
+                                <h4 class="font-semibold text-lg">Reagan Siahaan</h4>
+                                <p class="text-orange-500 text-sm">Singapore</p>
                             </div>
                         </div>
-                        <p class="text-gray-600 mb-4">Seeking: Handicrafts, textiles, and home decor items</p>
+                        <p class="buyer-card-text mb-4">Seeking: Handicrafts, textiles, and home decor items</p>
                         <div class="flex justify-between items-center">
                             <span class="text-sm text-gray-500">Last active: 1 day ago</span>
                             <button
@@ -246,17 +247,17 @@
                     </div>
                 </div>
 
-                <div class="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transition">
+                <div class="buyer-card shadow-md rounded-lg overflow-hidden hover:shadow-lg transition">
                     <div class="p-4">
                         <div class="flex items-center mb-4">
                             <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Buyer"
                                 class="w-12 h-12 rounded-full mr-4">
                             <div>
-                                <h4 class="font-semibold text-lg">Asia Pacific Trading</h4>
-                                <p class="text-orange-500 text-sm">Singapore</p>
+                                <h4 class="font-semibold text-lg">Abbil Rizki Abdillah</h4>
+                                <p class="text-orange-500 text-sm">Cambodia</p>
                             </div>
                         </div>
-                        <p class="text-gray-600 mb-4">Interested in: Electronics components and automotive parts</p>
+                        <p class="buyer-card-text mb-4">Interested in: Electronics components and automotive parts</p>
                         <div class="flex justify-between items-center">
                             <span class="text-sm text-gray-500">Last active: Today</span>
                             <button
@@ -292,7 +293,7 @@
                     Create Export Profile
                 </button>
                 <button
-                    class="bg-blue-800 hover:bg-orange-600 text-white font-bold py-3 px-8 rounded-md shadow-md transition pulse-on-hover">
+                    class="bg-blue-700 hover:bg-orange-600 text-white font-bold py-3 px-8 rounded-md shadow-md transition pulse-on-hover">
                     Schedule Consultation
                 </button>
             </div>

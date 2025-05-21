@@ -472,3 +472,22 @@ label {
 .glow-on-hover:hover {
     box-shadow: 0 0 15px rgba(249, 115, 22, 0.5);
 }
+
+/* Featured Buyers */
+.buyer-card {
+    background-color: #fff;
+    transition: background-color 0.3s;
+}
+html.dark .buyer-card {
+    background-color: #2d3748;
+}
+
+.buyer-card-text {
+    color: #000000;
+    transition: background-color 0.3s;
+}
+
+html.dark .buyer-card-text {
+    color: #fff;
+    transition: background-color 0.3s;
+}

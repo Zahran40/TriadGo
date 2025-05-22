@@ -188,9 +188,9 @@
     </section>
 
     <section id="find-buyers" class="container mx-auto px-6 py-16 slide-in">
-        <h2 class="text-3xl font-bold text-blue-900 mb-6 text-center">Find International Buyers</h2>
+        <h2 class="text-3xl font-bold text-blue-900 mb-6 text-center">Find Buyers Respons</h2>
         <form action="" class="flex flex-col md:flex-row items-center max-w-2xl mx-auto">
-            <input type="text" name="" placeholder="Search for buyers or products..."
+            <input type="text" name="" placeholder="Search for buyers Respons..."
                 class="flex-grow px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 mr-4 mb-4 md:mb-0"
                 required />
             <button type="submit"
@@ -201,9 +201,9 @@
             </button>
         </form>
 
-        <!-- Featured Buyers -->
+        <!-- Respons Buyer Cards -->
         <div class="mt-12">
-            <h3 class="text-2xl font-bold text-blue-900 mb-6 text-center">Featured Buyers</h3>
+            <h3 class="text-2xl font-bold text-blue-900 mb-6 text-center">Respons Buyer</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div class="buyer-card shadow-md rounded-lg overflow-hidden hover:shadow-lg transition">
                     <div class="p-4">
@@ -215,13 +215,10 @@
                                 <p class="text-orange-500 text-sm">Indonesia</p>
                             </div>
                         </div>
-                        <p class="buyer-card-text mb-4">Looking for: Agricultural products, spices, and organic foods</p>
+                        <p class="buyer-card-text mb-4">I love Your All Product</p>
                         <div class="flex justify-between items-center">
                             <span class="text-sm text-gray-500">Last active: 2 days ago</span>
-                            <button
-                                class="bg-blue-700 hover:bg-blue-600 text-white text-sm py-1 px-3 rounded transition">
-                                Contact
-                            </button>
+                            
                         </div>
                     </div>
                 </div>
@@ -236,13 +233,10 @@
                                 <p class="text-orange-500 text-sm">Singapore</p>
                             </div>
                         </div>
-                        <p class="buyer-card-text mb-4">Seeking: Handicrafts, textiles, and home decor items</p>
+                        <p class="buyer-card-text mb-4">Your electronic product give me anxiety</p>
                         <div class="flex justify-between items-center">
                             <span class="text-sm text-gray-500">Last active: 1 day ago</span>
-                            <button
-                                class="bg-blue-700 hover:bg-blue-600 text-white text-sm py-1 px-3 rounded transition">
-                                Contact
-                            </button>
+                           
                         </div>
                     </div>
                 </div>
@@ -257,13 +251,10 @@
                                 <p class="text-orange-500 text-sm">Cambodia</p>
                             </div>
                         </div>
-                        <p class="buyer-card-text mb-4">Interested in: Electronics components and automotive parts</p>
+                        <p class="buyer-card-text mb-4">Your Product is the best in the world</p>
                         <div class="flex justify-between items-center">
                             <span class="text-sm text-gray-500">Last active: Today</span>
-                            <button
-                                class="bg-blue-700 hover:bg-blue-600 text-white text-sm py-1 px-3 rounded transition">
-                                Contact
-                            </button>
+                          
                         </div>
                     </div>
                 </div>
@@ -272,7 +263,7 @@
             <div class="text-center mt-10">
                 <button
                     class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-6 rounded-md transition pulse-on-hover inline-flex items-center">
-                    View All Buyers
+                    View All Respons
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />

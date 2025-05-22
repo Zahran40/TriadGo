@@ -289,7 +289,7 @@
                 TriadGO</p>
             <div class="flex flex-col sm:flex-row justify-center gap-4">
                 <button
-                    class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-8 rounded-md shadow-md transition pulse-on-hover">
+                    class="bg-orange-500 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-md shadow-md transition pulse-on-hover">
                     Create Export Profile
                 </button>
                 <button

@@ -26,10 +26,10 @@ class PageController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'email' => 'required|string|email|max:255|unique:users|regex:/^[^@]+@[^@]+\.[a-zA-Z]{2,}$/',
             'address' => 'nullable|string|max:255',
-            'phone' => 'nullable|string|max:15',
-            'password' => 'required|string|min:8|confirmed',
+            'phone' => 'nullable|string|min:10|max:15|regex:/^[0-9]+$/',
+            'password' => 'required|string|min:8|confirmed|',
             'role' => 'required|string|in:ekspor,impor', 
         ]);
 

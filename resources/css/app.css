@@ -473,7 +473,7 @@ label {
     box-shadow: 0 0 15px rgba(249, 115, 22, 0.5);
 }
 
-/* Featured Buyers */
+/* Buyer Response */
 .buyer-card {
     background-color: #fff;
     transition: background-color 0.3s;
@@ -513,4 +513,16 @@ html.dark .export-card {
     background-color: #2d3748;
 }
 
-/* Contoh */
+/* Navbar Background */
+.navbar-background {
+    background-color: #fff;
+    transition: background-color 0.3s;
+}
+html.dark .navbar-background {
+    background-color: #2d3748;
+}
+
+.navbar-background-text {
+    color: #000000;
+    transition: background-color 0.3s;
+}

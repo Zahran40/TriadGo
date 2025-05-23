@@ -68,7 +68,6 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="M4 8h16M4 16h16" />
                     </svg>
                 </button>
-                <!-- Tambahkan di dalam <nav> atau di tempat yang diinginkan -->
                 <form action="{{ route('logout') }}" method="POST" style="display:inline;">
                     @csrf
                     <button type="submit"
@@ -81,7 +80,19 @@
         </div>
     </header>
 
-
+    <!-- Sidebar untuk Mobile View -->
+    <div id="mobileSidebar" class="navbar-background fixed inset-0 z-50 bg-opacity-40 hidden">
+        <div class="navbar-background fixed top-0 right-0 w-64 h-full shadow-lg p-6 flex flex-col">
+            <button id="closeSidebar" class="self-end mb-8 text-2xl text-blue-700">&times;</button>
+            @auth
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit"
+                        class="w-full mt-3 px-4 py-2 bg-red-500 text-white rounded-md font-semibold hover:bg-red-600 transition">Logout</button>
+                </form>
+            @endauth
+        </div>
+    </div>
 
     <section class="flex-grow container mx-auto px-6 md:px-12 py-16 flex flex-col md:flex-row items-center">
         <div class="md:w-1/2 text-center md:text-left">
@@ -105,8 +116,7 @@
             </div>
         </div>
         <div class="md:w-1/2 mt-10 md:mt-0">
-            <img src="eksportir.png"
-                alt="Export Illustration" class="floating-img w-full max-w-lg" />
+            <img src="eksportir.png" alt="Export Illustration" class="floating-img w-full max-w-lg" />
         </div>
     </section>
 
@@ -218,7 +228,7 @@
                         <p class="buyer-card-text mb-4">Plz sell more Product</p>
                         <div class="flex justify-between items-center">
                             <span class="text-sm text-gray-500">Last active: 2 days ago</span>
-                          
+
                         </div>
                     </div>
                 </div>
@@ -236,7 +246,7 @@
                         <p class="buyer-card-text mb-4">Your Handyman Servicesis best</p>
                         <div class="flex justify-between items-center">
                             <span class="text-sm text-gray-500">Last active: 1 day ago</span>
-                          
+
                         </div>
                     </div>
                 </div>
@@ -254,7 +264,7 @@
                         <p class="buyer-card-text mb-4">I love All your Product</p>
                         <div class="flex justify-between items-center">
                             <span class="text-sm text-gray-500">Last active: Today</span>
-                           
+
                         </div>
                     </div>
                 </div>
@@ -398,6 +408,36 @@
             }
             window.addEventListener('scroll', checkSlide);
             checkSlide();
+        });
+
+        // Sidebar mobile
+        const sidebar = document.getElementById('mobileSidebar');
+        const openSidebarBtn = document.querySelector('button.md\\:hidden[aria-label="Open Menu"]');
+        const closeSidebarBtn = document.getElementById('closeSidebar');
+
+        openSidebarBtn.addEventListener('click', function () {
+            sidebar.classList.remove('hidden');
+        });
+
+        closeSidebarBtn.addEventListener('click', function () {
+            sidebar.classList.add('hidden');
+        });
+
+        // Tutup sidebar jika klik di luar sidebar
+        sidebar.addEventListener('click', function (e) {
+            if (e.target === sidebar) {
+                sidebar.classList.add('hidden');
+            }
+        });
+
+        // Scroll to section dari sidebar
+        sidebar.querySelectorAll('a[href^="#"]').forEach(link => {
+            link.addEventListener('click', function (event) {
+                event.preventDefault();
+                sidebar.classList.add('hidden');
+                const targetId = this.getAttribute('href').substring(1);
+                scrollToSectionWithSlide(targetId);
+            });
         });
     </script>
 </body>

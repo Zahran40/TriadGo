@@ -94,7 +94,7 @@
                 you need to connect with international buyers and streamline your export operations.
             </p>
             <div class="flex flex-col sm:flex-row gap-4">
-                <a href="#export-services"
+                <a href="{{ route('formeksportir') }}"
                     class="inline-block bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-8 rounded-md shadow-md transition pulse-on-hover glow-on-hover">
                     Upload Your Products
                 </a>

@@ -118,5 +118,20 @@ class PageController extends Controller
     return view('eksportir');
 }
 
+public function formeksportir()
+{
+    if (!Auth::check()) {
+        return redirect('/')->with('error', 'Anda harus login terlebih dahulu.');
+    }
+    if (Auth::user()->role === 'impor') {
+        return redirect()->route('importir')->with('error', 'Anda tidak bisa mengakses halaman eksportir.');
+    }
+    if (Auth::user()->role !== 'ekspor') {
+        return redirect('/')->with('error', 'Anda tidak bisa mengakses halaman tersebut.');
+    }
+    return view('formeksportir');
+
+
+}
 
 }

@@ -1,3 +1,19 @@
+@php
+    $country = Auth::user()->country ?? '';
+    $phone = Auth::user()->phone ?? '';
+    // Mapping country to country code
+    $countryCodes = [
+        'Indonesia' => '+62',
+        'Malaysia' => '+60',
+        'Singapore' => '+65',
+        'Thailand' => '+66',
+        'Vietnam' => '+84',
+        // Tambahkan negara lain sesuai kebutuhan
+    ];
+    $countryCode = $countryCodes[$country] ?? '';
+    $displayPhone = $phone ? ($countryCode . $phone) : '-';
+@endphp
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -21,11 +37,11 @@
             <label>Email</label>
             <p>{{ Auth::user()->email }}</p>
             <label>Phone</label>
-            <p>{{ Auth::user()->phone ?? '-' }}</p>
+            <p>{{ $displayPhone }}</p>
             <label>Country</label>
-            <p>{{ Auth::user()->country ?? '-' }}</p>
+            <p>{{ $country ?: '-' }}</p>
         </div>
-        <a href="{{ route('profile.edit') }}">
+        <a href="#">
             <button class="edit-btn">Edit Profile</button>
         </a>
     </div>

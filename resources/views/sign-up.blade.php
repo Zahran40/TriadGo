@@ -37,7 +37,7 @@
         </div>
         <div class="form-group">
             <label for="negara">Negara</label>
-            <select id="address" name="address" required>
+            <select id="country" name="country" required>
                 <option value="">Pilih negara</option>
                 <option value="Indonesia" data-code="+62">Indonesia</option>
                 <option value="Malaysia" data-code="+60">Malaysia</option>
@@ -87,7 +87,7 @@
     </form>
     <script>
         // Kode negara untuk nomor hp
-        const negaraSelect = document.getElementById('address');
+        const negaraSelect = document.getElementById('country');
         const kodeNegaraInput = document.getElementById('kodeNegara');
         const nohpInput = document.getElementById('phone');
 

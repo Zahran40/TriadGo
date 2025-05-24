@@ -17,6 +17,7 @@
     ];
     $countryCode = $countryCodes[$country] ?? '';
     $displayPhone = $phone ? ($countryCode . $phone) : '-';
+    $role = Auth::user()->role ?? 'User';
 @endphp
 
 <!DOCTYPE html>
@@ -48,7 +49,7 @@
             <p>{{ $country ?: '-' }}</p>
 
             <label>Role</label>
-            {{ Auth::user()->role ?? 'User' }}
+            <p>{{ $role }}</p>
 
         </div>
         <a href="#">

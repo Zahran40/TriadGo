@@ -32,14 +32,19 @@
         <img src="{{ Auth::user()->avatar_url ?? 'https://randomuser.me/api/portraits/men/32.jpg' }}" alt="User Avatar"
             class="avatar">
         <div class="profile-name">{{ Auth::user()->name }}</div>
-        <div class="profile-role">{{ Auth::user()->role ?? 'User' }}</div>
-        <div class="profile-info">
+        <div class="profile-info"><br>
             <label>Email</label>
             <p>{{ Auth::user()->email }}</p>
+
             <label>Phone</label>
             <p>{{ $displayPhone }}</p>
+
             <label>Country</label>
             <p>{{ $country ?: '-' }}</p>
+
+            <label>Role</label>
+            {{ Auth::user()->role ?? 'User' }}
+
         </div>
         <a href="#">
             <button class="edit-btn">Edit Profile</button>

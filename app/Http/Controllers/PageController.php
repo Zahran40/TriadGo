@@ -4,13 +4,23 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
-use Illuminate\Http\Request;    
+use Illuminate\Http\Request;
 
 class PageController extends Controller
 {
     public function home()
     {
         return view('homepage');
+    }
+
+    public function userprofile()
+    {
+        return view('user-profile');
+    }
+
+    public function edit()
+    {
+        return view('profile-edit');
     }
 
     public function signup()
@@ -22,7 +32,7 @@ class PageController extends Controller
     {
         return view('login');
     }
-        public function store(Request $request)
+    public function store(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:255',
@@ -30,7 +40,7 @@ class PageController extends Controller
             'address' => 'nullable|string|max:255',
             'phone' => 'nullable|string|min:10|max:15|regex:/^[0-9]+$/',
             'password' => 'required|string|min:8|confirmed|',
-            'role' => 'required|string|in:ekspor,impor', 
+            'role' => 'required|string|in:ekspor,impor',
         ]);
 
         // Create a new user instance
@@ -40,7 +50,7 @@ class PageController extends Controller
         $user->address = $request->address;
         $user->phone = $request->phone;
         $user->password = bcrypt($request->password);
-        $user->role = $request->role; 
+        $user->role = $request->role;
 
         // Save the user to the database
         $user->save();
@@ -48,13 +58,13 @@ class PageController extends Controller
         return redirect()->route('login')->with('success', 'User registered successfully.');
     }
     public function authenticate(Request $request)
-{
-    $credentials = $request->validate([
-        'email' => ['required', 'email'],
-        'password' => ['required'],
-    ]);
+    {
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
 
-    if (Auth::attempt($credentials)) {
+        if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
             $role = Auth::user()->role;
@@ -72,66 +82,66 @@ class PageController extends Controller
             'email' => 'Email atau password salah.',
         ]);
 
-    
-}
+
+    }
 
 
-      public function logout(Request $request)
-{
-    Auth::logout();
-    $request->session()->invalidate();
-    $request->session()->regenerateToken();
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
-    return redirect('/')->with('success', 'Anda telah berhasil keluar.');
+        return redirect('/')->with('success', 'Anda telah berhasil keluar.');
 
-}
+    }
 
     //Halaman untuk Importir
     public function homeimportir()
-{
-    if (!Auth::check()) {
-        return redirect('/')->with('error', 'Anda harus login terlebih dahulu.');
+    {
+        if (!Auth::check()) {
+            return redirect('/')->with('error', 'Anda harus login terlebih dahulu.');
+        }
+        if (Auth::user()->role === 'ekspor') {
+            return redirect()->route('ekspor')->with('error', 'Anda tidak bisa mengakses halaman importir.');
+        }
+        if (Auth::user()->role !== 'impor') {
+            return redirect('/')->with('error', 'Anda tidak bisa mengakses halaman tersebut.');
+        }
+        return view('importir');
     }
-    if (Auth::user()->role === 'ekspor') {
-        return redirect()->route('ekspor')->with('error', 'Anda tidak bisa mengakses halaman importir.');
-    }
-    if (Auth::user()->role !== 'impor') {
-        return redirect('/')->with('error', 'Anda tidak bisa mengakses halaman tersebut.');
-    }
-    return view('importir');
-}
 
 
 
     //Halaman untuk Eksportir
     public function homeeksportir()
-{
-    if (!Auth::check()) {
-        return redirect('/')->with('error', 'Anda harus login terlebih dahulu.');
+    {
+        if (!Auth::check()) {
+            return redirect('/')->with('error', 'Anda harus login terlebih dahulu.');
+        }
+        if (Auth::user()->role === 'impor') {
+            return redirect()->route('importir')->with('error', 'Anda tidak bisa mengakses halaman eksportir.');
+        }
+        if (Auth::user()->role !== 'ekspor') {
+            return redirect('/')->with('error', 'Anda tidak bisa mengakses halaman tersebut.');
+        }
+        return view('eksportir');
     }
-    if (Auth::user()->role === 'impor') {
-        return redirect()->route('importir')->with('error', 'Anda tidak bisa mengakses halaman eksportir.');
-    }
-    if (Auth::user()->role !== 'ekspor') {
-        return redirect('/')->with('error', 'Anda tidak bisa mengakses halaman tersebut.');
-    }
-    return view('eksportir');
-}
 
-public function formeksportir()
-{
-    if (!Auth::check()) {
-        return redirect('/')->with('error', 'Anda harus login terlebih dahulu.');
-    }
-    if (Auth::user()->role === 'impor') {
-        return redirect()->route('importir')->with('error', 'Anda tidak bisa mengakses halaman eksportir.');
-    }
-    if (Auth::user()->role !== 'ekspor') {
-        return redirect('/')->with('error', 'Anda tidak bisa mengakses halaman tersebut.');
-    }
-    return view('formeksportir');
+    public function formeksportir()
+    {
+        if (!Auth::check()) {
+            return redirect('/')->with('error', 'Anda harus login terlebih dahulu.');
+        }
+        if (Auth::user()->role === 'impor') {
+            return redirect()->route('importir')->with('error', 'Anda tidak bisa mengakses halaman eksportir.');
+        }
+        if (Auth::user()->role !== 'ekspor') {
+            return redirect('/')->with('error', 'Anda tidak bisa mengakses halaman tersebut.');
+        }
+        return view('formeksportir');
 
 
-}
+    }
 
 }

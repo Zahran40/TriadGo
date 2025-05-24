@@ -43,7 +43,7 @@
             <nav class="hidden md:flex items-center space-x-6 text-blue-700 font-semibold">
                 <a href="#" class="hover:text-orange-500 transition nav-gradient-move">Request</a>
                 <a href="#" class="hover:text-orange-500 transition nav-gradient-move">Transactions</a>
-                <a href="#" class="hover:text-orange-500 transition nav-gradient-move">Account
+                <a href="{{ route('userprofile') }}" class="hover:text-orange-500 transition nav-gradient-move">Account
                     <img src="https://cdn-icons-png.freepik.com/512/8345/8345339.png" alt=""
                         style="width: 40px; height: 40px;" class="inline-block ml-2" />
                 </a>

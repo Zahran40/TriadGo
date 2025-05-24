@@ -74,7 +74,7 @@
                 </svg>
             </button>
             <!-- Tambahkan di dalam <nav> atau di tempat yang diinginkan -->
-            <form action="{{ route('logout') }}" method="POST" style="display:inline;">
+            <form action="{{ route('logout') }}" method="POST" class="hidden md:inline">
                 @csrf
                 <button type="submit"
                     class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition"
@@ -85,6 +85,20 @@
         </div>
     </div>
 </header>
+
+<!-- Sidebar untuk Mobile View -->
+<div id="mobileSidebar" class="navbar-background fixed inset-0 z-50 bg-opacity-40 hidden">
+    <div class="navbar-background fixed top-0 right-0 w-64 h-full shadow-lg p-6 flex flex-col">
+        <button id="closeSidebar" class="self-end mb-8 text-2xl text-blue-700">&times;</button>
+        @auth
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit"
+                    class="w-full mt-3 px-4 py-2 bg-red-500 text-white rounded-md font-semibold hover:bg-red-600 transition">Logout</button>
+            </form>
+        @endauth
+    </div>
+</div>
 
 <section class="flex-grow container mx-auto px-6 md:px-12 py-16 flex flex-col md:flex-row items-center">
     <div class="md:w-1/2 text-center md:text-left">
@@ -243,8 +257,7 @@
         }
         updateDarkModeSwitch();
     });
-</script>
-<script>
+
     // Scroll to section with slide
     function scrollToSectionWithSlide(sectionId) {
         const section = document.getElementById(sectionId);
@@ -284,6 +297,36 @@
         }
         window.addEventListener('scroll', checkSlide);
         checkSlide();
+    });
+
+    // Sidebar mobile
+    const sidebar = document.getElementById('mobileSidebar');
+    const openSidebarBtn = document.querySelector('button.md\\:hidden[aria-label="Open Menu"]');
+    const closeSidebarBtn = document.getElementById('closeSidebar');
+
+    openSidebarBtn.addEventListener('click', function () {
+        sidebar.classList.remove('hidden');
+    });
+
+    closeSidebarBtn.addEventListener('click', function () {
+        sidebar.classList.add('hidden');
+    });
+
+    // Tutup sidebar jika klik di luar sidebar
+    sidebar.addEventListener('click', function (e) {
+        if (e.target === sidebar) {
+            sidebar.classList.add('hidden');
+        }
+    });
+
+    // Scroll to section dari sidebar
+    sidebar.querySelectorAll('a[href^="#"]').forEach(link => {
+        link.addEventListener('click', function (event) {
+            event.preventDefault();
+            sidebar.classList.add('hidden');
+            const targetId = this.getAttribute('href').substring(1);
+            scrollToSectionWithSlide(targetId);
+        });
     });
 </script>
 </body>

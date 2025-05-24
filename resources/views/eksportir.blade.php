@@ -68,7 +68,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="M4 8h16M4 16h16" />
                     </svg>
                 </button>
-                <form action="{{ route('logout') }}" method="POST" style="display:inline;">
+                <form action="{{ route('logout') }}" method="POST" class="hidden md:inline">
                     @csrf
                     <button type="submit"
                         class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition"

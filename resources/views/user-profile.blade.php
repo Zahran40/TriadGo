@@ -1,14 +1,19 @@
 @php
     $country = Auth::user()->country ?? '';
     $phone = Auth::user()->phone ?? '';
-    // Mapping country to country code
+    
     $countryCodes = [
         'Indonesia' => '+62',
         'Malaysia' => '+60',
         'Singapore' => '+65',
         'Thailand' => '+66',
         'Vietnam' => '+84',
-        // Tambahkan negara lain sesuai kebutuhan
+        'Brunei' => '+673',
+        'Philippines' => '+63',
+        'Cambodia' => '+855',
+        'Laos' => '+856',
+        'Myanmar' => '+95',
+        'Timor-Leste' => '+670'
     ];
     $countryCode = $countryCodes[$country] ?? '';
     $displayPhone = $phone ? ($countryCode . $phone) : '-';

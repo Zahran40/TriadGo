@@ -15,15 +15,15 @@
 
     <form class="signup-container z-10" id="signupForm" action="{{ route('login.authenticate') }}" method='POST'>
         @csrf
-           @if ($errors->any())
-        <div style="color:red; margin-bottom:10px;">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+        @if ($errors->any())
+            <div style="color:red; margin-bottom:10px;">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <div class="signup-title">Login</div>
         <div class="signup-subtitle">Selamat Datang Kembali</div>
         <div class="form-group">
@@ -32,11 +32,46 @@
         </div>
         <div class="form-group">
             <label for="password">Password</label>
-            <input type="password" id="password" name="password" required autocomplete="off" placeholder="Password">
+            <div style="position:relative;">
+                <input type="password" id="password" name="password" required autocomplete="off" placeholder="Password"
+                    style="padding-right:40px;">
+                <span id="togglePassword"
+                    style="position:absolute; right:10px; top:50%; transform:translateY(-50%); cursor:pointer; width:28px; height:28px; display:flex; align-items:center;">
+                    <!-- Mata terbuka -->
+                    <svg id="eyeOpen" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor" style="display:none;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M1.5 12s4-7.5 10.5-7.5S22.5 12 22.5 12s-4 7.5-10.5 7.5S1.5 12 1.5 12z" />
+                        <circle cx="12" cy="12" r="3.5" stroke="currentColor" stroke-width="2" fill="none" />
+                    </svg>
+                    <!-- Mata silang -->
+                    <svg id="eyeClosed" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor" style="display:block;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M1.5 12s4-7.5 10.5-7.5S22.5 12 22.5 12s-4 7.5-10.5 7.5S1.5 12 1.5 12z" />
+                        <circle cx="12" cy="12" r="3.5" stroke="currentColor" stroke-width="2" fill="none" />
+                        <line x1="5" y1="19" x2="19" y2="5" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                </span>
+            </div>
         </div>
-        <button type="submit" class="btn-gradient-move signup-btn" id="signupBtn" >Login</button>
+        <button type="submit" class="btn-gradient-move signup-btn" id="signupBtn">Login</button>
         <a href="{{ route('signup') }}" class="login-link">Belum punya akun? Daftar</a>
     </form>
 </body>
+
+<script>
+    const passwordInput = document.getElementById('password');
+    const togglePassword = document.getElementById('togglePassword');
+    const eyeOpen = document.getElementById('eyeOpen');
+    const eyeClosed = document.getElementById('eyeClosed');
+
+    togglePassword.addEventListener('click', function () {
+        const isHidden = passwordInput.type === 'password';
+        passwordInput.type = isHidden ? 'text' : 'password';
+        eyeOpen.style.display = isHidden ? 'block' : 'none';
+        eyeClosed.style.display = isHidden ? 'none' : 'block';
+    });
+</script>
 
 </html>

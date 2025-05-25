@@ -3,17 +3,24 @@
     min-height: 100vh;
     margin: 0;
     font-family: 'Inter', Arial, sans-serif;
-    background: linear-gradient(120deg, #FAF9F9 0%, #186094 100%);
+    background: linear-gradient(135deg, #003355 0%, #186094 50%, #EEA133 100%);
     position: relative;
     overflow-x: hidden;
+}
+
+.bg-gradient-move {
+    background: linear-gradient(90deg, #186094, #EEA133, #186094);
+    background-size: 200% 200%;
+    color: #fff;
+    border: none;
+    animation: gradientMove 3s ease-in-out infinite alternate;
+    transition: transform 0.2s ease-in-out;
 }
 
 /* Home Page */
 .home-bg {
     min-height: 100vh;
     background: #FAF9F9;
-    /* warna solid dari palet */
-    /* Atau jika ingin gradient: */
     /* background: linear-gradient(120deg, #003355 0%, #186094 100%); */
 }
 
@@ -45,21 +52,35 @@ textarea,
 select {
     width: 100%;
     padding: 0.7rem 0.9rem;
-    border: 1.5px solid #186094;
+    border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 8px;
     font-size: 1rem;
-    background: #FAF9F9;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     color: #003355;
-    transition: border-color 0.3s, background-color 0.3s, color 0.3s, box-shadow 0.2s;
+    transition: all 0.3s ease;
     box-sizing: border-box;
 }
 
 input:focus,
 textarea:focus,
 select:focus {
-    border-color: #EEA133;
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(238, 161, 51, 0.5);
     outline: none;
-    box-shadow: 0 0 0 2px #EEA13333;
+    box-shadow: 0 0 15px rgba(238, 161, 51, 0.15);
+}
+
+input::placeholder {
+    color: rgba(0, 51, 85, 0.6);
+}
+
+input:hover,
+textarea:hover,
+select:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.4);
 }
 
 /* Header styles */
@@ -161,13 +182,15 @@ html.dark .text-blue-700 {
 .signup-container {
     position: relative;
     z-index: 1;
-    background: #fff;
-    border-radius: 20px;
-    box-shadow: 0 8px 32px rgba(0, 51, 85, 0.13);
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 51, 85, 0.2);
     padding: 2.5rem 2rem 2rem 2rem;
     max-width: 410px;
     width: 100%;
-    border: 2.5px solid #186094;
+    border: 1px solid rgba(255, 255, 255, 0.18);
     margin: 48px auto;
 }
 
@@ -199,8 +222,9 @@ html.dark .text-blue-700 {
 label {
     font-weight: 600;
     color: #003355;
-    margin-bottom: 0.1rem;
+    margin-bottom: 0.3rem;
     font-size: 1rem;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.1);
 }
 
 .role-group {

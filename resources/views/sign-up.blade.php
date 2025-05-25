@@ -118,9 +118,17 @@
         </div>
         <div class="form-group">
             <label>Role</label>
-            <div class="role-group">
-                <label><input type="radio" name="role" value="ekspor" required> Ekspor</label>
-                <label><input type="radio" name="role" value="impor" required> Impor</label>
+            <div class="role-group" style="display:flex; gap:20px;">
+                <label class="custom-checkbox">
+                    <input type="radio" name="role" value="ekspor" required>
+                    <span class="checkmark"></span>
+                    Ekspor
+                </label>
+                <label class="custom-checkbox">
+                    <input type="radio" name="role" value="impor" required>
+                    <span class="checkmark"></span>
+                    Impor
+                </label>
             </div>
         </div>
         <button type="submit" class="btn-gradient-move signup-btn" id="signupBtn" disabled>Daftar</button>
@@ -163,7 +171,7 @@
         const confirm = document.getElementById('password_confirmation');
         const btn = document.getElementById('signupBtn');
         const error = document.getElementById('password-error');
-        
+
         function validatePassword() {
             let isValid = true;
 

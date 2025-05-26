@@ -70,14 +70,14 @@
                     style="padding-right:40px;">
                 <span id="togglePassword"
                     style="position:absolute; right:10px; top:50%; transform:translateY(-50%); cursor:pointer; width:28px; height:28px; display:flex; align-items:center;">
-                    <!-- Mata terbuka -->
+                    <!-- Show Password -->
                     <svg id="eyeOpen" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
                         viewBox="0 0 24 24" stroke="currentColor" style="display:none;">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M1.5 12s4-7.5 10.5-7.5S22.5 12 22.5 12s-4 7.5-10.5 7.5S1.5 12 1.5 12z" />
                         <circle cx="12" cy="12" r="3.5" stroke="currentColor" stroke-width="2" fill="none" />
                     </svg>
-                    <!-- Mata silang -->
+                    <!-- Hide Password -->
                     <svg id="eyeClosed" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
                         viewBox="0 0 24 24" stroke="currentColor" style="display:block;">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -97,14 +97,14 @@
                     autocomplete="off" placeholder="Ulangi password" style="padding-right:40px;">
                 <span id="toggleConfirmPassword"
                     style="position:absolute; right:10px; top:50%; transform:translateY(-50%); cursor:pointer; width:28px; height:28px; display:flex; align-items:center;">
-                    <!-- Mata terbuka -->
+                    <!-- Show Password -->
                     <svg id="eyeOpenConfirm" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
                         viewBox="0 0 24 24" stroke="currentColor" style="display:none;">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M1.5 12s4-7.5 10.5-7.5S22.5 12 22.5 12s-4 7.5-10.5 7.5S1.5 12 1.5 12z" />
                         <circle cx="12" cy="12" r="3.5" stroke="currentColor" stroke-width="2" fill="none" />
                     </svg>
-                    <!-- Mata silang -->
+                    <!-- Hide Password -->
                     <svg id="eyeClosedConfirm" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
                         viewBox="0 0 24 24" stroke="currentColor" style="display:block;">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -202,7 +202,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/intlTelInput.min.js"></script>
     <script>
-        // Daftar kode negara ASEAN
         const aseanCountries = [
             "id", // Indonesia
             "my", // Malaysia
@@ -226,7 +225,7 @@
             formatOnDisplay: false
         });
 
-        // Set kode negara di input readonly setiap kali negara berubah
+        // Mengganti kode negara sesuai dengan bendera yang dipilih
         function updateCountryCode() {
             const dialCode = iti.getSelectedCountryData().dialCode;
             countryCodeInput.value = '+' + dialCode;

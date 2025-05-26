@@ -5,6 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sign Up</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/css/intlTelInput.min.css" />
     @vite('resources/css/app.css')
 </head>
 
@@ -28,7 +29,7 @@
         <div class="signup-title">Sign Up</div>
         <div class="signup-subtitle">Bergabunglah dengan TriadGO untuk ekspor & impor lebih mudah!</div>
         <div class="form-group">
-            <label for="nama">Nama</label>
+            <label for="name">Nama</label>
             <input type="text" id="name" name="name" required autocomplete="off" placeholder="Nama lengkap">
         </div>
         <div class="form-group">
@@ -36,31 +37,30 @@
             <input type="email" id="email" name="email" required autocomplete="off" placeholder="Alamat email">
         </div>
         <div class="form-group">
-            <label for="negara">Negara</label>
+            <label for="country">Negara</label>
             <select id="country" name="country" required>
                 <option value="">Pilih negara</option>
-                <option value="Indonesia" data-code="+62">Indonesia</option>
-                <option value="Malaysia" data-code="+60">Malaysia</option>
-                <option value="Singapore" data-code="+65">Singapore</option>
-                <option value="Thailand" data-code="+66">Thailand</option>
-                <option value="Vietnam" data-code="+84">Vietnam</option>
-                <option value="Brunei" data-code="+673">Brunei</option>
-                <option value="Philippines" data-code="+63">Philippines</option>
-                <option value="Cambodia" data-code="+855">Cambodia</option>
-                <option value="Laos" data-code="+856">Laos</option>
-                <option value="Myanmar" data-code="+95">Myanmar</option>
-                <option value="Timor-Leste" data-code="+670">Timor-Leste</option>
+                <option value="Indonesia">Indonesia</option>
+                <option value="Malaysia">Malaysia</option>
+                <option value="Singapore">Singapore</option>
+                <option value="Thailand">Thailand</option>
+                <option value="Vietnam">Vietnam</option>
+                <option value="Brunei">Brunei</option>
+                <option value="Philippines">Philippines</option>
+                <option value="Cambodia">Cambodia</option>
+                <option value="Laos">Laos</option>
+                <option value="Myanmar">Myanmar</option>
             </select>
         </div>
-        <div class="form-group" id='phone' name='phone'>
-            <label for="nohp">No. HP</label>
-            <div class="flex">
-                <input type="text" id="kodeNegara" name="kodeNegara"
-                    class="w-20 px-2 py-2 rounded-l-lg border border-[#186094] bg-[#FAF9F9] text-[#003355] font-semibold text-center"
-                    value="" readonly tabindex="-1">
-                <input type="text" id="phone" name="phone" required autocomplete="off" placeholder="Nomor HP"
-                    class="flex-1 px-4 py-2 rounded-r-lg border-t border-b border-r border-[#186094] bg-[#FAF9F9] text-[#003355] focus:outline-none focus:border-[#EEA133] transition"
-                    pattern="[0-9]+" inputmode="numeric">
+        <div class="form-group">
+            <label for="phone">No. HP</label>
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <!-- Kode negara (readonly, otomatis) -->
+                <input type="text" id="country_code" name="country_code" readonly
+                    style="width: 80px; text-align: center; border: 1px solid #ccc;">
+                <!-- Input nomor HP (tanpa kode negara) -->
+                <input id="phone" name="phone" type="tel" required autocomplete="off" placeholder="Nomor HP"
+                    style="flex:1;">
             </div>
         </div>
         <div class="form-group">
@@ -135,37 +135,6 @@
         <a href="{{ route('login') }}" class="login-link">Sudah punya akun? Login</a>
     </form>
     <script>
-        // Kode negara untuk nomor hp
-        const negaraSelect = document.getElementById('country');
-        const kodeNegaraInput = document.getElementById('kodeNegara');
-        const nohpInput = document.getElementById('phone');
-
-        const kodeNegaraMap = {
-            "Indonesia": "+62",
-            "Malaysia": "+60",
-            "Singapore": "+65",
-            "Thailand": "+66",
-            "Vietnam": "+84",
-            "Brunei": "+673",
-            "Philippines": "+63",
-            "Cambodia": "+855",
-            "Laos": "+856",
-            "Myanmar": "+95",
-            "Timor-Leste": "+670"
-        };
-
-        negaraSelect.addEventListener('change', function () {
-            const kode = kodeNegaraMap[negaraSelect.value] || "";
-            kodeNegaraInput.value = kode;
-            nohpInput.value = "";
-            nohpInput.disabled = !kode;
-        });
-
-        // Khusus angka di field nomor hp
-        nohpInput.addEventListener('input', function () {
-            this.value = this.value.replace(/[^0-9]/g, '');
-        });
-
         // Validasi password + tidak bisa submit jika password tidak sama
         const password = document.getElementById('password');
         const confirm = document.getElementById('password_confirmation');
@@ -202,8 +171,6 @@
         confirm.addEventListener('input', validatePassword);
         window.addEventListener('DOMContentLoaded', function () {
             validatePassword();
-            kodeNegaraInput.value = "";
-            nohpInput.disabled = true;
         });
 
         // Toggle Password
@@ -230,6 +197,56 @@
             confirmPasswordInput.type = isHidden ? 'text' : 'password';
             eyeOpenConfirm.style.display = isHidden ? 'block' : 'none';
             eyeClosedConfirm.style.display = isHidden ? 'none' : 'block';
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/intlTelInput.min.js"></script>
+    <script>
+        // Daftar kode negara ASEAN
+        const aseanCountries = [
+            "id", // Indonesia
+            "my", // Malaysia
+            "sg", // Singapore
+            "th", // Thailand
+            "vn", // Vietnam
+            "bn", // Brunei
+            "ph", // Philippines
+            "kh", // Cambodia
+            "la", // Laos
+            "mm"  // Myanmar
+        ];
+
+        const input = document.querySelector("#phone");
+        const countryCodeInput = document.getElementById('country_code');
+        const iti = window.intlTelInput(input, {
+            initialCountry: "id",
+            onlyCountries: aseanCountries,
+            nationalMode: true, // agar input hanya nomor lokal
+            utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/utils.js",
+            formatOnDisplay: false
+        });
+
+        // Set kode negara di input readonly setiap kali negara berubah
+        function updateCountryCode() {
+            const dialCode = iti.getSelectedCountryData().dialCode;
+            countryCodeInput.value = '+' + dialCode;
+        }
+
+        input.addEventListener('countrychange', updateCountryCode);
+        window.addEventListener('DOMContentLoaded', updateCountryCode);
+
+        // Validasi dan submit
+        document.getElementById('signupForm').addEventListener('submit', function (e) {
+            if (!iti.isValidNumber()) {
+                e.preventDefault();
+                alert('Nomor HP tidak valid!');
+                input.focus();
+                return false;
+            }
+            // Set kode negara (untuk jaga-jaga jika user submit tanpa ganti negara)
+            updateCountryCode();
+            // Input nomor hp hanya nomor lokal (tanpa kode negara)
+            input.value = iti.getNumber('national').replace(/\D/g, '');
         });
     </script>
 </body>

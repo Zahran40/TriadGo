@@ -243,7 +243,7 @@
                                 <p class="text-orange-500 text-sm">Singapore</p>
                             </div>
                         </div>
-                        <p class="buyer-card-text mb-4">Your Handyman Servicesis best</p>
+                        <p class="buyer-card-text mb-4">Your Handyman Services is best</p>
                         <div class="flex justify-between items-center">
                             <span class="text-sm text-gray-500">Last active: 1 day ago</span>
 
@@ -301,7 +301,7 @@
         </div>
     </section>
 
-    <footer class="bg-blue-900 text-blue-100 py-6 mt-auto">
+    <footer class="bg-blue-800 text-blue-100 py-6 mt-auto">
         <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
             <p>© 2025 TriadGO. All rights reserved.</p>
             <div class="space-x-4 mt-4 md:mt-0">

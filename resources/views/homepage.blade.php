@@ -139,7 +139,8 @@
         <div class="container mx-auto px-6 md:px-12">
             <h3 class="text-3xl font-bold text-blue-900 mb-12 text-center">Our Services</h3>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-6xl mx-auto">
-                <div class="export-card hover:border-orange-500 border-2 border-transparent bg-blue-50 p-8 rounded-lg shadow hover:shadow-lg transition">
+                <div
+                    class="export-card hover:border-orange-500 border-2 border-transparent bg-blue-50 p-8 rounded-lg shadow hover:shadow-lg transition">
                     <div class="text-orange-500 mb-4">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto md:mx-0 wiggle" fill="none"
                             viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -153,7 +154,8 @@
                         terintegrasi.
                     </p>
                 </div>
-                <div class="export-card hover:border-orange-500 border-2 border-transparent bg-blue-50 p-8 rounded-lg shadow hover:shadow-lg transition">
+                <div
+                    class="export-card hover:border-orange-500 border-2 border-transparent bg-blue-50 p-8 rounded-lg shadow hover:shadow-lg transition">
                     <div class="text-orange-500 mb-4">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto md:mx-0 wiggle" fill="none"
                             viewBox="5 0 24 24" stroke="currentColor" stroke-width="2">
@@ -169,7 +171,8 @@
                         Membantu proses bea cukai Anda agar berjalan lancar dan sesuai dengan regulasi internasional.
                     </p>
                 </div>
-                <div class="export-card hover:border-orange-500 border-2 border-transparent bg-blue-50 p-8 rounded-lg shadow hover:shadow-lg transition">
+                <div
+                    class="export-card hover:border-orange-500 border-2 border-transparent bg-blue-50 p-8 rounded-lg shadow hover:shadow-lg transition">
                     <div class="text-orange-500 mb-4">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto md:mx-0 wiggle" fill="none"
                             viewBox="0 -5 24 24" stroke="currentColor" stroke-width="2">
@@ -387,6 +390,21 @@
                 const targetId = this.getAttribute('href').substring(1);
                 scrollToSectionWithSlide(targetId);
             });
+        });
+
+        // Validasi Contact Us Form
+        document.querySelector('form').addEventListener('submit', function (event) {
+            const name = document.querySelector('input[name="name"]').value.trim();
+            const email = document.querySelector('input[name="email"]').value.trim();
+            const message = document.querySelector('textarea[name="message"]').value.trim();
+
+            if (!name || !email || !message) {
+                event.preventDefault();
+                alert('Please fill out all fields before submitting.');
+            } else if (!/\S+@\S+\.\S+/.test(email)) {
+                event.preventDefault();
+                alert('Please enter a valid email address.');
+            }
         });
     </script>
 

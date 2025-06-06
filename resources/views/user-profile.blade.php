@@ -30,7 +30,7 @@
     @vite('resources/css/app.css')
 </head>
 
-<body>
+<body class="auth-bg">
     <div class="profile-container">
         <div class="profile-header">
             <h2>User Profile</h2>

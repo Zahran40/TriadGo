@@ -718,6 +718,7 @@ body {
     display: flex;
     align-items: center;
 }
+
 .custom-checkbox input[type="radio"] {
     position: absolute;
     opacity: 0;
@@ -725,6 +726,7 @@ body {
     height: 0;
     width: 0;
 }
+
 .custom-checkbox .checkmark {
     position: absolute;
     left: 0;
@@ -740,6 +742,7 @@ body {
     align-items: center;
     justify-content: center;
 }
+
 .custom-checkbox .checkmark:after {
     content: "";
     display: none;
@@ -751,7 +754,8 @@ body {
     font-weight: bold;
     line-height: 1;
 }
-.custom-checkbox input[type="radio"]:checked ~ .checkmark:after {
+
+.custom-checkbox input[type="radio"]:checked~.checkmark:after {
     display: block;
     content: "✔";
     color: #222;
@@ -759,4 +763,46 @@ body {
     position: absolute;
     left: 3px;
     top: 0px;
+}
+
+/* Sweet Alert Validasi Error Login */
+.swal2-x-mark-animate .swal2-x-mark {
+    color: #fff !important;
+    border-color: #fff !important;
+    animation: xShake 0.6s cubic-bezier(.36, .07, .19, .97) both;
+}
+
+@keyframes xShake {
+    0% {
+        transform: scale(0.5) rotate(0deg);
+        opacity: 0;
+    }
+
+    30% {
+        transform: scale(1.2) rotate(-10deg);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.1) rotate(10deg);
+    }
+
+    70% {
+        transform: scale(1.05) rotate(-5deg);
+    }
+
+    100% {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+    }
+}
+
+.swal2-title,
+.swal2-html-container {
+    color: #fff !important;
+}
+
+.swal2-confirm {
+    background: #fff !important;
+    color: #ff3b3b !important;
 }

@@ -42,6 +42,14 @@
                 <h1 class="text-2xl font-bold text-blue-900 gradient-move">Triad</h1>
                 <h1 class="text-2xl font-bold text-orange-500 gradient-move">Go</h1>
             </div>
+                        <nav class="hidden md:flex items-center space-x-6 text-blue-700 font-semibold">
+                <a href="#" class="hover:text-orange-500 transition nav-gradient-move">Request</a>
+                <a href="#" class="hover:text-orange-500 transition nav-gradient-move">Transactions</a>
+                <a href="{{ route('userprofile') }}" class="hover:text-orange-500 transition nav-gradient-move">Account
+                    <img src="https://cdn-icons-png.freepik.com/512/8345/8345339.png" alt=""
+                        style="width: 40px; height: 40px;" class="inline-block ml-2" />
+                </a>
+            </nav>
             
             <div class="flex items-center space-x-4">
                 <!-- Dark Mode Toggle -->

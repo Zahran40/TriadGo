@@ -91,7 +91,7 @@
                 <!-- Product Images Upload -->
                 <div class="md:col-span-1">
                     <h3 class="text-xl font-bold text-blue-900 mb-4">Product Images</h3>
-                    <div class="file-upload bg-gray-light rounded-lg p-6 text-center cursor-pointer hover:bg-gray-100 transition-colors" id="dropArea">
+                    <div class="file-upload bg-gray-light rounded-lg p-6 text-center cursor-pointer transition-colors" id="dropArea">
                         <div class="border-2 border-dashed border-gray p-8 rounded-lg">
                             <i class="fas fa-cloud-upload-alt text-4xl text-blue-900 mb-3"></i>
                             <p class="text-gray-500 mb-2">Drag & drop images here</p>

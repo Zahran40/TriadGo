@@ -400,7 +400,7 @@
 
             if (!name || !email || !message) {
                 event.preventDefault();
-                alert('Please fill out all fields before submitting.');
+                alert('Isi semua kolom terlebih dahulu.');
             } else if (!/\S+@\S+\.\S+/.test(email)) {
                 event.preventDefault();
                 alert('Please enter a valid email address.');

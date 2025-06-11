@@ -13,7 +13,7 @@ NAMA ANGGOTA KELOMPOK:
 3. Reagan Brian Siahaan (241402099) (Frontend)
 (membuat darkmode, membuat navbar,halaman importir )
 4. Abbil Rizki Abdillah (241402033) (Fullstack)
-(membuat fitur auth , input produk eksportir, update profile user, fitur log out ,searchbar,menampilkan produk ,Readme)
+(membuat fitur auth , input produk eksportir, update profile user, fitur log out ,searchbar,menampilkan produk ,Readme,komentar importir ke produk)
 5. Daniele C.H Siahaan (241402060) (Fullstack)
 (membuat halaman input produk eksportir,halaman eksportir,invoice,keranjang,tampilan produk jika habis)
 
@@ -28,6 +28,7 @@ FITUR YANG KAMI TAWARKAN :
 -Keranjang
 -Menampilkan produk berdasarkan negara 
 -Menampilkan sisa barang produk
+-komentar importir ke produk
 -Update status pesanan
 
 TEKNOLOGI YANG DIGUNAKAN :

@@ -33,7 +33,7 @@ FITUR YANG KAMI TAWARKAN :
 
 TEKNOLOGI YANG DIGUNAKAN :
 -Laravel 12
--Tailwind 
+-Tailwind versi 4.0.7
 -Sweetalert
 -Filament
 -php 8.2

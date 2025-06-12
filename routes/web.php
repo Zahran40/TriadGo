@@ -29,5 +29,5 @@ Route::get('Importir', [PageController::class, 'homeimportir'])->name('importir'
 
 
 //Route Halaman Ekspor
-Route::get('Ekspor', [PageController::class, 'homeeksportir'])->name('ekspor');
+Route::get('/ekspor', [PageController::class, 'homeeksportir'])->name('ekspor');
 Route::get('formeksportir', [PageController::class, 'formeksportir'])->name('formeksportir');

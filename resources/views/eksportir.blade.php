@@ -32,7 +32,7 @@
     </script>
 </head>
 
-<body class="home-bg min-h-screen flex flex-col">
+<body class="home-bg min-h-screen flex flex-col" id="home">
     <header class="bg-white shadow-md sticky top-0 z-50">
         <div class="container mx-auto px-6 py-4 flex justify-between items-center">
             <div class="flex items-center">
@@ -41,6 +41,7 @@
                 <h1 class="text-2xl font-bold text-orange-500 gradient-move">Go</h1>
             </div>
             <nav class="hidden md:flex items-center space-x-6 text-blue-700 font-semibold">
+                <a href="#" class="text-orange-500 font-semibold nav-gradient-move transition">Home</a>
                 <a href="#" class="hover:text-orange-500 transition nav-gradient-move">Request</a>
                 <a href="#" class="hover:text-orange-500 transition nav-gradient-move">Transactions</a>
                 <a href="{{ route('userprofile') }}" class="hover:text-orange-500 transition nav-gradient-move">Account

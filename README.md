@@ -7,15 +7,11 @@ TriadGo adalah web aplikasi yang berfokus pada layanan ekspor-impor, dirancang u
 NAMA ANGGOTA KELOMPOK:
 
 1. Andre Al Farizi Sebayang(241402105) (Backend)
- (fokus halamam admin,payment gateway,input pembelian produk,Register,invoice,update status pesanan)
 2. Vincent Jose Christian Andreas Simbolon (241402039) (FrontEnd)
- (membuat halaman homepage guest,halaman user profile,membuat halaman register,membuat darkmode,halaman importir)
 3. Reagan Brian Siahaan (241402099) (Frontend)
-(membuat darkmode, membuat navbar,halaman importir )
-4. Abbil Rizki Abdillah (241402033) (Fullstack)
-(membuat fitur auth , input produk eksportir, update profile user, fitur log out ,searchbar,menampilkan produk ,Readme,komentar importir ke produk)
-5. Daniele C.H Siahaan (241402060) (Fullstack)
-(membuat halaman input produk eksportir,halaman eksportir,invoice,keranjang,tampilan produk jika habis)
+4. Abbil Rizki Abdillah (241402033) (FrontEnd and BackEnd)
+5. Daniele C.H Siahaan (241402060) (FrontEnd and BackEnd)
+
 
 FITUR YANG KAMI TAWARKAN :
 -Register (login,signup,hash password,log out)
@@ -33,17 +29,19 @@ FITUR YANG KAMI TAWARKAN :
 -Update status pesanan
 
 TEKNOLOGI YANG DIGUNAKAN :
--Laravel 12
--Tailwind versi 4.0.7
--Sweetalert2
--Filament
--php 8.2
--xampp/laragon
--google font
--github
--vscode
--mysql
--PHPMYADMIN
+Laravel 12 
+PHP 8.2 
+MySQL 
+XAMPP / Laragon 
+GitHub 
+Visual Studio Code (VSCode) 
+phpMyAdmin
+
+LIBRARY YANG DIPAKAI :
+Tailwind CSS 4.0.7 
+SweetAlert2 
+Filament 
+Google Fonts 
 
 TATA CARA MENJALANKAN APLIKASI :
 1. Akses halaman github : https://github.com/Zahran40/TriadGo.git ,lalu ekstrack file nya ke folder

@@ -21,7 +21,7 @@ Kelompok 3 KOM C 24 — Pemrograman Web Lanjutan
 - Autentikasi berdasarkan role
 - Halaman khusus untuk Admin, Importir, dan Eksportir
 
-# Importir
+### Importir
 - Search bar untuk mencari produk
 - Invoice & Payment Gateway
 - Keranjang belanja
@@ -30,7 +30,7 @@ Kelompok 3 KOM C 24 — Pemrograman Web Lanjutan
 - Melihat Status Pesanan
 - Melakukan Permintaan terhadap barang yang tidak ada di catalog
 
-# Eksportir
+### Eksportir
 - Mengupload / Menambahkan barang yang akan dipesan
 - Komentar dari importir pada transaksi
 - Menerima Permintaan barang dari Importir 

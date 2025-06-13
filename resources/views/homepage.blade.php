@@ -108,11 +108,11 @@
                 class="mb-4 text-blue-700 font-semibold hover:text-orange-500 transition nav-gradient-move">Contact</a>
             <a href="{{ route('login') }}">
                 <button
-                    class="w-full mb-3 px-4 py-2 bg-blue-400 text-white rounded-md font-semibold hover:bg-blue-600 transition">Masuk</button>
+                    class="w-full mb-3 px-4 py-2 bg-blue-400 text-white rounded-md font-semibold hover:bg-blue-600 transition">Login</button>
             </a>
             <a href="{{ route('signup') }}">
                 <button
-                    class="w-full px-4 py-2 bg-amber-500 text-white rounded-md font-semibold hover:bg-amber-600 transition">Daftar</button>
+                    class="w-full px-4 py-2 bg-amber-500 text-white rounded-md font-semibold hover:bg-amber-600 transition">Register</button>
             </a>
         </div>
     </div>

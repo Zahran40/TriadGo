@@ -49,6 +49,8 @@ Kelompok 3 KOM C — Pemrograman Web Lanjutan
 - Filament
 - Google Fonts 
 
+---
+
 ### TATA CARA MENJALANKAN APLIKASI :
 1. Akses halaman github : https://github.com/Zahran40/TriadGo.git ,lalu ekstrack file nya ke folder
 2. jika menggunakan laragaon pindahkan file ke folder www , jika menggunakan xamppp pindahan file ke folder htdocs

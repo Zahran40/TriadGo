@@ -74,8 +74,6 @@ Kelompok 3 KOM C 24 — Pemrograman Web Lanjutan
 ---
 
 ## TEKNOLOGI YANG DIGUNAKAN
-
-### Teknologi:
 - Laravel 12
 - PHP 8.2
 - MySQL
@@ -84,7 +82,7 @@ Kelompok 3 KOM C 24 — Pemrograman Web Lanjutan
 - Visual Studio Code (VSCode)
 - phpMyAdmin
 
-### LIBRARY YANG DIGUNAKAN 
+## LIBRARY YANG DIGUNAKAN 
 - Tailwind CSS v4.0.7
 - SweetAlert2
 - Filament

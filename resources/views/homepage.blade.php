@@ -63,12 +63,12 @@
                 <a href="{{ route('login') }}">
                     <button
                         class="ml-6 px-4 py-1.5 bg-blue-400 text-white rounded-md font-semibold hover:bg-blue-600 transition pulse-on-hover">
-                        Masuk
+                        Login
                     </button></a>
                 <a href="{{ route('signup') }}">
                     <button
                         class="ml-3 px-4 py-1.5 bg-amber-500 text-white rounded-md font-semibold hover:bg-amber-600 transition pulse-on-hover">
-                        Daftar
+                        Register
                     </button>
                 </a>
             </nav>

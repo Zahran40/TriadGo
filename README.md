@@ -18,29 +18,31 @@ NAMA ANGGOTA KELOMPOK:
 (membuat halaman input produk eksportir,halaman eksportir,invoice,keranjang,tampilan produk jika habis)
 
 FITUR YANG KAMI TAWARKAN :
--Register(login,signup,hash password,log out)
+-Register (login,signup,hash password,log out)
 -autentikasi sesuai role
--Halaman Admin,importir , eksportir
--Seach bar
+-Halaman Admin, importir , eksportir
+-Search bar
 -invoice
 -payment gateway
 -menambhkan produk
 -Keranjang
 -Menampilkan produk berdasarkan negara 
 -Menampilkan sisa barang produk
--komentar importir ke produk
+-komentar importir untuk transaksi yang dilakukan
+-menampilkan semua komentar importir (produk eksportir masing - masing)
 -Update status pesanan
 
 TEKNOLOGI YANG DIGUNAKAN :
 -Laravel 12
 -Tailwind versi 4.0.7
--Sweetalert
+-Sweetalert2
 -Filament
 -php 8.2
 -xampp/laragon
 -google font
 -github
 -vscode
+-mysql
 -PHPMYADMIN
 
 TATA CARA MENJALANKAN APLIKASI :

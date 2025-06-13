@@ -1,11 +1,11 @@
-# TriadGo 🌍
+# TriadGo 
 Kelompok 3 KOM C — Pemrograman Web Lanjutan
 
 **TriadGo** adalah aplikasi web yang berfokus pada layanan ekspor-impor, dirancang untuk memudahkan pelaku bisnis dalam menjangkau pasar global. Platform ini membantu pengguna dalam mengelola prosedur logistik dan informasi pasar, serta memperluas jaringan perdagangan untuk mempromosikan produk lokal ke kancah internasional.
 
 ---
 
-## 📁 [TAB 1] ANGGOTA KELOMPOK
+## ANGGOTA KELOMPOK
 
 1. **Andre Al Farizi Sebayang** (241402105) — *Backend*
 2. **Vincent Jose Christian Andreas Simbolon** (241402039) — *Frontend*
@@ -15,7 +15,7 @@ Kelompok 3 KOM C — Pemrograman Web Lanjutan
 
 ---
 
-## 💡 [TAB 2] FITUR YANG DITAWARKAN
+## FITUR YANG DITAWARKAN
 
 - Register (Login, Signup, Hash Password, Logout)
 - Autentikasi berdasarkan role
@@ -32,7 +32,7 @@ Kelompok 3 KOM C — Pemrograman Web Lanjutan
 
 ---
 
-## ⚙️ [TAB 3] TEKNOLOGI YANG DIGUNAKAN
+## TEKNOLOGI YANG DIGUNAKAN
 
 ### Teknologi:
 - Laravel 12
@@ -49,7 +49,7 @@ Kelompok 3 KOM C — Pemrograman Web Lanjutan
 - Filament
 - Google Fonts 
 
-TATA CARA MENJALANKAN APLIKASI :
+### TATA CARA MENJALANKAN APLIKASI :
 1. Akses halaman github : https://github.com/Zahran40/TriadGo.git ,lalu ekstrack file nya ke folder
 2. jika menggunakan laragaon pindahkan file ke folder www , jika menggunakan xamppp pindahan file ke folder htdocs
 3. Buka file tersebut menggunakan vs code

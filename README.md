@@ -1,5 +1,5 @@
 # TriadGo 
-Kelompok 3 KOM C — Pemrograman Web Lanjutan
+Kelompok 3 KOM C 24 — Pemrograman Web Lanjutan
 
 **TriadGo** adalah aplikasi web yang berfokus pada layanan ekspor-impor, dirancang untuk memudahkan pelaku bisnis dalam menjangkau pasar global. Platform ini membantu pengguna dalam mengelola prosedur logistik dan informasi pasar, serta memperluas jaringan perdagangan untuk mempromosikan produk lokal ke kancah internasional.
 
@@ -43,7 +43,7 @@ Kelompok 3 KOM C — Pemrograman Web Lanjutan
 - Visual Studio Code (VSCode)
 - phpMyAdmin
 
-### Library:
+### LIBRARY YANG DIGUNAKAN 
 - Tailwind CSS v4.0.7
 - SweetAlert2
 - Filament

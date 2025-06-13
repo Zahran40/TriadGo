@@ -17,25 +17,59 @@ Kelompok 3 KOM C 24 — Pemrograman Web Lanjutan
 
 ## FITUR YANG DITAWARKAN
 
-- Register (Login, Signup, Hash Password, Logout)
-- Autentikasi berdasarkan role
-- Halaman khusus untuk Admin, Importir, dan Eksportir
+- **Register (Login, Signup, Hash Password, Logout)**  
+  Pengguna dapat membuat akun baru, masuk, keluar, dan data password disimpan dengan aman menggunakan hash.
 
-### Importir
-- Search bar untuk mencari produk
-- Invoice & Payment Gateway
-- Keranjang belanja
-- Menampilkan produk berdasarkan negara
-- Menampilkan stok/sisa barang
-- Melihat Status Pesanan
-- Melakukan Permintaan terhadap barang yang tidak ada di catalog
+- **Autentikasi berdasarkan role**  
+  Sistem mengenali pengguna sebagai admin, importir, atau eksportir, dan menyesuaikan akses serta tampilan sesuai peran mereka.
 
-### Eksportir
-- Mengupload / Menambahkan barang yang akan dipesan
-- Komentar dari importir pada transaksi
-- Menerima Permintaan barang dari Importir 
-- Menampilkan semua komentar importir untuk produk eksportir
-- Update status pesanan
+- **Halaman khusus untuk Admin, Importir, dan Eksportir**  
+  Setiap jenis pengguna memiliki halaman dashboard masing-masing sesuai kebutuhannya.
+
+---
+
+### FITUR IMPORTIR
+
+- **Search bar untuk mencari produk**  
+  Memudahkan pencarian produk berdasarkan nama atau kategori.
+
+- **Invoice & Payment Gateway**  
+  Menyediakan detail tagihan dan proses pembayaran langsung melalui platform.
+
+- **Keranjang belanja**  
+  Importir dapat menyimpan produk yang ingin dibeli sebelum checkout.
+
+- **Menampilkan produk berdasarkan negara**  
+  Produk dapat difilter sesuai negara asal eksportir.
+
+- **Menampilkan stok/sisa barang**  
+  Informasi ketersediaan barang ditampilkan agar importir tahu jumlah yang tersedia.
+
+- **Melihat Status Pesanan**  
+  Importir bisa memantau apakah pesanan sedang diproses, dikirim, atau sudah sampai.
+
+- **Melakukan Permintaan terhadap barang yang tidak ada di katalog**  
+  Jika barang belum tersedia, importir dapat mengajukan permintaan langsung ke eksportir.
+
+---
+
+### FITUR EKSPORTIR
+
+- **Mengupload / Menambahkan barang yang akan dipesan**  
+  Eksportir bisa mengelola produk yang ingin dijual, termasuk stok dan detail produk.
+
+- **Komentar dari importir pada transaksi**  
+  Eksportir dapat melihat ulasan atau komentar dari importir setelah transaksi berlangsung.
+
+- **Menerima Permintaan barang dari Importir**  
+  Permintaan produk dari importir dapat dilihat dan diproses oleh eksportir.
+
+- **Menampilkan semua komentar importir untuk produk eksportir**  
+  Eksportir bisa melihat semua feedback terkait produknya untuk evaluasi dan peningkatan.
+
+- **Update status pesanan**  
+  Eksportir dapat mengubah status pesanan seperti "diproses", "dikirim", atau "selesai".
+
 
 ---
 

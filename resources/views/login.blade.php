@@ -32,7 +32,7 @@
         <div class="signup-title">Login</div>
         <div class="signup-subtitle">Selamat Datang Kembali</div>
         <div class="form-group">
-            <label for="email">Email</label>
+            <label for="email" style="color: var(--dark);">Email</label>
             <div class="input-icon-wrapper">
                 <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor">
@@ -43,7 +43,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label for="password">Password</label>
+            <label for="password" style="color: var(--dark);">Password</label>
             <div class="input-icon-wrapper">
                 <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor">
@@ -76,7 +76,7 @@
             </div>
         </div>
         <button type="submit" class="signup-btn" id="signupBtn">Login</button>
-        <a href="{{ route('signup') }}" class="login-link">Belum punya akun? Daftar</a>
+        <a href="{{ route('signup') }}" class="login-link" style="color: var(--dark);">Belum punya akun? Daftar</a>
     </form>
 </body>
 

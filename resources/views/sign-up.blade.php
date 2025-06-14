@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         (function () {
             const darkMode = localStorage.getItem('darkMode');
@@ -10,6 +11,33 @@
             }
         })();
     </script>
+
+    <script>
+
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2563eb',
+                        accent: '#f97316',
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 3s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                },
+            },
+        }
+
+        tailwind.scan()
+    </script>
+
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sign Up</title>
@@ -43,15 +71,15 @@
         <div class="signup-title">Sign Up</div>
         <div class="signup-subtitle">Bergabunglah dengan TriadGO untuk ekspor & impor lebih mudah!</div>
         <div class="form-group">
-            <label for="name">Nama</label>
+            <label for="name" style="color: var(--dark);">Nama</label>
             <input type="text" id="name" name="name" required autocomplete="off" placeholder="Nama lengkap">
         </div>
         <div class="form-group">
-            <label for="email">Email</label>
+            <label for="email" style="color: var(--dark);">Email</label>
             <input type="email" id="email" name="email" required autocomplete="off" placeholder="Alamat email">
         </div>
         <div class="form-group">
-            <label for="country">Negara</label>
+            <label for="country" style="color: var(--dark);">Negara</label>
             <select id="country" name="country" required>
                 <option value="">Pilih negara</option>
                 <option value="Indonesia">Indonesia</option>
@@ -67,7 +95,7 @@
             </select>
         </div>
         <div class="form-group">
-            <label for="phone">No. HP</label>
+            <label for="phone" style="color: var(--dark);">No. HP</label>
             <div style="display: flex; align-items: center; gap: 8px;">
                 <!-- Kode negara (readonly, otomatis) -->
                 <input type="text" id="country_code" name="country_code" readonly
@@ -78,7 +106,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label for="password">Password</label>
+            <label for="password" style="color: var(--dark);">Password</label>
             <div style="position:relative;">
                 <input type="password" id="password" name="password" required autocomplete="off" placeholder="Password"
                     style="padding-right:40px;">
@@ -105,7 +133,7 @@
                 karakter</span>
         </div>
         <div class="form-group">
-            <label for="password_confirmation">Confirm Password</label>
+            <label for="password_confirmation" style="color: var(--dark);">Confirm Password</label>
             <div style="position:relative;">
                 <input type="password" id="password_confirmation" name="password_confirmation" required
                     autocomplete="off" placeholder="Ulangi password" style="padding-right:40px;">
@@ -131,14 +159,14 @@
             <span id="password-error" style="color:#EEA133; font-size:0.95em; display:none;">Password tidak sama</span>
         </div>
         <div class="form-group">
-            <label>Role</label>
+            <label style="color: var(--dark);">Role</label>
             <div class="role-group" style="display:flex; gap:20px;">
-                <label class="custom-checkbox">
+                <label class="custom-checkbox" style="color: var(--dark);">
                     <input type="radio" name="role" value="ekspor" required>
                     <span class="checkmark"></span>
                     Ekspor
                 </label>
-                <label class="custom-checkbox">
+                <label class="custom-checkbox" style="color: var(--dark);">
                     <input type="radio" name="role" value="impor" required>
                     <span class="checkmark"></span>
                     Impor
@@ -146,7 +174,7 @@
             </div>
         </div>
         <button type="submit" class="signup-btn" id="signupBtn" disabled>Daftar</button>
-        <a href="{{ route('login') }}" class="login-link">Sudah punya akun? Login</a>
+        <a href="{{ route('login') }}" class="login-link" style="color: var(--dark);">Sudah punya akun? Login</a>
     </form>
     <script>
         // Validasi password + tidak bisa submit jika password tidak sama
@@ -252,7 +280,11 @@
         document.getElementById('signupForm').addEventListener('submit', function (e) {
             if (!iti.isValidNumber()) {
                 e.preventDefault();
-                alert('Nomor HP tidak valid!');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Nomor HP tidak valid!',
+                    text: 'Silakan masukkan nomor HP yang benar.',
+                });
                 input.focus();
                 return false;
             }

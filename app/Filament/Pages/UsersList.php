@@ -24,8 +24,11 @@ class UsersList extends Page implements Tables\Contracts\HasTable
     protected function getTableColumns(): array
     {
         return [
+            TextColumn::make('user_id')->label('ID')->sortable(),
             TextColumn::make('name')->label('Nama')->searchable()->sortable(),
             TextColumn::make('email')->label('Email')->searchable(),
+            TextColumn::make('country')->label('Negara')->searchable(),
+            TextColumn::make('phone')->label('Telepon')->searchable(),
             TextColumn::make('role')->label('Role')->badge(),
         ];
     }

@@ -191,7 +191,6 @@
     </div>
 
    <style>
-    /* Existing styles */
     @media print {
         body { 
             background: white !important; 
@@ -207,21 +206,18 @@
             box-shadow: none !important;
         }
         
-        /* Paksa print warna background dan gradients */
         * {
             -webkit-print-color-adjust: exact !important;
             color-adjust: exact !important;
             print-color-adjust: exact !important;
         }
         
-        /* Khusus untuk header gradient */
         .bg-gradient-to-r {
             -webkit-print-color-adjust: exact !important;
             color-adjust: exact !important;
             print-color-adjust: exact !important;
         }
         
-        /* Paksa warna text tetap */
         .text-white {
             color: white !important;
         }
@@ -238,19 +234,16 @@
             color: #059669 !important;
         }
         
-        /* Paksa background warna */
         .bg-gradient-to-r.from-triad-blue.to-triad-green {
             background: linear-gradient(to right, #1e3a8a, #059669) !important;
             -webkit-print-color-adjust: exact !important;
         }
         
-        /* Untuk table header */
         thead tr {
             background: linear-gradient(to right, #1e3a8a, #059669) !important;
             -webkit-print-color-adjust: exact !important;
         }
         
-        /* Border warna */
         .border-triad-orange {
             border-color: #f97316 !important;
         }
@@ -263,8 +256,7 @@
             border-color: #1e3a8a !important;
         }
     }
-    
-    /* General print color settings untuk semua elemen */
+
     @page {
         -webkit-print-color-adjust: exact;
         color-adjust: exact;

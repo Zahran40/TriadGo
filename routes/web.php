@@ -17,6 +17,7 @@ Route::get('/profile/edit', [PageController::class, 'edit'])->name('profile.edit
 Route::post('/sign-up/data', [PageController::class, 'store'])->name('signup.store');
 Route::post('/login', [PageController::class, 'authenticate'])->name('login.authenticate');
 
+Route::get('/invoice', [PageController::class, 'invoice'])->name('invoice');
 Route::post('/logout', [PageController::class, 'logout'])->name('logout');
 
 //Route Contact us di homepage

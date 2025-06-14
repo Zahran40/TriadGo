@@ -32,6 +32,11 @@ class PageController extends Controller
     {
         return view('login');
     }
+
+    public function invoice()
+    {
+        return view('invoice');
+    }
     public function store(Request $request)
     {
         $request->validate([

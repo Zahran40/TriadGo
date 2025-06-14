@@ -30,6 +30,8 @@
                 },
             },
         }
+
+        tailwind.scan()
     </script>
 </head>
 

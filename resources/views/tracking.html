@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Package Tracking</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: #f5f8ff;
+            font-family: 'Inter', Arial, sans-serif;
+        }
+
+        .tracking-container {
+            max-width: 600px;
+            margin: 40px auto;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px 0 rgba(37, 99, 235, 0.08);
+            padding: 40px 32px 32px 32px;
+        }
+
+        .tracking-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1e3a8a;
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .tracking-label {
+            font-weight: 600;
+            color: #1e40af;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .tracking-input {
+            width: 100%;
+            border: 1px solid #60a5fa;
+            border-radius: 8px;
+            padding: 12px 16px;
+            /* ✅ Perbaikan: tambahkan padding kiri dan kanan */
+            font-size: 1rem;
+            margin-bottom: 16px;
+            outline: none;
+            transition: border 0.2s;
+        }
+
+        .tracking-input:focus {
+            border-color: #2563eb;
+        }
+
+        .tracking-btn {
+            width: 100%;
+            background: #2563eb;
+            color: #fff;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 0;
+            font-size: 1.1rem;
+            cursor: pointer;
+            margin-bottom: 32px;
+            transition: background 0.2s;
+        }
+
+        .tracking-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .tracking-status-title {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: #1e40af;
+            margin-bottom: 18px;
+        }
+
+        .timeline {
+            position: relative;
+            margin-left: 60px;
+            padding-left: 0;
+        }
+
+        .timeline-wave {
+            position: absolute;
+            left: -60px;
+            top: 0;
+            bottom: 0;
+            width: 60px;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .timeline-step {
+            position: relative;
+            margin-bottom: 32px;
+            min-height: 40px;
+        }
+
+        .timeline-step:last-child {
+            margin-bottom: 0;
+        }
+
+        .timeline-dot {
+            display: none;
+        }
+
+        .timeline-step-title {
+            font-weight: 700;
+            color: #2563eb;
+            font-size: 1.08rem;
+        }
+
+        .timeline-step-title.gray {
+            color: #6b7280;
+        }
+
+        .timeline-step-date {
+            color: #64748b;
+            font-size: 0.98rem;
+            margin-top: 2px;
+        }
+
+        .timeline-step-date.gray {
+            color: #a1a1aa;
+        }
+
+        .main-ship {
+            position: absolute;
+            left: -60px;
+            z-index: 2;
+            width: 48px;
+            height: 48px;
+            pointer-events: none;
+            animation: shipmove 1.2s infinite alternate ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @keyframes shipmove {
+            0% {
+                transform: translateY(0) rotate(-5deg);
+            }
+
+            100% {
+                transform: translateY(4px) rotate(5deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="tracking-container">
+        <div class="tracking-title">Package Tracking</div>
+        <label for="trackingNumber" class="tracking-label">Receipt Number</label>
+        <input type="number" id="trackingNumber" class="tracking-input" placeholder="Enter your receipt number">
+        <button class="tracking-btn" onclick="nextStatus()">Track</button>
+        <div class="tracking-status-title">Package Status</div>
+        <div class="timeline" id="timeline" style="min-height: 320px;">
+            <svg class="timeline-wave" width="60" height="320" viewBox="0 0 60 320" preserveAspectRatio="none">
+                <defs>
+                    <linearGradient id="waveGrad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#60a5fa" />
+                        <stop offset="100%" stop-color="#2563eb" />
+                    </linearGradient>
+                </defs>
+                <path d="M30,0 
+                    Q50,20 30,40 
+                    Q10,60 30,80 
+                    Q50,100 30,120 
+                    Q10,140 30,160 
+                    Q50,180 30,200 
+                    Q10,220 30,240 
+                    Q50,260 30,280 
+                    Q10,300 30,320" stroke="url(#waveGrad)" stroke-width="8" fill="none" />
+            </svg>
+            <div id="mainShip" class="main-ship" style="top:0;">
+                <svg viewBox="0 0 48 48" width="48" height="48" fill="none">
+                    <ellipse cx="24" cy="44" rx="16" ry="4" fill="#60a5fa" opacity="0.5" />
+                    <path d="M6 32 L42 32 Q40 40 24 42 Q8 40 6 32 Z" fill="#374151" stroke="#1e293b"
+                        stroke-width="1.5" />
+                    <rect x="12" y="26" width="24" height="6" rx="2" fill="#60a5fa" stroke="#2563eb" stroke-width="1" />
+                    <rect x="10" y="18" width="6" height="8" rx="1" fill="#fbbf24" stroke="#b45309" stroke-width="1" />
+                    <rect x="18" y="16" width="6" height="10" rx="1" fill="#f87171" stroke="#b91c1c" stroke-width="1" />
+                    <rect x="26" y="17" width="6" height="9" rx="1" fill="#34d399" stroke="#047857" stroke-width="1" />
+                    <rect x="34" y="19" width="5" height="7" rx="1" fill="#60a5fa" stroke="#2563eb" stroke-width="1" />
+                    <rect x="38" y="12" width="3" height="8" rx="1" fill="#1e40af" />
+                    <ellipse cx="39.5" cy="10" rx="1.2" ry="0.7" fill="#c7d2fe" opacity="0.7" />
+                    <ellipse cx="39.5" cy="8.5" rx="0.7" ry="0.4" fill="#c7d2fe" opacity="0.5" />
+                    <circle cx="20" cy="36" r="1" fill="#fff" />
+                    <circle cx="24" cy="36" r="1" fill="#fff" />
+                    <circle cx="28" cy="36" r="1" fill="#fff" />
+                    <polygon points="6,32 11,27 12,32" fill="#93c5fd" opacity="0.85" />
+                </svg>
+            </div>
+            <div class="timeline-step">
+                <div class="timeline-dot"></div>
+                <div class="timeline-step-title">Package Received at Warehouse</div>
+                <div class="timeline-step-date">June 10th, 2025, 09:00 WIB</div>
+            </div>
+            <div class="timeline-step">
+                <div class="timeline-dot"></div>
+                <div class="timeline-step-title gray">Custom Clearance Process</div>
+                <div class="timeline-step-date">June 11th, 2025, 13:30 WIB</div>
+            </div>
+            <div class="timeline-step">
+                <div class="timeline-dot"></div>
+                <div class="timeline-step-title gray">Shipping to Destination Country</div>
+                <div class="timeline-step-date">June 12th, 08:00 WIB</div>
+            </div>
+            <div class="timeline-step">
+                <div class="timeline-dot"></div>
+                <div class="timeline-step-title gray">Package Received</div>
+                <div class="timeline-step-date gray">ETA: June 15th, 2025</div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const steps = document.querySelectorAll('.timeline-step');
+        const mainShip = document.getElementById('mainShip');
+        let currentStep = 0;
+
+        function updateShipPosition() {
+            let step = steps[currentStep];
+            let top = step.offsetTop;
+            mainShip.style.top = (top + 2) + 'px';
+        }
+
+        function nextStatus() {
+            currentStep = (currentStep + 1) % steps.length;
+            updateShipPosition();
+        }
+
+        window.addEventListener('DOMContentLoaded', updateShipPosition);
+        window.addEventListener('resize', updateShipPosition);
+    </script>
+</body>
+
+</html>

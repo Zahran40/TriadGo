@@ -182,7 +182,7 @@
                                 d="M12 12h3l3 9m-3-9v-7a7 7 0 00-14 0v7" />
                         </svg>
                     </div>
-                    <h4 class="text-2xl font-semibold text-blue-800 mb-2 text-center md:text-left">Pemasaran Global</h4>
+                    <h4 class="text-2xl font-semibold text-blue-800 mb-2 text-center md:text-left">Pemasaran Se - ASEAN</h4>
                     <p class="text-blue-700 text-center md:text-left">
                         Membuka akses pasar internasional untuk produk Anda dengan strategi pemasaran yang efektif.
                     </p>
@@ -287,6 +287,8 @@
     </footer>
 
     <script>
+        const isDarkMode = document.documentElement.classList.contains('dark');
+        
         const darkModeToggle = document.getElementById('darkModeToggle');
         const darkModeThumb = document.getElementById('darkModeThumb');
         const htmlElement = document.documentElement;

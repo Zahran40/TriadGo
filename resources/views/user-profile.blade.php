@@ -1,7 +1,7 @@
 @php
     $country = Auth::user()->country ?? '';
     $phone = Auth::user()->phone ?? '';
-    
+
     $countryCodes = [
         'Indonesia' => '+62',
         'Malaysia' => '+60',
@@ -24,13 +24,21 @@
 <html lang="en">
 
 <head>
+    <script>
+        (function () {
+            const darkMode = localStorage.getItem('darkMode');
+            if (darkMode === 'enabled') {
+                document.documentElement.classList.add('dark');
+            }
+        })();
+    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>User Profile - TriadGO</title>
     @vite('resources/css/app.css')
 </head>
 
-<body class="auth-bg">
+<body>
     <div class="profile-container">
         <div class="profile-header">
             <h2>User Profile</h2>

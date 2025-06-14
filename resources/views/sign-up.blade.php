@@ -2,6 +2,14 @@
 <html lang="en">
 
 <head>
+    <script>
+        (function () {
+            const darkMode = localStorage.getItem('darkMode');
+            if (darkMode === 'enabled') {
+                document.documentElement.classList.add('dark');
+            }
+        })();
+    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sign Up</title>
@@ -9,7 +17,7 @@
     @vite('resources/css/app.css')
 </head>
 
-<body class="auth-bg">
+<body>
     <div class="circle circle1"></div>
     <div class="circle circle2"></div>
     <div class="circle circle3"></div>
@@ -131,7 +139,7 @@
                 </label>
             </div>
         </div>
-        <button type="submit" class="btn-gradient-move signup-btn" id="signupBtn" disabled>Daftar</button>
+        <button type="submit" class="signup-btn" id="signupBtn" disabled>Daftar</button>
         <a href="{{ route('login') }}" class="login-link">Sudah punya akun? Login</a>
     </form>
     <script>

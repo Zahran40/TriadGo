@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TriadGO - Export Solutions</title>
@@ -69,11 +70,11 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="M4 8h16M4 16h16" />
                     </svg>
                 </button>
-                <form action="{{ route('logout') }}" method="POST" class="hidden md:inline">
+                <form action="{{ route('logout') }}" method="POST" class="hidden md:inline" id="logoutForm">
                     @csrf
-                    <button type="submit"
+                    <button type="button"
                         class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition"
-                        onclick="return confirm('Yakin ingin logout?')">
+                        id="logoutBtn">
                         Logout
                     </button>
                 </form>
@@ -86,10 +87,11 @@
         <div class="navbar-background fixed top-0 right-0 w-64 h-full shadow-lg p-6 flex flex-col">
             <button id="closeSidebar" class="self-end mb-8 text-2xl text-blue-700">&times;</button>
             @auth
-                <form method="POST" action="{{ route('logout') }}">
+                <form method="POST" action="{{ route('logout') }}" id="logoutFormMobile">
                     @csrf
-                    <button type="submit"
-                        class="w-full mt-3 px-4 py-2 bg-red-500 text-white rounded-md font-semibold hover:bg-red-600 transition">Logout</button>
+                    <button type="button"
+                        class="w-full mt-3 px-4 py-2 bg-red-500 text-white rounded-md font-semibold hover:bg-red-600 transition"
+                        id="logoutBtnMobile">Logout</button>
                 </form>
             @endauth
         </div>
@@ -334,6 +336,8 @@
     </footer>
 
     <script>
+        const isDarkMode = document.documentElement.classList.contains('dark');
+        
         const darkModeToggle = document.getElementById('darkModeToggle');
         const darkModeThumb = document.getElementById('darkModeThumb');
         const htmlElement = document.documentElement;
@@ -438,6 +442,54 @@
                 sidebar.classList.add('hidden');
                 const targetId = this.getAttribute('href').substring(1);
                 scrollToSectionWithSlide(targetId);
+            });
+        });
+
+        // SweetAlert2 Logout Desktop
+        document.getElementById('logoutBtn')?.addEventListener('click', function (e) {
+            Swal.fire({
+                title: 'Logout?',
+                text: "Are you sure you want to logout?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, logout',
+                customClass: {
+                    popup: 'bg-white dark:bg-gray-800',
+                    title: 'text-black dark:text-white',
+                    content: 'text-black dark:text-white',
+                    confirmButton: 'text-white',
+                    cancelButton: 'text-white'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('logoutForm').submit();
+                }
+            });
+        });
+
+        // SweetAlert2 Logout Mobile
+        document.getElementById('logoutBtnMobile')?.addEventListener('click', function (e) {
+            Swal.fire({
+                title: 'Logout?',
+                text: "Are you sure you want to logout?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, logout',
+                customClass: {
+                    popup: 'bg-white dark:bg-gray-800',
+                    title: 'text-black dark:text-white',
+                    content: 'text-black dark:text-white',
+                    confirmButton: 'text-white',
+                    cancelButton: 'text-white'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('logoutForm').submit();
+                }
             });
         });
     </script>

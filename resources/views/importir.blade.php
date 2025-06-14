@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TriadGO</title>
@@ -36,7 +37,7 @@
 
 <body class="home-bg"></body>
 <section id="home">
-    
+
     <header class="bg-white shadow-md sticky top-0 z-50">
         <div class="container mx-auto px-6 py-4 flex justify-between items-center">
             <div class="flex items-center">
@@ -52,8 +53,8 @@
                     <img src="https://cdn-icons-png.freepik.com/512/8345/8345339.png" alt=""
                         style="width: 40px; height: 40px;" class="inline-block ml-2" />
                 </a>
-    
-    
+
+
             </nav>
             <div class="flex items-center space-x-4">
                 <label for="darkModeToggle" class="flex items-center cursor-pointer select-none">
@@ -76,38 +77,39 @@
                     </svg>
                 </button>
                 <!-- Tambahkan di dalam <nav> atau di tempat yang diinginkan -->
-                <form action="{{ route('logout') }}" method="POST" class="hidden md:inline">
+                <form action="{{ route('logout') }}" method="POST" class="hidden md:inline" id="logoutForm">
                     @csrf
-                    <button type="submit"
+                    <button type="button"
                         class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition"
-                        onclick="return confirm('Yakin ingin logout?')">
+                        id="logoutBtn">
                         Logout
                     </button>
                 </form>
             </div>
         </div>
     </header>
-    
+
     <!-- Sidebar untuk Mobile View -->
     <div id="mobileSidebar" class="navbar-background fixed inset-0 z-50 bg-opacity-40 hidden">
         <div class="navbar-background fixed top-0 right-0 w-64 h-full shadow-lg p-6 flex flex-col">
             <button id="closeSidebar" class="self-end mb-8 text-2xl text-blue-700">&times;</button>
             @auth
-                <form method="POST" action="{{ route('logout') }}">
+                <form method="POST" action="{{ route('logout') }}" id="logoutFormMobile">
                     @csrf
-                    <button type="submit"
-                        class="w-full mt-3 px-4 py-2 bg-red-500 text-white rounded-md font-semibold hover:bg-red-600 transition">Logout</button>
+                    <button type="button"
+                        class="w-full mt-3 px-4 py-2 bg-red-500 text-white rounded-md font-semibold hover:bg-red-600 transition"
+                        id="logoutBtnMobile">Logout</button>
                 </form>
             @endauth
         </div>
     </div>
-    
+
     <section class="flex-grow container mx-auto px-6 md:px-12 py-16 flex flex-col md:flex-row items-center">
         <div class="md:w-1/2 text-center md:text-left">
             <h2 class="text-4xl font-extrabold text-blue-900 mb-6 leading-tight fade-in-up">
                 <span class="text-amber-500">Hello Importer !</span> <br>Welcome to TriadGO Import Hub
             </h2>
-    
+
             <p class="text-lg text-blue-700 mb-8 max-w-xl fade-in-up" style="animation-delay:0.4s">
                 Find the best solution for your import needs. We provide a platform that makes it easy for you to
                 conduct international transactions safely and efficiently.
@@ -121,7 +123,7 @@
             <img src="triadgo.jpg" alt="Ekspor Impor" class="floating-img ml-7" />
         </div>
     </section>
-    
+
     <section id="cari" class="container mx-auto px-6 py-16 slide-in">
         <h2 class="text-3xl font-bold text-blue-900 mb-6 text-center">Find the product you want to import</h2>
         <form action="" class="flex flex-col md:flex-row items-center">
@@ -134,7 +136,7 @@
                     style="width: 30px; height: 30px;" />
             </button>
         </form>
-    
+
         <div class="mt-8">
             <h3 class="text-2xl font-bold text-blue-900 mb-4">Search Result</h3>
             <div class="mt-8">
@@ -143,9 +145,11 @@
                         <h4 class="text-xl font-semibold text-amber-500">Product 1</h4>
                         <img src="https://png.pngtree.com/png-vector/20231023/ourmid/pngtree-mystery-box-with-question-mark-3d-illustration-png-image_10313605.png"
                             alt="" class="w-50 h-50" />
-                        <p class="product-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Libero culpa quam
+                        <p class="product-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Libero culpa
+                            quam
                             quas numquam hic tempore autem,
-                            velit voluptate sit illum molestiae nemo dicta doloremque fugit recusandae ex at! Quam, quae.
+                            velit voluptate sit illum molestiae nemo dicta doloremque fugit recusandae ex at! Quam,
+                            quae.
                         </p>
                         <a href="#"
                             class="mt-4 inline-block bg-blue-700 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md transition pulse-on-hover">
@@ -156,9 +160,11 @@
                         <h4 class="text-xl font-semibold text-amber-500">Product 2</h4>
                         <img src="https://png.pngtree.com/png-vector/20231023/ourmid/pngtree-mystery-box-with-question-mark-3d-illustration-png-image_10313605.png"
                             alt="" class="w-50 h-50" />
-                        <p class="product-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur rerum
+                        <p class="product-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur
+                            rerum
                             totam nam, vero fugiat sit corporis,
-                            quod possimus similique ad voluptate recusandae unde suscipit delectus aperiam fugit provident
+                            quod possimus similique ad voluptate recusandae unde suscipit delectus aperiam fugit
+                            provident
                             iusto laboriosam?</p>
                         <a href="#"
                             class="mt-4 inline-block bg-blue-700 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md transition pulse-on-hover">
@@ -171,7 +177,8 @@
                             alt="" class="w-50 h-50" />
                         <p class="product-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam atque aut
                             explicabo cupiditate culpa saepe,
-                            suscipit consequuntur iure fugiat fugit. Repellat voluptatibus labore unde ad. Voluptatibus qui
+                            suscipit consequuntur iure fugiat fugit. Repellat voluptatibus labore unde ad. Voluptatibus
+                            qui
                             eius pariatur dolorum!</p>
                         <a href="#"
                             class="mt-4 inline-block bg-blue-700 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md transition pulse-on-hover">
@@ -183,10 +190,11 @@
         </div>
         <div class="mt-14 text-center">
             <h3 class="text-2xl font-bold text-red-400 mb-4 mt-12">No Matching Items found</h3>
-            <img src="https://cdn-icons-png.flaticon.com/512/6134/6134051.png" alt="" style="width: 100px; height: 100px;"
-                class="mx-auto mb-10 mt-7" />
+            <img src="https://cdn-icons-png.flaticon.com/512/6134/6134051.png" alt=""
+                style="width: 100px; height: 100px;" class="mx-auto mb-10 mt-7" />
             <p class="text-blue-700 mb-4">We were unable to find any items that matched your search.</p>
-            <p class="text-blue-700 mb-4">Please try with other keywords or make a request for the item you are looking for.
+            <p class="text-blue-700 mb-4">Please try with other keywords or make a request for the item you are looking
+                for.
             </p>
             <button
                 class="bg-amber-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md transition pulse-on-hover">
@@ -194,7 +202,7 @@
             </button>
         </div>
     </section>
-    
+
     <footer class="bg-blue-800 text-blue-100 py-6 mt-auto">
         <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
             <p>© 2025 TriadGO. All rights reserved.</p>
@@ -206,7 +214,8 @@
                             d="M22 12.07c0-5.52-4.48-10-10-10s-10 4.48-10 10c0 4.99 3.66 9.12 8.44 9.88v-6.99h-2.54v-2.89h2.54v-2.21c0-2.5 1.49-3.89 3.78-3.89 1.1 0 2.25.2 2.25.2v2.49h-1.27c-1.25 0-1.64.78-1.64 1.57v1.84h2.78l-.44 2.89h-2.34v6.99c4.78-.76 8.44-4.89 8.44-9.88z" />
                     </svg>
                 </a>
-                <a href="https://github.com/Zahran40/TriadGo" aria-label="GitHub" class="hover:text-amber-400 transition">
+                <a href="https://github.com/Zahran40/TriadGo" aria-label="GitHub"
+                    class="hover:text-amber-400 transition">
                     <svg xmlns="http://www.w3.org/2000/svg" class="inline h-6 w-6 wiggle" fill="currentColor"
                         viewBox="0 0 24 24">
                         <path
@@ -227,6 +236,8 @@
 </section>
 
 <script>
+    const isDarkMode = document.documentElement.classList.contains('dark');
+
     const darkModeToggle = document.getElementById('darkModeToggle');
     const darkModeThumb = document.getElementById('darkModeThumb');
     const htmlElement = document.documentElement;
@@ -235,12 +246,12 @@
         if (htmlElement.classList.contains('dark')) {
             darkModeToggle.checked = true;
             darkModeThumb.style.transform = 'translateX(1.25rem)';
-            darkModeThumb.style.backgroundColor = '#003355'; // dark mode
+            darkModeThumb.style.backgroundColor = '#003355';
             darkModeThumb.style.borderColor = '#003355';
         } else {
             darkModeToggle.checked = false;
             darkModeThumb.style.transform = 'translateX(0)';
-            darkModeThumb.style.backgroundColor = '#fff'; // white mode
+            darkModeThumb.style.backgroundColor = '#fff';
             darkModeThumb.style.borderColor = '#ccc';
         }
     }
@@ -283,11 +294,13 @@
         }, 300);
     }
 
-    document.querySelectorAll('nav a[href="#services"], nav a[href="#about"], nav a[href="#contact"], a[href="#contact"]').forEach(link => {
+    document.querySelectorAll('nav a[href^="#"], a[href^="#"]').forEach(link => {
         link.addEventListener('click', function (event) {
-            event.preventDefault();
-            const targetId = this.getAttribute('href').substring(1);
-            scrollToSectionWithSlide(targetId);
+            if (this.getAttribute('href') !== '#') {
+                event.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                scrollToSectionWithSlide(targetId);
+            }
         });
     });
 
@@ -329,6 +342,54 @@
             sidebar.classList.add('hidden');
             const targetId = this.getAttribute('href').substring(1);
             scrollToSectionWithSlide(targetId);
+        });
+    });
+
+    // SweetAlert2 Logout Desktop
+    document.getElementById('logoutBtn')?.addEventListener('click', function (e) {
+        Swal.fire({
+            title: 'Logout?',
+            text: "Are you sure you want to logout?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, logout',
+            customClass: {
+                popup: 'bg-white dark:bg-gray-800',
+                title: 'text-black dark:text-white',
+                content: 'text-black dark:text-white',
+                confirmButton: 'text-white',
+                cancelButton: 'text-white'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('logoutForm').submit();
+            }
+        });
+    });
+
+    // SweetAlert2 Logout Mobile
+    document.getElementById('logoutBtnMobile')?.addEventListener('click', function (e) {
+        Swal.fire({
+            title: 'Logout?',
+            text: "Are you sure you want to logout?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, logout',
+            customClass: {
+                popup: 'bg-white dark:bg-gray-800',
+                title: 'text-black dark:text-white',
+                content: 'text-black dark:text-white',
+                confirmButton: 'text-white',
+                cancelButton: 'text-white'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('logoutForm').submit();
+            }
         });
     });
 </script>

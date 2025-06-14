@@ -4,7 +4,7 @@
 <head>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        (function () {
+        (function() {
             const darkMode = localStorage.getItem('darkMode');
             if (darkMode === 'enabled') {
                 document.documentElement.classList.add('dark');
@@ -13,7 +13,6 @@
     </script>
 
     <script>
-
         tailwind.config = {
             theme: {
                 extend: {
@@ -27,8 +26,12 @@
                     },
                     keyframes: {
                         float: {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-10px)' },
+                            '0%, 100%': {
+                                transform: 'translateY(0)'
+                            },
+                            '50%': {
+                                transform: 'translateY(-10px)'
+                            },
                         }
                     }
                 },
@@ -57,13 +60,13 @@
     <div class="circle circle3"></div>
 
     @if ($errors->any())
-        <div style="color:red; margin-bottom:10px;">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
+    <div style="color:red; margin-bottom:10px;">
+        <ul>
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
     @endif
 
     <form class="signup-container z-10" id="signupForm" action="{{ route('signup.store') }}" method='POST'>
@@ -211,7 +214,7 @@
 
         password.addEventListener('input', validatePassword);
         confirm.addEventListener('input', validatePassword);
-        window.addEventListener('DOMContentLoaded', function () {
+        window.addEventListener('DOMContentLoaded', function() {
             validatePassword();
         });
 
@@ -221,7 +224,7 @@
         const eyeOpen = document.getElementById('eyeOpen');
         const eyeClosed = document.getElementById('eyeClosed');
 
-        togglePassword.addEventListener('click', function () {
+        togglePassword.addEventListener('click', function() {
             const isHidden = passwordInput.type === 'password';
             passwordInput.type = isHidden ? 'text' : 'password';
             eyeOpen.style.display = isHidden ? 'block' : 'none';
@@ -234,7 +237,7 @@
         const eyeOpenConfirm = document.getElementById('eyeOpenConfirm');
         const eyeClosedConfirm = document.getElementById('eyeClosedConfirm');
 
-        toggleConfirmPassword.addEventListener('click', function () {
+        toggleConfirmPassword.addEventListener('click', function() {
             const isHidden = confirmPasswordInput.type === 'password';
             confirmPasswordInput.type = isHidden ? 'text' : 'password';
             eyeOpenConfirm.style.display = isHidden ? 'block' : 'none';
@@ -254,7 +257,7 @@
             "ph", // Philippines
             "kh", // Cambodia
             "la", // Laos
-            "mm"  // Myanmar
+            "mm" // Myanmar
         ];
 
         const input = document.querySelector("#phone");
@@ -277,13 +280,18 @@
         window.addEventListener('DOMContentLoaded', updateCountryCode);
 
         // Validasi dan submit
-        document.getElementById('signupForm').addEventListener('submit', function (e) {
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
             if (!iti.isValidNumber()) {
                 e.preventDefault();
                 Swal.fire({
                     icon: 'error',
                     title: 'Nomor HP tidak valid!',
                     text: 'Silakan masukkan nomor HP yang benar.',
+                    background: '#e3342f', 
+                    color: '#ffffff', 
+                    customClass: {
+                        popup: 'custom-swal-popup'
+                    }
                 });
                 input.focus();
                 return false;

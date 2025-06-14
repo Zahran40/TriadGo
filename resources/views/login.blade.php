@@ -17,6 +17,12 @@
 </head>
 
 <body>
+    <a href="javascript:history.back()"
+        style="position: absolute; top: 24px; left: 24px; z-index: 1000; text-decoration: none;">
+        <button style="background: none; border: none; font-size: 2rem; color: var(--dark); cursor: pointer;">
+            &#8592;
+        </button>
+    </a>
     <div class="circle circle1"></div>
     <div class="circle circle2"></div>
     <div class="circle circle3"></div>

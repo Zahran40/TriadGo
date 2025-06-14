@@ -39,6 +39,12 @@
 </head>
 
 <body>
+    <a href="javascript:history.back()"
+        style="position: absolute; top: 24px; left: 24px; z-index: 1000; text-decoration: none;">
+        <button style="background: none; border: none; font-size: 2rem; color: var(--dark); cursor: pointer;">
+            &#8592;
+        </button>
+    </a>
     <div class="profile-container">
         <div class="profile-header">
             <h2>User Profile</h2>

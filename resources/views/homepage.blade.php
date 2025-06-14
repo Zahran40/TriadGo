@@ -120,7 +120,7 @@
     <section class="flex-grow container mx-auto px-6 md:px-12 py-16 flex flex-col md:flex-row items-center">
         <div class="md:w-1/2 text-center md:text-left">
             <h2 class="text-4xl font-extrabold text-blue-900 mb-6 leading-tight fade-in-up">
-                Solusi Terpercaya untuk Ekspor & Impor Anda
+                Our Best Solution for your Export & Import activities
             </h2>
             <p class="text-lg text-blue-700 mb-8 max-w-xl fade-in-up" style="animation-delay:0.4s">
                 Memudahkan koneksi bisnis Anda dengan pasar global, layanan ekspor-impor yang andal dan cepat.

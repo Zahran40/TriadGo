@@ -79,7 +79,7 @@ class PageController extends Controller
         }
 
         return back()->withErrors([
-            'email' => 'Email atau password salah.',
+            'email' => 'Wrong email/password.',
         ]);
 
 
@@ -92,7 +92,7 @@ class PageController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/')->with('success', 'Anda telah berhasil keluar.');
+        return redirect('/')->with('success', 'You have successfully logged out.');
 
     }
 
@@ -100,13 +100,13 @@ class PageController extends Controller
     public function homeimportir()
     {
         if (!Auth::check()) {
-            return redirect('/')->with('error', 'Anda harus login terlebih dahulu.');
+            return redirect('/')->with('error', 'Please login first.');
         }
         if (Auth::user()->role === 'ekspor') {
-            return redirect()->route('ekspor')->with('error', 'Anda tidak bisa mengakses halaman importir.');
+            return redirect()->route('ekspor')->with('error', 'Unable to access importir page.');
         }
         if (Auth::user()->role !== 'impor') {
-            return redirect('/')->with('error', 'Anda tidak bisa mengakses halaman tersebut.');
+            return redirect('/')->with('error', 'Access denied.');
         }
         return view('importir');
     }

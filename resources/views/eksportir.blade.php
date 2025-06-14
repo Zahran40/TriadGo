@@ -454,7 +454,7 @@
                 showCancelButton: true,
                 confirmButtonColor: '#d33',
                 cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Yes, logout',
+                confirmButtonText: 'Logout',
                 customClass: {
                     popup: 'bg-white dark:bg-gray-800',
                     title: 'text-black dark:text-white',
@@ -478,7 +478,7 @@
                 showCancelButton: true,
                 confirmButtonColor: '#d33',
                 cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Yes, logout',
+                confirmButtonText: 'Logout',
                 customClass: {
                     popup: 'bg-white dark:bg-gray-800',
                     title: 'text-black dark:text-white',

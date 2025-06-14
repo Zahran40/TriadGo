@@ -27,6 +27,16 @@
                         primary: '#2563eb',
                         accent: '#f97316',
                     },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 3s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
                 },
             },
         }
@@ -354,7 +364,7 @@
             showCancelButton: true,
             confirmButtonColor: '#d33',
             cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Yes, logout',
+            confirmButtonText: 'Logout',
             customClass: {
                 popup: 'bg-white dark:bg-gray-800',
                 title: 'text-black dark:text-white',
@@ -378,7 +388,7 @@
             showCancelButton: true,
             confirmButtonColor: '#d33',
             cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Yes, logout',
+            confirmButtonText: 'Logout',
             customClass: {
                 popup: 'bg-white dark:bg-gray-800',
                 title: 'text-black dark:text-white',

@@ -55,7 +55,7 @@
                 <h1 class="text-2xl font-bold text-orange-500 gradient-move">Go</h1>
             </div>
             <nav class="hidden md:flex items-center space-x-6 text-blue-700 font-semibold">
-                <a href="#home" class="hover:text-orange-500 transition nav-gradient-move">Home</a>
+                <a href="#home-bg" class="hover:text-orange-500 transition nav-gradient-move">Home</a>
                 <a href="#services" class="hover:text-orange-500 transition nav-gradient-move">Catalog</a>
                 <a href="#about" class="hover:text-orange-500 transition nav-gradient-move">Request</a>
                 <a href="#about" class="hover:text-orange-500 transition nav-gradient-move">Transaction</a>
@@ -363,10 +363,10 @@
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
+            cancelButtonColor: '#ff9d00',
             confirmButtonText: 'Logout',
             customClass: {
-                popup: 'bg-white dark:bg-gray-800',
+                popup: 'bg-white dark:bg-red-500',
                 title: 'text-black dark:text-white',
                 content: 'text-black dark:text-white',
                 confirmButton: 'text-white',
@@ -387,10 +387,10 @@
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
+            cancelButtonColor: '#ff9d00',
             confirmButtonText: 'Logout',
             customClass: {
-                popup: 'bg-white dark:bg-gray-800',
+                popup: 'bg-white dark:bg-red-500',
                 title: 'text-black dark:text-white',
                 content: 'text-black dark:text-white',
                 confirmButton: 'text-white',

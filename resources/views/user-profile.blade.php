@@ -41,7 +41,7 @@
 <body>
     <a href="javascript:history.back()"
         style="position: absolute; top: 24px; left: 24px; z-index: 1000; text-decoration: none;">
-        <button style="background: none; border: none; font-size: 2rem; color: var(--dark); cursor: pointer;">
+        <button style="background: none; border: none; font-size: 2rem; color: #f59e0b; cursor: pointer;">
             &#8592;
         </button>
     </a>

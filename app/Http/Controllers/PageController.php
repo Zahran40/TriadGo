@@ -32,25 +32,38 @@ class PageController extends Controller
     {
         return view('login');
     }
+
+    public function invoice()
+    {
+        return view('invoice');
+    }
     public function store(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users|regex:/^[^@]+@[^@]+\.[a-zA-Z]{2,}$/',
             'country' => 'nullable|string|max:255',
-            'phone' => 'nullable|string|min:10|max:15|regex:/^[0-9]+$/',
+            // Validasi phone: format E.164 (nomor internasional dengan tanda plus, 8-20 digit)
+            'phone' => ['required', 'regex:/^\\+[1-9][0-9]{7,19}$/'],
             'password' => 'required|string|min:8|confirmed|',
             'role' => 'required|string|in:ekspor,impor',
         ]);
 
         // Create a new user instance
-        $user = new User();
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->country = $request->country;
-        $user->phone = $request->phone;
-        $user->password = bcrypt($request->password);
-        $user->role = $request->role;
+       $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'country' => $request->country,
+            'phone' => $request->phone,
+            'password' => bcrypt($request->password),
+            'role' => $request->role,
+       ]);
+        // $user->name = $request->name;
+        // $user->email = $request->email;
+        // $user->country = $request->country;
+        // $user->phone = $request->phone;
+        // $user->password = bcrypt($request->password);
+        // $user->role = $request->role;
 
         // Save the user to the database
         $user->save();
@@ -73,6 +86,8 @@ class PageController extends Controller
                 return redirect()->route('ekspor');
             } elseif ($role === 'impor') {
                 return redirect()->route('importir');
+            } elseif ($role === 'admin') {
+                return redirect('/admin1');
             } else {
                 return redirect('/');
             }

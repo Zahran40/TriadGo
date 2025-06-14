@@ -43,8 +43,7 @@ class PageController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users|regex:/^[^@]+@[^@]+\.[a-zA-Z]{2,}$/',
             'country' => 'nullable|string|max:255',
-            // Validasi phone: format E.164 (nomor internasional dengan tanda plus, 8-20 digit)
-            'phone' => ['required', 'regex:/^\\+[1-9][0-9]{7,19}$/'],
+            'phone' => ['required', 'string', 'min:8', 'max:20'],
             'password' => 'required|string|min:8|confirmed|',
             'role' => 'required|string|in:ekspor,impor',
         ]);

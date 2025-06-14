@@ -244,8 +244,7 @@
             }
             // Set kode negara (untuk jaga-jaga jika user submit tanpa ganti negara)
             updateCountryCode();
-            // Input nomor hp hanya nomor lokal (tanpa kode negara)
-            input.value = iti.getNumber('national').replace(/\D/g, '');
+            input.value = iti.getNumber('E.164');
         });
     </script>
 </body>

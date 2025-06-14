@@ -32,4 +32,4 @@ class UsersList extends Page implements Tables\Contracts\HasTable
             TextColumn::make('role')->label('Role')->badge(),
         ];
     }
-} // <-- tambahkan ini
+}

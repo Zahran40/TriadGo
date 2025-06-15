@@ -22,6 +22,14 @@ class PageController extends Controller
         return view('user-profile');
     }
 
+
+    public function catalog()
+    {
+        if (!Auth::check()) {
+            return view('404');
+        }
+        return view('catalog'); 
+    }
    
     
 

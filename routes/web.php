@@ -45,3 +45,6 @@ Route::get('formeksportir', [EksportirController::class, 'formeksportir'])->name
 Route::fallback(function () {
     return view('404');
 });
+
+//Route Catalog
+Route::get('/catalog', [PageController::class, 'catalog'])->name('catalog');

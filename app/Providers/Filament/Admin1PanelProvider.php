@@ -17,7 +17,6 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
-use Illuminate\Support\Facades\Auth;
 
 class Admin1PanelProvider extends PanelProvider
 {
@@ -27,15 +26,11 @@ class Admin1PanelProvider extends PanelProvider
             ->default()
             ->id('admin1')
             ->path('admin1')
-            // ->auth([
-            //     'login' => function ($request) {
-            //         if (!Auth::check()) {
-            //             return redirect()->route('login');
-            //         }
-            //         return redirect()->intended('/admin1');
-            //     },
-            // ])
-        
+            ->login() // Enable login Filament
+            ->authGuard('web') // Use web guard
+            ->colors([
+                'primary' => Color::Blue,
+            ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
@@ -46,16 +41,6 @@ class Admin1PanelProvider extends PanelProvider
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,
             ])
-            // ->auth([
-//     'login' => function ($request) {
-//         // Redirect ke halaman login utama jika belum login
-//         if (!auth()->check()) {
-//             return redirect()->route('login');
-//         }
-//         // Jika sudah login, lanjutkan ke panel
-//         return redirect()->intended('/admin1');
-//     },
-// ])
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
@@ -66,6 +51,7 @@ class Admin1PanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
+                'admin.access', // Gunakan alias middleware
             ])
             ->authMiddleware([
                 Authenticate::class,

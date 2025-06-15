@@ -1,9 +1,10 @@
 <?php
+
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class LoginController extends Controller
 {
@@ -22,21 +23,35 @@ class LoginController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            $role = Auth::user()->role;
+            $user = Auth::user();
+            $role = $user->role;
+
+            // Debug log
+            Log::info('User logged in', [
+                'user_id' => $user->user_id,
+                'email' => $user->email,
+                'role' => $role,
+                'name' => $user->name
+            ]);
 
             if ($role === 'ekspor') {
                 return redirect()->route('ekspor');
             } elseif ($role === 'impor') {
                 return redirect()->route('importir');
             } elseif ($role === 'admin') {
+                // Redirect admin langsung ke panel admin
                 return redirect('/admin1');
             } else {
-                return redirect('/');
+                // Jika role tidak dikenali, logout dan redirect ke login
+                Auth::logout();
+                return redirect()->route('login')->withErrors([
+                    'email' => 'Role tidak valid: ' . $role,
+                ]);
             }
         }
 
         return back()->withErrors([
-            'email' => 'Wrong email/password.',
+            'email' => 'Email atau password salah.',
         ]);
     }
 }

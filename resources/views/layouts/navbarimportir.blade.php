@@ -54,13 +54,21 @@
     <div id="mobileSidebar" class="navbar-background fixed inset-0 z-50 bg-opacity-40 hidden">
         <div class="navbar-background fixed top-0 right-0 w-64 h-full shadow-lg p-6 flex flex-col">
             <button id="closeSidebar" class="self-end mb-8 text-2xl text-blue-700">&times;</button>
-            @auth
-                <form method="POST" action="{{ route('logout') }}" id="logoutFormMobile">
-                    @csrf
-                    <button type="button"
-                        class="w-full mt-3 px-4 py-2 bg-red-500 text-white rounded-md font-semibold hover:bg-red-600 transition"
-                        id="logoutBtnMobile">Logout</button>
-                </form>
-            @endauth
+
+            <!-- Menu Items -->
+            <a href="#" class="mb-4 text-blue-700 font-semibold hover:text-orange-500 transition nav-gradient-move">Home</a>
+            <a href="#" class="mb-4 text-blue-700 font-semibold hover:text-orange-500 transition nav-gradient-move">Catalog</a>
+            <a href="#" class="mb-4 text-blue-700 font-semibold hover:text-orange-500 transition nav-gradient-move">Request</a>
+            <a href="#" class="mb-4 text-blue-700 font-semibold hover:text-orange-500 transition nav-gradient-move">Transactions</a>
+            <a href="{{ route('userprofile') }}" class="mb-4 text-blue-700 font-semibold hover:text-orange-500 transition nav-gradient-move">Account</a>
+
+            <!-- Logout Button -->
+            <form method="POST" action="{{ route('logout') }}" class="mt-auto">
+                @csrf
+                <button type="submit"
+                    class="w-full px-4 py-2 bg-red-500 text-white rounded-md font-semibold hover:bg-red-600 transition">
+                    Logout
+                </button>
+            </form>
         </div>
     </div>

@@ -824,3 +824,64 @@ body {
     background: #fff !important;
     color: #ff3b3b !important;
 }
+
+/* Dark mode untuk intl-tel-input */
+html.dark .iti {
+    background: #2d3748 !important;
+    color: #f7fafc !important;
+}
+
+html.dark .iti__country-list {
+    background: #2d3748 !important;
+    color: #f7fafc !important;
+    border-color: #4a5568 !important;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5) !important;
+}
+
+html.dark .iti__country {
+    background: #2d3748 !important;
+    color: #f7fafc !important;
+    border-bottom-color: #4a5568 !important;
+}
+
+html.dark .iti__country:hover,
+html.dark .iti__country.iti__highlight {
+    background: #186094 !important;
+    color: #fff !important;
+}
+
+html.dark .iti__selected-flag {
+    background: #2d3748 !important;
+    color: #f7fafc !important;
+    border-color: #4a5568 !important;
+}
+
+html.dark .iti__arrow {
+    border-top-color: #f7fafc !important;
+}
+
+html.dark .iti__search-input {
+    background: #4a5568 !important;
+    color: #f7fafc !important;
+    border-color: #718096 !important;
+}
+
+/* Bounce animation untuk 404 */
+@keyframes bounce {
+    0%, 20%, 53%, 80%, 100% {
+        transform: translate3d(0,0,0);
+    }
+    40%, 43% {
+        transform: translate3d(0, -10px, 0);
+    }
+    70% {
+        transform: translate3d(0, -5px, 0);
+    }
+    90% {
+        transform: translate3d(0, -2px, 0);
+    }
+}
+
+.animate-bounce-slow {
+    animation: bounce 2s infinite;
+}

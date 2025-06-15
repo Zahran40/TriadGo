@@ -73,41 +73,40 @@
         @csrf
         <div class="signup-title">Sign Up</div>
         <div class="signup-subtitle">Bergabunglah dengan TriadGO untuk ekspor & impor lebih mudah!</div>
+        
         <div class="form-group">
             <label for="name" style="color: var(--dark);">Nama</label>
             <input type="text" id="name" name="name" required autocomplete="off" placeholder="Nama lengkap">
         </div>
+        
         <div class="form-group">
             <label for="email" style="color: var(--dark);">Email</label>
             <input type="email" id="email" name="email" required autocomplete="off" placeholder="Alamat email">
         </div>
+        
         <div class="form-group">
             <label for="country" style="color: var(--dark);">Negara</label>
-            <select id="country" name="country" required>
+            <select id="country" name="country" required style="color: var(--dark);">
                 <option value="">Pilih negara</option>
-                <option value="Indonesia">Indonesia</option>
-                <option value="Malaysia">Malaysia</option>
-                <option value="Singapore">Singapore</option>
-                <option value="Thailand">Thailand</option>
-                <option value="Vietnam">Vietnam</option>
-                <option value="Brunei">Brunei</option>
-                <option value="Philippines">Philippines</option>
-                <option value="Cambodia">Cambodia</option>
-                <option value="Laos">Laos</option>
-                <option value="Myanmar">Myanmar</option>
+                <option value="Indonesia" data-code="id" data-dial="+62">Indonesia</option>
+                <option value="Malaysia" data-code="my" data-dial="+60">Malaysia</option>
+                <option value="Singapore" data-code="sg" data-dial="+65">Singapore</option>
+                <option value="Thailand" data-code="th" data-dial="+66">Thailand</option>
+                <option value="Vietnam" data-code="vn" data-dial="+84">Vietnam</option>
+                <option value="Brunei" data-code="bn" data-dial="+673">Brunei</option>
+                <option value="Philippines" data-code="ph" data-dial="+63">Philippines</option>
+                <option value="Cambodia" data-code="kh" data-dial="+855">Cambodia</option>
+                <option value="Laos" data-code="la" data-dial="+856">Laos</option>
+                <option value="Myanmar" data-code="mm" data-dial="+95">Myanmar</option>
             </select>
         </div>
+        
         <div class="form-group">
             <label for="phone" style="color: var(--dark);">No. HP</label>
-            <div style="display: flex; align-items: center; gap: 8px;">
-                <!-- Kode negara (readonly, otomatis) -->
-                <input type="text" id="country_code" name="country_code" readonly
-                    style="width: 80px; text-align: center; border: 1px solid #ccc;">
-                <!-- Input nomor HP (tanpa kode negara) -->
-                <input id="phone" name="phone" type="tel" required autocomplete="off" placeholder="Nomor HP"
-                    style="flex:1;">
-            </div>
+            <input id="phone" name="phone" type="tel" required autocomplete="off" placeholder="Nomor HP">
+            <div id="phone-error" style="color: red; font-size: 0.85em; margin-top: 5px; display: none;"></div>
         </div>
+        
         <div class="form-group">
             <label for="password" style="color: var(--dark);">Password</label>
             <div style="position:relative;">
@@ -115,14 +114,12 @@
                     style="padding-right:40px;">
                 <span id="togglePassword"
                     style="position:absolute; right:10px; top:50%; transform:translateY(-50%); cursor:pointer; width:28px; height:28px; display:flex; align-items:center;">
-                    <!-- Show Password -->
                     <svg id="eyeOpen" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
                         viewBox="0 0 24 24" stroke="currentColor" style="display:none;">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M1.5 12s4-7.5 10.5-7.5S22.5 12 22.5 12s-4 7.5-10.5 7.5S1.5 12 1.5 12z" />
                         <circle cx="12" cy="12" r="3.5" stroke="currentColor" stroke-width="2" fill="none" />
                     </svg>
-                    <!-- Hide Password -->
                     <svg id="eyeClosed" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
                         viewBox="0 0 24 24" stroke="currentColor" style="display:block;">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -132,9 +129,9 @@
                     </svg>
                 </span>
             </div>
-            <span id="password-length-error" style="color:#EEA133; font-size:0.95em; display:none;">Password minimal 8
-                karakter</span>
+            <span id="password-length-error" style="color:#EEA133; font-size:0.95em; display:none;">Password minimal 8 karakter</span>
         </div>
+        
         <div class="form-group">
             <label for="password_confirmation" style="color: var(--dark);">Confirm Password</label>
             <div style="position:relative;">
@@ -142,14 +139,12 @@
                     autocomplete="off" placeholder="Ulangi password" style="padding-right:40px;">
                 <span id="toggleConfirmPassword"
                     style="position:absolute; right:10px; top:50%; transform:translateY(-50%); cursor:pointer; width:28px; height:28px; display:flex; align-items:center;">
-                    <!-- Show Password -->
                     <svg id="eyeOpenConfirm" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
                         viewBox="0 0 24 24" stroke="currentColor" style="display:none;">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M1.5 12s4-7.5 10.5-7.5S22.5 12 22.5 12s-4 7.5-10.5 7.5S1.5 12 1.5 12z" />
                         <circle cx="12" cy="12" r="3.5" stroke="currentColor" stroke-width="2" fill="none" />
                     </svg>
-                    <!-- Hide Password -->
                     <svg id="eyeClosedConfirm" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
                         viewBox="0 0 24 24" stroke="currentColor" style="display:block;">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -161,6 +156,7 @@
             </div>
             <span id="password-error" style="color:#EEA133; font-size:0.95em; display:none;">Password tidak sama</span>
         </div>
+        
         <div class="form-group">
             <label style="color: var(--dark);">Role</label>
             <div class="role-group" style="display:flex; gap:20px;">
@@ -176,11 +172,125 @@
                 </label>
             </div>
         </div>
+        
         <button type="submit" class="signup-btn" id="signupBtn" disabled>Daftar</button>
         <a href="{{ route('login') }}" class="login-link" style="color: var(--dark);">Sudah punya akun? Login</a>
     </form>
+
+    <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/intlTelInput.min.js"></script>
     <script>
-        // Validasi password + tidak bisa submit jika password tidak sama
+        // Konfigurasi negara ASEAN dengan validasi yang tepat
+        const countryConfig = {
+            'Indonesia': { code: 'id', dial: '+62', minLength: 9, maxLength: 13, pattern: /^[0-9]{9,13}$/ },
+            'Malaysia': { code: 'my', dial: '+60', minLength: 9, maxLength: 11, pattern: /^[0-9]{9,11}$/ },
+            'Singapore': { code: 'sg', dial: '+65', minLength: 8, maxLength: 8, pattern: /^[0-9]{8}$/ },
+            'Thailand': { code: 'th', dial: '+66', minLength: 9, maxLength: 9, pattern: /^[0-9]{9}$/ },
+            'Vietnam': { code: 'vn', dial: '+84', minLength: 9, maxLength: 10, pattern: /^[0-9]{9,10}$/ },
+            'Brunei': { code: 'bn', dial: '+673', minLength: 7, maxLength: 7, pattern: /^[0-9]{7}$/ },
+            'Philippines': { code: 'ph', dial: '+63', minLength: 10, maxLength: 10, pattern: /^[0-9]{10}$/ },
+            'Cambodia': { code: 'kh', dial: '+855', minLength: 8, maxLength: 9, pattern: /^[0-9]{8,9}$/ },
+            'Laos': { code: 'la', dial: '+856', minLength: 8, maxLength: 10, pattern: /^[0-9]{8,10}$/ },
+            'Myanmar': { code: 'mm', dial: '+95', minLength: 9, maxLength: 10, pattern: /^[0-9]{9,10}$/ }
+        };
+
+        const phoneInput = document.querySelector("#phone");
+        const countrySelect = document.getElementById('country');
+        const phoneError = document.getElementById('phone-error');
+        
+        // Initialize intl-tel-input
+        const iti = window.intlTelInput(phoneInput, {
+            initialCountry: "id",
+            onlyCountries: ["id", "my", "sg", "th", "vn", "bn", "ph", "kh", "la", "mm"],
+            nationalMode: false,
+            utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/utils.js"
+        });
+
+        // Sinkronisasi dropdown negara dengan intl-tel-input
+        countrySelect.addEventListener('change', function() {
+            const selectedCountry = this.value;
+            if (selectedCountry && countryConfig[selectedCountry]) {
+                const config = countryConfig[selectedCountry];
+                iti.setCountry(config.code);
+                phoneInput.placeholder = `Contoh: ${getPlaceholder(selectedCountry)}`;
+                validatePhone();
+            }
+        });
+
+        // Update dropdown negara ketika flag berubah
+        phoneInput.addEventListener('countrychange', function() {
+            const countryData = iti.getSelectedCountryData();
+            const countryName = getCountryNameByCode(countryData.iso2);
+            if (countryName) {
+                countrySelect.value = countryName;
+            }
+        });
+
+        // Fungsi untuk mendapatkan nama negara berdasarkan kode
+        function getCountryNameByCode(code) {
+            for (const [name, config] of Object.entries(countryConfig)) {
+                if (config.code === code) {
+                    return name;
+                }
+            }
+            return null;
+        }
+
+        // Fungsi untuk mendapatkan placeholder contoh nomor
+        function getPlaceholder(country) {
+            const examples = {
+                'Indonesia': '081234567890',
+                'Malaysia': '0123456789',
+                'Singapore': '91234567',
+                'Thailand': '812345678',
+                'Vietnam': '912345678',
+                'Brunei': '7123456',
+                'Philippines': '9171234567',
+                'Cambodia': '12345678',
+                'Laos': '20123456',
+                'Myanmar': '912345678'
+            };
+            return examples[country] || '123456789';
+        }
+
+        // Validasi nomor telepon
+        function validatePhone() {
+            const selectedCountry = countrySelect.value;
+            const phoneNumber = phoneInput.value.replace(/\D/g, ''); // Hapus semua non-digit
+            
+            if (!selectedCountry || !phoneNumber) {
+                phoneError.style.display = 'none';
+                return true;
+            }
+
+            const config = countryConfig[selectedCountry];
+            if (!config) {
+                phoneError.textContent = 'Negara tidak valid';
+                phoneError.style.display = 'block';
+                return false;
+            }
+
+            // Validasi panjang dan pola
+            if (phoneNumber.length < config.minLength || phoneNumber.length > config.maxLength) {
+                phoneError.textContent = `Nomor HP harus ${config.minLength}-${config.maxLength} digit untuk ${selectedCountry}`;
+                phoneError.style.display = 'block';
+                return false;
+            }
+
+            if (!config.pattern.test(phoneNumber)) {
+                phoneError.textContent = `Format nomor HP tidak valid untuk ${selectedCountry}`;
+                phoneError.style.display = 'block';
+                return false;
+            }
+
+            phoneError.style.display = 'none';
+            return true;
+        }
+
+        // Event listener untuk validasi real-time
+        phoneInput.addEventListener('input', validatePhone);
+        phoneInput.addEventListener('blur', validatePhone);
+
+        // Validasi password
         const password = document.getElementById('password');
         const confirm = document.getElementById('password_confirmation');
         const btn = document.getElementById('signupBtn');
@@ -189,7 +299,6 @@
         function validatePassword() {
             let isValid = true;
 
-            // Validasi panjang password
             if (password.value && password.value.length < 8) {
                 document.getElementById('password-length-error').style.display = 'block';
                 isValid = false;
@@ -197,7 +306,6 @@
                 document.getElementById('password-length-error').style.display = 'none';
             }
 
-            // Validasi konfirmasi password
             if (password.value && confirm.value && password.value !== confirm.value) {
                 btn.disabled = true;
                 error.style.display = 'block';
@@ -208,30 +316,25 @@
                 error.style.display = 'none';
             }
 
-            // Tombol hanya aktif jika password cukup panjang dan konfirmasi sama
-            btn.disabled = !(password.value.length >= 8 && password.value === confirm.value);
+            const phoneValid = validatePhone();
+            btn.disabled = !(password.value.length >= 8 && password.value === confirm.value && phoneValid);
         }
 
         password.addEventListener('input', validatePassword);
         confirm.addEventListener('input', validatePassword);
-        window.addEventListener('DOMContentLoaded', function() {
-            validatePassword();
-        });
 
-        // Toggle Password
-        const passwordInput = document.getElementById('password');
+        // Toggle password visibility
         const togglePassword = document.getElementById('togglePassword');
         const eyeOpen = document.getElementById('eyeOpen');
         const eyeClosed = document.getElementById('eyeClosed');
 
         togglePassword.addEventListener('click', function() {
-            const isHidden = passwordInput.type === 'password';
-            passwordInput.type = isHidden ? 'text' : 'password';
+            const isHidden = password.type === 'password';
+            password.type = isHidden ? 'text' : 'password';
             eyeOpen.style.display = isHidden ? 'block' : 'none';
             eyeClosed.style.display = isHidden ? 'none' : 'block';
         });
 
-        // Toggle Confirm Password
         const confirmPasswordInput = document.getElementById('password_confirmation');
         const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
         const eyeOpenConfirm = document.getElementById('eyeOpenConfirm');
@@ -243,62 +346,33 @@
             eyeOpenConfirm.style.display = isHidden ? 'block' : 'none';
             eyeClosedConfirm.style.display = isHidden ? 'none' : 'block';
         });
-    </script>
 
-    <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/intlTelInput.min.js"></script>
-    <script>
-        const aseanCountries = [
-            "id", // Indonesia
-            "my", // Malaysia
-            "sg", // Singapore
-            "th", // Thailand
-            "vn", // Vietnam
-            "bn", // Brunei
-            "ph", // Philippines
-            "kh", // Cambodia
-            "la", // Laos
-            "mm" // Myanmar
-        ];
-
-        const input = document.querySelector("#phone");
-        const countryCodeInput = document.getElementById('country_code');
-        const iti = window.intlTelInput(input, {
-            initialCountry: "id",
-            onlyCountries: aseanCountries,
-            nationalMode: true, // agar input hanya nomor lokal
-            utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/utils.js",
-            formatOnDisplay: false
-        });
-
-        // Mengganti kode negara sesuai dengan bendera yang dipilih
-        function updateCountryCode() {
-            const dialCode = iti.getSelectedCountryData().dialCode;
-            countryCodeInput.value = '+' + dialCode;
-        }
-
-        input.addEventListener('countrychange', updateCountryCode);
-        window.addEventListener('DOMContentLoaded', updateCountryCode);
-
-        // Validasi dan submit
+        // Form submission
         document.getElementById('signupForm').addEventListener('submit', function(e) {
-            if (!iti.isValidNumber()) {
+            const phoneValid = validatePhone();
+            
+            if (!phoneValid) {
                 e.preventDefault();
                 Swal.fire({
                     icon: 'error',
                     title: 'Nomor HP tidak valid!',
-                    text: 'Silakan masukkan nomor HP yang benar.',
-                    background: '#e3342f', 
-                    color: '#ffffff', 
-                    customClass: {
-                        popup: 'custom-swal-popup'
-                    }
+                    text: 'Silakan periksa nomor HP Anda.',
+                    background: '#e3342f',
+                    color: '#ffffff'
                 });
-                input.focus();
+                phoneInput.focus();
                 return false;
             }
-            // Set kode negara (untuk jaga-jaga jika user submit tanpa ganti negara)
-            updateCountryCode();
-            input.value = iti.getNumber('E.164');
+
+            // Set nomor telepon dengan format internasional
+            const fullNumber = iti.getNumber();
+            phoneInput.value = fullNumber;
+        });
+
+        // Initialize
+        window.addEventListener('DOMContentLoaded', function() {
+            validatePassword();
+            validatePhone();
         });
     </script>
 </body>

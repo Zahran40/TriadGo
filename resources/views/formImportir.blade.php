@@ -210,7 +210,7 @@
                             </button>
                         </div>
                     </div>
-                </div>
+                </div> <!-- Penutup card Order Summary dipindahkan ke sini agar card tidak panjang ke bawah -->
 
                 <!-- Payment & Billing Section -->
                 <div class="space-y-6">
@@ -304,41 +304,6 @@
         </div>
         <input type="hidden" name="midtrans_submethod" id="midtransSubmethod" value="" />
         <div id="midtransFormContainer" class="w-full mt-4"></div>
-    </div>
-</label>
-
-                            <!-- Stripe (International) -->
-                            <label class="payment-option custom-radio flex flex-col items-center justify-center min-h-[160px] p-6 border-2 border-orange-400 dark:border-orange-500 rounded-xl cursor-pointer hover:bg-orange-100 dark:hover:bg-orange-900/20 transition-all w-full text-center bg-orange-50 dark:bg-orange-900/20" data-countries="all">
-    <input type="radio" name="paymentMethod" value="stripe" class="mb-3" checked />
-    <div class="flex flex-col items-center w-full">
-        <div class="w-16 h-10 mb-2 bg-white rounded-lg border flex items-center justify-center">
-            <svg width="50" height="20" viewBox="0 0 50 20" fill="none">
-                <rect width="50" height="20" rx="4" fill="#635BFF"/>
-                <text x="25" y="13" font-family="Arial, sans-serif" font-size="8" font-weight="bold" text-anchor="middle" fill="white">stripe</text>
-            </svg>
-        </div>
-        <div class="font-semibold text-blue-900 dark:text-blue-100 text-lg">Credit/Debit Card</div>
-        <div class="text-sm text-gray-600 dark:text-gray-300 mb-2">Secure payment with Stripe</div>
-        <div class="flex flex-wrap gap-2 justify-center">
-            <div class="w-8 h-5 bg-white rounded border flex items-center justify-center">
-                <svg width="20" height="6" viewBox="0 0 30 10" fill="none">
-                    <rect width="30" height="10" fill="#1A1F71"/>
-                    <text x="15" y="7" font-family="Arial, sans-serif" font-size="4" font-weight="bold" text-anchor="middle" fill="white">VISA</text>
-                </svg>
-            </div>
-            <div class="w-8 h-5 bg-white rounded border flex items-center justify-center">
-                <svg width="16" height="10" viewBox="0 0 24 14" fill="none">
-                    <circle cx="8" cy="7" r="4" fill="#EB001B"/>
-                    <circle cx="16" cy="7" r="4" fill="#F79E1B"/>
-                </svg>
-            </div>
-            <div class="w-8 h-5 bg-white rounded border flex items-center justify-center">
-                <svg width="20" height="6" viewBox="0 0 30 10" fill="none">
-                    <rect width="30" height="10" fill="#006FCF"/>
-                    <text x="15" y="7" font-family="Arial, sans-serif" font-size="3" font-weight="bold" text-anchor="middle" fill="white">AMEX</text>
-                </svg>
-            </div>
-        </div>
     </div>
 </label>
 

@@ -278,7 +278,7 @@
 
     <script>
         const isDarkMode = document.documentElement.classList.contains('dark');
-        
+
         const darkModeToggle = document.getElementById('darkModeToggle');
         const darkModeThumb = document.getElementById('darkModeThumb');
         const htmlElement = document.documentElement;

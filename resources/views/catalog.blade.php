@@ -2,47 +2,41 @@
 <html lang="en">
 
 <head>
+    <!-- TAMBAHKAN SweetAlert2 seperti di importir -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TriadGO</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catalog | TriadGO</title>
     @vite('resources/css/app.css')
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Dark Mode Script - SAMA seperti importir -->
+    <script>
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.documentElement.classList.add('dark');
+        }
+    </script>
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
         .body {
             font-family: poppins, sans-serif;
         }
     </style>
-    {{-- <!-- <link rel="stylesheet" href="{{ asset('css/app.css') }}" />
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script> --> --}}
+</head>
 
-    <script src="https://cdn.tailwindcss.com">
+<body class="home-bg min-h-screen">
+    <!-- Header/Navbar -->
+    @include('layouts.navbarimportir')
 
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#2563eb',
-                        accent: '#f97316',
-                    },
-                    animation: {
-                        'float': 'float 6s ease-in-out infinite',
-                        'pulse-slow': 'pulse 3s ease-in-out infinite',
-                    },
-                    keyframes: {
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-10px)' },
-                        }
-                    }
-                },
-            },
-        }
+    <!-- Main Content -->
+   
 
-        tailwind.scan()
-    </script>
-    <script>
+
+
+
+   <script>
     const isDarkMode = document.documentElement.classList.contains('dark');
 
     const darkModeToggle = document.getElementById('darkModeToggle');
@@ -200,10 +194,6 @@
         });
     });
 </script>
-</head>
-<body>
-    @include('layouts.navbarimportir')
-
-   test
 </body>
+
 </html>

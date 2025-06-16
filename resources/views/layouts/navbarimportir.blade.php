@@ -6,7 +6,7 @@
                 <h1 class="text-2xl font-bold text-orange-500 gradient-move">Go</h1>
             </div>
             <nav class="hidden md:flex items-center space-x-6 text-blue-700 font-semibold">
-                <a href="#home-bg" class="hover:text-orange-500 transition nav-gradient-move">Home</a>
+                <a href="{{ route('importir') }}" class="hover:text-orange-500 transition nav-gradient-move">Home</a>
                 <a href="{{ route('catalog') }}" class="hover:text-orange-500 transition nav-gradient-move">Catalog</a>
                 <a href="#about" class="hover:text-orange-500 transition nav-gradient-move">Request</a>
                 <a href="#about" class="hover:text-orange-500 transition nav-gradient-move">Transaction</a>
@@ -56,7 +56,7 @@
             <button id="closeSidebar" class="self-end mb-8 text-2xl text-blue-700">&times;</button>
 
             <!-- Menu Items -->
-            <a href="#" class="mb-4 text-blue-700 font-semibold hover:text-orange-500 transition nav-gradient-move">Home</a>
+            <a href="{{ route('importir') }}" class="mb-4 text-blue-700 font-semibold hover:text-orange-500 transition nav-gradient-move">Home</a>
             <a href="{{ route('catalog') }}" class="mb-4 text-blue-700 font-semibold hover:text-orange-500 transition nav-gradient-move">Catalog</a>
             <a href="#" class="mb-4 text-blue-700 font-semibold hover:text-orange-500 transition nav-gradient-move">Request</a>
             <a href="#" class="mb-4 text-blue-700 font-semibold hover:text-orange-500 transition nav-gradient-move">Transactions</a>

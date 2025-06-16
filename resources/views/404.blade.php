@@ -72,12 +72,23 @@
                 </div>
 
                 <!-- Dark Mode Toggle -->
-                <button id="darkModeToggle" class="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-300">
-                    <svg id="sunIcon" class="w-6 h-6 text-yellow-500 hidden" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"/>
-                    </svg>
-                    <svg id="moonIcon" class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/>
+                <label for="darkModeToggle" class="flex items-center cursor-pointer select-none">
+                    <span class="mr-2 text-sm font-medium text-gray-700 dark:text-gray-200"
+                        style="font-size: 30px">☀️</span>
+                    <div class="relative">
+                        <input type="checkbox" id="darkModeToggle" class="sr-only" />
+                        <div class="block w-12 h-7 rounded-full bg-gray-300 dark:bg-gray-600 transition"></div>
+                        <div id="darkModeThumb"
+                            class="dot absolute left-1 top-1 w-5 h-5 rounded-full bg-white border border-gray-400 dark:bg-[#003355] transition-transform duration-300">
+                        </div>
+                    </div>
+                    <span class="ml-2 text-sm font-medium text-gray-700 dark:text-gray-200"
+                        style="font-size: 30px">🌙</span>
+                </label>
+                <button class="md:hidden text-blue-700 focus:outline-none" aria-label="Open Menu">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 wiggle" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 8h16M4 16h16" />
                     </svg>
                 </button>
             </div>
@@ -286,76 +297,138 @@
     </footer>
 
     <script>
-        // Dark mode toggle functionality dengan persistent state
-        const darkModeToggle = document.getElementById('darkModeToggle');
-        const sunIcon = document.getElementById('sunIcon');
-        const moonIcon = document.getElementById('moonIcon');
+         const isDarkMode = document.documentElement.classList.contains('dark');
 
-        function updateIcons() {
-            const isDark = document.documentElement.classList.contains('dark');
-            if (isDark) {
-                sunIcon.classList.remove('hidden');
-                moonIcon.classList.add('hidden');
-            } else {
-                sunIcon.classList.add('hidden');
-                moonIcon.classList.remove('hidden');
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    const darkModeThumb = document.getElementById('darkModeThumb');
+    const htmlElement = document.documentElement;
+
+    function updateDarkModeSwitch() {
+        if (htmlElement.classList.contains('dark')) {
+            darkModeToggle.checked = true;
+            darkModeThumb.style.transform = 'translateX(1.25rem)';
+            darkModeThumb.style.backgroundColor = '#003355';
+            darkModeThumb.style.borderColor = '#003355';
+        } else {
+            darkModeToggle.checked = false;
+            darkModeThumb.style.transform = 'translateX(0)';
+            darkModeThumb.style.backgroundColor = '#fff';
+            darkModeThumb.style.borderColor = '#ccc';
+        }
+    }
+
+    if (localStorage.getItem('darkMode') === 'enabled') {
+        htmlElement.classList.add('dark');
+    }
+
+    updateDarkModeSwitch();
+
+    darkModeToggle.addEventListener('change', () => {
+        htmlElement.classList.toggle('dark');
+        if (htmlElement.classList.contains('dark')) {
+            localStorage.setItem('darkMode', 'enabled');
+        } else {
+            localStorage.setItem('darkMode', 'disabled');
+        }
+        updateDarkModeSwitch();
+    });
+
+    // Scroll to section with slide
+    function scrollToSectionWithSlide(sectionId) {
+        const section = document.getElementById(sectionId);
+        if (!section) return;
+
+        section.classList.remove('slide-in');
+
+        const sectionRect = section.getBoundingClientRect();
+        const absoluteElementTop = sectionRect.top + window.pageYOffset;
+        const offset = window.innerHeight / 2 - sectionRect.height / 2;
+        const scrollTo = absoluteElementTop - offset;
+
+        window.scrollTo({
+            top: scrollTo,
+            behavior: 'smooth'
+        });
+
+        setTimeout(() => {
+            section.classList.add('slide-in');
+        }, 300);
+    }
+
+    document.querySelectorAll('nav a[href^="#"], a[href^="#"]').forEach(link => {
+        link.addEventListener('click', function (event) {
+            if (this.getAttribute('href') !== '#') {
+                event.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                scrollToSectionWithSlide(targetId);
+            }
+        });
+    });
+
+    document.querySelectorAll('.slide-in').forEach(section => {
+        function checkSlide() {
+            const rect = section.getBoundingClientRect();
+            if (rect.top < window.innerHeight - 100) {
+                section.classList.add('visible');
             }
         }
+        window.addEventListener('scroll', checkSlide);
+        checkSlide();
+    });
 
-        // Initialize icons berdasarkan current state
-        updateIcons();
+    // Sidebar mobile
+    const sidebar = document.getElementById('mobileSidebar');
+    const openSidebarBtn = document.querySelector('button.md\\:hidden[aria-label="Open Menu"]');
+    const closeSidebarBtn = document.getElementById('closeSidebar');
 
-        darkModeToggle.addEventListener('click', () => {
-            const isDark = document.documentElement.classList.contains('dark');
-            
-            if (isDark) {
-                document.documentElement.classList.remove('dark');
-                localStorage.setItem('darkMode', 'false');
-            } else {
-                document.documentElement.classList.add('dark');
-                localStorage.setItem('darkMode', 'true');
+    openSidebarBtn.addEventListener('click', function () {
+        sidebar.classList.remove('hidden');
+    });
+
+    closeSidebarBtn.addEventListener('click', function () {
+        sidebar.classList.add('hidden');
+    });
+
+    // Tutup sidebar jika klik di luar sidebar
+    sidebar.addEventListener('click', function (e) {
+        if (e.target === sidebar) {
+            sidebar.classList.add('hidden');
+        }
+    });
+
+    // Scroll to section dari sidebar
+    sidebar.querySelectorAll('a[href^="#"]').forEach(link => {
+        link.addEventListener('click', function (event) {
+            event.preventDefault();
+            sidebar.classList.add('hidden');
+            const targetId = this.getAttribute('href').substring(1);
+            scrollToSectionWithSlide(targetId);
+        });
+    });
+
+    // SweetAlert2 Logout Desktop
+    document.getElementById('logoutBtn')?.addEventListener('click', function (e) {
+        Swal.fire({
+            title: 'Logout?',
+            text: "Are you sure you want to logout?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#eea133',
+            confirmButtonText: 'Logout',
+            customClass: {
+                popup: 'bg-white dark:bg-red-600',
+                title: 'text-black dark:text-white',
+                content: 'text-black dark:text-white',
+                confirmButton: 'text-white',
+                cancelButton: 'text-white'
             }
-            
-            updateIcons();
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('logoutForm').submit();
+            }
         });
-
-        // Auto redirect countdown dengan cancel option
-        let countdown = 10;
-        let redirectInterval;
-        const redirectInfo = document.getElementById('redirectInfo');
-        const countdownElement = document.getElementById('countdown');
-        const cancelButton = document.getElementById('cancelRedirect');
-        
-        setTimeout(() => {
-            redirectInfo.classList.remove('hidden');
-            redirectInterval = setInterval(() => {
-                countdown--;
-                countdownElement.textContent = countdown;
-                
-                if (countdown <= 0) {
-                    clearInterval(redirectInterval);
-                    window.location.href = '{{ $homeUrl }}';
-                }
-            }, 1000);
-        }, 5000);
-
-        // Cancel redirect functionality
-        cancelButton.addEventListener('click', () => {
-            clearInterval(redirectInterval);
-            redirectInfo.classList.add('hidden');
-        });
-
-        // Smooth animations on load
-        window.addEventListener('load', () => {
-            document.body.style.opacity = '0';
-            document.body.style.transform = 'translateY(20px)';
-            
-            setTimeout(() => {
-                document.body.style.transition = 'all 0.6s ease-out';
-                document.body.style.opacity = '1';
-                document.body.style.transform = 'translateY(0)';
-            }, 100);
-        });
+    });
     </script>
 </body>
 

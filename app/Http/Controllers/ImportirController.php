@@ -17,7 +17,10 @@ class ImportirController extends Controller
 
     public function catalog()
     {
-        
-        return view('catalog'); 
+        // Middleware sudah handle auth & role check
+        // Jika sampai sini, berarti user sudah pasti role 'impor'
+        return view('catalog');
     }
+
+    
 }

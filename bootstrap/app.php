@@ -14,6 +14,7 @@ return Application::configure(basePath: dirname(__DIR__))
         // Register middleware alias
         $middleware->alias([
             'admin.access' => \App\Http\Middleware\AdminAccess::class,
+            'role.protect' => \App\Http\Middleware\RoleProtection::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

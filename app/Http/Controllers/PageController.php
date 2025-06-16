@@ -22,6 +22,8 @@ class PageController extends Controller
         return view('user-profile');
     }
 
+
+    
    
     
 
@@ -32,14 +34,15 @@ class PageController extends Controller
     
 
     public function logout(Request $request)
-    {
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+{
+    Auth::logout();
 
-        return redirect('/')->with('success', 'You have successfully logged out.');
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
 
-    }
+    // Selalu redirect ke homepage setelah logout
+    return redirect()->route('homepage')->with('success', 'Anda telah berhasil logout');
+}
 
     
 

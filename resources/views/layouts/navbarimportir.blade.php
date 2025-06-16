@@ -6,8 +6,8 @@
                 <h1 class="text-2xl font-bold text-orange-500 gradient-move">Go</h1>
             </div>
             <nav class="hidden md:flex items-center space-x-6 text-blue-700 font-semibold">
-                <a href="#home-bg" class="hover:text-orange-500 transition nav-gradient-move">Home</a>
-                <a href="#services" class="hover:text-orange-500 transition nav-gradient-move">Catalog</a>
+                <a href="{{ route('importir') }}" class="hover:text-orange-500 transition nav-gradient-move">Home</a>
+                <a href="{{ route('catalog') }}" class="hover:text-orange-500 transition nav-gradient-move">Catalog</a>
                 <a href="#about" class="hover:text-orange-500 transition nav-gradient-move">Request</a>
                 <a href="#about" class="hover:text-orange-500 transition nav-gradient-move">Transaction</a>
                 <a href="{{ route('userprofile') }}" class="hover:text-orange-500 transition nav-gradient-move">Account
@@ -37,7 +37,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="M4 8h16M4 16h16" />
                     </svg>
                 </button>
-                <!-- Tambahkan di dalam <nav> atau di tempat yang diinginkan -->
+                
                 <form action="{{ route('logout') }}" method="POST" class="hidden md:inline" id="logoutForm">
                     @csrf
                     <button type="button"
@@ -54,13 +54,21 @@
     <div id="mobileSidebar" class="navbar-background fixed inset-0 z-50 bg-opacity-40 hidden">
         <div class="navbar-background fixed top-0 right-0 w-64 h-full shadow-lg p-6 flex flex-col">
             <button id="closeSidebar" class="self-end mb-8 text-2xl text-blue-700">&times;</button>
-            @auth
-                <form method="POST" action="{{ route('logout') }}" id="logoutFormMobile">
-                    @csrf
-                    <button type="button"
-                        class="w-full mt-3 px-4 py-2 bg-red-500 text-white rounded-md font-semibold hover:bg-red-600 transition"
-                        id="logoutBtnMobile">Logout</button>
-                </form>
-            @endauth
+
+            <!-- Menu Items -->
+            <a href="{{ route('importir') }}" class="mb-4 text-blue-700 font-semibold hover:text-orange-500 transition nav-gradient-move">Home</a>
+            <a href="{{ route('catalog') }}" class="mb-4 text-blue-700 font-semibold hover:text-orange-500 transition nav-gradient-move">Catalog</a>
+            <a href="#" class="mb-4 text-blue-700 font-semibold hover:text-orange-500 transition nav-gradient-move">Request</a>
+            <a href="#" class="mb-4 text-blue-700 font-semibold hover:text-orange-500 transition nav-gradient-move">Transactions</a>
+            <a href="{{ route('userprofile') }}" class="mb-4 text-blue-700 font-semibold hover:text-orange-500 transition nav-gradient-move">Account</a>
+
+            <!-- Logout Button -->
+            <form method="POST" action="{{ route('logout') }}" class="mt-auto">
+                @csrf
+                <button type="submit"
+                    class="w-full px-4 py-2 bg-red-500 text-white rounded-md font-semibold hover:bg-red-600 transition">
+                    Logout
+                </button>
+            </form>
         </div>
     </div>

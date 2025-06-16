@@ -1,35 +1,24 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-
 use Illuminate\Http\Request;
 
 class EksportirController extends Controller
 {
     public function homeeksportir()
-{
-    if (!Auth::check()) {
-        return view('404');
-    }
-    
-    if (Auth::user()->role !== 'ekspor') {
-        return view('404');
-    }
-    return view('eksportir');
-}
-
-public function formeksportir()
-{
-    if (!Auth::check()) {
-        return view('404');
+    {
+        // Middleware sudah handle auth & role check
+        // Jika sampai sini, berarti user sudah pasti role 'ekspor'
+        return view('eksportir');
     }
 
-    
-    if (Auth::user()->role !== 'ekspor') {
-        return view('404');
+    public function formeksportir()
+    {
+        // Middleware sudah handle auth & role check
+        // Jika sampai sini, berarti user sudah pasti role 'ekspor'
+        return view('formeksportir');
     }
-    return view('formeksportir');
-}
 }

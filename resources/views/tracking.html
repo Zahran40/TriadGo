@@ -41,7 +41,9 @@
             font-weight: 800;
             background: linear-gradient(135deg, #1e3a8a, #3b82f6);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
+            color: transparent;
             margin-bottom: 10px;
         }
 
@@ -299,20 +301,20 @@
 <body>
     <div class="tracking-container">
         <div class="tracking-header">
-            <div class="tracking-title">🚢 Package Tracking</div>
-            <div class="tracking-subtitle">Track your shipment across the ocean</div>
+            <div class="tracking-title">🚢 Lacak Paket</div>
+            <div class="tracking-subtitle">Lacak kiriman Anda melintasi lautan</div>
         </div>
         
         <div class="tracking-form">
-            <label for="trackingNumber" class="tracking-label">📦 Receipt Number</label>
+            <label for="trackingNumber" class="tracking-label">📦 Nomor Resi</label>
             <div class="input-group">
-                <input type="text" id="trackingNumber" class="tracking-input" placeholder="Enter your receipt number (e.g., TG123456789)">
+                <input type="text" id="trackingNumber" class="tracking-input" placeholder="Masukkan nomor resi Anda (contoh: TG123456789)">
             </div>
-            <button class="tracking-btn" onclick="nextStatus()">🔍 Track Package</button>
+            <button class="tracking-btn" onclick="nextStatus()">🔍 Lacak Paket</button>
         </div>
         
         <div class="status-section">
-            <div class="tracking-status-title">📍 Shipment Status</div>
+            <div class="tracking-status-title">📍 Status Pengiriman</div>
             <div class="timeline" id="timeline">
                 <div class="progress-bar"></div>
                 <svg class="ocean-wave" viewBox="0 0 80 400" preserveAspectRatio="none">
@@ -412,31 +414,31 @@
                 </div>
                 
                 <div class="timeline-step completed">
-                    <div class="timeline-step-title completed">🏭 Package Received at Warehouse</div>
-                    <div class="timeline-step-date">June 10th, 2025, 09:00 WIB</div>
-                    <div class="timeline-step-desc">Your package has been received and prepared for shipping</div>
-                    <span class="status-badge status-completed">Completed</span>
+                    <div class="timeline-step-title completed">🏭 Paket Diterima di Gudang</div>
+                    <div class="timeline-step-date">10 Juni 2025, 09:00 WIB</div>
+                    <div class="timeline-step-desc">Paket Anda telah diterima dan dipersiapkan untuk pengiriman</div>
+                    <span class="status-badge status-completed">Selesai</span>
                 </div>
                 
                 <div class="timeline-step active">
-                    <div class="timeline-step-title">🛃 Custom Clearance Process</div>
-                    <div class="timeline-step-date">June 11th, 2025, 13:30 WIB</div>
-                    <div class="timeline-step-desc">Package is currently going through customs inspection</div>
-                    <span class="status-badge status-active">In Progress</span>
+                    <div class="timeline-step-title">🛃 Proses Bea Cukai</div>
+                    <div class="timeline-step-date">11 Juni 2025, 13:30 WIB</div>
+                    <div class="timeline-step-desc">Paket sedang dalam proses pemeriksaan bea cukai</div>
+                    <span class="status-badge status-active">Sedang Diproses</span>
                 </div>
                 
                 <div class="timeline-step">
-                    <div class="timeline-step-title gray">🌊 Shipping to Destination Country</div>
-                    <div class="timeline-step-date gray">June 12th, 08:00 WIB</div>
-                    <div class="timeline-step-desc">Package will be loaded onto cargo ship</div>
-                    <span class="status-badge status-pending">Pending</span>
+                    <div class="timeline-step-title gray">🌊 Pengiriman ke Negara Tujuan</div>
+                    <div class="timeline-step-date gray">12 Juni 2025, 08:00 WIB</div>
+                    <div class="timeline-step-desc">Paket akan dimuat ke kapal kargo</div>
+                    <span class="status-badge status-pending">Menunggu</span>
                 </div>
                 
                 <div class="timeline-step">
-                    <div class="timeline-step-title gray">📦 Package Delivered</div>
-                    <div class="timeline-step-date gray">ETA: June 15th, 2025</div>
-                    <div class="timeline-step-desc">Package will be delivered to your address</div>
-                    <span class="status-badge status-pending">Pending</span>
+                    <div class="timeline-step-title gray">📦 Paket Dikirimkan</div>
+                    <div class="timeline-step-date gray">Perkiraan: 15 Juni 2025</div>
+                    <div class="timeline-step-desc">Paket akan dikirim ke alamat Anda</div>
+                    <span class="status-badge status-pending">Menunggu</span>
                 </div>
             </div>
         </div>
@@ -445,7 +447,7 @@
     <script>
         const steps = document.querySelectorAll('.timeline-step');
         const cruiseShip = document.getElementById('cruiseShip');
-        let currentStep = 1; // Start at step 1 (Custom Clearance)
+        let currentStep = 1; // Mulai dari step 1 (Bea Cukai)
 
         function updateShipPosition() {
             if (currentStep < steps.length) {
@@ -453,7 +455,7 @@
                 const top = step.offsetTop - 20;
                 cruiseShip.style.top = top + 'px';
                 
-                // Update step states
+                // Update status langkah
                 steps.forEach((step, index) => {
                     step.classList.remove('active', 'completed');
                     const title = step.querySelector('.timeline-step-title');
@@ -464,16 +466,16 @@
                         title.classList.remove('gray');
                         title.classList.add('completed');
                         badge.className = 'status-badge status-completed';
-                        badge.textContent = 'Completed';
+                        badge.textContent = 'Selesai';
                     } else if (index === currentStep) {
                         step.classList.add('active');
                         title.classList.remove('gray');
                         badge.className = 'status-badge status-active';
-                        badge.textContent = 'In Progress';
+                        badge.textContent = 'Sedang Diproses';
                     } else {
                         title.classList.add('gray');
                         badge.className = 'status-badge status-pending';
-                        badge.textContent = 'Pending';
+                        badge.textContent = 'Menunggu';
                     }
                 });
             }
@@ -482,7 +484,7 @@
         function nextStatus() {
             const trackingNumber = document.getElementById('trackingNumber').value;
             if (!trackingNumber.trim()) {
-                alert('Please enter a tracking number');
+                alert('Silakan masukkan nomor resi');
                 return;
             }
             
@@ -490,10 +492,10 @@
             updateShipPosition();
         }
 
-        // Initialize
+        // Inisialisasi
         updateShipPosition();
         
-        // Auto-progress demo (remove in production)
+        // Auto-progress demo (hapus di production)
         setInterval(() => {
             // nextStatus();
         }, 5000);

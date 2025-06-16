@@ -186,17 +186,17 @@
                     <div class="mt-4">
                         <label class="block text-blue-900 dark:text-blue-100 mb-2">Currency</label>
                         <select id="currencySelect" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md" onchange="updateCurrency()">
-                            <option value="USD">🇺🇸 USD - US Dollar</option>
-                            <option value="IDR">🇮🇩 IDR - Indonesian Rupiah</option>
-                            <option value="MYR">🇲🇾 MYR - Malaysian Ringgit</option>
-                            <option value="SGD">🇸🇬 SGD - Singapore Dollar</option>
-                            <option value="THB">🇹🇭 THB - Thai Baht</option>
-                            <option value="PHP">🇵🇭 PHP - Philippine Peso</option>
-                            <option value="VND">🇻🇳 VND - Vietnamese Dong</option>
-                            <option value="BND">🇧🇳 BND - Brunei Dollar</option>
-                            <option value="LAK">🇱🇦 LAK - Lao Kip</option>
-                            <option value="KHR">🇰🇭 KHR - Cambodian Riel</option>
-                            <option value="MMK">🇲🇲 MMK - Myanmar Kyat</option>
+                            <option value="USD"> USD - US Dollar</option>
+                            <option value="IDR"> IDR - Indonesian Rupiah</option>
+                            <option value="MYR"> MYR - Malaysian Ringgit</option>
+                            <option value="SGD"> SGD - Singapore Dollar</option>
+                            <option value="THB"> THB - Thai Baht</option>
+                            <option value="PHP"> PHP - Philippine Peso</option>
+                            <option value="VND"> VND - Vietnamese Dong</option>
+                            <option value="BND"> BND - Brunei Dollar</option>
+                            <option value="LAK"> LAK - Lao Kip</option>
+                            <option value="KHR"> KHR - Cambodian Riel</option>
+                            <option value="MMK"> MMK - Myanmar Kyat</option>
                         </select>
                     </div>
 

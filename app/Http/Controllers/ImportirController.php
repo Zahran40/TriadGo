@@ -14,4 +14,10 @@ class ImportirController extends Controller
         
         return view('importir');
     }
+
+    public function catalog()
+    {
+        
+        return view('catalog'); 
+    }
 }

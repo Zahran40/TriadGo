@@ -26,6 +26,8 @@ Route::get('/', function () {
 
 // Halaman Importir - hanya role impor
 Route::get('/importir', [ImportirController::class, 'homeimportir'])->name('importir')->middleware('role.protect:impor');
+//Route Catalog (importir)
+Route::get('/catalog', [ImportirController::class, 'catalog'])->name('catalog')->middleware('role.protect:impor');
 
 // User Profile - hanya user yang login (bukan guest)
 Route::get('/user-profile', [PageController::class, 'userprofile'])->name('userprofile')->middleware('role.protect:impor,ekspor');
@@ -49,3 +51,4 @@ Route::fallback(function () {
     $userRole = Auth::check() ? Auth::user()->role : 'guest';
     return response()->view('404', ['userRole' => $userRole], 404);
 });
+

@@ -36,8 +36,9 @@
             </button>
             <form action="{{ route('logout') }}" method="POST" class="hidden md:inline" id="logoutForm">
                 @csrf
-                <button type="submit"
-                    class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition">
+                <button type="button"
+                    class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition"
+                    id="logoutBtn">
                     Logout
                 </button>
             </form>
@@ -49,13 +50,16 @@
 <div id="mobileSidebar" class="navbar-background fixed inset-0 z-50 bg-opacity-40 hidden">
     <div class="navbar-background fixed top-0 right-0 w-64 h-full shadow-lg p-6 flex flex-col">
         <button id="closeSidebar" class="self-end mb-8 text-2xl text-blue-700">&times;</button>
-        
+
         <!-- Menu Items -->
         <a href="#" class="mb-4 text-blue-700 font-semibold hover:text-orange-500 transition nav-gradient-move">Home</a>
-        <a href="#" class="mb-4 text-blue-700 font-semibold hover:text-orange-500 transition nav-gradient-move">Request</a>
-        <a href="#" class="mb-4 text-blue-700 font-semibold hover:text-orange-500 transition nav-gradient-move">Transactions</a>
-        <a href="{{ route('userprofile') }}" class="mb-4 text-blue-700 font-semibold hover:text-orange-500 transition nav-gradient-move">Account</a>
-        
+        <a href="#"
+            class="mb-4 text-blue-700 font-semibold hover:text-orange-500 transition nav-gradient-move">Request</a>
+        <a href="#"
+            class="mb-4 text-blue-700 font-semibold hover:text-orange-500 transition nav-gradient-move">Transactions</a>
+        <a href="{{ route('userprofile') }}"
+            class="mb-4 text-blue-700 font-semibold hover:text-orange-500 transition nav-gradient-move">Account</a>
+
         <!-- Logout Button -->
         <form method="POST" action="{{ route('logout') }}" class="mt-auto">
             @csrf

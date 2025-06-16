@@ -37,7 +37,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="M4 8h16M4 16h16" />
                     </svg>
                 </button>
-                <!-- Tambahkan di dalam <nav> atau di tempat yang diinginkan -->
+                
                 <form action="{{ route('logout') }}" method="POST" class="hidden md:inline" id="logoutForm">
                     @csrf
                     <button type="button"

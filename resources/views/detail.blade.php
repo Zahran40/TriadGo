@@ -31,124 +31,56 @@
     @include('layouts.navbarimportir')
 
     <!-- Main Content -->
-    <section id="cari" class="container mx-auto px-6 py-16 slide-in">
-        <h2 class="text-3xl font-bold text-blue-900 mb-6 text-center">Welcome to TriadGO Catalog</h2>
-        <form action="" class="flex flex-col md:flex-row items-center">
-            <input type="text" name="" placeholder="Search for products..."
-                class="flex-grow px-4 py-2 border border-gray-400 rounded-md focus:outline-none focus:ring focus:ring-blue-500 mr-4 mb-4 md:mb-0"
-                required />
-            <button type="submit"
-                class="bg-blue-700 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md transition pulse-on-hover">
-                <img src="https://img.icons8.com/m_outlined/512/FFFFFF/search.png" alt=""
-                    style="width: 30px; height: 30px;" />
-            </button>
-        </form>
-        <div class="flex justify-end mt-8">
-            <form action="" method="" class="flex flex-col md:flex-row items-center gap-4 justify-center mb-8">
-                <label for="country" class="font-semibold text-blue-900">Filter by Country :</label>
-                <select name="country" id="country" class="border rounded px-3 py-2 w-40 focus:outline-none focus:ring-2 focus:ring-blue-400 border-gray-400">
-                    <option value="">All Countries</option>
-                    <option value="Indonesia">Indonesia</option>
-                    <option value="Malaysia">Malaysia</option>
-                    <option value="Singapore">Singapore</option>
-                    <option value="Thailand">Thailand</option>
-                    <option value="Vietnam">Vietnam</option>img
-                    <option value="Brunei">Brunei</option>
-                    <option value="Philippines">Philippines</option>
-                    <option value="Cambodia">Cambodia</option>
-                    <option value="Laos">Laos</option>
-                    <option value="Myanmar">Myanmar</option>
-                </select>
-            </form>
-        </div>
+    <section id="" class="container mx-auto px-6 py-16 slide-in">
 
+        <body class=" min-h-screen flex items-center justify-center">
+            <div class="product shadow-lg rounded-lg max-w-8xl w-full p-8 ">
+                <div class="flex flex-col md:flex-row gap-8">
+                    <div class="flex flex-col items-center md:items-start">
+                        <img src="https://png.pngtree.com/png-vector/20231023/ourmid/pngtree-mystery-box-with-question-mark-3d-illustration-png-image_10313605.png"
+                            alt="Product Image" class="w-80 h-80 object-cover rounded-lg mx-auto md:mx-0">
+                        <p class="text-2xl font-medium text-blue-800 mt-6">Exported by </p>
 
-        <div class="mt-8">
-            <h3 class="text-2xl font-bold text-blue-900 mb-4">Search Result</h3>
-            <div class="mt-8">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                    <div class="product shadow-md rounded-lg p-3 max-w-md">
-                        <a href="{{ route('detail') }}">
-                            <h5 class="text-xl font-bold text-amber-500">Product 1</h5>
-                            <img src="https://png.pngtree.com/png-vector/20231023/ourmid/pngtree-mystery-box-with-question-mark-3d-illustration-png-image_10313605.png"
-                                alt="" class="w-40 h-40 mx-auto" />
-                            <p class="text-md text-blue-700 mt-2 ">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Libero culpa
-                                quam quas numquam hic tempore autem, velit voluptate sit illum molestiae nemo dicta doloremque fugit recusandae ex at! Quam, quae.</p>
+                        <a href="" class="flex items-center gap-3 mt-6 bg-blue-700 hover:bg-blue-600 p-4 rounded-lg shadow-sm ">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="" class="w-[70px] h-[70px] rounded-full ml-3">
+                            <div class="flex flex-col ml-2">
+                                <p class="text-xl font-medium text-white ">John Doe</p>
+                                <p class="text-lg font-medium text-white">Indonesia</p>
+                            </div>
                         </a>
 
-                        <a href="" class="flex items-center gap-3 mt-6">
-                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="" class="w-[60px] h-[60px] rounded-full">
-                            <div class="flex flex-col">
-                                <p class="text-lg font-bold text-blue-700 ">John Doe</p>
-                                <p class="text-md font-semibold text-amber-500">Indonesia</p>
-                            </div>
-                        </a>                     
-                        <a href="{{ route('detail') }}"
-                            class="mt-4 inline-block bg-blue-700 hover:bg-blue-600 text-white font-bold py-2 px-3 rounded-md text-sm transition pulse-on-hover">
-                            See Detail
+                    </div>
+
+                    <div class="flex-1">
+                        <h1 class="text-3xl font-bold text-blue-900 mb-8 mt-3">Product Name</h1>
+                        <p class="text-lg text-blue-700 font-medium mb-4">
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
+                            Libero culpa quam quas numquam hic tempore autem, velit voluptate sit illum molestiae nemo dicta doloremque fugit recusandae ex at! Quam, quae.
+                        </p>
+                        <p class="text-xl text-blue-700 mb-4 mt-5 font-semibold">
+                            Price : <span class="text-2xl font-bold text-blue-900">$100</span>
+                        </p>
+                        <p class="text-xl text-blue-700 mb-4 mt-2 font-semibold">
+                            Stock : <span class="text-2xl font-bold text-blue-900">50</span>
+                        </p>
+                        <p class="text-xl text-blue-700 mb-4 mt-2 font-semibold">
+                            Product ID : <span class="text-xl font-bold text-blue-900">TDR - 3000</span>
+                        </p>
+                        <p class="text-xl text-blue-700 mb-4 mt-2 font-semibold">
+                            Weight : <span class="text-xl font-bold text-blue-900">5 kg</span>
+                        </p>
+                        <a href="{{ route('formimportir') }}" class=" text-xl inline-block bg-amber-500 hover:bg-amber-400 text-white font-bold py-2 px-4 rounded-md transition pulse-on-hover mt-6">
+                            + Add to Cart 
                         </a>
                     </div>
-                    <div class="product shadow-md rounded-lg p-3 max-w-md">
-                        <a href="{{ route('detail') }}">
-                            <h5 class="text-xl font-bold text-amber-500">Product 2</h5>
-                            <img src="https://png.pngtree.com/png-vector/20231023/ourmid/pngtree-mystery-box-with-question-mark-3d-illustration-png-image_10313605.png"
-                                alt="" class="w-40 h-40 mx-auto" />
-                            <p class="text-md text-blue-700 mt-2">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Libero culpa
-                                quam quas numquam hic tempore autem, velit voluptate sit illum molestiae nemo dicta doloremque fugit recusandae ex at! Quam, quae.</p>
-                        </a>
-
-                        <a href="" class="flex items-center gap-3 mt-6">
-                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="" class="w-[55px] h-[55px] rounded-full">
-                            <div class="flex flex-col">
-                                <p class="text-lg font-bold text-blue-700 ">John Doe</p>
-                                <p class="text-md font-semibold text-amber-500">Indonesia</p>
-                            </div>
-                        </a>                      
-                        <a href="{{ route('detail') }}"
-                            class="mt-4 inline-block bg-blue-700 hover:bg-blue-600 text-white font-bold py-2 px-3 rounded-md text-sm transition pulse-on-hover">
-                            See Detail
-                        </a>
-                    </div>                   
-                    <div class="product shadow-md rounded-lg p-3 max-w-md">
-                        <a href="{{ route('detail') }}">
-                            <h5 class="text-xl font-bold text-amber-500">Product 3</h5>
-                            <img src="https://png.pngtree.com/png-vector/20231023/ourmid/pngtree-mystery-box-with-question-mark-3d-illustration-png-image_10313605.png"
-                                alt="" class="w-40 h-40 mx-auto" />
-                            <p class="text-md text-blue-700 mt-2 ">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Libero culpa
-                                quam quas numquam hic tempore autem, velit voluptate sit illum molestiae nemo dicta doloremque fugit recusandae ex at! Quam, quae.</p>
-                        </a>
-
-                        <a href="" class="flex items-center gap-3 mt-6">
-                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="" class="w-[55px] h-[55px] rounded-full">
-                            <div class="flex flex-col">
-                                <p class="text-lg font-bold text-blue-700 ">John Doe</p>
-                                <p class="text-md font-semibold text-amber-500">Indonesia</p>
-                            </div>
-                        </a>                      
-                        <a href="{{ route('detail') }}"
-                            class="mt-4 inline-block bg-blue-700 hover:bg-blue-600 text-white font-bold py-2 px-3 rounded-md text-sm transition pulse-on-hover">
-                            See Detail
-                        </a>
-                    </div>                   
+                    
                 </div>
-        
+
             </div>
-        </div>
-        <div class="mt-14 text-center">
-            <h3 class="text-2xl font-bold text-red-400 mb-4 mt-12">No Matching Items found</h3>
-            <img src="https://cdn-icons-png.flaticon.com/512/6134/6134051.png" alt=""
-                style="width: 100px; height: 100px;" class="mx-auto mb-10 mt-7" />
-            <p class="text-blue-700 mb-4">We were unable to find any items that matched your search.</p>
-            <p class="text-blue-700 mb-4">Please try with other keywords or make a request for the item you are looking
-                for.
-            </p>
-            <button
-                class="bg-amber-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md transition pulse-on-hover">
-                Request now
-            </button>
-        </div>
+            </div>
+        </body>
     </section>
-    <footer class="bg-blue-800 text-blue-100 py-6 mt-auto">
+    <footer class="bg-blue-800 text-blue-100 py-6 mt-20">
         <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
             <p>© 2025 TriadGO. All rights reserved.</p>
             <div class="space-x-4 mt-4 md:mt-0">

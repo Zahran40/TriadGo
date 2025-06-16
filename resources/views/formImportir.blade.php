@@ -460,10 +460,10 @@
                                     </div>
                                     <div class="p-3 bg-white dark:bg-gray-800 rounded border">
                                         <div class="flex items-center mb-2">
-                                            <div class="w-12 h-6 mr-2 bg-yellow-500 rounded flex items-center justify-center">
-                                                <span class="text-blue-900 text-xs font-bold">MANDIRI</span>
+                                            <div class="bg-yellow-500 rounded flex items-center justify-center px-3 py-1">
+                                                <span class="text-white text-xs font-bold whitespace-nowrap">MANDIRI</span>
                                             </div>
-                                            <p class="font-medium text-blue-900 dark:text-blue-100">Mandiri (Indonesia)</p>
+                                            <p class="font-medium text-blue-900 dark:text-blue-100 ml-2">Mandiri (Indonesia)</p>
                                         </div>
                                         <div class="text-sm text-gray-600 dark:text-gray-300">
                                             <p><strong>Account:</strong> 9876543210</p>

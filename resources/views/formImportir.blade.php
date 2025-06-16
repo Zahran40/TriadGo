@@ -328,31 +328,41 @@
 
                             <!-- Bank Transfer -->
                             <label class="payment-option custom-radio flex flex-col items-center justify-center min-h-[160px] p-6 border-2 border-gray-300 dark:border-gray-600 rounded-xl cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800/20 transition-all w-full text-center bg-gray-50 dark:bg-gray-800/20" data-countries="all">
-                                <input type="radio" name="paymentMethod" value="bank" class="mb-3" />
-                                <div class="flex flex-col items-center w-full">
-                                    <div class="w-16 h-10 mb-2 bg-gray-100 dark:bg-gray-600 rounded-lg border flex items-center justify-center">
-                                        <svg class="w-8 h-8 text-gray-600 dark:text-gray-300" fill="currentColor" viewBox="0 0 24 24">
-                                            <path d="M12 2L2 7v10c0 5.55 3.84 9.74 9 9.74s9-4.19 9-9.74V7l-10-5z"/>
-                                        </svg>
-                                    </div>
-                                    <div class="font-semibold text-blue-900 dark:text-blue-100 text-lg">Bank Transfer</div>
-                                    <div class="text-sm text-gray-600 dark:text-gray-300 mb-2">Direct bank transfer</div>
-                                    <div class="flex flex-wrap gap-2 justify-center mt-2">
-                                        <div class="w-10 h-5 bg-white rounded border flex items-center justify-center">
-                                            <svg width="24" height="8" viewBox="0 0 30 12" fill="none">
-                                                <rect width="30" height="12" fill="#003876"/>
-                                                <text x="15" y="8" font-family="Arial, sans-serif" font-size="5" font-weight="bold" text-anchor="middle" fill="white">BCA</text>
-                                            </svg>
-                                        </div>
-                                        <div class="w-12 h-5 bg-white rounded border flex items-center justify-center">
-                                            <svg width="28" height="8" viewBox="0 0 30 12" fill="none">
-                                                <rect width="30" height="12" fill="#FFD700"/>
-                                                <text x="15" y="8" font-family="Arial, sans-serif" font-size="3" font-weight="bold" text-anchor="middle" fill="#003876">MANDIRI</text>
-                                            </svg>
-                                        </div>
-                                    </div>
-                                </div>
-                            </label>
+    <input type="radio" name="paymentMethod" value="bank" class="mb-3" />
+    <div class="flex flex-col items-center w-full">
+        <div class="w-16 h-10 mb-2 bg-white rounded-lg border flex items-center justify-center">
+            <img src="https://static.vecteezy.com/system/resources/previews/013/948/616/original/bank-icon-logo-design-vector.jpg" alt="Bank Logo" class="w-8 h-8 object-contain" />
+        </div>
+        <div class="font-semibold text-blue-900 dark:text-blue-100 text-lg">Bank Transfer</div>
+        <div class="text-sm text-gray-600 dark:text-gray-300 mb-2">Direct bank transfer</div>
+        <div class="flex flex-wrap gap-2 justify-center mt-2">
+            <div class="w-10 h-5 bg-white rounded border flex items-center justify-center">
+                <svg width="24" height="8" viewBox="0 0 30 12" fill="none">
+                    <rect width="30" height="12" fill="#2196F3"/>
+                    <text x="15" y="8" font-family="Arial, sans-serif" font-size="5" font-weight="bold" text-anchor="middle" fill="white">BCA</text>
+                </svg>
+            </div>
+            <div class="w-12 h-5 bg-white rounded border flex items-center justify-center">
+                <svg width="28" height="8" viewBox="0 0 30 12" fill="none">
+                    <rect width="30" height="12" fill="#FFD700"/>
+                    <text x="15" y="8" font-family="Arial, sans-serif" font-size="3" font-weight="bold" text-anchor="middle" fill="#003876">MANDIRI</text>
+                </svg>
+            </div>
+            <div class="w-12 h-5 bg-white rounded border flex items-center justify-center">
+                <svg width="28" height="8" viewBox="0 0 30 12" fill="none">
+                    <rect width="30" height="12" fill="#20C997"/>
+                    <text x="15" y="8" font-family="Arial, sans-serif" font-size="4" font-weight="bold" text-anchor="middle" fill="white">BSI</text>
+                </svg>
+            </div>
+            <div class="w-12 h-5 bg-white rounded border flex items-center justify-center">
+                <svg width="28" height="8" viewBox="0 0 30 12" fill="none">
+                    <rect width="30" height="12" fill="#003876"/>
+                    <text x="15" y="8" font-family="Arial, sans-serif" font-size="4" font-weight="bold" text-anchor="middle" fill="white">BRI</text>
+                </svg>
+            </div>
+        </div>
+    </div>
+</label>
                         </div>
 
                         <!-- Stripe Card Form -->
@@ -443,41 +453,85 @@
 
                         <!-- Bank Transfer Info -->
                         <div id="bankTransferInfo" class="hidden mt-4">
-                            <div class="p-4 bg-blue-50 dark:bg-slate-700 rounded-lg">
-                                <h4 class="font-semibold text-blue-900 dark:text-blue-100 mb-3">Bank Transfer Details</h4>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <div class="p-3 bg-white dark:bg-gray-800 rounded border">
-                                        <div class="flex items-center mb-2">
-                                            <div class="w-12 h-6 mr-2 bg-blue-900 rounded flex items-center justify-center">
-                                                <span class="text-white text-xs font-bold">BCA</span>
-                                            </div>
-                                            <p class="font-medium text-blue-900 dark:text-blue-100">BCA (Indonesia)</p>
-                                        </div>
-                                        <div class="text-sm text-gray-600 dark:text-gray-300">
-                                            <p><strong>Account:</strong> 1234567890</p>
-                                            <p><strong>Name:</strong> PT TriadGo Indonesia</p>
-                                        </div>
-                                    </div>
-                                    <div class="p-3 bg-white dark:bg-gray-800 rounded border">
-                                        <div class="flex items-center mb-2">
-                                            <div class="bg-yellow-500 rounded flex items-center justify-center px-3 py-1">
-                                                <span class="text-white text-xs font-bold whitespace-nowrap">MANDIRI</span>
-                                            </div>
-                                            <p class="font-medium text-blue-900 dark:text-blue-100 ml-2">Mandiri (Indonesia)</p>
-                                        </div>
-                                        <div class="text-sm text-gray-600 dark:text-gray-300">
-                                            <p><strong>Account:</strong> 9876543210</p>
-                                            <p><strong>Name:</strong> PT TriadGo Indonesia</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="mt-3 p-3 bg-yellow-50 dark:bg-yellow-900 rounded border border-yellow-200 dark:border-yellow-700">
-                                    <p class="text-sm text-yellow-800 dark:text-yellow-200">
-                                        <strong>Note:</strong> Please include your order number in the transfer description.
-                                    </p>
-                                </div>
+    <div class="p-4 bg-blue-50 dark:bg-slate-700 rounded-lg">
+        <h4 class="font-semibold text-blue-900 dark:text-blue-100 mb-3">Bank Transfer Details</h4>
+        <form id="bankTransferForm">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <label class="flex items-center min-h-[80px] p-4 bg-white dark:bg-gray-800 rounded border gap-4 cursor-pointer transition-all hover:shadow-md">
+                    <input type="radio" name="selectedBank" value="BCA" class="accent-blue-500 mr-4" required>
+                    <div class="flex flex-col items-center w-full">
+                        <div class="flex items-center mb-2 justify-center w-full">
+                            <div class="w-12 h-6 rounded flex items-center justify-center" style="background-color: #2196F3;">
+                                <span class="text-white text-xs font-bold">BCA</span>
                             </div>
+                            <span class="font-medium text-blue-900 dark:text-blue-100 ml-2">BCA (Indonesia)</span>
                         </div>
+                    </div>
+                </label>
+                <label class="flex items-center min-h-[80px] p-4 bg-white dark:bg-gray-800 rounded border gap-4 cursor-pointer transition-all hover:shadow-md">
+                    <input type="radio" name="selectedBank" value="Mandiri" class="accent-yellow-500 mr-4">
+                    <div class="flex flex-col items-center w-full">
+                        <div class="flex items-center mb-2 justify-center w-full">
+                            <div class="rounded flex items-center justify-center" style="background-color: #FFD600; width: 80px; height: 28px;">
+                                <span class="text-blue-900 text-xs font-bold w-full text-center" style="display: flex; align-items: center; justify-content: center; height: 100%; width: 100%;">MANDIRI</span>
+                            </div>
+                            <span class="font-medium text-blue-900 dark:text-blue-100 ml-2">Mandiri (Indonesia)</span>
+                        </div>
+                    </div>
+                </label>
+                <label class="flex items-center min-h-[80px] p-4 bg-white dark:bg-gray-800 rounded border gap-4 cursor-pointer transition-all hover:shadow-md">
+                    <input type="radio" name="selectedBank" value="BSI" class="accent-teal-500 mr-4">
+                    <div class="flex flex-col items-center w-full">
+                        <div class="flex items-center mb-2 justify-center w-full">
+                            <div class="rounded flex items-center justify-center px-3 py-1" style="background-color: #20C997;">
+                                <span class="text-white text-xs font-bold whitespace-nowrap">BSI</span>
+                            </div>
+                            <span class="font-medium text-blue-900 dark:text-blue-100 ml-2">BSI (Indonesia)</span>
+                        </div>
+                    </div>
+                </label>
+                <label class="flex items-center min-h-[80px] p-4 bg-white dark:bg-gray-800 rounded border gap-4 cursor-pointer transition-all hover:shadow-md">
+                    <input type="radio" name="selectedBank" value="BRI" class="accent-blue-900 mr-4">
+                    <div class="flex flex-col items-center w-full">
+                        <div class="flex items-center mb-2 justify-center w-full">
+                            <div class="rounded flex items-center justify-center px-3 py-1" style="background-color: #003876;">
+                                <span class="text-white text-xs font-bold whitespace-nowrap">BRI</span>
+                            </div>
+                            <span class="font-medium text-blue-900 dark:text-blue-100 ml-2">BRI (Indonesia)</span>
+                        </div>
+                    </div>
+                </label>
+            </div>
+
+            <div class="mt-4 p-3 bg-yellow-50 dark:bg-yellow-900 rounded border border-yellow-200 dark:border-yellow-700">
+                <p class="text-sm text-yellow-800 dark:text-yellow-200 mb-3">
+                    <strong>Note:</strong> Please include your order number in the transfer description.
+                </p>
+                <div id="userBankForm" class="mt-3">
+                    <h5 class="font-semibold text-blue-900 dark:text-blue-100 mb-3">Your Bank Account Details</h5>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-blue-900 dark:text-blue-100 mb-1">Account Holder Name*</label>
+                            <input type="text" name="user_account_name" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white" placeholder="e.g. John Doe" required>
+                        </div>
+                        <div>
+                            <label class="block text-blue-900 dark:text-blue-100 mb-1">Account Number*</label>
+                            <input type="text" name="user_account_number" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white" placeholder="e.g. 1234567890" required>
+                        </div>
+                        <div>
+                            <label class="block text-blue-900 dark:text-blue-100 mb-1">Bank Name*</label>
+                            <input type="text" name="user_bank_name" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white" placeholder="e.g. BCA, Mandiri, BSI, BRI" required>
+                        </div>
+                        <div>
+                            <label class="block text-blue-900 dark:text-blue-100 mb-1">CVC / OTP / Reference*</label>
+                            <input type="text" name="user_cvc" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white" placeholder="e.g. 123 / OTP / Ref" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 
                         <!-- Security Features -->
                         <div class="mt-6 p-4 bg-green-50 dark:bg-green-900 rounded-lg border border-green-200 dark:border-green-700">

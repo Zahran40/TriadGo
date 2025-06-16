@@ -68,6 +68,11 @@
             outline: none;
             box-shadow: 0 0 0 2px #2563eb33;
         }
+
+        /* Make the dark mode thumb not block pointer events so the toggle is always clickable */
+        #darkModeThumb {
+            pointer-events: none;
+        }
     </style>
 </head>
 
@@ -476,47 +481,46 @@
     </div>
 </div>
 
-                        <!-- Security Features -->
-                        <div class="mt-6 p-4 bg-green-50 dark:bg-green-900 rounded-lg border border-green-200 dark:border-green-700">
-                            <div class="flex items-center">
-                                <svg class="w-5 h-5 text-green-600 dark:text-green-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/>
-                                </svg>
-                                <span class="text-sm text-green-800 dark:text-green-200">Your payment information is encrypted and secure</span>
-                            </div>
-                            <div class="flex items-center mt-2">
-                                <svg class="w-5 h-5 text-green-600 dark:text-green-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                                </svg>
-                                <span class="text-sm text-green-800 dark:text-green-200">SSL Certificate • PCI Compliant • 256-bit Encryption</span>
-                            </div>
+                    <!-- Security Features -->
+                    <div class="mt-6 p-4 bg-green-50 dark:bg-green-900 rounded-lg border border-green-200 dark:border-green-700">
+                        <div class="flex items-center">
+                            <svg class="w-5 h-5 text-green-600 dark:text-green-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/>
+                            </svg>
+                            <span class="text-sm text-green-800 dark:text-green-200">Your payment information is encrypted and secure</span>
                         </div>
-
-                        <!-- Terms and Conditions -->
-                        <div class="mt-6">
-                            <label class="flex items-center gap-3">
-                                <input type="checkbox" id="termsAccepted" required class="accent-blue-600 w-5 h-5 rounded focus:ring-2 focus:ring-blue-400">
-                                <span class="text-sm text-blue-900 dark:text-blue-100">
-                                    I agree to the <a href="#" class="text-orange-500 hover:underline font-medium">Terms of Service</a> 
-                                    and <a href="#" class="text-orange-500 hover:underline font-medium">Privacy Policy</a>
-                                </span>
-                            </label>
+                        <div class="flex items-center mt-2">
+                            <svg class="w-5 h-5 text-green-600 dark:text-green-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            <span class="text-sm text-green-800 dark:text-green-200">SSL Certificate • PCI Compliant • 256-bit Encryption</span>
                         </div>
                     </div>
 
-                    <!-- Place Order Button -->
-                    <div class="export-card bg-blue-50 dark:bg-slate-800 rounded-lg shadow-md p-6">
-                        <button id="submitPayment" class="w-full px-6 py-3 bg-orange-500 text-white rounded-lg font-semibold hover:bg-orange-600 transition-colors focus:outline-none focus:ring-2 focus:ring-orange-400 disabled:opacity-50 disabled:cursor-not-allowed">
-                            <span id="buttonText">Complete Order - $300.00</span>
-                            <span id="spinner" class="hidden">
-                                <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                </svg>
-                                Processing...
+                    <!-- Terms and Conditions -->
+                    <div class="mt-6">
+                        <label class="flex items-center gap-3">
+                            <input type="checkbox" id="termsAccepted" required class="accent-blue-600 w-5 h-5 rounded focus:ring-2 focus:ring-blue-400">
+                            <span class="text-sm text-blue-900 dark:text-blue-100">
+                                I agree to the <a href="#" class="text-orange-500 hover:underline font-medium">Terms of Service</a> 
+                                and <a href="#" class="text-orange-500 hover:underline font-medium">Privacy Policy</a>
                             </span>
-                        </button>
+                        </label>
                     </div>
+                </div>
+
+                <!-- Place Order Button -->
+                <div class="export-card bg-blue-50 dark:bg-slate-800 rounded-lg shadow-md p-6">
+                    <button id="submitPayment" class="w-full px-6 py-3 bg-orange-500 text-white rounded-lg font-semibold hover:bg-orange-600 transition-colors focus:outline-none focus:ring-2 focus:ring-orange-400 disabled:opacity-50 disabled:cursor-not-allowed">
+                        <span id="buttonText">Complete Order - $300.00</span>
+                        <span id="spinner" class="hidden">
+                            <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            Processing...
+                        </span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -531,452 +535,41 @@
 
     <!-- JavaScript Code (sama seperti sebelumnya) -->
     <script>
-        // Exchange rates for ASEAN countries
-        const exchangeRates = {
-            USD: 1,
-            IDR: 15030,
-            MYR: 4.45,
-            SGD: 1.35,
-            THB: 34.50,
-            PHP: 56.20,
-            VND: 24450,
-            BND: 1.35,
-            LAK: 20800,
-            KHR: 4100,
-            MMK: 2100
-        };
+        document.addEventListener('DOMContentLoaded', function() {
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    const darkModeThumb = document.getElementById('darkModeThumb');
+    const htmlElement = document.documentElement;
 
-        let currentCurrency = 'USD';
-        let baseTotal = 300.00;
-
-        // Initialize Stripe
-        const stripe = Stripe('pk_test_51234567890');
-        const elements = stripe.elements();
-
-        const cardNumber = elements.create('cardNumber');
-        const cardExpiry = elements.create('cardExpiry');
-        const cardCvc = elements.create('cardCvc');
-
-        cardNumber.mount('#card-number-element');
-        cardExpiry.mount('#card-expiry-element');
-        cardCvc.mount('#card-cvc-element');
-
-        // Update currency display
-        function updateCurrency() {
-            const currency = document.getElementById('currencySelect').value;
-            currentCurrency = currency;
-            const rate = exchangeRates[currency];
-            const total = baseTotal * rate;
-            
-            let formattedTotal;
-            if (currency === 'IDR' || currency === 'VND' || currency === 'LAK' || currency === 'KHR' || currency === 'MMK') {
-                formattedTotal = `${currency} ${Math.round(total).toLocaleString()}`;
-            } else {
-                formattedTotal = `${currency} ${total.toFixed(2)}`;
-            }
-            
-            document.getElementById('totalAmount').textContent = formattedTotal;
-            document.getElementById('buttonText').textContent = `Complete Order - ${formattedTotal}`;
-
-            const idrTotal = baseTotal * exchangeRates.IDR;
-            document.getElementById('totalIDR').textContent = Math.round(idrTotal).toLocaleString('id-ID');
+    function updateDarkModeSwitch() {
+        if (!darkModeToggle || !darkModeThumb) return;
+        if (htmlElement.classList.contains('dark')) {
+            darkModeToggle.checked = true;
+            darkModeThumb.style.transform = 'translateX(1.25rem)';
+            darkModeThumb.style.backgroundColor = '#003355';
+            darkModeThumb.style.borderColor = '#003355';
+        } else {
+            darkModeToggle.checked = false;
+            darkModeThumb.style.transform = 'translateX(0)';
+            darkModeThumb.style.backgroundColor = '#fff';
+            darkModeThumb.style.borderColor = '#ccc';
         }
-
-        // Update payment methods based on country
-        function updatePaymentMethods() {
-            const country = document.getElementById('country').value;
-            const paymentOptions = document.querySelectorAll('.payment-option');
-            
-            paymentOptions.forEach(option => {
-                const countries = option.dataset.countries;
-                if (countries === 'all' || countries.includes(country)) {
-                    option.style.display = 'flex';
-                } else {
-                    option.style.display = 'none';
-                }
-            });
-
-            // Auto-select based on country
-            if (country === 'ID') {
-                document.querySelector('input[value="midtrans"]').checked = true;
-                document.querySelector('input[value="midtrans"]').dispatchEvent(new Event('change'));
-                document.getElementById('currencySelect').value = 'IDR';
-                updateCurrency();
-            } else if (country === 'MY') {
-                document.getElementById('currencySelect').value = 'MYR';
-                updateCurrency();
-            } else if (country === 'SG') {
-                document.getElementById('currencySelect').value = 'SGD';
-                updateCurrency();
-            } else if (country === 'TH') {
-                document.getElementById('currencySelect').value = 'THB';
-                updateCurrency();
-            } else if (country === 'PH') {
-                document.getElementById('currencySelect').value = 'PHP';
-                updateCurrency();
-            } else if (country === 'VN') {
-                document.getElementById('currencySelect').value = 'VND';
-                updateCurrency();
-            } else if (country === 'BN') {
-                document.getElementById('currencySelect').value = 'BND';
-                updateCurrency();
-            } else if (country === 'LA') {
-                document.getElementById('currencySelect').value = 'LAK';
-                updateCurrency();
-            } else if (country === 'KH') {
-                document.getElementById('currencySelect').value = 'KHR';
-                updateCurrency();
-            } else if (country === 'MM') {
-                document.getElementById('currencySelect').value = 'MMK';
-                updateCurrency();
-            } else if (country === 'TL') {
-                document.getElementById('currencySelect').value = 'USD';
-                updateCurrency();
-            }
-        }
-
-        // Payment method styling
-        const paymentRadios = document.querySelectorAll('input[name="paymentMethod"]');
-paymentRadios.forEach(radio => {
-    radio.addEventListener('change', function() {
-        document.querySelectorAll('.payment-option').forEach(option => {
-            option.classList.remove(
-                'border-green-400', 'bg-green-50', 'dark:border-green-400', 'dark:bg-green-900/30',
-                'border-orange-400', 'bg-orange-50', 'dark:border-orange-500', 'dark:bg-orange-900/20',
-                'border-blue-400', 'bg-blue-50', 'dark:border-blue-500', 'dark:bg-blue-900/20',
-                'border-gray-400', 'bg-gray-50', 'dark:border-gray-400', 'dark:bg-gray-800/20'
-            );
-            option.classList.add('border-gray-300', 'dark:border-gray-600');
-        });
-        const selectedOption = this.closest('.payment-option');
-        selectedOption.classList.remove('border-gray-300', 'dark:border-gray-600');
-        if (this.value === 'midtrans') {
-            selectedOption.classList.add('border-green-400', 'bg-green-50', 'dark:border-green-400', 'dark:bg-green-900/30');
-        } else if (this.value === 'stripe') {
-            selectedOption.classList.add('border-orange-400', 'bg-orange-50', 'dark:border-orange-500', 'dark:bg-orange-900/20');
-        } else if (this.value === 'paypal') {
-            selectedOption.classList.add('border-blue-400', 'bg-blue-50', 'dark:border-blue-500', 'dark:bg-blue-900/20');
-        } else if (this.value === 'bank') {
-            selectedOption.classList.add('border-gray-400', 'bg-gray-50', 'dark:border-gray-400', 'dark:bg-gray-800/20');
-        }
-
-        // Show/hide forms
-        const forms = ['stripeCardForm', 'paypal-button-container', 'bankTransferInfo', 'midtransInfo'];
-        forms.forEach(form => document.getElementById(form)?.classList.add('hidden'));
-
-        if (this.value === 'stripe') {
-            document.getElementById('stripeCardForm').classList.remove('hidden');
-        } else if (this.value === 'paypal') {
-            document.getElementById('paypal-button-container').classList.remove('hidden');
-            initializePayPal();
-        } else if (this.value === 'bank') {
-            document.getElementById('bankTransferInfo').classList.remove('hidden');
-        } else if (this.value === 'midtrans') {
-            document.getElementById('midtransInfo').classList.remove('hidden');
-        }
-    });
-});
-
-// PayPal initialization
-function initializePayPal() {
-    document.getElementById('paypal-buttons').innerHTML = '';
-    paypal.Buttons({
-        createOrder: function(data, actions) {
-            return actions.order.create({
-                purchase_units: [{
-                    amount: {
-                        value: baseTotal.toString(),
-                        currency_code: currentCurrency
-                    }
-                }]
-            });
-        },
-        onApprove: function(data, actions) {
-            return actions.order.capture().then(function(details) {
-                alert('Payment successful!');
-                window.location.href = '/order-success';
-            });
-        }
-    }).render('#paypal-buttons');
-}
-
-// Payment submission
-document.getElementById('submitPayment').addEventListener('click', async function(e) {
-    e.preventDefault();
-    
-    if (!document.getElementById('termsAccepted').checked) {
-        alert('Please accept the terms and conditions');
-        return;
     }
 
-    const selectedPayment = document.querySelector('input[name="paymentMethod"]:checked').value;
-    
-    if (selectedPayment === 'stripe') {
-        handleStripePayment();
-    } else if (selectedPayment === 'midtrans') {
-        handleMidtransPayment();
-    } else if (selectedPayment === 'bank') {
-        handleBankTransfer();
-    }
-});
+    updateDarkModeSwitch();
 
-function handleStripePayment() {
-    alert('Stripe payment processing...');
-}
-
-function handleMidtransPayment() {
-    alert('Midtrans payment processing...');
-}
-
-function handleBankTransfer() {
-    const orderNumber = 'TG' + Date.now();
-    alert(`Order submitted! Order Number: ${orderNumber}`);
-}
-
-function updateQuantity(select, price) {
-    console.log('Quantity updated:', select.value, 'Price:', price);
-}
-
-function applyCoupon() {
-    const couponCode = document.getElementById('couponCode').value;
-    if (couponCode === 'TRIAD10') {
-        alert('Coupon applied! 10% discount');
-        baseTotal = baseTotal * 0.9;
-        updateCurrency();
-    } else if (couponCode) {
-        alert('Invalid coupon code');
-    }
-}        // Dark Mode functionality
-        const darkModeToggle = document.getElementById('darkModeToggle');
-        const darkModeThumb = document.getElementById('darkModeThumb');
-        const htmlElement = document.documentElement;
-
-        function updateDarkModeSwitch() {
+    if (darkModeToggle) {
+        darkModeToggle.addEventListener('change', () => {
+            htmlElement.classList.toggle('dark');
             if (htmlElement.classList.contains('dark')) {
-                darkModeToggle.checked = true;
-                darkModeThumb.style.transform = 'translateX(1.25rem)';
-                darkModeThumb.style.backgroundColor = '#003355';
-                darkModeThumb.style.borderColor = '#003355';
+                localStorage.setItem('darkMode', 'enabled');
             } else {
-                darkModeToggle.checked = false;
-                darkModeThumb.style.transform = 'translateX(0)';
-                darkModeThumb.style.backgroundColor = '#fff';
-                darkModeThumb.style.borderColor = '#ccc';
+                localStorage.setItem('darkMode', 'disabled');
             }
-        }
-
-        // Check for saved dark mode preference on page load
-        if (localStorage.getItem('darkMode') === 'enabled') {
-            htmlElement.classList.add('dark');
-        }
-
-        updateDarkModeSwitch();
-
-        // Add event listener for dark mode toggle
-        if (darkModeToggle) {
-            darkModeToggle.addEventListener('change', () => {
-                htmlElement.classList.toggle('dark');
-                if (htmlElement.classList.contains('dark')) {
-                    localStorage.setItem('darkMode', 'enabled');
-                } else {
-                    localStorage.setItem('darkMode', 'disabled');
-                }
-                updateDarkModeSwitch();
-            });
-        }
-
-        // Initialize
-        document.querySelector('input[name="paymentMethod"][value="stripe"]').dispatchEvent(new Event('change'));
-        updateCurrency();
-
-        // Midtrans sub-method interactivity
-const midtransOptions = document.querySelectorAll('.midtrans-option');
-const midtransFormContainer = document.getElementById('midtransFormContainer');
-const midtransSubmethod = document.getElementById('midtransSubmethod');
-const midtransRadio = document.getElementById('midtransRadio');
-
-midtransOptions.forEach(btn => {
-    btn.addEventListener('click', function() {
-        midtransOptions.forEach(b => b.classList.remove('ring-2', 'ring-blue-400', 'ring-green-400', 'ring-purple-400'));
-        this.classList.add('ring-2', 'ring-blue-400');
-        midtransSubmethod.value = this.dataset.method;
-        midtransRadio.checked = true;
-        // Show demo form/info for each method
-        if (this.dataset.method === 'credit_card') {
-            midtransFormContainer.innerHTML = `<div class='p-4 bg-white dark:bg-gray-800 rounded-lg border mt-2'><label class='block text-blue-900 dark:text-blue-100 mb-2'>Card Number*</label><input type='text' class='w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md mb-2' placeholder='Card Number'><label class='block text-blue-900 dark:text-blue-100 mb-2'>Expiry*</label><input type='text' class='w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md mb-2' placeholder='MM/YY'><label class='block text-blue-900 dark:text-blue-100 mb-2'>CVC*</label><input type='text' class='w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md' placeholder='CVC'></div>`;
-        } else if (this.dataset.method === 'gopay') {
-            midtransFormContainer.innerHTML = `<div class='p-4 bg-green-50 dark:bg-green-900 rounded-lg border mt-2 text-center'><span class='text-green-700 dark:text-green-200 font-semibold'>Scan QR with GoPay app after clicking Complete Order.</span></div>`;
-        } else if (this.dataset.method === 'bank_transfer') {
-            midtransFormContainer.innerHTML = `<div class='p-4 bg-blue-50 dark:bg-blue-900 rounded-lg border mt-2 text-center'><span class='text-blue-700 dark:text-blue-200 font-semibold'>Bank transfer instructions will be shown after clicking Complete Order.</span></div>`;
-        } else if (this.dataset.method === 'qris') {
-            midtransFormContainer.innerHTML = `<div class='p-4 bg-purple-50 dark:bg-purple-900 rounded-lg border mt-2 text-center'><span class='text-purple-700 dark:text-purple-200 font-semibold'>Scan QRIS code after clicking Complete Order.</span></div>`;
-        }
-    });
+            updateDarkModeSwitch();
+        });
+    }
 });
-
-    // Shopping Cart Integration
-    let cart = JSON.parse(localStorage.getItem('shoppingCart')) || [];
-    
-    // Currency exchange rates (demo - in real app, this would be from API)
-    const exchangeRates = {
-        USD: 1,
-        IDR: 15030,
-        MYR: 4.45,
-        SGD: 1.35,
-        THB: 33.50,
-        PHP: 56.25,
-        VND: 24000,
-        BND: 1.35,
-        LAK: 19500,
-        KHR: 4100,
-        MMK: 2100
-    };
-    
-    // Currency symbols
-    const currencySymbols = {
-        USD: '$',
-        IDR: 'Rp',
-        MYR: 'RM',
-        SGD: 'S$',
-        THB: '฿',
-        PHP: '₱',
-        VND: '₫',
-        BND: 'B$',
-        LAK: '₭',
-        KHR: '៛',
-        MMK: 'K'
-    };
-    
-    let currentCurrency = 'USD';
-    let currentExchangeRate = 1;
-    
-    // Load cart data when page loads
-    document.addEventListener('DOMContentLoaded', function() {
-        loadCartItems();
-        updatePricing();
-        updateNavCartCount();
-    });
-    
-    function updateNavCartCount() {
-        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-        const navCartCount = document.getElementById('navCartCount');
-        if (navCartCount) {
-            if (totalItems > 0) {
-                navCartCount.textContent = totalItems;
-                navCartCount.classList.remove('hidden');
-            } else {
-                navCartCount.classList.add('hidden');
-            }
-        }
-    }
-    
-    function loadCartItems() {
-        const cartContainer = document.getElementById('cartItemsCheckout');
-        const emptyMessage = document.getElementById('emptyCartMessage');
-        const pricingBreakdown = document.getElementById('pricingBreakdown');
-        
-        if (cart.length === 0) {
-            cartContainer.style.display = 'none';
-            emptyMessage.classList.remove('hidden');
-            pricingBreakdown.style.display = 'none';
-            return;
-        }
-        
-        cartContainer.style.display = 'block';
-        emptyMessage.classList.add('hidden');
-        pricingBreakdown.style.display = 'block';
-        
-        cartContainer.innerHTML = cart.map((item, index) => `
-            <div class="border-b border-gray-200 dark:border-gray-600 pb-4">
-                <div class="flex items-center space-x-4">
-                    <img src="${item.image}" alt="${item.name}" class="w-20 h-20 object-cover rounded-lg shadow-sm">
-                    <div class="flex-1">
-                        <h3 class="font-semibold text-blue-900 dark:text-blue-100">${item.name}</h3>
-                        <p class="text-gray-600 dark:text-gray-300 text-sm">Origin: ${item.origin}</p>
-                        <p class="text-gray-600 dark:text-gray-300 text-sm">Weight: ${item.weight}kg each</p>
-                        <div class="flex items-center mt-2">
-                            <label class="text-sm text-blue-900 dark:text-blue-100 mr-2">Qty:</label>
-                            <select class="border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded px-2 py-1 text-sm" onchange="updateCartQuantity(${index}, this.value)">
-                                ${Array.from({length: 10}, (_, i) => i + 1).map(num => 
-                                    `<option value="${num}" ${num === item.quantity ? 'selected' : ''}>${num}</option>`
-                                ).join('')}
-                            </select>
-                            <button onclick="removeFromCheckoutCart(${index})" class="ml-3 text-red-600 hover:text-red-800 text-sm">
-                                Remove
-                            </button>
-                        </div>
-                    </div>
-                    <div class="text-right">
-                        <p class="font-semibold text-blue-900 dark:text-blue-100">${formatCurrency(item.price * item.quantity)}</p>
-                        <p class="text-sm text-gray-600 dark:text-gray-300">${formatCurrency(item.price)} each</p>
-                    </div>
-                </div>
-            </div>
-        `).join('');
-    }
-    
-    function updateCartQuantity(index, newQuantity) {
-        cart[index].quantity = parseInt(newQuantity);
-        localStorage.setItem('shoppingCart', JSON.stringify(cart));
-        loadCartItems();
-        updatePricing();
-        updateNavCartCount();
-    }
-    
-    function removeFromCheckoutCart(index) {
-        if (confirm('Remove this item from cart?')) {
-            cart.splice(index, 1);
-            localStorage.setItem('shoppingCart', JSON.stringify(cart));
-            loadCartItems();
-            updatePricing();
-            updateNavCartCount();
-        }
-    }
-    
-    function updatePricing() {
-        const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-        const shipping = cart.length > 0 ? 25 : 0;
-        const tax = subtotal * 0.1;
-        const total = subtotal + shipping + tax;
-        
-        document.getElementById('subtotal').textContent = formatCurrency(subtotal);
-        document.getElementById('shipping').textContent = formatCurrency(shipping);
-        document.getElementById('tax').textContent = formatCurrency(tax);
-        document.getElementById('totalAmount').textContent = formatCurrency(total);
-        
-        // Update alternative currency display
-        const altCurrencyCode = currentCurrency === 'USD' ? 'IDR' : 'USD';
-        const altRate = currentCurrency === 'USD' ? exchangeRates.IDR : (1 / exchangeRates[currentCurrency]);
-        const altTotal = currentCurrency === 'USD' ? total * exchangeRates.IDR : total * altRate;
-        
-        document.getElementById('altCurrency').textContent = altCurrencyCode;
-        document.getElementById('totalAltCurrency').textContent = formatNumber(altTotal);
-    }
-    
-    function formatCurrency(amount) {
-        const symbol = currencySymbols[currentCurrency];
-        if (currentCurrency === 'IDR' || currentCurrency === 'VND' || currentCurrency === 'LAK' || currentCurrency === 'KHR' || currentCurrency === 'MMK') {
-            return symbol + formatNumber(Math.round(amount * currentExchangeRate));
-        }
-        return symbol + (amount * currentExchangeRate).toFixed(2);
-    }
-    
-    function formatNumber(num) {
-        return num.toString().replace(/\\B(?=(\\d{3})+(?!\\d))/g, ',');
-    }
-    
-    function updateCurrency() {
-        const select = document.getElementById('currencySelect');
-        currentCurrency = select.value;
-        currentExchangeRate = exchangeRates[currentCurrency];
-        updatePricing();
-    }
-    
-    // Original updateQuantity function for compatibility
-    function updateQuantity(selectElement, basePrice) {
-        // This is for legacy compatibility if needed
-        updatePricing();
-    }
     </script>
 </body>
+
 </html>

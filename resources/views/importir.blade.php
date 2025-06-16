@@ -18,7 +18,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script> --> --}}
 
     <script src="https://cdn.tailwindcss.com">
-
         tailwind.config = {
             theme: {
                 extend: {
@@ -32,8 +31,12 @@
                     },
                     keyframes: {
                         float: {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-10px)' },
+                            '0%, 100%': {
+                                transform: 'translateY(0)'
+                            },
+                            '50%': {
+                                transform: 'translateY(-10px)'
+                            },
                         }
                     }
                 },
@@ -47,107 +50,178 @@
 <body class="home-bg"></body>
 <section id="home">
 
-@include('layouts.navbarimportir')
+    @include('layouts.navbarimportir')
 
-    <section class="flex-grow container mx-auto px-6 md:px-12 py-16 flex flex-col md:flex-row items-center">
-        <div class="md:w-1/2 text-center md:text-left">
-            <h2 class="text-4xl font-extrabold text-blue-900 mb-6 leading-tight fade-in-up">
+    <section class="flex container mx-auto px-6 md:px-12 py-16  flex-col md:flex-row items-center">
+        <div class="md:w-1/2 text-center md:text-left ml-12 mr-6">
+            <h2 class="text-4xl font-extrabold text-blue-900 mb-6 ml-6 leading-tight fade-in-up">
                 <span class="text-amber-500">Hello Importer !</span> <br>Welcome to TriadGO Import Hub
             </h2>
 
-            <p class="text-lg text-blue-700 mb-8 max-w-xl fade-in-up" style="animation-delay:0.4s">
+            <p class="text-lg text-justify text-blue-700 mb-8 ml-6 max-w-xl fade-in-up" style="animation-delay:0.4s">
                 Find the best solution for your import needs. We provide a platform that makes it easy for you to
                 conduct international transactions safely and efficiently.
             </p>
-            <a href="#cari"
-                class="inline-block bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-8 rounded-md shadow-md transition pulse-on-hover">
-                Temukan Barang Impor
+            <a href="{{ route('catalog') }}"
+                class="inline-block bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-8 ml-4 rounded-md shadow-md fade-in-up"
+                style="animation-delay:0.6s">
+                Find Products here
             </a>
         </div>
-        <div class="md:w-1/2 mt-10 md:mt-0">
-            <img src="triadgo.jpg" alt="Ekspor Impor" class="floating-img ml-7" />
+        <div class="mt-10 fade-in-up">
+            <img src="https://ik.imagekit.io/hplmjgnnw/containershipV2%20(1).png?updatedAt=1748035307076"
+                alt="Impor photo"
+                class="floating-img ml-6 w-[500px] h-auto" />
         </div>
+
+
     </section>
 
-    <section id="cari" class="container mx-auto px-6 py-16 slide-in">
-        <h2 class="text-3xl font-bold text-blue-900 mb-6 text-center">Find the product you want to import</h2>
-        <form action="" class="flex flex-col md:flex-row items-center">
-            <input type="text" name="" placeholder="Search for products..."
-                class="flex-grow px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-500 mr-4 mb-4 md:mb-0"
-                required />
-            <button type="submit"
-                class="bg-blue-700 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md transition pulse-on-hover">
-                <img src="https://img.icons8.com/m_outlined/512/FFFFFF/search.png" alt=""
-                    style="width: 30px; height: 30px;" />
-            </button>
-        </form>
+    <section id="" class=" py-16 fade-in-up">
+        <div class="container mx-auto px-6 md:px-12">
+            <h3 class="text-3xl font-bold text-blue-900 mb-12 text-center">Our Import Solutions</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-6xl mx-auto">
+                <div
+                    class="export-card bg-blue-50 p-8 rounded-lg shadow hover:shadow-lg transition hover:border-amber-500 border-2 border-transparent">
+                    <div class="text-orange-500 mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto md:mx-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"   />
+                        </svg>
+                    </div>
+                    <h4 class="text-2xl font-semibold text-blue-800 mb-2 text-center md:text-left">TriadGo Catalog
+                    </h4>
+                    <p class="text-blue-700 text-center md:text-left">
+                        Explore the TriadGo 's catalog of exporter products, search for product by name or by products country.
 
-        <div class="mt-8">
-            <h3 class="text-2xl font-bold text-blue-900 mb-4">Search Result</h3>
-            <div class="mt-8">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="product shadow-md rounded-lg p-4">
-                        <h4 class="text-xl font-semibold text-amber-500">Product 1</h4>
+                    </p>
+                    <a href="{{ route('catalog') }}" class="text-blue-800 font-semibold inline-flex items-center mt-4 hover:text-amber-500">
+                        Go
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </a>
+                </div>
+                <div
+                    class="export-card bg-blue-50 p-8 rounded-lg shadow hover:shadow-lg transition hover:border-amber-500 border-2 border-transparent">
+                    <div class="text-orange-500 mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto md:mx-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                        </svg>
+
+                    </div>
+                    <h4 class="text-2xl font-semibold text-blue-800 mb-2 text-center md:text-left">Request for Products
+                    </h4>
+                    <p class="text-blue-700 text-center md:text-left">
+                        If you can't find what you're looking for, submit a request and exporter will help you find it.
+                    </p>
+                    <a href="#" class="text-blue-800 font-semibold inline-flex items-center mt-4 hover:text-amber-500">
+                        Go
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </a>
+                </div>
+                <div
+                    class="export-card bg-blue-50 p-8 rounded-lg shadow hover:shadow-lg transition hover:border-amber-500 border-2 border-transparent">
+                    <div class="text-orange-500 mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto md:mx-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                        </svg>
+                    </div>
+                    <h4 class="text-2xl font-semibold text-blue-800 mb-2 text-center md:text-left">Transactions Management
+                    </h4>
+                    <p class="text-blue-700 text-center md:text-left">
+                        Manage your transactions efficiently with our tracking status features, share provide real-time updates .
+                    </p>
+                    <a href="#" class="text-blue-800 font-semibold inline-flex items-center mt-4 hover:text-amber-500">
+                        Go
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="container mx-auto px-6 py-16 slide-in mt-4 mb-8">
+        <h3 class="text-3xl font-bold text-blue-900 mb-12 text-center">Top Imported Products</h3>
+        <div class="mt-6">
+            <div class="mt-4">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    <div class="product shadow-md rounded-lg p-3 max-w-md">
+
+                        <h5 class="text-2xl font-semibold text-amber-500">Product 1</h5>
                         <img src="https://png.pngtree.com/png-vector/20231023/ourmid/pngtree-mystery-box-with-question-mark-3d-illustration-png-image_10313605.png"
-                            alt="" class="w-50 h-50" />
-                        <p class="product-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Libero culpa
-                            quam
-                            quas numquam hic tempore autem,
-                            velit voluptate sit illum molestiae nemo dicta doloremque fugit recusandae ex at! Quam,
-                            quae.
+                            alt="" class="w-40 h-40 mx-auto" />
+                        <p class="text-md text-blue-700 mt-2">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Libero culpa
+                            quam quas numquam hic tempore autem, velit voluptate sit illum molestiae nemo dicta doloremque fugit recusandae ex at! Quam, quae.
                         </p>
-                        <a href="#"
-                            class="mt-4 inline-block bg-blue-700 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md transition pulse-on-hover">
+
+
+                        <a href="" class="flex items-center gap-3 mt-6">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="" class="w-[55px] h-[55px] rounded-full">
+                            <div class="flex flex-col">
+                                <p class="text-lg font-bold text-blue-700 ">John Doe</p>
+                                <p class="text-md font-semibold text-amber-500">Indonesia</p>
+                            </div>
+                        </a>
+                        <a href="{{ route('detail') }}"
+                            class="mt-4 inline-block bg-blue-700 hover:bg-blue-600 text-white font-bold py-2 px-3 rounded-md text-sm transition pulse-on-hover">
                             See Detail
                         </a>
                     </div>
-                    <div class="product shadow-md rounded-lg p-4">
-                        <h4 class="text-xl font-semibold text-amber-500">Product 2</h4>
+                    <div class="product shadow-md rounded-lg p-3 max-w-md">
+
+                        <h5 class="text-2xl font-semibold text-amber-500">Product 2</h5>
                         <img src="https://png.pngtree.com/png-vector/20231023/ourmid/pngtree-mystery-box-with-question-mark-3d-illustration-png-image_10313605.png"
-                            alt="" class="w-50 h-50" />
-                        <p class="product-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur
-                            rerum
-                            totam nam, vero fugiat sit corporis,
-                            quod possimus similique ad voluptate recusandae unde suscipit delectus aperiam fugit
-                            provident
-                            iusto laboriosam?</p>
-                        <a href="#"
-                            class="mt-4 inline-block bg-blue-700 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md transition pulse-on-hover">
+                            alt="" class="w-40 h-40 mx-auto" />
+                        <p class="text-md text-blue-700 mt-2">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Libero culpa
+                            quam quas numquam hic tempore autem, velit voluptate sit illum molestiae nemo dicta doloremque fugit recusandae ex at! Quam, quae.
+                        </p>
+
+
+                        <a href="" class="flex items-center gap-3 mt-6">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="" class="w-[55px] h-[55px] rounded-full">
+                            <div class="flex flex-col">
+                                <p class="text-lg font-bold text-blue-700 ">John Doe</p>
+                                <p class="text-md font-semibold text-amber-500">Indonesia</p>
+                            </div>
+                        </a>
+                        <a href="{{ route('detail') }}"
+                            class="mt-4 inline-block bg-blue-700 hover:bg-blue-600 text-white font-bold py-2 px-3 rounded-md text-sm transition pulse-on-hover">
                             See Detail
                         </a>
                     </div>
-                    <div class="product shadow-md rounded-lg p-4">
-                        <h4 class="text-xl font-semibold text-amber-500">Product 3</h4>
+                    <div class="product shadow-md rounded-lg p-3 max-w-md">
+
+                        <h5 class="text-2xl font-semibold text-amber-500">Product 3</h5>
                         <img src="https://png.pngtree.com/png-vector/20231023/ourmid/pngtree-mystery-box-with-question-mark-3d-illustration-png-image_10313605.png"
-                            alt="" class="w-50 h-50" />
-                        <p class="product-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam atque aut
-                            explicabo cupiditate culpa saepe,
-                            suscipit consequuntur iure fugiat fugit. Repellat voluptatibus labore unde ad. Voluptatibus
-                            qui
-                            eius pariatur dolorum!</p>
-                        <a href="#"
-                            class="mt-4 inline-block bg-blue-700 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md transition pulse-on-hover">
+                            alt="" class="w-40 h-40 mx-auto" />
+                        <p class="text-md text-blue-700 mt-2">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Libero culpa
+                            quam quas numquam hic tempore autem, velit voluptate sit illum molestiae nemo dicta doloremque fugit recusandae ex at! Quam, quae.
+                        </p>
+
+
+                        <a href="" class="flex items-center gap-3 mt-6">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="" class="w-[55px] h-[55px] rounded-full">
+                            <div class="flex flex-col">
+                                <p class="text-lg font-bold text-blue-700 ">John Doe</p>
+                                <p class="text-md font-semibold text-amber-500">Indonesia</p>
+                            </div>
+                        </a>
+                        <a href="{{ route('detail') }}"
+                            class="mt-4 inline-block bg-blue-700 hover:bg-blue-600 text-white font-bold py-2 px-3 rounded-md text-sm transition pulse-on-hover">
                             See Detail
                         </a>
                     </div>
                 </div>
+
             </div>
         </div>
-        <div class="mt-14 text-center">
-            <h3 class="text-2xl font-bold text-red-400 mb-4 mt-12">No Matching Items found</h3>
-            <img src="https://cdn-icons-png.flaticon.com/512/6134/6134051.png" alt=""
-                style="width: 100px; height: 100px;" class="mx-auto mb-10 mt-7" />
-            <p class="text-blue-700 mb-4">We were unable to find any items that matched your search.</p>
-            <p class="text-blue-700 mb-4">Please try with other keywords or make a request for the item you are looking
-                for.
-            </p>
-            <button
-                class="bg-amber-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md transition pulse-on-hover">
-                Request now
-            </button>
-        </div>
-    </section>
-
+    </div>
     <footer class="bg-blue-800 text-blue-100 py-6 mt-auto">
         <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
             <p>© 2025 TriadGO. All rights reserved.</p>
@@ -240,7 +314,7 @@
     }
 
     document.querySelectorAll('nav a[href^="#"], a[href^="#"]').forEach(link => {
-        link.addEventListener('click', function (event) {
+        link.addEventListener('click', function(event) {
             if (this.getAttribute('href') !== '#') {
                 event.preventDefault();
                 const targetId = this.getAttribute('href').substring(1);
@@ -265,16 +339,16 @@
     const openSidebarBtn = document.querySelector('button.md\\:hidden[aria-label="Open Menu"]');
     const closeSidebarBtn = document.getElementById('closeSidebar');
 
-    openSidebarBtn.addEventListener('click', function () {
+    openSidebarBtn.addEventListener('click', function() {
         sidebar.classList.remove('hidden');
     });
 
-    closeSidebarBtn.addEventListener('click', function () {
+    closeSidebarBtn.addEventListener('click', function() {
         sidebar.classList.add('hidden');
     });
 
     // Tutup sidebar jika klik di luar sidebar
-    sidebar.addEventListener('click', function (e) {
+    sidebar.addEventListener('click', function(e) {
         if (e.target === sidebar) {
             sidebar.classList.add('hidden');
         }
@@ -282,7 +356,7 @@
 
     // Scroll to section dari sidebar
     sidebar.querySelectorAll('a[href^="#"]').forEach(link => {
-        link.addEventListener('click', function (event) {
+        link.addEventListener('click', function(event) {
             event.preventDefault();
             sidebar.classList.add('hidden');
             const targetId = this.getAttribute('href').substring(1);
@@ -291,7 +365,7 @@
     });
 
     // SweetAlert2 Logout Desktop
-    document.getElementById('logoutBtn')?.addEventListener('click', function (e) {
+    document.getElementById('logoutBtn')?.addEventListener('click', function(e) {
         Swal.fire({
             title: 'Logout?',
             text: "Are you sure you want to logout?",
@@ -315,7 +389,7 @@
     });
 
     // SweetAlert2 Logout Mobile
-    document.getElementById('logoutBtnMobile')?.addEventListener('click', function (e) {
+    document.getElementById('logoutBtnMobile')?.addEventListener('click', function(e) {
         Swal.fire({
             title: 'Logout?',
             text: "Are you sure you want to logout?",

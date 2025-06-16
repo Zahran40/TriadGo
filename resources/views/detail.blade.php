@@ -69,7 +69,7 @@
                         <p class="text-xl text-blue-700 mb-4 mt-2 font-semibold">
                             Weight : <span class="text-xl font-bold text-blue-900">5 kg</span>
                         </p>
-                        <a href="" class=" text-xl inline-block bg-amber-500 hover:bg-amber-400 text-white font-bold py-2 px-4 rounded-md transition pulse-on-hover mt-6">
+                        <a href="{{ route('formimportir') }}" class=" text-xl inline-block bg-amber-500 hover:bg-amber-400 text-white font-bold py-2 px-4 rounded-md transition pulse-on-hover mt-6">
                             + Add to Cart 
                         </a>
                     </div>

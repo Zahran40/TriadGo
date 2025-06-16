@@ -46,6 +46,6 @@ class ImportirController extends Controller
 
     public function formImportir()
     {
-        return view('formImportir');
+        return view('formimportir');
     }
 }

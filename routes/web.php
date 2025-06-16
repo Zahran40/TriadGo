@@ -50,7 +50,7 @@ Route::get('/catalog', [ImportirController::class, 'catalog'])->name('catalog')-
 
 
 
-Route::get('/formImportir', [ImportirController::class, 'formImportir'])->name('formImportir')->middleware('role.protect:impor');
+Route::get('/formimportir', [ImportirController::class, 'formimportir'])->name('formimportir')->middleware('role.protect:impor');
 Route::get('/detail', [ImportirController::class, 'detail'])->name('detail')->middleware('role.protect:impor');
 
 

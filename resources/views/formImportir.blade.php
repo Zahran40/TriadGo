@@ -350,18 +350,6 @@
                                                 <text x="15" y="8" font-family="Arial, sans-serif" font-size="3" font-weight="bold" text-anchor="middle" fill="#003876">MANDIRI</text>
                                             </svg>
                                         </div>
-                                        <div class="w-12 h-5 bg-white rounded border flex items-center justify-center">
-                                            <svg width="28" height="8" viewBox="0 0 30 12" fill="none">
-                                                <rect width="30" height="12" fill="#20C997"/>
-                                                <text x="15" y="8" font-family="Arial, sans-serif" font-size="4" font-weight="bold" text-anchor="middle" fill="white">BSI</text>
-                                            </svg>
-                                        </div>
-                                        <div class="w-12 h-5 bg-white rounded border flex items-center justify-center">
-                                            <svg width="28" height="8" viewBox="0 0 30 12" fill="none">
-                                                <rect width="30" height="12" fill="#003876"/>
-                                                <text x="15" y="8" font-family="Arial, sans-serif" font-size="4" font-weight="bold" text-anchor="middle" fill="white">BRI</text>
-                                            </svg>
-                                        </div>
                                     </div>
                                 </div>
                             </label>
@@ -460,7 +448,7 @@
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div class="p-3 bg-white dark:bg-gray-800 rounded border">
                                         <div class="flex items-center mb-2">
-                                            <div class="w-12 h-6 mr-2 rounded flex items-center justify-center" style="background-color: #2196F3;">
+                                            <div class="w-12 h-6 mr-2 bg-blue-900 rounded flex items-center justify-center">
                                                 <span class="text-white text-xs font-bold">BCA</span>
                                             </div>
                                             <p class="font-medium text-blue-900 dark:text-blue-100">BCA (Indonesia)</p>
@@ -479,30 +467,6 @@
                                         </div>
                                         <div class="text-sm text-gray-600 dark:text-gray-300">
                                             <p><strong>Account:</strong> 9876543210</p>
-                                            <p><strong>Name:</strong> PT TriadGo Indonesia</p>
-                                        </div>
-                                    </div>
-                                    <div class="p-3 bg-white dark:bg-gray-800 rounded border">
-                                        <div class="flex items-center mb-2">
-                                            <div class="rounded flex items-center justify-center px-3 py-1" style="background-color: #20C997;">
-                                                <span class="text-white text-xs font-bold whitespace-nowrap">BSI</span>
-                                            </div>
-                                            <p class="font-medium text-blue-900 dark:text-blue-100 ml-2">BSI (Indonesia)</p>
-                                        </div>
-                                        <div class="text-sm text-gray-600 dark:text-gray-300">
-                                            <p><strong>Account:</strong> 1122334455</p>
-                                            <p><strong>Name:</strong> PT TriadGo Indonesia</p>
-                                        </div>
-                                    </div>
-                                    <div class="p-3 bg-white dark:bg-gray-800 rounded border">
-                                        <div class="flex items-center mb-2">
-                                            <div class="rounded flex items-center justify-center px-3 py-1" style="background-color: #003876;">
-                                                <span class="text-white text-xs font-bold whitespace-nowrap">BRI</span>
-                                            </div>
-                                            <p class="font-medium text-blue-900 dark:text-blue-100 ml-2">BRI (Indonesia)</p>
-                                        </div>
-                                        <div class="text-sm text-gray-600 dark:text-gray-300">
-                                            <p><strong>Account:</strong> 5566778899</p>
                                             <p><strong>Name:</strong> PT TriadGo Indonesia</p>
                                         </div>
                                     </div>

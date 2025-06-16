@@ -10,6 +10,11 @@ class LoginController extends Controller
 {
     public function login()
     {
+        // Jika sudah login, redirect ke home sesuai role
+        if (Auth::check()) {
+            return $this->redirectToUserHome();
+        }
+        
         return view('login');
     }
 
@@ -34,24 +39,30 @@ class LoginController extends Controller
                 'name' => $user->name
             ]);
 
-            if ($role === 'ekspor') {
-                return redirect()->route('ekspor');
-            } elseif ($role === 'impor') {
-                return redirect()->route('importir');
-            } elseif ($role === 'admin') {
-                // Redirect admin langsung ke panel admin
-                return redirect('/admin1');
-            } else {
-                // Jika role tidak dikenali, logout dan redirect ke login
-                Auth::logout();
-                return redirect()->route('login')->withErrors([
-                    'email' => 'Role tidak valid: ' . $role,
-                ]);
-            }
+            return $this->redirectToUserHome();
         }
 
         return back()->withErrors([
             'email' => 'Email atau password salah.',
         ]);
+    }
+
+    private function redirectToUserHome()
+    {
+        $role = Auth::user()->role;
+
+        switch ($role) {
+            case 'ekspor':
+                return redirect()->route('ekspor');
+            case 'impor':
+                return redirect()->route('importir');
+            case 'admin':
+                return redirect('/admin1');
+            default:
+                Auth::logout();
+                return redirect()->route('login')->withErrors([
+                    'email' => 'Role tidak valid: ' . $role,
+                ]);
+        }
     }
 }

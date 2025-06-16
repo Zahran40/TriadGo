@@ -9,39 +9,43 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\EksportirController;
 use App\Http\Controllers\ImportirController;
 
-// HAPUS route proteksi admin1 manual - ini yang menyebabkan loop
 
-// Register
+
+// Register 
 Route::get('/sign-up', [RegisterController::class, 'signup'])->name('signup');
 Route::post('/sign-up/data', [RegisterController::class, 'store'])->name('signup.store');
 
-// Login
+// Login 
 Route::get('/login', [LoginController::class, 'login'])->name('login');
 Route::post('/login', [LoginController::class, 'authenticate'])->name('login.authenticate');
 
+// Homepage - semua bisa akses
 Route::get('/', function () {
     return view('homepage');
 })->name('homepage');
 
-Route::get('/importir', [PageController::class, 'home'])->name('home');
+// Halaman Importir - hanya role impor
+Route::get('/importir', [ImportirController::class, 'homeimportir'])->name('importir')->middleware('role.protect:impor');
 
-Route::get('/user-profile', [PageController::class, 'userprofile'])->name('userprofile');
-Route::get('/profile/edit', [PageController::class, 'edit'])->name('profile.edit');
+// User Profile - hanya user yang login (bukan guest)
+Route::get('/user-profile', [PageController::class, 'userprofile'])->name('userprofile')->middleware('role.protect:impor,ekspor');
+Route::get('/profile/edit', [PageController::class, 'edit'])->name('profile.edit')->middleware('role.protect:impor,ekspor');
 
-Route::get('/invoice', [PageController::class, 'invoice'])->name('invoice');
-Route::post('/logout', [PageController::class, 'logout'])->name('logout');
+// Invoice - hanya user yang login
+Route::get('/invoice', [PageController::class, 'invoice'])->name('invoice')->middleware('role.protect:admin,impor,ekspor');
+Route::post('/logout', [PageController::class, 'logout'])->name('logout')->middleware('role.protect:admin,impor,ekspor');
 
-//Route Contact us di homepage
+// Contact us - semua bisa akses
 Route::post('/contactus', [ContactusController::class, 'store'])->name('contactus.store');
 
-//Route Halaman Importir
-Route::get('Importir', [ImportirController::class, 'homeimportir'])->name('importir');
 
-//Route Halaman Ekspor
-Route::get('/ekspor', [EksportirController::class, 'homeeksportir'])->name('ekspor');
-Route::get('formeksportir', [EksportirController::class, 'formeksportir'])->name('formeksportir');
+
+// Halaman Ekspor - hanya role ekspor
+Route::get('/ekspor', [EksportirController::class, 'homeeksportir'])->name('ekspor')->middleware('role.protect:ekspor');
+Route::get('formeksportir', [EksportirController::class, 'formeksportir'])->name('formeksportir')->middleware('role.protect:ekspor');
 
 // Route fallback - letakkan di paling bawah
 Route::fallback(function () {
-    return view('404');
+    $userRole = Auth::check() ? Auth::user()->role : 'guest';
+    return response()->view('404', ['userRole' => $userRole], 404);
 });

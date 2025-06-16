@@ -36,6 +36,7 @@ Route::post('/contactus', [ContactusController::class, 'store'])->name('contactu
 
 //Route Halaman Importir
 Route::get('Importir', [ImportirController::class, 'homeimportir'])->name('importir');
+Route::get('formImportir', [ImportirController::class, 'formImportir'])->name('formImportir');
 
 //Route Halaman Ekspor
 Route::get('/ekspor', [EksportirController::class, 'homeeksportir'])->name('ekspor');

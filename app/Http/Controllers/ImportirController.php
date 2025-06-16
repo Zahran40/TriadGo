@@ -19,4 +19,9 @@ class ImportirController extends Controller
     }
     return view('importir');
 }
+
+ public function formImportir()
+    {
+        return view('formImportir');
+    }
 }

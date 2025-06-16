@@ -84,100 +84,43 @@
                 <div class="export-card bg-blue-50 dark:bg-slate-800 rounded-lg shadow-md p-6">
                     <h2 class="text-2xl font-bold text-blue-900 dark:text-blue-100 mb-6">Order Summary</h2>
                     
-                    <!-- Product Items -->
-                    <div class="space-y-4 mb-6">
-                        <div class="border-b border-gray-200 dark:border-gray-600 pb-4">
-                            <div class="flex items-center space-x-4">
-                                <img src="https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=150&h=150&fit=crop&crop=center" alt="Premium Coffee Beans" class="w-20 h-20 object-cover rounded-lg shadow-sm">
-                                <div class="flex-1">
-                                    <h3 class="font-semibold text-blue-900 dark:text-blue-100">Premium Coffee Beans</h3>
-                                    <p class="text-gray-600 dark:text-gray-300 text-sm">Origin: Indonesia</p>
-                                    <p class="text-gray-600 dark:text-gray-300 text-sm">Weight: 5kg</p>
-                                    <div class="flex items-center mt-2">
-                                        <label class="text-sm text-blue-900 dark:text-blue-100 mr-2">Qty:</label>
-                                        <select class="border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded px-2 py-1 text-sm" onchange="updateQuantity(this, 60)">
-                                            <option value="1">1</option>
-                                            <option value="2" selected>2</option>
-                                            <option value="3">3</option>
-                                            <option value="5">5</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="text-right">
-                                    <p class="font-semibold text-blue-900 dark:text-blue-100">$120.00</p>
-                                    <p class="text-sm text-gray-600 dark:text-gray-300">$60.00 each</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="border-b border-gray-200 dark:border-gray-600 pb-4">
-                            <div class="flex items-center space-x-4">
-                                <img src="https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=150&h=150&fit=crop&crop=center" alt="Organic Spices Set" class="w-20 h-20 object-cover rounded-lg shadow-sm">
-                                <div class="flex-1">
-                                    <h3 class="font-semibold text-blue-900 dark:text-blue-100">Organic Spices Set</h3>
-                                    <p class="text-gray-600 dark:text-gray-300 text-sm">Origin: Thailand</p>
-                                    <p class="text-gray-600 dark:text-gray-300 text-sm">Package: Premium Set</p>
-                                    <div class="flex items-center mt-2">
-                                        <label class="text-sm text-blue-900 dark:text-blue-100 mr-2">Qty:</label>
-                                        <select class="border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded px-2 py-1 text-sm" onchange="updateQuantity(this, 85)">
-                                            <option value="1" selected>1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="text-right">
-                                    <p class="font-semibold text-blue-900 dark:text-blue-100">$85.00</p>
-                                    <p class="text-sm text-gray-600 dark:text-gray-300">$85.00 each</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="border-b border-gray-200 dark:border-gray-600 pb-4">
-                            <div class="flex items-center space-x-4">
-                                <img src="https://cdnimg.webstaurantstore.com/images/products/large/57498/1963206.jpg" alt="Premium Tea" class="w-20 h-20 object-cover rounded-lg shadow-sm">
-                                <div class="flex-1">
-                                    <h3 class="font-semibold text-blue-900 dark:text-blue-100">Premium Green Tea</h3>
-                                    <p class="text-gray-600 dark:text-gray-300 text-sm">Origin: Malaysia</p>
-                                    <p class="text-gray-600 dark:text-gray-300 text-sm">Package: 500g</p>
-                                    <div class="flex items-center mt-2">
-                                        <label class="text-sm text-blue-900 dark:text-blue-100 mr-2">Qty:</label>
-                                        <select class="border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded px-2 py-1 text-sm" onchange="updateQuantity(this, 45)">
-                                            <option value="1" selected>1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="text-right">
-                                    <p class="font-semibold text-blue-900 dark:text-blue-100">$45.00</p>
-                                    <p class="text-sm text-gray-600 dark:text-gray-300">$45.00 each</p>
-                                </div>
-                            </div>
-                        </div>
+                    <!-- Cart Items -->
+                    <div id="cartItemsCheckout" class="space-y-4 mb-6">
+                        <!-- Items will be loaded from cart -->
                     </div>
-
+                    
+                    <!-- Empty Cart Message -->
+                    <div id="emptyCartMessage" class="text-center py-8 hidden">
+                        <svg class="w-16 h-16 mx-auto text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-1.8 1.8M7 13v6a2 2 0 002 2h7.5"></path>
+                        </svg>
+                        <p class="text-gray-500 dark:text-gray-400 mb-4">Your cart is empty</p>
+                        <a href="{{ url('/detail') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition">
+                            Continue Shopping
+                        </a>
+                    </div>
+                    
                     <!-- Pricing Breakdown -->
-                    <div class="space-y-2">
+                    <div class="space-y-2" id="pricingBreakdown">
                         <div class="flex justify-between">
                             <span class="text-blue-900 dark:text-blue-100">Subtotal:</span>
-                            <span class="text-blue-900 dark:text-blue-100" id="subtotal">$250.00</span>
+                            <span class="text-blue-900 dark:text-blue-100" id="subtotal">$0.00</span>
                         </div>
                         <div class="flex justify-between">
                             <span class="text-blue-900 dark:text-blue-100">Shipping:</span>
-                            <span class="text-blue-900 dark:text-blue-100">$25.00</span>
+                            <span class="text-blue-900 dark:text-blue-100" id="shipping">$25.00</span>
                         </div>
                         <div class="flex justify-between">
                             <span class="text-blue-900 dark:text-blue-100">Tax (10%):</span>
-                            <span class="text-blue-900 dark:text-blue-100" id="tax">$25.00</span>
+                            <span class="text-blue-900 dark:text-blue-100" id="tax">$0.00</span>
                         </div>
                         <div class="border-t border-gray-300 dark:border-gray-600 pt-2">
                             <div class="flex justify-between font-bold text-lg">
                                 <span class="text-blue-900 dark:text-blue-100">Total:</span>
-                                <span class="text-blue-900 dark:text-blue-100" id="totalAmount">$300.00</span>
+                                <span class="text-blue-900 dark:text-blue-100" id="totalAmount">$25.00</span>
                             </div>
                             <div class="text-sm text-gray-600 dark:text-gray-300 mt-1">
-                                <span>≈ IDR <span id="totalIDR">4,509,000</span></span>
+                                <span>≈ <span id="altCurrency">IDR</span> <span id="totalAltCurrency">375,750</span></span>
                             </div>
                         </div>
                     </div>
@@ -870,6 +813,170 @@ midtransOptions.forEach(btn => {
         }
     });
 });
+
+    // Shopping Cart Integration
+    let cart = JSON.parse(localStorage.getItem('shoppingCart')) || [];
+    
+    // Currency exchange rates (demo - in real app, this would be from API)
+    const exchangeRates = {
+        USD: 1,
+        IDR: 15030,
+        MYR: 4.45,
+        SGD: 1.35,
+        THB: 33.50,
+        PHP: 56.25,
+        VND: 24000,
+        BND: 1.35,
+        LAK: 19500,
+        KHR: 4100,
+        MMK: 2100
+    };
+    
+    // Currency symbols
+    const currencySymbols = {
+        USD: '$',
+        IDR: 'Rp',
+        MYR: 'RM',
+        SGD: 'S$',
+        THB: '฿',
+        PHP: '₱',
+        VND: '₫',
+        BND: 'B$',
+        LAK: '₭',
+        KHR: '៛',
+        MMK: 'K'
+    };
+    
+    let currentCurrency = 'USD';
+    let currentExchangeRate = 1;
+    
+    // Load cart data when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        loadCartItems();
+        updatePricing();
+        updateNavCartCount();
+    });
+    
+    function updateNavCartCount() {
+        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        const navCartCount = document.getElementById('navCartCount');
+        if (navCartCount) {
+            if (totalItems > 0) {
+                navCartCount.textContent = totalItems;
+                navCartCount.classList.remove('hidden');
+            } else {
+                navCartCount.classList.add('hidden');
+            }
+        }
+    }
+    
+    function loadCartItems() {
+        const cartContainer = document.getElementById('cartItemsCheckout');
+        const emptyMessage = document.getElementById('emptyCartMessage');
+        const pricingBreakdown = document.getElementById('pricingBreakdown');
+        
+        if (cart.length === 0) {
+            cartContainer.style.display = 'none';
+            emptyMessage.classList.remove('hidden');
+            pricingBreakdown.style.display = 'none';
+            return;
+        }
+        
+        cartContainer.style.display = 'block';
+        emptyMessage.classList.add('hidden');
+        pricingBreakdown.style.display = 'block';
+        
+        cartContainer.innerHTML = cart.map((item, index) => `
+            <div class="border-b border-gray-200 dark:border-gray-600 pb-4">
+                <div class="flex items-center space-x-4">
+                    <img src="${item.image}" alt="${item.name}" class="w-20 h-20 object-cover rounded-lg shadow-sm">
+                    <div class="flex-1">
+                        <h3 class="font-semibold text-blue-900 dark:text-blue-100">${item.name}</h3>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm">Origin: ${item.origin}</p>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm">Weight: ${item.weight}kg each</p>
+                        <div class="flex items-center mt-2">
+                            <label class="text-sm text-blue-900 dark:text-blue-100 mr-2">Qty:</label>
+                            <select class="border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded px-2 py-1 text-sm" onchange="updateCartQuantity(${index}, this.value)">
+                                ${Array.from({length: 10}, (_, i) => i + 1).map(num => 
+                                    `<option value="${num}" ${num === item.quantity ? 'selected' : ''}>${num}</option>`
+                                ).join('')}
+                            </select>
+                            <button onclick="removeFromCheckoutCart(${index})" class="ml-3 text-red-600 hover:text-red-800 text-sm">
+                                Remove
+                            </button>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="font-semibold text-blue-900 dark:text-blue-100">${formatCurrency(item.price * item.quantity)}</p>
+                        <p class="text-sm text-gray-600 dark:text-gray-300">${formatCurrency(item.price)} each</p>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    }
+    
+    function updateCartQuantity(index, newQuantity) {
+        cart[index].quantity = parseInt(newQuantity);
+        localStorage.setItem('shoppingCart', JSON.stringify(cart));
+        loadCartItems();
+        updatePricing();
+        updateNavCartCount();
+    }
+    
+    function removeFromCheckoutCart(index) {
+        if (confirm('Remove this item from cart?')) {
+            cart.splice(index, 1);
+            localStorage.setItem('shoppingCart', JSON.stringify(cart));
+            loadCartItems();
+            updatePricing();
+            updateNavCartCount();
+        }
+    }
+    
+    function updatePricing() {
+        const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        const shipping = cart.length > 0 ? 25 : 0;
+        const tax = subtotal * 0.1;
+        const total = subtotal + shipping + tax;
+        
+        document.getElementById('subtotal').textContent = formatCurrency(subtotal);
+        document.getElementById('shipping').textContent = formatCurrency(shipping);
+        document.getElementById('tax').textContent = formatCurrency(tax);
+        document.getElementById('totalAmount').textContent = formatCurrency(total);
+        
+        // Update alternative currency display
+        const altCurrencyCode = currentCurrency === 'USD' ? 'IDR' : 'USD';
+        const altRate = currentCurrency === 'USD' ? exchangeRates.IDR : (1 / exchangeRates[currentCurrency]);
+        const altTotal = currentCurrency === 'USD' ? total * exchangeRates.IDR : total * altRate;
+        
+        document.getElementById('altCurrency').textContent = altCurrencyCode;
+        document.getElementById('totalAltCurrency').textContent = formatNumber(altTotal);
+    }
+    
+    function formatCurrency(amount) {
+        const symbol = currencySymbols[currentCurrency];
+        if (currentCurrency === 'IDR' || currentCurrency === 'VND' || currentCurrency === 'LAK' || currentCurrency === 'KHR' || currentCurrency === 'MMK') {
+            return symbol + formatNumber(Math.round(amount * currentExchangeRate));
+        }
+        return symbol + (amount * currentExchangeRate).toFixed(2);
+    }
+    
+    function formatNumber(num) {
+        return num.toString().replace(/\\B(?=(\\d{3})+(?!\\d))/g, ',');
+    }
+    
+    function updateCurrency() {
+        const select = document.getElementById('currencySelect');
+        currentCurrency = select.value;
+        currentExchangeRate = exchangeRates[currentCurrency];
+        updatePricing();
+    }
+    
+    // Original updateQuantity function for compatibility
+    function updateQuantity(selectElement, basePrice) {
+        // This is for legacy compatibility if needed
+        updatePricing();
+    }
     </script>
 </body>
 </html>

@@ -69,9 +69,33 @@
                         <p class="text-xl text-blue-700 mb-4 mt-2 font-semibold">
                             Weight : <span class="text-xl font-bold text-blue-900">5 kg</span>
                         </p>
-                        <a href="{{ route('formimportir') }}" class=" text-xl inline-block bg-amber-500 hover:bg-amber-400 text-white font-bold py-2 px-4 rounded-md transition pulse-on-hover mt-6">
-                            + Add to Cart 
-                        </a>
+                        
+                        <!-- Quantity Selector -->
+                        <div class="mb-6">
+                            <label class="text-lg font-semibold text-blue-700 block mb-2">Quantity:</label>
+                            <div class="flex items-center space-x-3">
+                                <button onclick="decreaseQuantity()" class="bg-blue-600 hover:bg-blue-700 text-white w-10 h-10 rounded-lg font-bold">-</button>
+                                <input type="number" id="quantity" value="1" min="1" max="50" class="w-20 h-10 text-center border-2 border-blue-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                <button onclick="increaseQuantity()" class="bg-blue-600 hover:bg-blue-700 text-white w-10 h-10 rounded-lg font-bold">+</button>
+                                <span class="text-sm text-blue-600 ml-2">Max: 50</span>
+                            </div>
+                        </div>
+
+                        <!-- Cart Action Buttons -->
+                        <div class="flex flex-col sm:flex-row gap-4 mt-6">
+                            <button onclick="addToCart()" class="text-xl bg-amber-500 hover:bg-amber-400 text-white font-bold py-3 px-6 rounded-md transition flex items-center justify-center gap-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-1.8 1.8M7 13v6a2 2 0 002 2h7.5m0 0a2.2 0 100-4.4 2.2 0 000 4.4z"></path>
+                                </svg>
+                                Add to Cart
+                            </button>
+                            <button onclick="viewCart()" class="text-xl bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-md transition flex items-center justify-center gap-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                                </svg>
+                                View Cart (<span id="cartCount">0</span>)
+                            </button>
+                        </div>
                     </div>
                     
                 </div>
@@ -271,6 +295,251 @@
                     document.getElementById('logoutForm').submit();
                 }
             });
+        });
+    </script>
+
+    <!-- Shopping Cart Modal -->
+    <div id="cartModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white dark:bg-gray-800 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-hidden">
+                <!-- Modal Header -->
+                <div class="flex justify-between items-center p-6 border-b dark:border-gray-700">
+                    <h2 class="text-2xl font-bold text-gray-800 dark:text-white">Shopping Cart</h2>
+                    <button onclick="closeCart()" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                
+                <!-- Modal Body -->
+                <div class="p-6 max-h-96 overflow-y-auto">
+                    <div id="cartItems" class="space-y-4">
+                        <!-- Cart items will be populated here -->
+                    </div>
+                    <div id="emptyCart" class="text-center py-8 hidden">
+                        <svg class="w-16 h-16 mx-auto text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-1.8 1.8M7 13v6a2 2 0 002 2h7.5"></path>
+                        </svg>
+                        <p class="text-gray-500 dark:text-gray-400">Your cart is empty</p>
+                    </div>
+                </div>
+                
+                <!-- Modal Footer -->
+                <div class="border-t dark:border-gray-700 p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="text-lg font-semibold text-gray-800 dark:text-white">Total: </span>
+                        <span id="cartTotal" class="text-xl font-bold text-blue-600 dark:text-blue-400">$0.00</span>
+                    </div>
+                    <div class="flex gap-4">
+                        <button onclick="clearCart()" class="flex-1 bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-md transition">
+                            Clear Cart
+                        </button>
+                        <button onclick="proceedToCheckout()" class="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-md transition">
+                            Proceed to Checkout
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-4 right-4 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg transform translate-y-full transition-transform duration-300 z-50">
+        <div class="flex items-center gap-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+            <span id="toastMessage">Product added to cart!</span>
+        </div>
+    </div>
+
+    <script>
+        // Shopping Cart System
+        let cart = JSON.parse(localStorage.getItem('shoppingCart')) || [];
+        
+        // Product data (in real app, this would come from backend)
+        const currentProduct = {
+            id: 1,
+            name: "Nanas Subang",
+            price: 15.50,
+            image: "https://via.placeholder.com/150x150/FFD700/000000?text=Nanas",
+            weight: 5,
+            origin: "Indonesia"
+        };
+        
+        // Update cart count on page load
+        updateCartCount();
+        
+        function increaseQuantity() {
+            const quantityInput = document.getElementById('quantity');
+            let quantity = parseInt(quantityInput.value);
+            if (quantity < 50) {
+                quantityInput.value = quantity + 1;
+            }
+        }
+        
+        function decreaseQuantity() {
+            const quantityInput = document.getElementById('quantity');
+            let quantity = parseInt(quantityInput.value);
+            if (quantity > 1) {
+                quantityInput.value = quantity - 1;
+            }
+        }
+        
+        function addToCart() {
+            const quantity = parseInt(document.getElementById('quantity').value);
+            
+            // Check if product already exists in cart
+            const existingItemIndex = cart.findIndex(item => item.id === currentProduct.id);
+            
+            if (existingItemIndex > -1) {
+                // Update quantity if product exists
+                cart[existingItemIndex].quantity += quantity;
+            } else {
+                // Add new product to cart
+                cart.push({
+                    ...currentProduct,
+                    quantity: quantity
+                });
+            }
+            
+            // Save to localStorage
+            localStorage.setItem('shoppingCart', JSON.stringify(cart));
+            
+            // Update cart count
+            updateCartCount();
+            
+            // Show toast notification
+            showToast('Product added to cart successfully!');
+            
+            // Reset quantity to 1
+            document.getElementById('quantity').value = 1;
+        }
+        
+        function updateCartCount() {
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cartCount').textContent = totalItems;
+            
+            // Update navbar cart count if element exists
+            const navCartCount = document.getElementById('navCartCount');
+            if (navCartCount) {
+                if (totalItems > 0) {
+                    navCartCount.textContent = totalItems;
+                    navCartCount.classList.remove('hidden');
+                } else {
+                    navCartCount.classList.add('hidden');
+                }
+            }
+        }
+        
+        function viewCart() {
+            renderCartItems();
+            document.getElementById('cartModal').classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+        }
+        
+        function closeCart() {
+            document.getElementById('cartModal').classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+        }
+        
+        function renderCartItems() {
+            const cartItemsContainer = document.getElementById('cartItems');
+            const emptyCartDiv = document.getElementById('emptyCart');
+            
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = '';
+                emptyCartDiv.classList.remove('hidden');
+                document.getElementById('cartTotal').textContent = '$0.00';
+                return;
+            }
+            
+            emptyCartDiv.classList.add('hidden');
+            
+            cartItemsContainer.innerHTML = cart.map((item, index) => `
+                <div class="flex items-center gap-4 bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                    <img src="${item.image}" alt="${item.name}" class="w-16 h-16 object-cover rounded-lg">
+                    <div class="flex-1">
+                        <h3 class="font-semibold text-gray-800 dark:text-white">${item.name}</h3>
+                        <p class="text-sm text-gray-600 dark:text-gray-300">Origin: ${item.origin}</p>
+                        <p class="text-sm text-gray-600 dark:text-gray-300">Weight: ${item.weight}kg each</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="updateQuantity(${index}, -1)" class="bg-gray-300 hover:bg-gray-400 dark:bg-gray-600 dark:hover:bg-gray-500 text-gray-800 dark:text-white w-8 h-8 rounded">-</button>
+                        <span class="w-8 text-center font-semibold dark:text-white">${item.quantity}</span>
+                        <button onclick="updateQuantity(${index}, 1)" class="bg-gray-300 hover:bg-gray-400 dark:bg-gray-600 dark:hover:bg-gray-500 text-gray-800 dark:text-white w-8 h-8 rounded">+</button>
+                    </div>
+                    <div class="text-right">
+                        <p class="font-bold text-blue-600 dark:text-blue-400">$${(item.price * item.quantity).toFixed(2)}</p>
+                        <button onclick="removeFromCart(${index})" class="text-red-600 hover:text-red-800 text-sm">Remove</button>
+                    </div>
+                </div>
+            `).join('');
+            
+            updateCartTotal();
+        }
+        
+        function updateQuantity(index, change) {
+            cart[index].quantity += change;
+            if (cart[index].quantity <= 0) {
+                cart.splice(index, 1);
+            }
+            localStorage.setItem('shoppingCart', JSON.stringify(cart));
+            updateCartCount();
+            renderCartItems();
+        }
+        
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            localStorage.setItem('shoppingCart', JSON.stringify(cart));
+            updateCartCount();
+            renderCartItems();
+            showToast('Product removed from cart');
+        }
+        
+        function clearCart() {
+            if (confirm('Are you sure you want to clear your cart?')) {
+                cart = [];
+                localStorage.setItem('shoppingCart', JSON.stringify(cart));
+                updateCartCount();
+                renderCartItems();
+                showToast('Cart cleared');
+            }
+        }
+        
+        function updateCartTotal() {
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            document.getElementById('cartTotal').textContent = `$${total.toFixed(2)}`;
+        }
+        
+        function proceedToCheckout() {
+            if (cart.length === 0) {
+                alert('Your cart is empty!');
+                return;
+            }
+            
+            // Redirect to checkout form with cart data
+            window.location.href = "{{ route('formimportir') }}";
+        }
+        
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            
+            toastMessage.textContent = message;
+            toast.classList.remove('translate-y-full');
+            
+            setTimeout(() => {
+                toast.classList.add('translate-y-full');
+            }, 3000);
+        }
+        
+        // Close modal when clicking outside
+        document.getElementById('cartModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeCart();
+            }
         });
     </script>
 </body>

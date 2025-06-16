@@ -27,7 +27,7 @@ Route::get('/', function () {
 // Halaman Importir - hanya role impor
 Route::get('/importir', [ImportirController::class, 'homeimportir'])->name('importir')->middleware('role.protect:impor');
 Route::get('/catalog', [ImportirController::class, 'catalog'])->name('catalog')->middleware('role.protect:impor');
-
+Route::get('/detail', [ImportirController::class, 'detail'])->name('detail')->middleware('role.protect:impor');
 
 // User Profile - hanya user yang login (bukan guest)
 Route::get('/user-profile', [PageController::class, 'userprofile'])->name('userprofile')->middleware('role.protect:impor,ekspor');
@@ -39,8 +39,6 @@ Route::post('/logout', [PageController::class, 'logout'])->name('logout')->middl
 
 // Contact us - semua bisa akses
 Route::post('/contactus', [ContactusController::class, 'store'])->name('contactus.store');
-
-
 
 // Halaman Ekspor - hanya role ekspor
 Route::get('/ekspor', [EksportirController::class, 'homeeksportir'])->name('ekspor')->middleware('role.protect:ekspor');

@@ -33,4 +33,9 @@ class ImportirController extends Controller
     {
         return view('formImportir');
     }
+
+    public function requestimportir()
+    {
+        return view('requestimportir');
+    }
 }

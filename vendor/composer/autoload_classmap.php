@@ -18,6 +18,7 @@ return array(
     'App\\Http\\Controllers\\EksportirController' => $baseDir . '/app/Http/Controllers/EksportirController.php',
     'App\\Http\\Controllers\\ImportirController' => $baseDir . '/app/Http/Controllers/ImportirController.php',
     'App\\Http\\Controllers\\LoginController' => $baseDir . '/app/Http/Controllers/LoginController.php',
+    'App\\Http\\Controllers\\MidtransController' => $baseDir . '/app/Http/Controllers/MidtransController.php',
     'App\\Http\\Controllers\\PageController' => $baseDir . '/app/Http/Controllers/PageController.php',
     'App\\Http\\Controllers\\RegisterController' => $baseDir . '/app/Http/Controllers/RegisterController.php',
     'App\\Http\\Middleware\\AdminAccess' => $baseDir . '/app/Http/Middleware/AdminAccess.php',

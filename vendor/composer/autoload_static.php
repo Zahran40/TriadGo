@@ -680,6 +680,7 @@ class ComposerStaticInit88970a0117c062eed55fa8728fc43833
         'App\\Http\\Controllers\\EksportirController' => __DIR__ . '/../..' . '/app/Http/Controllers/EksportirController.php',
         'App\\Http\\Controllers\\ImportirController' => __DIR__ . '/../..' . '/app/Http/Controllers/ImportirController.php',
         'App\\Http\\Controllers\\LoginController' => __DIR__ . '/../..' . '/app/Http/Controllers/LoginController.php',
+        'App\\Http\\Controllers\\MidtransController' => __DIR__ . '/../..' . '/app/Http/Controllers/MidtransController.php',
         'App\\Http\\Controllers\\PageController' => __DIR__ . '/../..' . '/app/Http/Controllers/PageController.php',
         'App\\Http\\Controllers\\RegisterController' => __DIR__ . '/../..' . '/app/Http/Controllers/RegisterController.php',
         'App\\Http\\Middleware\\AdminAccess' => __DIR__ . '/../..' . '/app/Http/Middleware/AdminAccess.php',

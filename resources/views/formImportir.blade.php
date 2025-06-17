@@ -14,6 +14,7 @@
     <script src="https://js.stripe.com/v3/"></script>
     <script src="https://www.paypal.com/sdk/js?client-id=AYpPIo4n7iUjkD_M5bK7Vg_dq4z4v_K5nM3z&currency=USD"></script>
     <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="SB-Mid-client-YOUR_CLIENT_KEY"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
     <script>
         tailwind.config = {
@@ -67,6 +68,87 @@
         .custom-radio input[type="radio"]:focus {
             outline: none;
             box-shadow: 0 0 0 2px #2563eb33;
+        }
+
+        /* Make the dark mode thumb not block pointer events so the toggle is always clickable */
+        #darkModeThumb {
+            pointer-events: none;
+        }
+
+        /* Bank option styling */
+        .bank-option {
+            transition: all 0.3s ease;
+        }
+        .bank-option:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        .bank-option input[type="radio"]:checked + div {
+            transform: scale(1.02);
+        }
+        .bank-option input[type="radio"]:checked {
+            + div {
+                background: linear-gradient(135deg, #ebf4ff 0%, #dbeafe 100%);
+            }
+        }
+        .dark .bank-option input[type="radio"]:checked + div {
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+        }
+
+        /* Payment option styling */
+        .payment-option {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .payment-option:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+        .payment-option input[type="radio"] {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            z-index: 10;
+        }
+        .payment-option input[type="radio"]:checked + div {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            border-color: #2563eb;
+        }
+        .dark .payment-option input[type="radio"]:checked + div {
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+        }
+
+        /* Midtrans option styling */
+        .midtrans-option {
+            transition: all 0.2s ease;
+        }
+        .midtrans-option:hover {
+            transform: scale(1.05);
+        }
+        .midtrans-option.bg-blue-500 {
+            background-color: #3b82f6 !important;
+            color: white !important;
+            border-color: #3b82f6 !important;
+        }
+
+        /* File upload styling */
+        #receiptUpload:focus + label {
+            outline: 2px solid #3b82f6;
+            outline-offset: 2px;
+        }
+
+        /* Loading animation */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .animate-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        /* Smooth transitions for currency changes */
+        #totalAmount, #totalAltCurrency {
+            transition: all 0.3s ease;
         }
     </style>
 </head>
@@ -396,127 +478,112 @@
 
                         <!-- Bank Transfer Info -->
                         <div id="bankTransferInfo" class="hidden mt-4">
-    <div class="p-4 bg-blue-50 dark:bg-slate-700 rounded-lg">
-        <h4 class="font-semibold text-blue-900 dark:text-blue-100 mb-3">Bank Transfer Details</h4>
-        <form id="bankTransferForm">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <label class="flex items-center min-h-[80px] p-4 bg-white dark:bg-gray-800 rounded border gap-4 cursor-pointer transition-all hover:shadow-md">
-                    <input type="radio" name="selectedBank" value="BCA" class="accent-blue-500 mr-4" required>
-                    <div class="flex flex-col items-center w-full">
-                        <div class="flex items-center mb-2 justify-center w-full">
-                            <div class="w-12 h-6 rounded flex items-center justify-center" style="background-color: #2196F3;">
-                                <span class="text-white text-xs font-bold">BCA</span>
-                            </div>
-                            <span class="font-medium text-blue-900 dark:text-blue-100 ml-2">BCA (Indonesia)</span>
-                        </div>
-                    </div>
-                </label>
-                <label class="flex items-center min-h-[80px] p-4 bg-white dark:bg-gray-800 rounded border gap-4 cursor-pointer transition-all hover:shadow-md">
-                    <input type="radio" name="selectedBank" value="Mandiri" class="accent-yellow-500 mr-4">
-                    <div class="flex flex-col items-center w-full">
-                        <div class="flex items-center mb-2 justify-center w-full">
-                            <div class="rounded flex items-center justify-center" style="background-color: #FFD600; width: 80px; height: 28px;">
-                                <span class="text-blue-900 text-xs font-bold w-full text-center" style="display: flex; align-items: center; justify-content: center; height: 100%; width: 100%;">MANDIRI</span>
-                            </div>
-                            <span class="font-medium text-blue-900 dark:text-blue-100 ml-2">Mandiri (Indonesia)</span>
-                        </div>
-                    </div>
-                </label>
-                <label class="flex items-center min-h-[80px] p-4 bg-white dark:bg-gray-800 rounded border gap-4 cursor-pointer transition-all hover:shadow-md">
-                    <input type="radio" name="selectedBank" value="BSI" class="accent-teal-500 mr-4">
-                    <div class="flex flex-col items-center w-full">
-                        <div class="flex items-center mb-2 justify-center w-full">
-                            <div class="rounded flex items-center justify-center px-3 py-1" style="background-color: #20C997;">
-                                <span class="text-white text-xs font-bold whitespace-nowrap">BSI</span>
-                            </div>
-                            <span class="font-medium text-blue-900 dark:text-blue-100 ml-2">BSI (Indonesia)</span>
-                        </div>
-                    </div>
-                </label>
-                <label class="flex items-center min-h-[80px] p-4 bg-white dark:bg-gray-800 rounded border gap-4 cursor-pointer transition-all hover:shadow-md">
-                    <input type="radio" name="selectedBank" value="BRI" class="accent-blue-900 mr-4">
-                    <div class="flex flex-col items-center w-full">
-                        <div class="flex items-center mb-2 justify-center w-full">
-                            <div class="rounded flex items-center justify-center px-3 py-1" style="background-color: #003876;">
-                                <span class="text-white text-xs font-bold whitespace-nowrap">BRI</span>
-                            </div>
-                            <span class="font-medium text-blue-900 dark:text-blue-100 ml-2">BRI (Indonesia)</span>
-                        </div>
-                    </div>
-                </label>
-            </div>
+                            <div class="p-4 bg-blue-50 dark:bg-slate-700 rounded-lg">
+                                <h4 class="font-semibold text-blue-900 dark:text-blue-100 mb-3">Bank Transfer Details</h4>
+                                <form id="bankTransferForm">
+                                    <h5 class="font-semibold text-blue-900 dark:text-blue-100 mb-3">Choose Destination Bank</h5>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                                        <label class="bank-option flex items-center min-h-[100px] p-4 bg-white dark:bg-gray-800 rounded-lg border-2 border-gray-300 dark:border-gray-600 gap-4 cursor-pointer transition-all hover:shadow-md hover:border-blue-400 dark:hover:border-blue-500">
+                                            <input type="radio" name="selectedBank" value="BCA" class="w-5 h-5 text-blue-600 mr-4" required>
+                                            <div class="flex flex-col items-center w-full">
+                                                <div class="flex items-center mb-2 justify-center w-full">
+                                                    <div class="w-16 h-8 rounded flex items-center justify-center" style="background-color: #2196F3;">
+                                                        <span class="text-white text-sm font-bold">BCA</span>
+                                                    </div>
+                                                </div>
+                                                <span class="font-medium text-blue-900 dark:text-blue-100 text-center">Bank Central Asia</span>
+                                                <span class="text-xs text-gray-600 dark:text-gray-400 text-center mt-1">Indonesia</span>
+                                            </div>
+                                        </label>
+                                        
+                                        <label class="bank-option flex items-center min-h-[100px] p-4 bg-white dark:bg-gray-800 rounded-lg border-2 border-gray-300 dark:border-gray-600 gap-4 cursor-pointer transition-all hover:shadow-md hover:border-blue-400 dark:hover:border-blue-500">
+                                            <input type="radio" name="selectedBank" value="Mandiri" class="w-5 h-5 text-yellow-600 mr-4">
+                                            <div class="flex flex-col items-center w-full">
+                                                <div class="flex items-center mb-2 justify-center w-full">
+                                                    <div class="rounded flex items-center justify-center px-3 py-2" style="background-color: #FFD600; width: 90px; height: 32px;">
+                                                        <span class="text-blue-900 text-sm font-bold text-center">MANDIRI</span>
+                                                    </div>
+                                                </div>
+                                                <span class="font-medium text-blue-900 dark:text-blue-100 text-center">Bank Mandiri</span>
+                                                <span class="text-xs text-gray-600 dark:text-gray-400 text-center mt-1">Indonesia</span>
+                                            </div>
+                                        </label>
+                                        
+                                        <label class="bank-option flex items-center min-h-[100px] p-4 bg-white dark:bg-gray-800 rounded-lg border-2 border-gray-300 dark:border-gray-600 gap-4 cursor-pointer transition-all hover:shadow-md hover:border-blue-400 dark:hover:border-blue-500">
+                                            <input type="radio" name="selectedBank" value="BSI" class="w-5 h-5 text-teal-600 mr-4">
+                                            <div class="flex flex-col items-center w-full">
+                                                <div class="flex items-center mb-2 justify-center w-full">
+                                                    <div class="rounded flex items-center justify-center px-4 py-2" style="background-color: #20C997;">
+                                                        <span class="text-white text-sm font-bold whitespace-nowrap">BSI</span>
+                                                    </div>
+                                                </div>
+                                                <span class="font-medium text-blue-900 dark:text-blue-100 text-center">Bank Syariah Indonesia</span>
+                                                <span class="text-xs text-gray-600 dark:text-gray-400 text-center mt-1">Indonesia</span>
+                                            </div>
+                                        </label>
+                                        
+                                        <label class="bank-option flex items-center min-h-[100px] p-4 bg-white dark:bg-gray-800 rounded-lg border-2 border-gray-300 dark:border-gray-600 gap-4 cursor-pointer transition-all hover:shadow-md hover:border-blue-400 dark:hover:border-blue-500">
+                                            <input type="radio" name="selectedBank" value="BRI" class="w-5 h-5 text-blue-900 mr-4">
+                                            <div class="flex flex-col items-center w-full">
+                                                <div class="flex items-center mb-2 justify-center w-full">
+                                                    <div class="rounded flex items-center justify-center px-4 py-2" style="background-color: #003876;">
+                                                        <span class="text-white text-sm font-bold whitespace-nowrap">BRI</span>
+                                                    </div>
+                                                </div>
+                                                <span class="font-medium text-blue-900 dark:text-blue-100 text-center">Bank Rakyat Indonesia</span>
+                                                <span class="text-xs text-gray-600 dark:text-gray-400 text-center mt-1">Indonesia</span>
+                                            </div>
+                                        </label>
+                                    </div>
 
-            <div class="mt-4 p-3 bg-yellow-50 dark:bg-yellow-900 rounded border border-yellow-200 dark:border-yellow-700">
-                <p class="text-sm text-yellow-800 dark:text-yellow-200 mb-3">
-                    <strong>Note:</strong> Please include your order number in the transfer description.
-                </p>
-                <div id="userBankForm" class="mt-3">
-                    <h5 class="font-semibold text-blue-900 dark:text-blue-100 mb-3">Your Bank Account Details</h5>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-blue-900 dark:text-blue-100 mb-1">Account Holder Name*</label>
-                            <input type="text" name="user_account_name" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white" placeholder="e.g. John Doe" required>
+                                    <!-- Selected Bank Transfer Details (will be populated by JavaScript) -->
+                                    <div id="bankTransferDetails" class="hidden">
+                                        <!-- Bank details will be inserted here by JavaScript -->
+                                    </div>
+                                </form>
+                            </div>
                         </div>
-                        <div>
-                            <label class="block text-blue-900 dark:text-blue-100 mb-1">Account Number*</label>
-                            <input type="text" name="user_account_number" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white" placeholder="e.g. 1234567890" required>
+
+                    <!-- Security Features -->
+                    <div class="mt-6 p-4 bg-green-50 dark:bg-green-900 rounded-lg border border-green-200 dark:border-green-700">
+                        <div class="flex items-center">
+                            <svg class="w-5 h-5 text-green-600 dark:text-green-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/>
+                            </svg>
+                            <span class="text-sm text-green-800 dark:text-green-200">Your payment information is encrypted and secure</span>
                         </div>
-                        <div>
-                            <label class="block text-blue-900 dark:text-blue-100 mb-1">Bank Name*</label>
-                            <input type="text" name="user_bank_name" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white" placeholder="e.g. BCA, Mandiri, BSI, BRI" required>
+                        <div class="flex items-center mt-2">
+                            <svg class="w-5 h-5 text-green-600 dark:text-green-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            <span class="text-sm text-green-800 dark:text-green-200">SSL Certificate • PCI Compliant • 256-bit Encryption</span>
                         </div>
-                        <div>
-                            <label class="block text-blue-900 dark:text-blue-100 mb-1">CVC / OTP / Reference*</label>
-                            <input type="text" name="user_cvc" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white" placeholder="e.g. 123 / OTP / Ref" required>
-                        </div>
+                    </div>
+
+                    <!-- Terms and Conditions -->
+                    <div class="mt-6">
+                        <label class="flex items-start space-x-3">
+                            <input type="checkbox" id="termsAccepted" required class="accent-blue-600 w-5 h-5 rounded focus:ring-2 focus:ring-blue-400">
+                            <span class="text-sm text-blue-900 dark:text-blue-100">
+                                I agree to the <a href="#" class="text-orange-500 hover:underline font-medium">Terms of Service</a> 
+                                and <a href="#" class="text-orange-500 hover:underline font-medium">Privacy Policy</a>
+                            </span>
+                        </label>
                     </div>
                 </div>
-            </div>
-        </form>
-    </div>
-</div>
 
-                        <!-- Security Features -->
-                        <div class="mt-6 p-4 bg-green-50 dark:bg-green-900 rounded-lg border border-green-200 dark:border-green-700">
-                            <div class="flex items-center">
-                                <svg class="w-5 h-5 text-green-600 dark:text-green-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/>
-                                </svg>
-                                <span class="text-sm text-green-800 dark:text-green-200">Your payment information is encrypted and secure</span>
-                            </div>
-                            <div class="flex items-center mt-2">
-                                <svg class="w-5 h-5 text-green-600 dark:text-green-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                                </svg>
-                                <span class="text-sm text-green-800 dark:text-green-200">SSL Certificate • PCI Compliant • 256-bit Encryption</span>
-                            </div>
-                        </div>
-
-                        <!-- Terms and Conditions -->
-                        <div class="mt-6">
-                            <label class="flex items-center gap-3">
-                                <input type="checkbox" id="termsAccepted" required class="accent-blue-600 w-5 h-5 rounded focus:ring-2 focus:ring-blue-400">
-                                <span class="text-sm text-blue-900 dark:text-blue-100">
-                                    I agree to the <a href="#" class="text-orange-500 hover:underline font-medium">Terms of Service</a> 
-                                    and <a href="#" class="text-orange-500 hover:underline font-medium">Privacy Policy</a>
-                                </span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <!-- Place Order Button -->
-                    <div class="export-card bg-blue-50 dark:bg-slate-800 rounded-lg shadow-md p-6">
-                        <button id="submitPayment" class="w-full px-6 py-3 bg-orange-500 text-white rounded-lg font-semibold hover:bg-orange-600 transition-colors focus:outline-none focus:ring-2 focus:ring-orange-400 disabled:opacity-50 disabled:cursor-not-allowed">
-                            <span id="buttonText">Complete Order - $300.00</span>
-                            <span id="spinner" class="hidden">
-                                <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                </svg>
-                                Processing...
-                            </span>
-                        </button>
-                    </div>
+                <!-- Place Order Button -->
+                <div class="export-card bg-blue-50 dark:bg-slate-800 rounded-lg shadow-md p-6">
+                    <button id="submitPayment" class="w-full px-6 py-3 bg-orange-500 text-white rounded-lg font-semibold hover:bg-orange-600 transition-colors focus:outline-none focus:ring-2 focus:ring-orange-400 disabled:opacity-50 disabled:cursor-not-allowed">
+                        <span id="buttonText">Complete Order - $300.00</span>
+                        <span id="spinner" class="hidden">
+                            <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            Processing...
+                        </span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -529,454 +596,315 @@
         </div>
     </footer>
 
-    <!-- JavaScript Code (sama seperti sebelumnya) -->
+    <!-- JavaScript Code -->
     <script>
-        // Exchange rates for ASEAN countries
-        const exchangeRates = {
-            USD: 1,
-            IDR: 15030,
-            MYR: 4.45,
-            SGD: 1.35,
-            THB: 34.50,
-            PHP: 56.20,
-            VND: 24450,
-            BND: 1.35,
-            LAK: 20800,
-            KHR: 4100,
-            MMK: 2100
-        };
+        document.addEventListener('DOMContentLoaded', function() {
+            // Dark mode functionality
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            const darkModeThumb = document.getElementById('darkModeThumb');
+            const htmlElement = document.documentElement;
 
-        let currentCurrency = 'USD';
-        let baseTotal = 300.00;
-
-        // Initialize Stripe
-        const stripe = Stripe('pk_test_51234567890');
-        const elements = stripe.elements();
-
-        const cardNumber = elements.create('cardNumber');
-        const cardExpiry = elements.create('cardExpiry');
-        const cardCvc = elements.create('cardCvc');
-
-        cardNumber.mount('#card-number-element');
-        cardExpiry.mount('#card-expiry-element');
-        cardCvc.mount('#card-cvc-element');
-
-        // Update currency display
-        function updateCurrency() {
-            const currency = document.getElementById('currencySelect').value;
-            currentCurrency = currency;
-            const rate = exchangeRates[currency];
-            const total = baseTotal * rate;
-            
-            let formattedTotal;
-            if (currency === 'IDR' || currency === 'VND' || currency === 'LAK' || currency === 'KHR' || currency === 'MMK') {
-                formattedTotal = `${currency} ${Math.round(total).toLocaleString()}`;
-            } else {
-                formattedTotal = `${currency} ${total.toFixed(2)}`;
-            }
-            
-            document.getElementById('totalAmount').textContent = formattedTotal;
-            document.getElementById('buttonText').textContent = `Complete Order - ${formattedTotal}`;
-
-            const idrTotal = baseTotal * exchangeRates.IDR;
-            document.getElementById('totalIDR').textContent = Math.round(idrTotal).toLocaleString('id-ID');
-        }
-
-        // Update payment methods based on country
-        function updatePaymentMethods() {
-            const country = document.getElementById('country').value;
-            const paymentOptions = document.querySelectorAll('.payment-option');
-            
-            paymentOptions.forEach(option => {
-                const countries = option.dataset.countries;
-                if (countries === 'all' || countries.includes(country)) {
-                    option.style.display = 'flex';
-                } else {
-                    option.style.display = 'none';
-                }
-            });
-
-            // Auto-select based on country
-            if (country === 'ID') {
-                document.querySelector('input[value="midtrans"]').checked = true;
-                document.querySelector('input[value="midtrans"]').dispatchEvent(new Event('change'));
-                document.getElementById('currencySelect').value = 'IDR';
-                updateCurrency();
-            } else if (country === 'MY') {
-                document.getElementById('currencySelect').value = 'MYR';
-                updateCurrency();
-            } else if (country === 'SG') {
-                document.getElementById('currencySelect').value = 'SGD';
-                updateCurrency();
-            } else if (country === 'TH') {
-                document.getElementById('currencySelect').value = 'THB';
-                updateCurrency();
-            } else if (country === 'PH') {
-                document.getElementById('currencySelect').value = 'PHP';
-                updateCurrency();
-            } else if (country === 'VN') {
-                document.getElementById('currencySelect').value = 'VND';
-                updateCurrency();
-            } else if (country === 'BN') {
-                document.getElementById('currencySelect').value = 'BND';
-                updateCurrency();
-            } else if (country === 'LA') {
-                document.getElementById('currencySelect').value = 'LAK';
-                updateCurrency();
-            } else if (country === 'KH') {
-                document.getElementById('currencySelect').value = 'KHR';
-                updateCurrency();
-            } else if (country === 'MM') {
-                document.getElementById('currencySelect').value = 'MMK';
-                updateCurrency();
-            } else if (country === 'TL') {
-                document.getElementById('currencySelect').value = 'USD';
-                updateCurrency();
-            }
-        }
-
-        // Payment method styling
-        const paymentRadios = document.querySelectorAll('input[name="paymentMethod"]');
-paymentRadios.forEach(radio => {
-    radio.addEventListener('change', function() {
-        document.querySelectorAll('.payment-option').forEach(option => {
-            option.classList.remove(
-                'border-green-400', 'bg-green-50', 'dark:border-green-400', 'dark:bg-green-900/30',
-                'border-orange-400', 'bg-orange-50', 'dark:border-orange-500', 'dark:bg-orange-900/20',
-                'border-blue-400', 'bg-blue-50', 'dark:border-blue-500', 'dark:bg-blue-900/20',
-                'border-gray-400', 'bg-gray-50', 'dark:border-gray-400', 'dark:bg-gray-800/20'
-            );
-            option.classList.add('border-gray-300', 'dark:border-gray-600');
-        });
-        const selectedOption = this.closest('.payment-option');
-        selectedOption.classList.remove('border-gray-300', 'dark:border-gray-600');
-        if (this.value === 'midtrans') {
-            selectedOption.classList.add('border-green-400', 'bg-green-50', 'dark:border-green-400', 'dark:bg-green-900/30');
-        } else if (this.value === 'stripe') {
-            selectedOption.classList.add('border-orange-400', 'bg-orange-50', 'dark:border-orange-500', 'dark:bg-orange-900/20');
-        } else if (this.value === 'paypal') {
-            selectedOption.classList.add('border-blue-400', 'bg-blue-50', 'dark:border-blue-500', 'dark:bg-blue-900/20');
-        } else if (this.value === 'bank') {
-            selectedOption.classList.add('border-gray-400', 'bg-gray-50', 'dark:border-gray-400', 'dark:bg-gray-800/20');
-        }
-
-        // Show/hide forms
-        const forms = ['stripeCardForm', 'paypal-button-container', 'bankTransferInfo', 'midtransInfo'];
-        forms.forEach(form => document.getElementById(form)?.classList.add('hidden'));
-
-        if (this.value === 'stripe') {
-            document.getElementById('stripeCardForm').classList.remove('hidden');
-        } else if (this.value === 'paypal') {
-            document.getElementById('paypal-button-container').classList.remove('hidden');
-            initializePayPal();
-        } else if (this.value === 'bank') {
-            document.getElementById('bankTransferInfo').classList.remove('hidden');
-        } else if (this.value === 'midtrans') {
-            document.getElementById('midtransInfo').classList.remove('hidden');
-        }
-    });
-});
-
-// PayPal initialization
-function initializePayPal() {
-    document.getElementById('paypal-buttons').innerHTML = '';
-    paypal.Buttons({
-        createOrder: function(data, actions) {
-            return actions.order.create({
-                purchase_units: [{
-                    amount: {
-                        value: baseTotal.toString(),
-                        currency_code: currentCurrency
-                    }
-                }]
-            });
-        },
-        onApprove: function(data, actions) {
-            return actions.order.capture().then(function(details) {
-                alert('Payment successful!');
-                window.location.href = '/order-success';
-            });
-        }
-    }).render('#paypal-buttons');
-}
-
-// Payment submission
-document.getElementById('submitPayment').addEventListener('click', async function(e) {
-    e.preventDefault();
-    
-    if (!document.getElementById('termsAccepted').checked) {
-        alert('Please accept the terms and conditions');
-        return;
-    }
-
-    const selectedPayment = document.querySelector('input[name="paymentMethod"]:checked').value;
-    
-    if (selectedPayment === 'stripe') {
-        handleStripePayment();
-    } else if (selectedPayment === 'midtrans') {
-        handleMidtransPayment();
-    } else if (selectedPayment === 'bank') {
-        handleBankTransfer();
-    }
-});
-
-function handleStripePayment() {
-    alert('Stripe payment processing...');
-}
-
-function handleMidtransPayment() {
-    alert('Midtrans payment processing...');
-}
-
-function handleBankTransfer() {
-    const orderNumber = 'TG' + Date.now();
-    alert(`Order submitted! Order Number: ${orderNumber}`);
-}
-
-function updateQuantity(select, price) {
-    console.log('Quantity updated:', select.value, 'Price:', price);
-}
-
-function applyCoupon() {
-    const couponCode = document.getElementById('couponCode').value;
-    if (couponCode === 'TRIAD10') {
-        alert('Coupon applied! 10% discount');
-        baseTotal = baseTotal * 0.9;
-        updateCurrency();
-    } else if (couponCode) {
-        alert('Invalid coupon code');
-    }
-}        // Dark Mode functionality
-        const darkModeToggle = document.getElementById('darkModeToggle');
-        const darkModeThumb = document.getElementById('darkModeThumb');
-        const htmlElement = document.documentElement;
-
-        function updateDarkModeSwitch() {
-            if (htmlElement.classList.contains('dark')) {
-                darkModeToggle.checked = true;
-                darkModeThumb.style.transform = 'translateX(1.25rem)';
-                darkModeThumb.style.backgroundColor = '#003355';
-                darkModeThumb.style.borderColor = '#003355';
-            } else {
-                darkModeToggle.checked = false;
-                darkModeThumb.style.transform = 'translateX(0)';
-                darkModeThumb.style.backgroundColor = '#fff';
-                darkModeThumb.style.borderColor = '#ccc';
-            }
-        }
-
-        // Check for saved dark mode preference on page load
-        if (localStorage.getItem('darkMode') === 'enabled') {
-            htmlElement.classList.add('dark');
-        }
-
-        updateDarkModeSwitch();
-
-        // Add event listener for dark mode toggle
-        if (darkModeToggle) {
-            darkModeToggle.addEventListener('change', () => {
-                htmlElement.classList.toggle('dark');
+            function updateDarkModeSwitch() {
+                if (!darkModeToggle || !darkModeThumb) return;
                 if (htmlElement.classList.contains('dark')) {
-                    localStorage.setItem('darkMode', 'enabled');
+                    darkModeToggle.checked = true;
+                    darkModeThumb.style.transform = 'translateX(1.25rem)';
+                    darkModeThumb.style.backgroundColor = '#003355';
+                    darkModeThumb.style.borderColor = '#003355';
                 } else {
-                    localStorage.setItem('darkMode', 'disabled');
+                    darkModeToggle.checked = false;
+                    darkModeThumb.style.transform = 'translateX(0)';
+                    darkModeThumb.style.backgroundColor = '#fff';
+                    darkModeThumb.style.borderColor = '#ccc';
                 }
-                updateDarkModeSwitch();
-            });
-        }
-
-        // Initialize
-        document.querySelector('input[name="paymentMethod"][value="stripe"]').dispatchEvent(new Event('change'));
-        updateCurrency();
-
-        // Midtrans sub-method interactivity
-const midtransOptions = document.querySelectorAll('.midtrans-option');
-const midtransFormContainer = document.getElementById('midtransFormContainer');
-const midtransSubmethod = document.getElementById('midtransSubmethod');
-const midtransRadio = document.getElementById('midtransRadio');
-
-midtransOptions.forEach(btn => {
-    btn.addEventListener('click', function() {
-        midtransOptions.forEach(b => b.classList.remove('ring-2', 'ring-blue-400', 'ring-green-400', 'ring-purple-400'));
-        this.classList.add('ring-2', 'ring-blue-400');
-        midtransSubmethod.value = this.dataset.method;
-        midtransRadio.checked = true;
-        // Show demo form/info for each method
-        if (this.dataset.method === 'credit_card') {
-            midtransFormContainer.innerHTML = `<div class='p-4 bg-white dark:bg-gray-800 rounded-lg border mt-2'><label class='block text-blue-900 dark:text-blue-100 mb-2'>Card Number*</label><input type='text' class='w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md mb-2' placeholder='Card Number'><label class='block text-blue-900 dark:text-blue-100 mb-2'>Expiry*</label><input type='text' class='w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md mb-2' placeholder='MM/YY'><label class='block text-blue-900 dark:text-blue-100 mb-2'>CVC*</label><input type='text' class='w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md' placeholder='CVC'></div>`;
-        } else if (this.dataset.method === 'gopay') {
-            midtransFormContainer.innerHTML = `<div class='p-4 bg-green-50 dark:bg-green-900 rounded-lg border mt-2 text-center'><span class='text-green-700 dark:text-green-200 font-semibold'>Scan QR with GoPay app after clicking Complete Order.</span></div>`;
-        } else if (this.dataset.method === 'bank_transfer') {
-            midtransFormContainer.innerHTML = `<div class='p-4 bg-blue-50 dark:bg-blue-900 rounded-lg border mt-2 text-center'><span class='text-blue-700 dark:text-blue-200 font-semibold'>Bank transfer instructions will be shown after clicking Complete Order.</span></div>`;
-        } else if (this.dataset.method === 'qris') {
-            midtransFormContainer.innerHTML = `<div class='p-4 bg-purple-50 dark:bg-purple-900 rounded-lg border mt-2 text-center'><span class='text-purple-700 dark:text-purple-200 font-semibold'>Scan QRIS code after clicking Complete Order.</span></div>`;
-        }
-    });
-});
-
-    // Shopping Cart Integration
-    let cart = JSON.parse(localStorage.getItem('shoppingCart')) || [];
-    
-    // Currency exchange rates (demo - in real app, this would be from API)
-    const exchangeRates = {
-        USD: 1,
-        IDR: 15030,
-        MYR: 4.45,
-        SGD: 1.35,
-        THB: 33.50,
-        PHP: 56.25,
-        VND: 24000,
-        BND: 1.35,
-        LAK: 19500,
-        KHR: 4100,
-        MMK: 2100
-    };
-    
-    // Currency symbols
-    const currencySymbols = {
-        USD: '$',
-        IDR: 'Rp',
-        MYR: 'RM',
-        SGD: 'S$',
-        THB: '฿',
-        PHP: '₱',
-        VND: '₫',
-        BND: 'B$',
-        LAK: '₭',
-        KHR: '៛',
-        MMK: 'K'
-    };
-    
-    let currentCurrency = 'USD';
-    let currentExchangeRate = 1;
-    
-    // Load cart data when page loads
-    document.addEventListener('DOMContentLoaded', function() {
-        loadCartItems();
-        updatePricing();
-        updateNavCartCount();
-    });
-    
-    function updateNavCartCount() {
-        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-        const navCartCount = document.getElementById('navCartCount');
-        if (navCartCount) {
-            if (totalItems > 0) {
-                navCartCount.textContent = totalItems;
-                navCartCount.classList.remove('hidden');
-            } else {
-                navCartCount.classList.add('hidden');
             }
-        }
-    }
-    
-    function loadCartItems() {
-        const cartContainer = document.getElementById('cartItemsCheckout');
-        const emptyMessage = document.getElementById('emptyCartMessage');
-        const pricingBreakdown = document.getElementById('pricingBreakdown');
-        
-        if (cart.length === 0) {
-            cartContainer.style.display = 'none';
-            emptyMessage.classList.remove('hidden');
-            pricingBreakdown.style.display = 'none';
-            return;
-        }
-        
-        cartContainer.style.display = 'block';
-        emptyMessage.classList.add('hidden');
-        pricingBreakdown.style.display = 'block';
-        
-        cartContainer.innerHTML = cart.map((item, index) => `
-            <div class="border-b border-gray-200 dark:border-gray-600 pb-4">
-                <div class="flex items-center space-x-4">
-                    <img src="${item.image}" alt="${item.name}" class="w-20 h-20 object-cover rounded-lg shadow-sm">
-                    <div class="flex-1">
-                        <h3 class="font-semibold text-blue-900 dark:text-blue-100">${item.name}</h3>
-                        <p class="text-gray-600 dark:text-gray-300 text-sm">Origin: ${item.origin}</p>
-                        <p class="text-gray-600 dark:text-gray-300 text-sm">Weight: ${item.weight}kg each</p>
-                        <div class="flex items-center mt-2">
-                            <label class="text-sm text-blue-900 dark:text-blue-100 mr-2">Qty:</label>
-                            <select class="border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded px-2 py-1 text-sm" onchange="updateCartQuantity(${index}, this.value)">
-                                ${Array.from({length: 10}, (_, i) => i + 1).map(num => 
-                                    `<option value="${num}" ${num === item.quantity ? 'selected' : ''}>${num}</option>`
-                                ).join('')}
-                            </select>
-                            <button onclick="removeFromCheckoutCart(${index})" class="ml-3 text-red-600 hover:text-red-800 text-sm">
-                                Remove
-                            </button>
+
+            updateDarkModeSwitch();
+
+            if (darkModeToggle) {
+                darkModeToggle.addEventListener('change', () => {
+                    htmlElement.classList.toggle('dark');
+                    if (htmlElement.classList.contains('dark')) {
+                        localStorage.setItem('darkMode', 'enabled');
+                    } else {
+                        localStorage.setItem('darkMode', 'disabled');
+                    }
+                    updateDarkModeSwitch();
+                });
+            }
+
+            // Bank Transfer System
+            const bankOptions = document.querySelectorAll('input[name="selectedBank"]');
+            const bankTransferDetails = document.getElementById('bankTransferDetails');
+            
+            // Bank details data
+            const bankData = {
+                BCA: {
+                    name: 'Bank Central Asia (BCA)',
+                    accountNumber: '1234567890',
+                    accountName: 'TriadGO Indonesia',
+                    swiftCode: 'CENAIDJA',
+                    logo: '🏦',
+                    color: 'blue'
+                },
+                Mandiri: {
+                    name: 'Bank Mandiri',
+                    accountNumber: '0987654321',
+                    accountName: 'TriadGO Indonesia',
+                    swiftCode: 'BMRIIDJA',
+                    logo: '🏛️',
+                    color: 'yellow'
+                },
+                BSI: {
+                    name: 'Bank Syariah Indonesia (BSI)',
+                    accountNumber: '1122334455',
+                    accountName: 'TriadGO Indonesia',
+                    swiftCode: 'BSYAIDJA',
+                    logo: '🕌',
+                    color: 'green'
+                },
+                BRI: {
+                    name: 'Bank Rakyat Indonesia (BRI)',
+                    accountNumber: '5544332211',
+                    accountName: 'TriadGO Indonesia',
+                    swiftCode: 'BRINIDJA',
+                    logo: '🏢',
+                    color: 'red'
+                }
+            };
+
+            // Setup bank transfer functionality
+            function setupBankTransfer() {
+                bankOptions.forEach(option => {
+                    option.addEventListener('change', function() {
+                        if (this.checked) {
+                            showBankDetails(this.value);
+                        }
+                    });
+                });
+            }
+
+            // Show bank details
+            function showBankDetails(bankCode) {
+                const bank = bankData[bankCode];
+                if (!bank || !bankTransferDetails) return;
+
+                bankTransferDetails.innerHTML = `
+                    <div class="p-6 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 mb-6">
+                        <div class="flex items-center mb-4">
+                            <span class="text-3xl mr-3">${bank.logo}</span>
+                            <div>
+                                <h4 class="text-lg font-semibold text-blue-900 dark:text-blue-100">${bank.name}</h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Official TriadGO Account</p>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                                <div>
+                                    <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Account Number</label>
+                                    <p class="text-lg font-mono font-bold text-gray-900 dark:text-white">${bank.accountNumber}</p>
+                                </div>
+                                <button onclick="copyToClipboard('${bank.accountNumber}')" class="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors text-sm">
+                                    Copy
+                                </button>
+                            </div>
+                            
+                            <div class="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                                <div>
+                                    <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Account Name</label>
+                                    <p class="text-lg font-semibold text-gray-900 dark:text-white">${bank.accountName}</p>
+                                </div>
+                                <button onclick="copyToClipboard('${bank.accountName}')" class="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors text-sm">
+                                    Copy
+                                </button>
+                            </div>
+                            
+                            <div class="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                                <div>
+                                    <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Transfer Amount</label>
+                                    <p class="text-xl font-bold text-green-600 dark:text-green-400" id="transferAmount">$300.00</p>
+                                </div>
+                                <button onclick="copyToClipboard('300.00')" class="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors text-sm">
+                                    Copy
+                                </button>
+                            </div>
+                            
+                            <div class="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                                <div>
+                                    <label class="text-sm font-medium text-gray-700 dark:text-gray-300">SWIFT Code</label>
+                                    <p class="text-lg font-mono font-semibold text-gray-900 dark:text-white">${bank.swiftCode}</p>
+                                </div>
+                                <button onclick="copyToClipboard('${bank.swiftCode}')" class="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors text-sm">
+                                    Copy
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 p-3 bg-yellow-50 dark:bg-yellow-900 rounded-lg border border-yellow-200 dark:border-yellow-700">
+                            <p class="text-sm text-yellow-800 dark:text-yellow-200">
+                                <strong>Important:</strong> Please include order number <strong>TG-${new Date().toISOString().replace(/[-:.]/g, '').slice(0, 14)}</strong> in your transfer description
+                            </p>
                         </div>
                     </div>
-                    <div class="text-right">
-                        <p class="font-semibold text-blue-900 dark:text-blue-100">${formatCurrency(item.price * item.quantity)}</p>
-                        <p class="text-sm text-gray-600 dark:text-gray-300">${formatCurrency(item.price)} each</p>
-                    </div>
-                </div>
-            </div>
-        `).join('');
-    }
-    
-    function updateCartQuantity(index, newQuantity) {
-        cart[index].quantity = parseInt(newQuantity);
-        localStorage.setItem('shoppingCart', JSON.stringify(cart));
-        loadCartItems();
-        updatePricing();
-        updateNavCartCount();
-    }
-    
-    function removeFromCheckoutCart(index) {
-        if (confirm('Remove this item from cart?')) {
-            cart.splice(index, 1);
-            localStorage.setItem('shoppingCart', JSON.stringify(cart));
-            loadCartItems();
-            updatePricing();
-            updateNavCartCount();
-        }
-    }
-    
-    function updatePricing() {
-        const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-        const shipping = cart.length > 0 ? 25 : 0;
-        const tax = subtotal * 0.1;
-        const total = subtotal + shipping + tax;
-        
-        document.getElementById('subtotal').textContent = formatCurrency(subtotal);
-        document.getElementById('shipping').textContent = formatCurrency(shipping);
-        document.getElementById('tax').textContent = formatCurrency(tax);
-        document.getElementById('totalAmount').textContent = formatCurrency(total);
-        
-        // Update alternative currency display
-        const altCurrencyCode = currentCurrency === 'USD' ? 'IDR' : 'USD';
-        const altRate = currentCurrency === 'USD' ? exchangeRates.IDR : (1 / exchangeRates[currentCurrency]);
-        const altTotal = currentCurrency === 'USD' ? total * exchangeRates.IDR : total * altRate;
-        
-        document.getElementById('altCurrency').textContent = altCurrencyCode;
-        document.getElementById('totalAltCurrency').textContent = formatNumber(altTotal);
-    }
-    
-    function formatCurrency(amount) {
-        const symbol = currencySymbols[currentCurrency];
-        if (currentCurrency === 'IDR' || currentCurrency === 'VND' || currentCurrency === 'LAK' || currentCurrency === 'KHR' || currentCurrency === 'MMK') {
-            return symbol + formatNumber(Math.round(amount * currentExchangeRate));
-        }
-        return symbol + (amount * currentExchangeRate).toFixed(2);
-    }
-    
-    function formatNumber(num) {
-        return num.toString().replace(/\\B(?=(\\d{3})+(?!\\d))/g, ',');
-    }
-    
-    function updateCurrency() {
-        const select = document.getElementById('currencySelect');
-        currentCurrency = select.value;
-        currentExchangeRate = exchangeRates[currentCurrency];
-        updatePricing();
-    }
-    
-    // Original updateQuantity function for compatibility
-    function updateQuantity(selectElement, basePrice) {
-        // This is for legacy compatibility if needed
-        updatePricing();
-    }
+                `;
+                bankTransferDetails.classList.remove('hidden');
+            }
+
+            // Copy to clipboard function
+            window.copyToClipboard = function(text) {
+                navigator.clipboard.writeText(text).then(function() {
+                    // Show success message
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Copied!',
+                        text: 'Copied to clipboard successfully',
+                        timer: 1500,
+                        showConfirmButton: false,
+                        toast: true,
+                        position: 'top-end'
+                    });
+                }).catch(function(err) {
+                    console.error('Could not copy text: ', err);
+                    // Fallback for older browsers
+                    const textArea = document.createElement('textarea');
+                    textArea.value = text;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Copied!',
+                        text: 'Copied to clipboard successfully',
+                        timer: 1500,
+                        showConfirmButton: false,
+                        toast: true,
+                        position: 'top-end'
+                    });
+                });
+            };
+
+            // File upload handling - Removed since receiptUpload element no longer exists
+
+            // Payment method handling
+            const paymentOptions = document.querySelectorAll('input[name="paymentMethod"]');
+            const bankTransferInfo = document.getElementById('bankTransferInfo');
+            const midtransInfo = document.getElementById('midtransInfo');
+            const midtransOptions = document.querySelectorAll('.midtrans-option');
+            const midtransFormContainer = document.getElementById('midtransFormContainer');
+
+            paymentOptions.forEach(option => {
+                option.addEventListener('change', function() {
+                    // Hide all forms first
+                    if (bankTransferInfo) bankTransferInfo.classList.add('hidden');
+                    if (midtransInfo) midtransInfo.classList.add('hidden');
+                    if (bankTransferDetails) bankTransferDetails.classList.add('hidden');
+
+                    // Show relevant form
+                    if (this.value === 'bank' && bankTransferInfo) {
+                        bankTransferInfo.classList.remove('hidden');
+                    } else if (this.value === 'midtrans' && midtransInfo) {
+                        midtransInfo.classList.remove('hidden');
+                    }
+                });
+            });
+
+            // Midtrans payment options
+            midtransOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remove active class from all options
+                    midtransOptions.forEach(opt => opt.classList.remove('ring-2', 'ring-blue-500'));
+                    // Add active class to selected option
+                    this.classList.add('ring-2', 'ring-blue-500');
+
+                    // Show method-specific information
+                    if (this.dataset.method === 'gopay') {
+                        if (midtransFormContainer) {
+                            midtransFormContainer.innerHTML = `<div class='p-4 bg-green-50 dark:bg-green-900 rounded-lg border mt-2 text-center'><span class='text-green-700 dark:text-green-200 font-semibold'>Scan QR with GoPay app after clicking Complete Order.</span></div>`;
+                        }
+                    } else if (this.dataset.method === 'bank_transfer') {
+                        if (midtransFormContainer) {
+                            midtransFormContainer.innerHTML = `<div class='p-4 bg-blue-50 dark:bg-blue-900 rounded-lg border mt-2 text-center'><span class='text-blue-700 dark:text-blue-200 font-semibold'>Bank transfer instructions will be shown after clicking Complete Order.</span></div>`;
+                        }
+                    } else if (this.dataset.method === 'qris') {
+                        if (midtransFormContainer) {
+                            midtransFormContainer.innerHTML = `<div class='p-4 bg-purple-50 dark:bg-purple-900 rounded-lg border mt-2 text-center'><span class='text-purple-700 dark:text-purple-200 font-semibold'>Scan QRIS code after clicking Complete Order.</span></div>`;
+                        }
+                    }
+                });
+            });
+
+            // Form submission
+            const submitButton = document.getElementById('submitPayment');
+            const buttonText = document.getElementById('buttonText');
+            const spinner = document.getElementById('spinner');
+
+            if (submitButton) {
+                submitButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Validate terms acceptance
+                    const termsAccepted = document.getElementById('termsAccepted');
+                    if (!termsAccepted || !termsAccepted.checked) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Terms Required',
+                            text: 'Please accept the Terms of Service and Privacy Policy to continue'
+                        });
+                        return;
+                    }
+
+                    // Get selected payment method
+                    const selectedPayment = document.querySelector('input[name="paymentMethod"]:checked');
+                    if (!selectedPayment) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Payment Method Required',
+                            text: 'Please select a payment method to continue'
+                        });
+                        return;
+                    }
+
+                    // Additional validation for bank transfer
+                    if (selectedPayment.value === 'bank') {
+                        const selectedBank = document.querySelector('input[name="selectedBank"]:checked');
+                        if (!selectedBank) {
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'Bank Selection Required',
+                                text: 'Please select a bank for transfer'
+                            });
+                            return;
+                        }
+                    }
+
+                    // Show loading state
+                    if (buttonText) buttonText.classList.add('hidden');
+                    if (spinner) spinner.classList.remove('hidden');
+                    submitButton.disabled = true;
+
+                    // Simulate payment processing
+                    setTimeout(() => {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Order Placed Successfully!',
+                            text: 'Your order has been submitted. You will receive confirmation details shortly.',
+                            confirmButtonColor: '#f97316'
+                        }).then(() => {
+                            // Reset form state
+                            if (buttonText) buttonText.classList.remove('hidden');
+                            if (spinner) spinner.classList.add('hidden');
+                            submitButton.disabled = false;
+                        });
+                    }, 2000);
+                });
+            }
+
+            // Initialize bank transfer functionality
+            setupBankTransfer();
+        });
     </script>
 </body>
 </html>

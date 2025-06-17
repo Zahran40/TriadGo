@@ -352,7 +352,7 @@
 </label>
 
                             <!-- PayPal Payment -->
-                            <label class="payment-option custom-radio flex flex-col items-center justify-center min-h-[160px] p-6 border-2 border-yellow-300 dark:border-yellow-500 rounded-xl cursor-pointer hover:bg-yellow-100 dark:hover:bg-yellow-900/20 transition-all w-full text-center bg-yellow-50 dark:bg-yellow-900/20" data-countries="all">
+                            <label class="payment-option custom-radio flex flex-col items-center justify-center min-h-[160px] p-6 border-2 border-blue-300 dark:border-blue-500 rounded-xl cursor-pointer hover:bg-blue-100 dark:hover:bg-blue-900/20 transition-all w-full text-center bg-blue-50 dark:bg-blue-900/20" data-countries="all">
     <input type="radio" name="paymentMethod" value="paypal" class="mb-3" />
     <div class="flex flex-col items-center w-full">
         <div class="w-20 h-12 mb-3 bg-white rounded-lg border flex items-center justify-center shadow-sm">
@@ -375,7 +375,7 @@
 </label>
 
                             <!-- Bank Transfer with Credit Card -->
-                            <label class="payment-option custom-radio flex flex-col items-center justify-center min-h-[160px] p-6 border-2 border-gray-300 dark:border-gray-600 rounded-xl cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800/20 transition-all w-full text-center bg-gray-50 dark:bg-gray-800/20" data-countries="all">
+                            <label class="payment-option custom-radio flex flex-col items-center justify-center min-h-[160px] p-6 border-2 border-blue-300 dark:border-blue-600 rounded-xl cursor-pointer hover:bg-blue-100 dark:hover:bg-blue-800/20 transition-all w-full text-center bg-blue-50 dark:bg-blue-800/20" data-countries="all">
     <input type="radio" name="paymentMethod" value="bank" class="mb-3" />
     <div class="flex flex-col items-center w-full">
         <div class="w-16 h-10 mb-2 bg-white rounded-lg border flex items-center justify-center">

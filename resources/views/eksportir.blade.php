@@ -53,9 +53,9 @@
                     class="inline-block bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-8 rounded-md shadow-md transition pulse-on-hover glow-on-hover">
                     Upload Your Products
                 </a>
-                <a href="#find-buyers"
+                <a href="{{ route('myproduct') }}"
                     class="inline-block bg-blue-700 hover:bg-blue-600 text-white font-bold py-3 px-8 rounded-md shadow-md transition pulse-on-hover">
-                    Find International Buyers
+                    My Product
                 </a>
             </div>
         </div>
@@ -143,21 +143,11 @@
 
     <section id="find-buyers" class="container mx-auto px-6 py-16 slide-in">
         <h2 class="text-3xl font-bold text-blue-900 mb-6 text-center">Find Buyers Respons</h2>
-        <form action="" class="flex flex-col md:flex-row items-center max-w-2xl mx-auto">
-            <input type="text" name="" placeholder="Search for buyers response..."
-                class="flex-grow px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 mr-4 mb-4 md:mb-0"
-                required />
-            <button type="submit"
-                class="bg-blue-700 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-md transition pulse-on-hover flex items-center">
-                <img src="https://img.icons8.com/m_outlined/512/FFFFFF/search.png" alt=""
-                    style="width: 20px; height: 20px;" class="mr-2" />
-                Search
-            </button>
-        </form>
+       
 
         <!-- Buyers Response -->
         <div class="mt-12">
-            <h3 class="text-2xl font-bold text-blue-900 mb-6 text-center">Buyers Respons</h3>
+           
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div class="buyer-card shadow-md rounded-lg overflow-hidden hover:shadow-lg transition">
                     <div class="p-4">
@@ -227,23 +217,7 @@
         </div>
     </section>
 
-    <section id="services" class="bg-blue-800 text-white py-16 slide-in">
-        <div class="container mx-auto px-6 text-center">
-            <h2 class="text-3xl font-bold mb-6">Ready to Start Exporting?</h2>
-            <p class="text-xl mb-8 max-w-2xl mx-auto">Join thousands of businesses expanding their reach globally with
-                TriadGO</p>
-            <div class="flex flex-col sm:flex-row justify-center gap-4">
-                <button
-                    class="bg-orange-500 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-md shadow-md transition pulse-on-hover">
-                    Create Export Profile
-                </button>
-                <button
-                    class="bg-blue-700 hover:bg-orange-600 text-white font-bold py-3 px-8 rounded-md shadow-md transition pulse-on-hover">
-                    Schedule Consultation
-                </button>
-            </div>
-        </div>
-    </section>
+    
 
     <footer class="bg-blue-800 text-blue-100 py-6 mt-auto">
         <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center">

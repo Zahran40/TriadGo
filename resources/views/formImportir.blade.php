@@ -165,10 +165,79 @@
                 <div class="export-card bg-blue-50 dark:bg-slate-800 rounded-lg shadow-md p-6">
                     <h2 class="text-2xl font-bold text-blue-900 dark:text-blue-100 mb-6">Order Summary</h2>
                     
-                    <!-- Cart Items -->
-                    <div id="cartItemsCheckout" class="space-y-4 mb-6">
-                        <!-- Items will be loaded from cart -->
+                    <!-- Product Items -->
+                    <div class="space-y-4 mb-6">
+                        <div class="border-b border-gray-200 dark:border-gray-600 pb-4">
+                            <div class="flex items-center space-x-4">
+                                <img src="https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=150&h=150&fit=crop&crop=center" alt="Premium Coffee Beans" class="w-20 h-20 object-cover rounded-lg shadow-sm">
+                                <div class="flex-1">
+                                    <h3 class="font-semibold text-blue-900 dark:text-blue-100">Premium Coffee Beans</h3>
+                                    <p class="text-gray-600 dark:text-gray-300 text-sm">Origin: Indonesia</p>
+                                    <p class="text-gray-600 dark:text-gray-300 text-sm">Weight: 5kg</p>
+                                    <div class="flex items-center mt-2">
+                                        <label class="text-sm text-blue-900 dark:text-blue-100 mr-2">Qty:</label>
+                                        <select class="border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded px-2 py-1 text-sm" onchange="updateQuantity(this, 60)">
+                                            <option value="1">1</option>
+                                            <option value="2" selected>2</option>
+                                            <option value="3">3</option>
+                                            <option value="5">5</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="font-semibold text-blue-900 dark:text-blue-100">$120.00</p>
+                                    <p class="text-sm text-gray-600 dark:text-gray-300">$60.00 each</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="border-b border-gray-200 dark:border-gray-600 pb-4">
+                            <div class="flex items-center space-x-4">
+                                <img src="https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=150&h=150&fit=crop&crop=center" alt="Organic Spices Set" class="w-20 h-20 object-cover rounded-lg shadow-sm">
+                                <div class="flex-1">
+                                    <h3 class="font-semibold text-blue-900 dark:text-blue-100">Organic Spices Set</h3>
+                                    <p class="text-gray-600 dark:text-gray-300 text-sm">Origin: Thailand</p>
+                                    <p class="text-gray-600 dark:text-gray-300 text-sm">Package: Premium Set</p>
+                                    <div class="flex items-center mt-2">
+                                        <label class="text-sm text-blue-900 dark:text-blue-100 mr-2">Qty:</label>
+                                        <select class="border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded px-2 py-1 text-sm" onchange="updateQuantity(this, 85)">
+                                            <option value="1" selected>1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="font-semibold text-blue-900 dark:text-blue-100">$85.00</p>
+                                    <p class="text-sm text-gray-600 dark:text-gray-300">$85.00 each</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="border-b border-gray-200 dark:border-gray-600 pb-4">
+                            <div class="flex items-center space-x-4">
+                                <img src="https://cdnimg.webstaurantstore.com/images/products/large/57498/1963206.jpg" alt="Premium Tea" class="w-20 h-20 object-cover rounded-lg shadow-sm">
+                                <div class="flex-1">
+                                    <h3 class="font-semibold text-blue-900 dark:text-blue-100">Premium Green Tea</h3>
+                                    <p class="text-gray-600 dark:text-gray-300 text-sm">Origin: Malaysia</p>
+                                    <p class="text-gray-600 dark:text-gray-300 text-sm">Package: 500g</p>
+                                    <div class="flex items-center mt-2">
+                                        <label class="text-sm text-blue-900 dark:text-blue-100 mr-2">Qty:</label>
+                                        <select class="border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded px-2 py-1 text-sm" onchange="updateQuantity(this, 45)">
+                                            <option value="1" selected>1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="font-semibold text-blue-900 dark:text-blue-100">$45.00</p>
+                                    <p class="text-sm text-gray-600 dark:text-gray-300">$45.00 each</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+<<<<<<< HEAD
                     
                     <!-- Empty Cart Message -->
                     <div id="emptyCartMessage" class="text-center py-8 hidden">
@@ -185,27 +254,30 @@
                         </a>
                     </div>
                     
+=======
+
+>>>>>>> ff5cdf32d1c9c432ed5bb1ef4de798835b8239f8
                     <!-- Pricing Breakdown -->
-                    <div class="space-y-2" id="pricingBreakdown">
+                    <div class="space-y-2">
                         <div class="flex justify-between">
                             <span class="text-blue-900 dark:text-blue-100">Subtotal:</span>
-                            <span class="text-blue-900 dark:text-blue-100" id="subtotal">$0.00</span>
+                            <span class="text-blue-900 dark:text-blue-100" id="subtotal">$250.00</span>
                         </div>
                         <div class="flex justify-between">
                             <span class="text-blue-900 dark:text-blue-100">Shipping:</span>
-                            <span class="text-blue-900 dark:text-blue-100" id="shipping">$25.00</span>
+                            <span class="text-blue-900 dark:text-blue-100">$25.00</span>
                         </div>
                         <div class="flex justify-between">
                             <span class="text-blue-900 dark:text-blue-100">Tax (10%):</span>
-                            <span class="text-blue-900 dark:text-blue-100" id="tax">$0.00</span>
+                            <span class="text-blue-900 dark:text-blue-100" id="tax">$25.00</span>
                         </div>
                         <div class="border-t border-gray-300 dark:border-gray-600 pt-2">
                             <div class="flex justify-between font-bold text-lg">
                                 <span class="text-blue-900 dark:text-blue-100">Total:</span>
-                                <span class="text-blue-900 dark:text-blue-100" id="totalAmount">$25.00</span>
+                                <span class="text-blue-900 dark:text-blue-100" id="totalAmount">$300.00</span>
                             </div>
                             <div class="text-sm text-gray-600 dark:text-gray-300 mt-1">
-                                <span>≈ <span id="altCurrency">IDR</span> <span id="totalAltCurrency">375,750</span></span>
+                                <span>≈ IDR <span id="totalIDR">4,509,000</span></span>
                             </div>
                         </div>
                     </div>
@@ -214,17 +286,17 @@
                     <div class="mt-4">
                         <label class="block text-blue-900 dark:text-blue-100 mb-2">Currency</label>
                         <select id="currencySelect" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md" onchange="updateCurrency()">
-                            <option value="USD"> USD - US Dollar</option>
-                            <option value="IDR"> IDR - Indonesian Rupiah</option>
-                            <option value="MYR"> MYR - Malaysian Ringgit</option>
-                            <option value="SGD"> SGD - Singapore Dollar</option>
-                            <option value="THB"> THB - Thai Baht</option>
-                            <option value="PHP"> PHP - Philippine Peso</option>
-                            <option value="VND"> VND - Vietnamese Dong</option>
-                            <option value="BND"> BND - Brunei Dollar</option>
-                            <option value="LAK"> LAK - Lao Kip</option>
-                            <option value="KHR"> KHR - Cambodian Riel</option>
-                            <option value="MMK"> MMK - Myanmar Kyat</option>
+                            <option value="USD">🇺🇸 USD - US Dollar</option>
+                            <option value="IDR">🇮🇩 IDR - Indonesian Rupiah</option>
+                            <option value="MYR">🇲🇾 MYR - Malaysian Ringgit</option>
+                            <option value="SGD">🇸🇬 SGD - Singapore Dollar</option>
+                            <option value="THB">🇹🇭 THB - Thai Baht</option>
+                            <option value="PHP">🇵🇭 PHP - Philippine Peso</option>
+                            <option value="VND">🇻🇳 VND - Vietnamese Dong</option>
+                            <option value="BND">🇧🇳 BND - Brunei Dollar</option>
+                            <option value="LAK">🇱🇦 LAK - Lao Kip</option>
+                            <option value="KHR">🇰🇭 KHR - Cambodian Riel</option>
+                            <option value="MMK">🇲🇲 MMK - Myanmar Kyat</option>
                         </select>
                     </div>
 
@@ -238,6 +310,7 @@
                             </button>
                         </div>
                     </div>
+<<<<<<< HEAD
 
                     <!-- Add More Products Button -->
                     <div class="mt-4 pt-4 border-t border-gray-300 dark:border-gray-600 text-center">
@@ -249,6 +322,9 @@
                         </a>
                     </div>
                 </div> <!-- Penutup card Order Summary -->
+=======
+                </div>
+>>>>>>> ff5cdf32d1c9c432ed5bb1ef4de798835b8239f8
 
                 <!-- Payment & Billing Section -->
                 <div class="space-y-6">
@@ -351,7 +427,46 @@
     </div>
 </label>
 
+<<<<<<< HEAD
                             <!-- PayPal Payment -->
+=======
+                            <!-- Stripe (International) -->
+                            <label class="payment-option custom-radio flex flex-col items-center justify-center min-h-[160px] p-6 border-2 border-orange-400 dark:border-orange-500 rounded-xl cursor-pointer hover:bg-orange-100 dark:hover:bg-orange-900/20 transition-all w-full text-center bg-orange-50 dark:bg-orange-900/20" data-countries="all">
+    <input type="radio" name="paymentMethod" value="stripe" class="mb-3" checked />
+    <div class="flex flex-col items-center w-full">
+        <div class="w-16 h-10 mb-2 bg-white rounded-lg border flex items-center justify-center">
+            <svg width="50" height="20" viewBox="0 0 50 20" fill="none">
+                <rect width="50" height="20" rx="4" fill="#635BFF"/>
+                <text x="25" y="13" font-family="Arial, sans-serif" font-size="8" font-weight="bold" text-anchor="middle" fill="white">stripe</text>
+            </svg>
+        </div>
+        <div class="font-semibold text-blue-900 dark:text-blue-100 text-lg">Credit/Debit Card</div>
+        <div class="text-sm text-gray-600 dark:text-gray-300 mb-2">Secure payment with Stripe</div>
+        <div class="flex flex-wrap gap-2 justify-center">
+            <div class="w-8 h-5 bg-white rounded border flex items-center justify-center">
+                <svg width="20" height="6" viewBox="0 0 30 10" fill="none">
+                    <rect width="30" height="10" fill="#1A1F71"/>
+                    <text x="15" y="7" font-family="Arial, sans-serif" font-size="4" font-weight="bold" text-anchor="middle" fill="white">VISA</text>
+                </svg>
+            </div>
+            <div class="w-8 h-5 bg-white rounded border flex items-center justify-center">
+                <svg width="16" height="10" viewBox="0 0 24 14" fill="none">
+                    <circle cx="8" cy="7" r="4" fill="#EB001B"/>
+                    <circle cx="16" cy="7" r="4" fill="#F79E1B"/>
+                </svg>
+            </div>
+            <div class="w-8 h-5 bg-white rounded border flex items-center justify-center">
+                <svg width="20" height="6" viewBox="0 0 30 10" fill="none">
+                    <rect width="30" height="10" fill="#006FCF"/>
+                    <text x="15" y="7" font-family="Arial, sans-serif" font-size="3" font-weight="bold" text-anchor="middle" fill="white">AMEX</text>
+                </svg>
+            </div>
+        </div>
+    </div>
+</label>
+
+                            <!-- PayPal -->
+>>>>>>> ff5cdf32d1c9c432ed5bb1ef4de798835b8239f8
                             <label class="payment-option custom-radio flex flex-col items-center justify-center min-h-[160px] p-6 border-2 border-blue-300 dark:border-blue-500 rounded-xl cursor-pointer hover:bg-blue-100 dark:hover:bg-blue-900/20 transition-all w-full text-center bg-blue-50 dark:bg-blue-900/20" data-countries="all">
     <input type="radio" name="paymentMethod" value="paypal" class="mb-3" />
     <div class="flex flex-col items-center w-full">
@@ -374,6 +489,7 @@
     </div>
 </label>
 
+<<<<<<< HEAD
                             <!-- Bank Transfer with Credit Card -->
                             <label class="payment-option custom-radio flex flex-col items-center justify-center min-h-[160px] p-6 border-2 border-blue-300 dark:border-blue-600 rounded-xl cursor-pointer hover:bg-blue-100 dark:hover:bg-blue-800/20 transition-all w-full text-center bg-blue-50 dark:bg-blue-800/20" data-countries="all">
     <input type="radio" name="paymentMethod" value="bank" class="mb-3" />
@@ -412,6 +528,35 @@
         </div>
     </div>
 </label>
+=======
+                            <!-- Bank Transfer -->
+                            <label class="payment-option custom-radio flex flex-col items-center justify-center min-h-[160px] p-6 border-2 border-gray-300 dark:border-gray-600 rounded-xl cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800/20 transition-all w-full text-center bg-gray-50 dark:bg-gray-800/20" data-countries="all">
+                                <input type="radio" name="paymentMethod" value="bank" class="mb-3" />
+                                <div class="flex flex-col items-center w-full">
+                                    <div class="w-16 h-10 mb-2 bg-gray-100 dark:bg-gray-600 rounded-lg border flex items-center justify-center">
+                                        <svg class="w-8 h-8 text-gray-600 dark:text-gray-300" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M12 2L2 7v10c0 5.55 3.84 9.74 9 9.74s9-4.19 9-9.74V7l-10-5z"/>
+                                        </svg>
+                                    </div>
+                                    <div class="font-semibold text-blue-900 dark:text-blue-100 text-lg">Bank Transfer</div>
+                                    <div class="text-sm text-gray-600 dark:text-gray-300 mb-2">Direct bank transfer</div>
+                                    <div class="flex flex-wrap gap-2 justify-center mt-2">
+                                        <div class="w-10 h-5 bg-white rounded border flex items-center justify-center">
+                                            <svg width="24" height="8" viewBox="0 0 30 12" fill="none">
+                                                <rect width="30" height="12" fill="#003876"/>
+                                                <text x="15" y="8" font-family="Arial, sans-serif" font-size="5" font-weight="bold" text-anchor="middle" fill="white">BCA</text>
+                                            </svg>
+                                        </div>
+                                        <div class="w-12 h-5 bg-white rounded border flex items-center justify-center">
+                                            <svg width="28" height="8" viewBox="0 0 30 12" fill="none">
+                                                <rect width="30" height="12" fill="#FFD700"/>
+                                                <text x="15" y="8" font-family="Arial, sans-serif" font-size="3" font-weight="bold" text-anchor="middle" fill="#003876">MANDIRI</text>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </label>
+>>>>>>> ff5cdf32d1c9c432ed5bb1ef4de798835b8239f8
                         </div>
 
                         <!-- Credit Card Form (Only for Bank Transfer) -->
@@ -511,6 +656,7 @@
                         <div id="bankTransferInfo" class="hidden mt-4">
                             <div class="p-4 bg-blue-50 dark:bg-slate-700 rounded-lg">
                                 <h4 class="font-semibold text-blue-900 dark:text-blue-100 mb-3">Bank Transfer Details</h4>
+<<<<<<< HEAD
                                 <form id="bankTransferForm">
                                     <h5 class="font-semibold text-blue-900 dark:text-blue-100 mb-3">Choose Destination Bank</h5>
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
@@ -602,6 +748,41 @@
                         </label>
                     </div>
                 </div>
+=======
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div class="p-3 bg-white dark:bg-gray-800 rounded border">
+                                        <div class="flex items-center mb-2">
+                                            <div class="w-12 h-6 mr-2 bg-blue-900 rounded flex items-center justify-center">
+                                                <span class="text-white text-xs font-bold">BCA</span>
+                                            </div>
+                                            <p class="font-medium text-blue-900 dark:text-blue-100">BCA (Indonesia)</p>
+                                        </div>
+                                        <div class="text-sm text-gray-600 dark:text-gray-300">
+                                            <p><strong>Account:</strong> 1234567890</p>
+                                            <p><strong>Name:</strong> PT TriadGo Indonesia</p>
+                                        </div>
+                                    </div>
+                                    <div class="p-3 bg-white dark:bg-gray-800 rounded border">
+                                        <div class="flex items-center mb-2">
+                                            <div class="w-12 h-6 mr-2 bg-yellow-500 rounded flex items-center justify-center">
+                                                <span class="text-blue-900 text-xs font-bold">MANDIRI</span>
+                                            </div>
+                                            <p class="font-medium text-blue-900 dark:text-blue-100">Mandiri (Indonesia)</p>
+                                        </div>
+                                        <div class="text-sm text-gray-600 dark:text-gray-300">
+                                            <p><strong>Account:</strong> 9876543210</p>
+                                            <p><strong>Name:</strong> PT TriadGo Indonesia</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-3 p-3 bg-yellow-50 dark:bg-yellow-900 rounded border border-yellow-200 dark:border-yellow-700">
+                                    <p class="text-sm text-yellow-800 dark:text-yellow-200">
+                                        <strong>Note:</strong> Please include your order number in the transfer description.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+>>>>>>> ff5cdf32d1c9c432ed5bb1ef4de798835b8239f8
 
                 <!-- Place Order Button -->
                 <div class="export-card bg-blue-50 dark:bg-slate-800 rounded-lg shadow-md p-6">
@@ -648,6 +829,7 @@
                     darkModeThumb.style.backgroundColor = '#fff';
                     darkModeThumb.style.borderColor = '#ccc';
                 }
+<<<<<<< HEAD
             }
 
             updateDarkModeSwitch();
@@ -1140,6 +1322,40 @@
             // Initialize bank transfer functionality
             setupBankTransfer();
         });
+=======
+                updateDarkModeSwitch();
+            });
+        }
+
+        // Initialize
+        document.querySelector('input[name="paymentMethod"][value="stripe"]').dispatchEvent(new Event('change'));
+        updateCurrency();
+
+        // Midtrans sub-method interactivity
+const midtransOptions = document.querySelectorAll('.midtrans-option');
+const midtransFormContainer = document.getElementById('midtransFormContainer');
+const midtransSubmethod = document.getElementById('midtransSubmethod');
+const midtransRadio = document.getElementById('midtransRadio');
+
+midtransOptions.forEach(btn => {
+    btn.addEventListener('click', function() {
+        midtransOptions.forEach(b => b.classList.remove('ring-2', 'ring-blue-400', 'ring-green-400', 'ring-purple-400'));
+        this.classList.add('ring-2', 'ring-blue-400');
+        midtransSubmethod.value = this.dataset.method;
+        midtransRadio.checked = true;
+        // Show demo form/info for each method
+        if (this.dataset.method === 'credit_card') {
+            midtransFormContainer.innerHTML = `<div class='p-4 bg-white dark:bg-gray-800 rounded-lg border mt-2'><label class='block text-blue-900 dark:text-blue-100 mb-2'>Card Number*</label><input type='text' class='w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md mb-2' placeholder='Card Number'><label class='block text-blue-900 dark:text-blue-100 mb-2'>Expiry*</label><input type='text' class='w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md mb-2' placeholder='MM/YY'><label class='block text-blue-900 dark:text-blue-100 mb-2'>CVC*</label><input type='text' class='w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md' placeholder='CVC'></div>`;
+        } else if (this.dataset.method === 'gopay') {
+            midtransFormContainer.innerHTML = `<div class='p-4 bg-green-50 dark:bg-green-900 rounded-lg border mt-2 text-center'><span class='text-green-700 dark:text-green-200 font-semibold'>Scan QR with GoPay app after clicking Complete Order.</span></div>`;
+        } else if (this.dataset.method === 'bank_transfer') {
+            midtransFormContainer.innerHTML = `<div class='p-4 bg-blue-50 dark:bg-blue-900 rounded-lg border mt-2 text-center'><span class='text-blue-700 dark:text-blue-200 font-semibold'>Bank transfer instructions will be shown after clicking Complete Order.</span></div>`;
+        } else if (this.dataset.method === 'qris') {
+            midtransFormContainer.innerHTML = `<div class='p-4 bg-purple-50 dark:bg-purple-900 rounded-lg border mt-2 text-center'><span class='text-purple-700 dark:text-purple-200 font-semibold'>Scan QRIS code after clicking Complete Order.</span></div>`;
+        }
+    });
+});
+>>>>>>> ff5cdf32d1c9c432ed5bb1ef4de798835b8239f8
     </script>
 </body>
 </html>

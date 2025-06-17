@@ -142,10 +142,10 @@
             <p class="text-blue-700 mb-4">Please try with other keywords or make a request for the item you are looking
                 for.
             </p>
-            <button
+            <a href="{{ route('requestimportir') }}"
                 class="bg-amber-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md transition pulse-on-hover">
                 Request now
-            </button>
+            </a>
         </div>
     </section>
     <footer class="bg-blue-800 text-blue-100 py-6 mt-auto">

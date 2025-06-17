@@ -8,7 +8,7 @@
             <nav class="hidden md:flex items-center space-x-6 text-blue-700 font-semibold">
                 <a href="{{ route('importir') }}" class="hover:text-orange-500 transition nav-gradient-move">Home</a>
                 <a href="{{ route('catalog') }}" class="hover:text-orange-500 transition nav-gradient-move">Catalog</a>
-                <a href="#about" class="hover:text-orange-500 transition nav-gradient-move">Request</a>
+                <a href="{{ route('requestimportir') }}" class="hover:text-orange-500 transition nav-gradient-move">Request</a>
                 <a href="#about" class="hover:text-orange-500 transition nav-gradient-move">Transaction</a>
                 <a href="{{ route('userprofile') }}" class="hover:text-orange-500 transition nav-gradient-move">Account
                     <img src="https://cdn-icons-png.freepik.com/512/8345/8345339.png" alt=""
@@ -67,7 +67,7 @@
             <!-- Menu Items -->
             <a href="{{ route('importir') }}" class="mb-4 text-blue-700 font-semibold hover:text-orange-500 transition nav-gradient-move">Home</a>
             <a href="{{ route('catalog') }}" class="mb-4 text-blue-700 font-semibold hover:text-orange-500 transition nav-gradient-move">Catalog</a>
-            <a href="#" class="mb-4 text-blue-700 font-semibold hover:text-orange-500 transition nav-gradient-move">Request</a>
+            <a href="{{ route('requestimportir') }}" class="mb-4 text-blue-700 font-semibold hover:text-orange-500 transition nav-gradient-move">Request</a>
             <a href="#" class="mb-4 text-blue-700 font-semibold hover:text-orange-500 transition nav-gradient-move">Transactions</a>
             <a href="{{ route('userprofile') }}" class="mb-4 text-blue-700 font-semibold hover:text-orange-500 transition nav-gradient-move">Account</a>
 

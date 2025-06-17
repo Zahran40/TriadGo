@@ -8,6 +8,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\EksportirController;
 use App\Http\Controllers\ImportirController;
+use App\Http\Controllers\MidtransController;
 
 
 
@@ -71,6 +72,12 @@ Route::post('/contactus', [ContactusController::class, 'store'])->name('contactu
 // Halaman Ekspor - hanya role ekspor
 Route::get('/ekspor', [EksportirController::class, 'homeeksportir'])->name('ekspor')->middleware('role.protect:ekspor');
 Route::get('formeksportir', [EksportirController::class, 'formeksportir'])->name('formeksportir')->middleware('role.protect:ekspor');
+
+// Midtrans Payment API Routes
+Route::prefix('api')->group(function () {
+    Route::post('/midtrans/token', [MidtransController::class, 'getSnapToken'])->name('midtrans.token');
+    Route::post('/midtrans/notification', [MidtransController::class, 'handleNotification'])->name('midtrans.notification');
+});
 
 // Route fallback - letakkan di paling bawah
 Route::fallback(function () {

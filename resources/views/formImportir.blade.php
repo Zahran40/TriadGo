@@ -11,9 +11,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     
     <!-- Payment Gateway Scripts -->
-    <script src="https://js.stripe.com/v3/"></script>
-    <script src="https://www.paypal.com/sdk/js?client-id=AYpPIo4n7iUjkD_M5bK7Vg_dq4z4v_K5nM3z&currency=USD"></script>
-    <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="SB-Mid-client-YOUR_CLIENT_KEY"></script>
+    <script src="https://app.midtrans.com/snap/snap.js" data-client-key="{{ env('MIDTRANS_CLIENT_KEY', 'SB-Mid-client-YOUR_CLIENT_KEY') }}"></script>
+    <script src="https://www.paypal.com/sdk/js?client-id={{ env('PAYPAL_CLIENT_ID', 'AYpPIo4n7iUjkD_M5bK7Vg_dq4z4v_K5nM3z') }}&currency=USD"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
     <script>
@@ -176,9 +175,13 @@
                         <svg class="w-16 h-16 mx-auto text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-1.8 1.8M7 13v6a2 2 0 002 2h7.5"></path>
                         </svg>
-                        <p class="text-gray-500 dark:text-gray-400 mb-4">Your cart is empty</p>
-                        <a href="{{ url('/detail') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition">
-                            Continue Shopping
+                        <p class="text-gray-500 dark:text-gray-400 mb-4 text-lg font-medium">Your cart is empty</p>
+                        <p class="text-gray-600 dark:text-gray-300 mb-6 text-sm">Add some products to your cart to continue with checkout</p>
+                        <a href="{{ url('/catalog') }}" class="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-all transform hover:scale-105">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                            </svg>
+                            Start Shopping
                         </a>
                     </div>
                     
@@ -226,7 +229,7 @@
                     </div>
 
                     <!-- Coupon Code -->
-                    <div class="mt-6 mb-0 pb-0">
+                    <div class="mt-6 mb-4">
                         <label class="block text-blue-900 dark:text-blue-100 mb-2">Coupon Code</label>
                         <div class="flex gap-2">
                             <input type="text" id="couponCode" class="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Enter coupon code">
@@ -235,7 +238,17 @@
                             </button>
                         </div>
                     </div>
-                </div> <!-- Penutup card Order Summary dipindahkan ke sini agar card tidak panjang ke bawah -->
+
+                    <!-- Add More Products Button -->
+                    <div class="mt-4 pt-4 border-t border-gray-300 dark:border-gray-600 text-center">
+                        <a href="{{ url('/catalog') }}" class="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-all">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                            </svg>
+                            Add More Products
+                        </a>
+                    </div>
+                </div> <!-- Penutup card Order Summary -->
 
                 <!-- Payment & Billing Section -->
                 <div class="space-y-6">
@@ -309,57 +322,67 @@
                     <div class="export-card bg-blue-50 dark:bg-slate-800 rounded-lg shadow-md p-6">
                         <h2 class="text-2xl font-bold text-blue-900 dark:text-blue-100 mb-6">Payment Method</h2>                        <!-- Payment Method Selection -->
                         <div class="space-y-4 mb-6" id="paymentMethods">
-                            <!-- Midtrans (Indonesia) -->
-                            <label class="payment-option custom-radio flex flex-col items-center justify-center min-h-[160px] p-6 border-2 border-gray-300 dark:border-gray-600 rounded-xl cursor-pointer hover:bg-blue-100 dark:hover:bg-slate-700 transition-all w-full text-center" data-countries="ID">
+                            <!-- Midtrans Payment Gateway -->
+                            <label class="payment-option custom-radio flex flex-col items-center justify-center min-h-[160px] p-6 border-2 border-blue-300 dark:border-blue-500 rounded-xl cursor-pointer hover:bg-blue-100 dark:hover:bg-blue-900/20 transition-all w-full text-center bg-blue-50 dark:bg-blue-900/20" data-countries="all">
     <input type="radio" name="paymentMethod" value="midtrans" class="mb-3" id="midtransRadio" />
     <div class="flex flex-col items-center w-full">
-        <div class="w-16 h-10 mb-2 bg-white rounded-lg border flex items-center justify-center">
-            <svg width="50" height="20" viewBox="0 0 120 48" fill="none">
+        <div class="w-20 h-12 mb-3 bg-white rounded-lg border flex items-center justify-center shadow-sm">
+            <svg width="60" height="24" viewBox="0 0 120 48" fill="none">
                 <rect width="120" height="48" rx="8" fill="#00AEEF"/>
                 <text x="60" y="30" font-family="Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="white">MIDTRANS</text>
             </svg>
         </div>
-        <div class="font-semibold text-blue-900 dark:text-blue-100 text-lg">Midtrans Payment</div>
-        <div class="text-sm text-gray-600 dark:text-gray-300 mb-2">Credit Card, Bank Transfer, E-Wallet, QRIS</div>
-        <div class="flex flex-wrap gap-2 justify-center mt-2" id="midtransOptions">
-            <button type="button" class="midtrans-option px-3 py-1 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-xs font-semibold text-blue-900 dark:text-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-400" data-method="credit_card">Credit Card</button>
-            <button type="button" class="midtrans-option px-3 py-1 rounded-lg border border-green-400 dark:border-green-600 bg-green-50 dark:bg-green-900 text-xs font-semibold text-green-800 dark:text-green-200 focus:outline-none focus:ring-2 focus:ring-green-400" data-method="gopay">GoPay</button>
-            <button type="button" class="midtrans-option px-3 py-1 rounded-lg border border-blue-400 dark:border-blue-600 bg-blue-50 dark:bg-blue-900 text-xs font-semibold text-blue-800 dark:text-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-400" data-method="bank_transfer">Bank Transfer</button>
-            <button type="button" class="midtrans-option px-3 py-1 rounded-lg border border-purple-400 dark:border-purple-600 bg-purple-50 dark:bg-purple-900 text-xs font-semibold text-purple-800 dark:text-purple-200 focus:outline-none focus:ring-2 focus:ring-purple-400" data-method="qris">QRIS</button>
+        <div class="font-semibold text-blue-900 dark:text-blue-100 text-lg">Midtrans Payment Gateway</div>
+        <div class="text-sm text-gray-600 dark:text-gray-300 mb-3">Credit Card, Debit, E-Wallet, Bank Transfer, QRIS</div>
+        <div class="grid grid-cols-2 gap-2 mt-2 w-full max-w-xs">
+            <div class="bg-white dark:bg-gray-800 p-2 rounded border text-center">
+                <span class="text-xs font-medium text-gray-700 dark:text-gray-300">💳 Cards</span>
+            </div>
+            <div class="bg-white dark:bg-gray-800 p-2 rounded border text-center">
+                <span class="text-xs font-medium text-gray-700 dark:text-gray-300">🏦 Banks</span>
+            </div>
+            <div class="bg-white dark:bg-gray-800 p-2 rounded border text-center">
+                <span class="text-xs font-medium text-gray-700 dark:text-gray-300">📱 E-Wallet</span>
+            </div>
+            <div class="bg-white dark:bg-gray-800 p-2 rounded border text-center">
+                <span class="text-xs font-medium text-gray-700 dark:text-gray-300">📷 QRIS</span>
+            </div>
         </div>
-        <input type="hidden" name="midtrans_submethod" id="midtransSubmethod" value="" />
-        <div id="midtransFormContainer" class="w-full mt-4"></div>
     </div>
 </label>
 
-                            <!-- PayPal -->
-                            <label class="payment-option custom-radio flex flex-col items-center justify-center min-h-[160px] p-6 border-2 border-blue-300 dark:border-blue-500 rounded-xl cursor-pointer hover:bg-blue-100 dark:hover:bg-blue-900/20 transition-all w-full text-center bg-blue-50 dark:bg-blue-900/20" data-countries="all">
+                            <!-- PayPal Payment -->
+                            <label class="payment-option custom-radio flex flex-col items-center justify-center min-h-[160px] p-6 border-2 border-yellow-300 dark:border-yellow-500 rounded-xl cursor-pointer hover:bg-yellow-100 dark:hover:bg-yellow-900/20 transition-all w-full text-center bg-yellow-50 dark:bg-yellow-900/20" data-countries="all">
     <input type="radio" name="paymentMethod" value="paypal" class="mb-3" />
     <div class="flex flex-col items-center w-full">
-        <div class="w-16 h-10 mb-2 bg-white rounded-lg border flex items-center justify-center">
-            <svg width="50" height="20" viewBox="0 0 50 20" fill="none">
-                <rect width="50" height="20" rx="4" fill="#0070BA"/>
-                <text x="25" y="13" font-family="Arial, sans-serif" font-size="8" font-weight="bold" text-anchor="middle" fill="white">PayPal</text>
+        <div class="w-20 h-12 mb-3 bg-white rounded-lg border flex items-center justify-center shadow-sm">
+            <svg width="60" height="24" viewBox="0 0 120 48" fill="none">
+                <rect width="120" height="48" rx="8" fill="#0070BA"/>
+                <text x="60" y="30" font-family="Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="white">PayPal</text>
             </svg>
         </div>
-        <div class="font-semibold text-blue-900 dark:text-blue-100 text-lg">PayPal</div>
-        <div class="text-sm text-gray-600 dark:text-gray-300 mb-2">Pay with your PayPal account</div>
-        <div class="flex flex-wrap gap-2 justify-center">
-            <span class="text-xs bg-blue-500 text-white px-2 py-1 rounded-full">PayPal Balance</span>
-            <span class="text-xs bg-yellow-400 text-gray-900 px-2 py-1 rounded-full">Cards</span>
+        <div class="font-semibold text-blue-900 dark:text-blue-100 text-lg">PayPal Payment</div>
+        <div class="text-sm text-gray-600 dark:text-gray-300 mb-3">Pay with your PayPal account or credit/debit card</div>
+        <div class="grid grid-cols-2 gap-2 mt-2 w-full max-w-xs">
+            <div class="bg-white dark:bg-gray-800 p-2 rounded border text-center">
+                <span class="text-xs font-medium text-gray-700 dark:text-gray-300">💰 PayPal</span>
+            </div>
+            <div class="bg-white dark:bg-gray-800 p-2 rounded border text-center">
+                <span class="text-xs font-medium text-gray-700 dark:text-gray-300">💳 Cards</span>
+            </div>
         </div>
     </div>
 </label>
 
-                            <!-- Bank Transfer -->
+                            <!-- Bank Transfer with Credit Card -->
                             <label class="payment-option custom-radio flex flex-col items-center justify-center min-h-[160px] p-6 border-2 border-gray-300 dark:border-gray-600 rounded-xl cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800/20 transition-all w-full text-center bg-gray-50 dark:bg-gray-800/20" data-countries="all">
     <input type="radio" name="paymentMethod" value="bank" class="mb-3" />
     <div class="flex flex-col items-center w-full">
         <div class="w-16 h-10 mb-2 bg-white rounded-lg border flex items-center justify-center">
             <img src="https://static.vecteezy.com/system/resources/previews/013/948/616/original/bank-icon-logo-design-vector.jpg" alt="Bank Logo" class="w-8 h-8 object-contain" />
         </div>
-        <div class="font-semibold text-blue-900 dark:text-blue-100 text-lg">Bank Transfer</div>
-        <div class="text-sm text-gray-600 dark:text-gray-300 mb-2">Direct bank transfer</div>
+        <div class="font-semibold text-blue-900 dark:text-blue-100 text-lg">Bank Transfer + Credit Card</div>
+        <div class="text-sm text-gray-600 dark:text-gray-300 mb-2">Direct bank transfer or credit card payment</div>
         <div class="flex flex-wrap gap-2 justify-center mt-2">
             <div class="w-10 h-5 bg-white rounded border flex items-center justify-center">
                 <svg width="24" height="8" viewBox="0 0 30 12" fill="none">
@@ -375,14 +398,15 @@
             </div>
             <div class="w-12 h-5 bg-white rounded border flex items-center justify-center">
                 <svg width="28" height="8" viewBox="0 0 30 12" fill="none">
-                    <rect width="30" height="12" fill="#20C997"/>
-                    <text x="15" y="8" font-family="Arial, sans-serif" font-size="4" font-weight="bold" text-anchor="middle" fill="white">BSI</text>
+                    <rect width="30" height="12" fill="#1A1F71"/>
+                    <text x="15" y="8" font-family="Arial, sans-serif" font-size="4" font-weight="bold" text-anchor="middle" fill="white">VISA</text>
                 </svg>
             </div>
             <div class="w-12 h-5 bg-white rounded border flex items-center justify-center">
                 <svg width="28" height="8" viewBox="0 0 30 12" fill="none">
-                    <rect width="30" height="12" fill="#003876"/>
-                    <text x="15" y="8" font-family="Arial, sans-serif" font-size="4" font-weight="bold" text-anchor="middle" fill="white">BRI</text>
+                    <rect width="30" height="12" fill="#EB001B"/>
+                    <circle cx="10" cy="6" r="4" fill="#FF5F00"/>
+                    <circle cx="20" cy="6" r="4" fill="#F79E1B"/>
                 </svg>
             </div>
         </div>
@@ -390,31 +414,25 @@
 </label>
                         </div>
 
-                        <!-- Stripe Card Form -->
-                        <div id="stripeCardForm" class="space-y-4">
+                        <!-- Credit Card Form (Only for Bank Transfer) -->
+                        <div id="creditCardForm" class="hidden space-y-4">
                             <div class="p-4 bg-blue-50 dark:bg-slate-700 rounded-lg">
                                 <h4 class="font-semibold text-blue-900 dark:text-blue-100 mb-3">Credit Card Information</h4>
                                 
                                 <div class="space-y-4">
                                     <div>
                                         <label class="block text-blue-900 dark:text-blue-100 mb-2">Card Number*</label>
-                                        <div id="card-number-element" class="px-3 py-3 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800">
-                                            <!-- Stripe Elements will create form elements here -->
-                                        </div>
+                                        <input type="text" id="cardNumber" class="w-full px-3 py-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="1234 5678 9012 3456" maxlength="19">
                                     </div>
 
                                     <div class="grid grid-cols-2 gap-4">
                                         <div>
                                             <label class="block text-blue-900 dark:text-blue-100 mb-2">Expiry Date*</label>
-                                            <div id="card-expiry-element" class="px-3 py-3 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800">
-                                                <!-- Stripe Elements will create form elements here -->
-                                            </div>
+                                            <input type="text" id="cardExpiry" class="w-full px-3 py-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="MM/YY" maxlength="5">
                                         </div>
                                         <div>
                                             <label class="block text-blue-900 dark:text-blue-100 mb-2">CVC*</label>
-                                            <div id="card-cvc-element" class="px-3 py-3 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800">
-                                                <!-- Stripe Elements will create form elements here -->
-                                            </div>
+                                            <input type="text" id="cardCvc" class="w-full px-3 py-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="123" maxlength="4">
                                         </div>
                                     </div>
 
@@ -426,18 +444,18 @@
                             </div>
                         </div>
 
-                        <!-- PayPal Button Container -->
-                        <div id="paypal-button-container" class="hidden mt-4">
-                            <div class="p-4 bg-blue-50 dark:bg-slate-700 rounded-lg">
-                                <h4 class="font-semibold text-blue-900 dark:text-blue-100 mb-3">PayPal Payment</h4>
-                                <div id="paypal-buttons"></div>
-                            </div>
-                        </div>
-
-                        <!-- Midtrans Info -->
+                        <!-- Midtrans Integration Info -->
                         <div id="midtransInfo" class="hidden mt-4">
-                            <div class="p-4 bg-blue-50 dark:bg-slate-700 rounded-lg">
-                                <h4 class="font-semibold text-blue-900 dark:text-blue-100 mb-3">Midtrans Payment Options</h4>
+                            <div class="p-4 bg-blue-50 dark:bg-slate-700 rounded-lg border-l-4 border-blue-500">
+                                <div class="flex items-center mb-3">
+                                    <svg class="w-6 h-6 text-blue-600 dark:text-blue-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    <h4 class="font-semibold text-blue-900 dark:text-blue-100">Midtrans Payment Gateway</h4>
+                                </div>
+                                <p class="text-sm text-gray-600 dark:text-gray-300 mb-4">
+                                    You will be redirected to Midtrans secure payment page to complete your payment using your preferred method.
+                                </p>
                                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
                                     <div class="p-3 bg-white dark:bg-gray-800 rounded-lg border">
                                         <div class="h-8 flex items-center justify-center mb-2">
@@ -446,7 +464,7 @@
                                                 <text x="20" y="11" font-family="Arial, sans-serif" font-size="8" font-weight="bold" text-anchor="middle" fill="white">VISA</text>
                                             </svg>
                                         </div>
-                                        <p class="text-xs text-gray-600 dark:text-gray-300">Credit Card</p>
+                                        <p class="text-xs text-gray-600 dark:text-gray-300">Visa/Mastercard</p>
                                     </div>
                                     <div class="p-3 bg-white dark:bg-gray-800 rounded-lg border">
                                         <div class="h-8 bg-green-500 rounded mb-2 flex items-center justify-center">
@@ -470,9 +488,22 @@
                                         <p class="text-xs text-gray-600 dark:text-gray-300">QR Code</p>
                                     </div>
                                 </div>
-                                <p class="text-sm text-gray-600 dark:text-gray-300 mt-3 text-center">
-                                    Click "Complete Order" to choose your preferred payment method
+                            </div>
+                        </div>
+
+                        <!-- PayPal Button Container -->
+                        <div id="paypalButtonContainer" class="hidden mt-4">
+                            <div class="p-4 bg-yellow-50 dark:bg-slate-700 rounded-lg border-l-4 border-yellow-500">
+                                <div class="flex items-center mb-3">
+                                    <svg class="w-6 h-6 text-yellow-600 dark:text-yellow-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                                    </svg>
+                                    <h4 class="font-semibold text-blue-900 dark:text-blue-100">PayPal Payment</h4>
+                                </div>
+                                <p class="text-sm text-gray-600 dark:text-gray-300 mb-4">
+                                    Click the PayPal button below to complete your payment securely.
                                 </p>
+                                <div id="paypal-buttons" class="w-full"></div>
                             </div>
                         </div>
 
@@ -792,49 +823,122 @@
             const paymentOptions = document.querySelectorAll('input[name="paymentMethod"]');
             const bankTransferInfo = document.getElementById('bankTransferInfo');
             const midtransInfo = document.getElementById('midtransInfo');
-            const midtransOptions = document.querySelectorAll('.midtrans-option');
-            const midtransFormContainer = document.getElementById('midtransFormContainer');
+            const creditCardForm = document.getElementById('creditCardForm');
+            const paypalButtonContainer = document.getElementById('paypalButtonContainer');
 
             paymentOptions.forEach(option => {
                 option.addEventListener('change', function() {
                     // Hide all forms first
                     if (bankTransferInfo) bankTransferInfo.classList.add('hidden');
                     if (midtransInfo) midtransInfo.classList.add('hidden');
+                    if (creditCardForm) creditCardForm.classList.add('hidden');
+                    if (paypalButtonContainer) paypalButtonContainer.classList.add('hidden');
                     if (bankTransferDetails) bankTransferDetails.classList.add('hidden');
 
                     // Show relevant form
-                    if (this.value === 'bank' && bankTransferInfo) {
-                        bankTransferInfo.classList.remove('hidden');
-                    } else if (this.value === 'midtrans' && midtransInfo) {
-                        midtransInfo.classList.remove('hidden');
+                    if (this.value === 'bank') {
+                        if (bankTransferInfo) bankTransferInfo.classList.remove('hidden');
+                        if (creditCardForm) creditCardForm.classList.remove('hidden');
+                    } else if (this.value === 'midtrans') {
+                        if (midtransInfo) midtransInfo.classList.remove('hidden');
+                    } else if (this.value === 'paypal') {
+                        if (paypalButtonContainer) paypalButtonContainer.classList.remove('hidden');
+                        initializePayPal();
                     }
                 });
             });
 
-            // Midtrans payment options
-            midtransOptions.forEach(option => {
-                option.addEventListener('click', function() {
-                    // Remove active class from all options
-                    midtransOptions.forEach(opt => opt.classList.remove('ring-2', 'ring-blue-500'));
-                    // Add active class to selected option
-                    this.classList.add('ring-2', 'ring-blue-500');
+            // Initialize PayPal
+            function initializePayPal() {
+                // Clear existing PayPal buttons
+                const paypalButtonsContainer = document.getElementById('paypal-buttons');
+                if (paypalButtonsContainer) {
+                    paypalButtonsContainer.innerHTML = '';
+                    
+                    // Get total amount
+                    const totalElement = document.getElementById('totalAmount');
+                    const totalAmount = totalElement ? totalElement.textContent.replace('$', '').replace(',', '') : '300.00';
+                    
+                    paypal.Buttons({
+                        style: {
+                            color: 'blue',
+                            shape: 'rect',
+                            label: 'paypal',
+                            layout: 'vertical'
+                        },
+                        createOrder: function(data, actions) {
+                            return actions.order.create({
+                                purchase_units: [{
+                                    amount: {
+                                        value: totalAmount,
+                                        currency_code: 'USD'
+                                    },
+                                    description: 'TriadGO Order Payment',
+                                    custom_id: 'TG-' + new Date().toISOString().replace(/[-:.]/g, '').slice(0, 14)
+                                }]
+                            });
+                        },
+                        onApprove: function(data, actions) {
+                            return actions.order.capture().then(function(details) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Payment Successful!',
+                                    text: `Transaction completed by ${details.payer.name.given_name}`,
+                                    confirmButtonColor: '#f97316'
+                                }).then(() => {
+                                    // Redirect to success page or process order
+                                    window.location.href = '/success?transaction_id=' + details.id;
+                                });
+                            });
+                        },
+                        onError: function(err) {
+                            console.error('PayPal Error:', err);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Payment Error',
+                                text: 'There was an error processing your PayPal payment.',
+                                confirmButtonColor: '#f97316'
+                            });
+                        },
+                        onCancel: function(data) {
+                            Swal.fire({
+                                icon: 'info',
+                                title: 'Payment Cancelled',
+                                text: 'PayPal payment was cancelled.',
+                                confirmButtonColor: '#f97316'
+                            });
+                        }
+                    }).render('#paypal-buttons');
+                }
+            }
+            const cardNumberInput = document.getElementById('cardNumber');
+            const cardExpiryInput = document.getElementById('cardExpiry');
+            const cardCvcInput = document.getElementById('cardCvc');
 
-                    // Show method-specific information
-                    if (this.dataset.method === 'gopay') {
-                        if (midtransFormContainer) {
-                            midtransFormContainer.innerHTML = `<div class='p-4 bg-green-50 dark:bg-green-900 rounded-lg border mt-2 text-center'><span class='text-green-700 dark:text-green-200 font-semibold'>Scan QR with GoPay app after clicking Complete Order.</span></div>`;
-                        }
-                    } else if (this.dataset.method === 'bank_transfer') {
-                        if (midtransFormContainer) {
-                            midtransFormContainer.innerHTML = `<div class='p-4 bg-blue-50 dark:bg-blue-900 rounded-lg border mt-2 text-center'><span class='text-blue-700 dark:text-blue-200 font-semibold'>Bank transfer instructions will be shown after clicking Complete Order.</span></div>`;
-                        }
-                    } else if (this.dataset.method === 'qris') {
-                        if (midtransFormContainer) {
-                            midtransFormContainer.innerHTML = `<div class='p-4 bg-purple-50 dark:bg-purple-900 rounded-lg border mt-2 text-center'><span class='text-purple-700 dark:text-purple-200 font-semibold'>Scan QRIS code after clicking Complete Order.</span></div>`;
-                        }
-                    }
+            if (cardNumberInput) {
+                cardNumberInput.addEventListener('input', function(e) {
+                    let value = e.target.value.replace(/\s/g, '').replace(/[^0-9]/gi, '');
+                    let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+                    if (formattedValue.length > 19) formattedValue = formattedValue.substring(0, 19);
+                    e.target.value = formattedValue;
                 });
-            });
+            }
+
+            if (cardExpiryInput) {
+                cardExpiryInput.addEventListener('input', function(e) {
+                    let value = e.target.value.replace(/\D/g, '');
+                    if (value.length >= 2) {
+                        value = value.substring(0, 2) + '/' + value.substring(2, 4);
+                    }
+                    e.target.value = value;
+                });
+            }
+
+            if (cardCvcInput) {
+                cardCvcInput.addEventListener('input', function(e) {
+                    e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                });
+            }
 
             // Form submission
             const submitButton = document.getElementById('submitPayment');
@@ -867,16 +971,35 @@
                         return;
                     }
 
-                    // Additional validation for bank transfer
+                    // Validate based on payment method
                     if (selectedPayment.value === 'bank') {
+                        // Check if bank transfer method is selected (bank account or credit card)
                         const selectedBank = document.querySelector('input[name="selectedBank"]:checked');
-                        if (!selectedBank) {
+                        const cardNumber = document.getElementById('cardNumber').value;
+                        
+                        if (!selectedBank && !cardNumber) {
                             Swal.fire({
                                 icon: 'warning',
-                                title: 'Bank Selection Required',
-                                text: 'Please select a bank for transfer'
+                                title: 'Payment Details Required',
+                                text: 'Please select a bank for transfer or fill in credit card details'
                             });
                             return;
+                        }
+
+                        // If credit card is filled, validate it
+                        if (cardNumber) {
+                            const cardExpiry = document.getElementById('cardExpiry').value;
+                            const cardCvc = document.getElementById('cardCvc').value;
+                            const cardholderName = document.getElementById('cardholderName').value;
+
+                            if (!cardExpiry || !cardCvc || !cardholderName) {
+                                Swal.fire({
+                                    icon: 'warning',
+                                    title: 'Credit Card Details Required',
+                                    text: 'Please fill in all credit card information'
+                                });
+                                return;
+                            }
                         }
                     }
 
@@ -885,21 +1008,133 @@
                     if (spinner) spinner.classList.remove('hidden');
                     submitButton.disabled = true;
 
-                    // Simulate payment processing
-                    setTimeout(() => {
+                    // Process payment based on method
+                    if (selectedPayment.value === 'midtrans') {
+                        processMidtransPayment();
+                    } else if (selectedPayment.value === 'bank') {
+                        processBankPayment();
+                    } else if (selectedPayment.value === 'paypal') {
+                        // PayPal payment is handled by the PayPal button, so we reset the form
                         Swal.fire({
-                            icon: 'success',
-                            title: 'Order Placed Successfully!',
-                            text: 'Your order has been submitted. You will receive confirmation details shortly.',
+                            icon: 'info',
+                            title: 'Use PayPal Button',
+                            text: 'Please use the PayPal button above to complete your payment.',
                             confirmButtonColor: '#f97316'
-                        }).then(() => {
-                            // Reset form state
-                            if (buttonText) buttonText.classList.remove('hidden');
-                            if (spinner) spinner.classList.add('hidden');
-                            submitButton.disabled = false;
                         });
-                    }, 2000);
+                        resetFormState();
+                        return;
+                    }
                 });
+            }
+
+            // Midtrans payment processing
+            function processMidtransPayment() {
+                // Get total amount from the page
+                const totalElement = document.getElementById('totalAmount');
+                const totalAmount = totalElement ? totalElement.textContent.replace('$', '').replace(',', '') : '300.00';
+                
+                // Create order data
+                const orderData = {
+                    transaction_details: {
+                        order_id: 'TG-' + new Date().toISOString().replace(/[-:.]/g, '').slice(0, 14),
+                        gross_amount: Math.round(parseFloat(totalAmount) * 15000) // Convert USD to IDR roughly
+                    },
+                    customer_details: {
+                        first_name: document.getElementById('firstName').value,
+                        last_name: document.getElementById('lastName').value,
+                        email: document.getElementById('email').value,
+                        phone: document.getElementById('phone').value,
+                        billing_address: {
+                            address: document.getElementById('address').value,
+                            city: document.getElementById('city').value,
+                            postal_code: document.getElementById('zipCode').value,
+                            country_code: document.getElementById('country').value
+                        }
+                    }
+                };
+
+                // Call your backend to get snap token
+                fetch('/api/midtrans/token', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    },
+                    body: JSON.stringify(orderData)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.snap_token) {
+                        // Use Midtrans Snap
+                        window.snap.pay(data.snap_token, {
+                            onSuccess: function(result) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Payment Successful!',
+                                    text: 'Your payment has been processed successfully.',
+                                    confirmButtonColor: '#f97316'
+                                }).then(() => {
+                                    // Redirect to success page or refresh
+                                    window.location.href = '/success?order_id=' + orderData.transaction_details.order_id;
+                                });
+                            },
+                            onPending: function(result) {
+                                Swal.fire({
+                                    icon: 'info',
+                                    title: 'Payment Pending',
+                                    text: 'Please complete your payment.',
+                                    confirmButtonColor: '#f97316'
+                                });
+                                resetFormState();
+                            },
+                            onError: function(result) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Payment Failed',
+                                    text: 'There was an error processing your payment.',
+                                    confirmButtonColor: '#f97316'
+                                });
+                                resetFormState();
+                            },
+                            onClose: function() {
+                                resetFormState();
+                            }
+                        });
+                    } else {
+                        throw new Error('Failed to get payment token');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Payment Error',
+                        text: 'Unable to process payment. Please try again.',
+                        confirmButtonColor: '#f97316'
+                    });
+                    resetFormState();
+                });
+            }
+
+            // Bank payment processing (credit card or bank transfer)
+            function processBankPayment() {
+                // Simulate processing for demo
+                setTimeout(() => {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Order Placed Successfully!',
+                        text: 'Your order has been submitted. You will receive confirmation details shortly.',
+                        confirmButtonColor: '#f97316'
+                    });
+                    resetFormState();
+                }, 2000);
+            }
+
+            // Reset form state
+            function resetFormState() {
+                if (buttonText) buttonText.classList.remove('hidden');
+                if (spinner) spinner.classList.add('hidden');
+                if (submitButton) submitButton.disabled = false;
             }
 
             // Initialize bank transfer functionality

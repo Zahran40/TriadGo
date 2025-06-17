@@ -623,7 +623,7 @@
     <!-- Footer -->
     <footer class="bg-blue-900 dark:bg-slate-900 text-blue-100 py-6 mt-auto">
         <div class="container mx-auto px-6 text-center">
-            <p>© 2025 TriadGO. All rights reserved. | Secure payments powered by Stripe, PayPal & Midtrans</p>
+            <p>© 2025 TriadGO. All rights reserved. | Secure payments powered by  PayPal & Midtrans</p>
         </div>
     </footer>
 

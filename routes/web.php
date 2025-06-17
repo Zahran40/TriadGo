@@ -29,6 +29,7 @@ Route::get('/importir', [ImportirController::class, 'homeimportir'])->name('impo
 Route::get('/catalog', [ImportirController::class, 'catalog'])->name('catalog')->middleware('role.protect:impor');
 Route::get('/formimportir', [ImportirController::class, 'formimportir'])->name('formimportir')->middleware('role.protect:impor');
 Route::get('/detail', [ImportirController::class, 'detail'])->name('detail')->middleware('role.protect:impor');
+Route::get('/requestimportir', [ImportirController::class, 'requestimportir'])->name('requestimportir')->middleware('role.protect:impor');
 
 // User Profile - hanya user yang login (bukan guest)
 Route::get('/user-profile', [PageController::class, 'userprofile'])->name('userprofile')->middleware('role.protect:impor,ekspor');

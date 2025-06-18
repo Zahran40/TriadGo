@@ -2,265 +2,450 @@
 <html lang="en">
 
 <head>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TriadGO - Export Solutions</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Reviews & Responses | TriadGO</title>
     @vite('resources/css/app.css')
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Dark Mode Script -->
+    <script>
+        if (localStorage.getItem('darkMode') === 'enabled') {
+            document.documentElement.classList.add('dark');
+        }
+    </script>
+
     <script>
         tailwind.config = {
+            darkMode: 'class',
+
             theme: {
                 extend: {
                     colors: {
                         primary: '#2563eb',
                         accent: '#f97316',
-                        darkblue: '#1e3a8a',
-                    },
-                    animation: {
-                        'float': 'float 6s ease-in-out infinite',
-                        'pulse-slow': 'pulse 3s ease-in-out infinite',
-                    },
-                    keyframes: {
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-10px)' },
-                        }
-                    }
-                },
-            },
-        }
 
-        tailwind.scan()
+                    }
+                }
+            }
+        }
     </script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Poppins', sans-serif; }
+        
+        /* ✅ HOVER EFFECTS FOR CLICKABLE ELEMENTS */
+        .clickable-title {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .clickable-title:hover {
+            color: #fbbf24 !important;
+            text-decoration: underline;
+            transform: translateX(5px);
+        }
+        
+        .profile-btn {
+            transition: all 0.3s ease;
+        }
+        
+        .profile-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
+        }
+    </style>
 </head>
 
-<body class="home-bg min-h-screen flex flex-col" id="home">
-    @include('layouts.navbarekspor')
-        
-    <section id="" class="container mx-auto px-6 py-16 slide-in">
-        <h2 class="text-3xl font-bold text-blue-900 mb-6 text-center">All Buyer Responses</h2>
-       
+<body class="bg-gray-50 dark:bg-slate-900 min-h-screen transition-colors duration-300">
+    <!-- Back Buttons -->
+    <div class="container mx-auto px-6 py-4">
+        <div class="flex items-center gap-3 mb-6">
+            <button onclick="goBack()" 
+                    class="back-btn-hover bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold transition-all duration-300 inline-flex items-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
+                Back
+            </button>
+            
+            <a href="{{ route('ekspor') }}" 
+               class="bg-gray-600 hover:bg-gray-700 dark:bg-gray-500 dark:hover:bg-gray-600 text-white px-4 py-2 rounded-lg font-semibold transition-all duration-300 inline-flex items-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                </svg>
+                Dashboard
+            </a>
+        </div>
+    </div>
 
-        <!-- Buyers Response -->
-        <div class="mt-12 ">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 ml-6">
-                <div class="buyer-card text-md rounded-lg shadow-lg">
-                    <div class="p-4">
-                            <div class="flex items-center mb-4">
-                                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Buyer"
-                                    class="w-[60px] h-[60px] rounded-full mr-4">
-                                <div>
-                                    <a href="">
-                                        <h4 class="font-bold text-blue-800 text-lg">Vincent Simbolon</h4>
-                                        <p class="text-amber-500 text-sm font-semibold">Indonesia</p>
-                                    </a>
-                                </div>
-                            </div>
-                            <p class="buyer-card-text text-md mb-4">Plz sell more Product</p>
-                            <div class="flex items-center">
-                                <p class="text-md font-semibold text-blue-700">Product Imported : </p>
-                                <a href="">
-                                    <p class="text-md font-bold text-blue-700 ml-2"> Kapal Andre</p>
-                                </a>  
-                            </div>
+    <!-- Main Content -->
+    <div class="container mx-auto px-6 py-8">
+        <!-- Header -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 mb-8 transition-colors duration-300">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2 flex items-center gap-3">
+                        <svg class="w-8 h-8 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10m0 0V6a2 2 0 00-2-2H9a2 2 0 00-2 2v2m0 0v10a2 2 0 002 2h6a2 2 0 002-2V8M9 12h6"></path>
+                        </svg>
+                        Customer Reviews & Feedback
+                    </h1>
+                    <p class="text-gray-600 dark:text-gray-400">
+                        Reviews and comments for your products from importers worldwide
+                    </p>
+                </div>
+                
+                <div class="bg-gradient-to-r from-blue-500 to-indigo-600 dark:from-blue-600 dark:to-indigo-700 text-white px-6 py-3 rounded-lg shadow-lg">
+                    <div class="text-center">
+                        <div class="text-2xl font-bold">{{ $comments->count() }}</div>
+                        <div class="text-sm opacity-90">Total Reviews</div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
 
-    
+        @if($comments->count() > 0)
+            <!-- Statistics Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg transition-colors duration-300">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-gray-500 dark:text-gray-400 text-sm">Average Rating</p>
+                            <p class="text-2xl font-bold text-yellow-600 dark:text-yellow-400">{{ number_format($comments->avg('rating'), 1) }}</p>
+                        </div>
+                        <div class="text-yellow-400 text-2xl">★</div>
+                    </div>
+                </div>
+                
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg transition-colors duration-300">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-gray-500 dark:text-gray-400 text-sm">5-Star Reviews</p>
+                            <p class="text-2xl font-bold text-green-600 dark:text-green-400">{{ $comments->where('rating', 5)->count() }}</p>
+                        </div>
+                        <div class="text-green-500 text-2xl">🌟</div>
+                    </div>
+                </div>
+                
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg transition-colors duration-300">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-gray-500 dark:text-gray-400 text-sm">This Month</p>
+                            <p class="text-2xl font-bold text-blue-600 dark:text-blue-400">{{ $comments->where('created_at', '>=', now()->startOfMonth())->count() }}</p>
+                        </div>
+                        <div class="text-blue-500 text-2xl">📅</div>
+                    </div>
+                </div>
+                
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg transition-colors duration-300">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-gray-500 dark:text-gray-400 text-sm">Products Reviewed</p>
+                            <p class="text-2xl font-bold text-purple-600 dark:text-purple-400">{{ $commentsByProduct->count() }}</p>
+                        </div>
+                        <div class="text-purple-500 text-2xl">📦</div>
+                    </div>
+                </div>
+            </div>
 
-    <footer class="bg-blue-800 text-blue-100 py-6 mt-auto">
-        <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
-            <p>© 2025 TriadGO. All rights reserved.</p>
-            <div class="space-x-4 mt-4 md:mt-0">
-                <a href="#" aria-label="Facebook" class="hover:text-amber-400 transition">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="inline h-6 w-6 wiggle" fill="currentColor"
-                        viewBox="0 0 24 24">
-                        <path
-                            d="M22 12.07c0-5.52-4.48-10-10-10s-10 4.48-10 10c0 4.99 3.66 9.12 8.44 9.88v-6.99h-2.54v-2.89h2.54v-2.21c0-2.5 1.49-3.89 3.78-3.89 1.1 0 2.25.2 2.25.2v2.49h-1.27c-1.25 0-1.64.78-1.64 1.57v1.84h2.78l-.44 2.89h-2.34v6.99c4.78-.76 8.44-4.89 8.44-9.88z" />
+            <!-- Comments by Product -->
+            @foreach($commentsByProduct as $productName => $productComments)
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg mb-8 overflow-hidden transition-colors duration-300">
+                <!-- ✅ CLICKABLE PRODUCT HEADER -->
+                <div class="bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-700 dark:to-indigo-700 text-white p-6 cursor-pointer hover:from-blue-700 hover:to-indigo-700 transition-all duration-300" 
+                     onclick="goToProduct({{ $productComments->first()->product_id }})">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h2 class="clickable-title text-xl font-bold mb-2 flex items-center gap-2">
+                                {{ $productName }}
+                                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                </svg>
+                            </h2>
+                            <div class="flex items-center gap-4">
+                                <span class="bg-white bg-opacity-20 dark:bg-white dark:bg-opacity-10 px-3 py-1 rounded-full text-sm">
+                                    {{ $productComments->count() }} Reviews
+                                </span>
+                                <span class="bg-white bg-opacity-20 dark:bg-white dark:bg-opacity-10 px-3 py-1 rounded-full text-sm">
+                                    ★ {{ number_format($productComments->avg('rating'), 1) }} Average
+                                </span>
+                            </div>
+                            <p class="text-sm opacity-80 mt-2">
+                                💡 Click to view product details
+                            </p>
+                        </div>
+                        
+                        <div class="text-right">
+                            <div class="text-3xl mb-2">
+                                @for($i = 1; $i <= 5; $i++)
+                                    @if($i <= floor($productComments->avg('rating')))
+                                        <span class="text-yellow-300">★</span>
+                                    @else
+                                        <span class="text-white text-opacity-30">★</span>
+                                    @endif
+                                @endfor
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Comments for this Product -->
+                <div class="p-6">
+                    <div class="space-y-6">
+                        @foreach($productComments->sortByDesc('created_at') as $comment)
+                        <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-6 hover:shadow-md transition-all duration-300">
+                            <div class="flex items-start justify-between mb-4">
+                                <div class="flex items-center gap-4">
+                                    @if($comment->user->profile_picture)
+                                        <img src="{{ asset($comment->user->profile_picture) }}" 
+                                             alt="{{ $comment->user->name }}" 
+                                             class="w-12 h-12 rounded-full object-cover border-2 border-blue-200 dark:border-blue-600">
+                                    @else
+                                        <div class="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-indigo-500 flex items-center justify-center text-white font-bold">
+                                            {{ strtoupper(substr($comment->user->name, 0, 1)) }}
+                                        </div>
+                                    @endif
+                                    
+                                    <div>
+                                        <h4 class="font-semibold text-gray-900 dark:text-white">{{ $comment->user->name }}</h4>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-2">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                            </svg>
+                                            {{ $comment->user->country }}
+                                        </p>
+                                    </div>
+                                </div>
+                                
+                                <div class="text-right">
+                                    <div class="flex text-yellow-400 text-lg mb-1">
+                                        @for($i = 1; $i <= 5; $i++)
+                                            @if($i <= $comment->rating)
+                                                ★
+                                            @else
+                                                ☆
+                                            @endif
+                                        @endfor
+                                    </div>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">
+                                        {{ $comment->created_at->format('M d, Y \a\t H:i') }}
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 transition-colors duration-300">
+                                <p class="text-gray-700 dark:text-gray-300 leading-relaxed">
+                                    "{{ $comment->comment_text }}"
+                                </p>
+                            </div>
+                            
+                            <!-- ✅ FIXED CHECK PROFILE BUTTON -->
+                            <div class="flex justify-end mt-4">
+                                <a href="{{ route('other.profile', $comment->user->user_id) }}" 
+                                   class="profile-btn bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 inline-flex items-center gap-2">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                    </svg>
+                                    Check Profile
+                                </a>
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+            @endforeach
+
+        @else
+            <!-- No Comments State -->
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-12 text-center transition-colors duration-300">
+                <svg class="w-24 h-24 text-gray-400 dark:text-gray-500 mx-auto mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10m0 0V6a2 2 0 00-2-2H9a2 2 0 00-2 2v2m0 0v10a2 2 0 002 2h6a2 2 0 002-2V8M9 12h6"></path>
+                </svg>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">No Reviews Yet</h2>
+                <p class="text-gray-600 dark:text-gray-400 mb-6">
+                    You haven't received any reviews for your products yet. Keep promoting your products to get more feedback from importers!
+                </p>
+                <a href="{{ route('myproduct') }}" 
+                   class="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold transition-all duration-300 inline-flex items-center gap-2 shadow-lg">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                     </svg>
-                </a>
-                <a href="https://github.com/Zahran40/TriadGo" aria-label="GitHub"
-                    class="hover:text-amber-400 transition">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="inline h-6 w-6 wiggle" fill="currentColor"
-                        viewBox="0 0 24 24">
-                        <path
-                            d="M12 2C6.477 2 2 6.484 2 12.021c0 4.428 2.865 8.184 6.839 9.504.5.092.682-.217.682-.482 0-.237-.009-.868-.014-1.703-2.782.605-3.369-1.342-3.369-1.342-.454-1.157-1.11-1.465-1.11-1.465-.908-.62.069-.608.069-.608 1.004.07 1.532 1.032 1.532 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.339-2.221-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.025A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.295 2.748-1.025 2.748-1.025.546 1.378.202 2.397.1 2.65.64.7 1.028 1.595 1.028 2.688 0 3.847-2.337 4.695-4.566 4.944.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.744 0 .267.18.579.688.481C19.138 20.203 22 16.447 22 12.021 22 6.484 17.523 2 12 2z" />
-                    </svg>
-                </a>
-                <a href="https://www.instagram.com/official.usu" aria-label="Instagram"
-                    class="hover:text-amber-400 transition">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="inline h-6 w-6 wiggle" fill="currentColor"
-                        viewBox="0 0 24 24">
-                        <path
-                            d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5A4.25 4.25 0 0 0 20.5 16.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5zm4.25 3.25a5.25 5.25 0 1 1 0 10.5 5.25 5.25 0 0 1 0-10.5zm0 1.5a3.75 3.75 0 1 0 0 7.5 3.75 3.75 0 0 0 0-7.5zm5.13.62a1.13 1.13 0 1 1-2.25 0 1.13 1.13 0 0 1 2.25 0z" />
-                    </svg>
+                    View My Products
                 </a>
             </div>
+        @endif
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-blue-800 dark:bg-slate-900 text-blue-100 dark:text-blue-200 py-6 mt-20 transition-colors duration-300">
+        <div class="container mx-auto px-6 text-center">
+            <p>© 2025 TriadGO. All rights reserved.</p>
         </div>
     </footer>
 
+    <!-- ✅ IMPROVED JAVASCRIPT WITH NAVIGATION FUNCTIONS -->
     <script>
-        const isDarkMode = document.documentElement.classList.contains('dark');
+        // ✅ GO TO PRODUCT FUNCTION
+        function goToProduct(productId) {
+            // Navigate to product detail page for eksportir
+            window.location.href = `/product-detail/${productId}`;
+        }
 
+        // ✅ BACK BUTTON FUNCTION
+        function goBack() {
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                window.location.href = '{{ route("ekspor") }}';
+            }
+        }
+
+        // Contact Reviewer Function
+        function contactReviewer(name, phone) {
+            const isDark = document.documentElement.classList.contains('dark');
+            
+            Swal.fire({
+                title: 'Contact Reviewer',
+                html: `
+                    <div class="text-left space-y-3">
+                        <p><strong>Reviewer:</strong> ${name}</p>
+                        <p><strong>Phone:</strong> ${phone}</p>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mt-4">
+                            You can reach out to thank them for their review or address any concerns they may have mentioned.
+                        </p>
+                    </div>
+                `,
+                icon: 'info',
+                showCancelButton: true,
+                confirmButtonText: 'Send Message',
+                cancelButtonText: 'Close',
+                confirmButtonColor: '#2563eb',
+                cancelButtonColor: '#6b7280',
+                background: isDark ? '#374151' : '#ffffff',
+                color: isDark ? '#ffffff' : '#000000',
+                didOpen: () => {
+                    const popup = Swal.getPopup();
+                    if (isDark) {
+                        popup.classList.add('swal2-dark');
+                        popup.style.backgroundColor = '#374151';
+                        popup.style.color = '#ffffff';
+                    }
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const isDarkSuccess = document.documentElement.classList.contains('dark');
+                    
+                    Swal.fire({
+                        title: 'Message Sent!',
+                        text: 'Your message has been sent to the reviewer.',
+                        icon: 'success',
+                        confirmButtonColor: '#10b981',
+                        background: isDarkSuccess ? '#374151' : '#ffffff',
+                        color: isDarkSuccess ? '#ffffff' : '#000000',
+                        didOpen: () => {
+                            const popup = Swal.getPopup();
+                            if (isDarkSuccess) {
+                                popup.classList.add('swal2-dark');
+                                popup.style.backgroundColor = '#374151';
+                                popup.style.color = '#ffffff';
+                            }
+                        }
+                    });
+                }
+            });
+        }
+
+        // Thank Reviewer Function
+        function thankReviewer(name) {
+            const isDark = document.documentElement.classList.contains('dark');
+            
+            Swal.fire({
+                title: 'Thank You Message',
+                text: `Send a thank you message to ${name} for their review?`,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Send Thanks',
+                cancelButtonText: 'Cancel',
+                confirmButtonColor: '#10b981',
+                cancelButtonColor: '#6b7280',
+                background: isDark ? '#374151' : '#ffffff',
+                color: isDark ? '#ffffff' : '#000000',
+                didOpen: () => {
+                    const popup = Swal.getPopup();
+                    if (isDark) {
+                        popup.classList.add('swal2-dark');
+                        popup.style.backgroundColor = '#374151';
+                        popup.style.color = '#ffffff';
+                    }
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const isDarkSuccess = document.documentElement.classList.contains('dark');
+                    
+                    Swal.fire({
+                        title: 'Thank You Sent!',
+                        text: 'Your appreciation message has been sent to the reviewer.',
+                        icon: 'success',
+                        confirmButtonColor: '#10b981',
+                        background: isDarkSuccess ? '#374151' : '#ffffff',
+                        color: isDarkSuccess ? '#ffffff' : '#000000',
+                        didOpen: () => {
+                            const popup = Swal.getPopup();
+                            if (isDarkSuccess) {
+                                popup.classList.add('swal2-dark');
+                                popup.style.backgroundColor = '#374151';
+                                popup.style.color = '#ffffff';
+                            }
+                        }
+                    });
+                }
+            });
+        }
+
+        // Dark mode toggle functionality
         const darkModeToggle = document.getElementById('darkModeToggle');
-        const darkModeThumb = document.getElementById('darkModeThumb');
-        const htmlElement = document.documentElement;
-
-        function updateDarkModeSwitch() {
-            if (htmlElement.classList.contains('dark')) {
-                darkModeToggle.checked = true;
-                darkModeThumb.style.transform = 'translateX(1.25rem)';
-                darkModeThumb.style.backgroundColor = '#003355';
-                darkModeThumb.style.borderColor = '#003355';
-            } else {
-                darkModeToggle.checked = false;
-                darkModeThumb.style.transform = 'translateX(0)';
-                darkModeThumb.style.backgroundColor = '#fff';
-                darkModeThumb.style.borderColor = '#ccc';
-            }
+        if (darkModeToggle) {
+            darkModeToggle.addEventListener('change', () => {
+                document.documentElement.classList.toggle('dark');
+                const isDark = document.documentElement.classList.contains('dark');
+                localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
+            });
         }
 
-        if (localStorage.getItem('darkMode') === 'enabled') {
-            htmlElement.classList.add('dark');
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(event) {
+            // ESC key to go back
+            if (event.key === 'Escape') {
+                goBack();
+            }
+        });
+
+        // Add click sound effect (optional)
+        function playClickSound() {
+            // Create a subtle click sound
+            const audio = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LKeSAFLYHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LKeSAFLYHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LKeSAFLYHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LKeSAFLYHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LKeSAFLYHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LKeSAFLYHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LKeSAFLYHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LKeSAFLYHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LKeSAFLYHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LKeSAFLYHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LKeSAFLYHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LKeSAFLYHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LKeSAFLYHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LKeSAFLYHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LKeSAFLYHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LKeSAFLYHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LKeSAFLYHO8tiJNwgZaLvt559NEAxQp+Pw==');
+            audio.volume = 0.1;
+            audio.play().catch(() => {
+                // Ignore errors if audio can't play
+            });
         }
 
-        updateDarkModeSwitch();
-
-        darkModeToggle.addEventListener('change', () => {
-            htmlElement.classList.toggle('dark');
-            if (htmlElement.classList.contains('dark')) {
-                localStorage.setItem('darkMode', 'enabled');
-            } else {
-                localStorage.setItem('darkMode', 'disabled');
-            }
-            updateDarkModeSwitch();
+        // Add click effect to clickable elements
+        document.querySelectorAll('.clickable-title, .profile-btn').forEach(element => {
+            element.addEventListener('click', playClickSound);
         });
 
-        // Scroll to section with slide
-        function scrollToSectionWithSlide(sectionId) {
-            const section = document.getElementById(sectionId);
-            if (!section) return;
-
-            section.classList.remove('slide-in');
-
-            const sectionRect = section.getBoundingClientRect();
-            const absoluteElementTop = sectionRect.top + window.pageYOffset;
-            const offset = window.innerHeight / 2 - sectionRect.height / 2;
-            const scrollTo = absoluteElementTop - offset;
-
-            window.scrollTo({
-                top: scrollTo,
-                behavior: 'smooth'
-            });
-
-            setTimeout(() => {
-                section.classList.add('slide-in');
-            }, 300);
-        }
-
-        document.querySelectorAll('nav a[href^="#"], a[href^="#"]').forEach(link => {
-            link.addEventListener('click', function (event) {
-                if (this.getAttribute('href') !== '#') {
-                    event.preventDefault();
-                    const targetId = this.getAttribute('href').substring(1);
-                    scrollToSectionWithSlide(targetId);
-                }
-            });
-        });
-
-        document.querySelectorAll('.slide-in').forEach(section => {
-            function checkSlide() {
-                const rect = section.getBoundingClientRect();
-                if (rect.top < window.innerHeight - 100) {
-                    section.classList.add('visible');
-                }
-            }
-            window.addEventListener('scroll', checkSlide);
-            checkSlide();
-        });
-
-        // Sidebar mobile
-        const sidebar = document.getElementById('mobileSidebar');
-        const openSidebarBtn = document.querySelector('button.md\\:hidden[aria-label="Open Menu"]');
-        const closeSidebarBtn = document.getElementById('closeSidebar');
-
-        openSidebarBtn.addEventListener('click', function () {
-            sidebar.classList.remove('hidden');
-        });
-
-        closeSidebarBtn.addEventListener('click', function () {
-            sidebar.classList.add('hidden');
-        });
-
-        // Tutup sidebar jika klik di luar sidebar
-        sidebar.addEventListener('click', function (e) {
-            if (e.target === sidebar) {
-                sidebar.classList.add('hidden');
-            }
-        });
-
-        // Scroll to section dari sidebar
-        sidebar.querySelectorAll('a[href^="#"]').forEach(link => {
-            link.addEventListener('click', function (event) {
-                event.preventDefault();
-                sidebar.classList.add('hidden');
-                const targetId = this.getAttribute('href').substring(1);
-                scrollToSectionWithSlide(targetId);
-            });
-        });
-
-        // SweetAlert2 Logout Desktop
-        document.getElementById('logoutBtn')?.addEventListener('click', function (e) {
-            Swal.fire({
-                title: 'Logout?',
-                text: "Are you sure you want to logout?",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#eea133',
-                confirmButtonText: 'Logout',
-                customClass: {
-                    popup: 'bg-white dark:bg-red-600',
-                    title: 'text-black dark:text-white',
-                    content: 'text-black dark:text-white',
-                    confirmButton: 'text-white',
-                    cancelButton: 'text-white'
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    document.getElementById('logoutForm').submit();
-                }
-            });
-        });
-
-        // SweetAlert2 Logout Mobile
-        document.getElementById('logoutBtnMobile')?.addEventListener('click', function (e) {
-            Swal.fire({
-                title: 'Logout?',
-                text: "Are you sure you want to logout?",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#eea133',
-                confirmButtonText: 'Logout',
-                customClass: {
-                    popup: 'bg-white dark:bg-red-600',
-                    title: 'text-black dark:text-white',
-                    content: 'text-black dark:text-white',
-                    confirmButton: 'text-white',
-                    cancelButton: 'text-white'
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    document.getElementById('logoutForm').submit();
-                }
-            });
-        });
+        console.log('Response page loaded with navigation functions');
     </script>
 </body>
 
+                     
+               
+
+       
 </html>

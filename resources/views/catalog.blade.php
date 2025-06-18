@@ -428,19 +428,7 @@
                 @endif
             </div>
         </div>
-        <div class="mt-14 text-center">
-            <h3 class="text-2xl font-bold text-red-400 mb-4 mt-12">No Matching Items found</h3>
-            <img src="https://cdn-icons-png.flaticon.com/512/6134/6134051.png" alt=""
-                style="width: 100px; height: 100px;" class="mx-auto mb-10 mt-7" />
-            <p class="text-blue-700 mb-4">We were unable to find any items that matched your search.</p>
-            <p class="text-blue-700 mb-4">Please try with other keywords or make a request for the item you are looking
-                for.
-            </p>
-            <button
-                class="bg-amber-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md transition pulse-on-hover">
-                Request now
-            </button>
-        </div>
+        
     </section>
 
     <!-- FIXED: Footer dengan class yang proper -->

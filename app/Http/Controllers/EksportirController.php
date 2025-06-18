@@ -40,4 +40,9 @@ class EksportirController extends Controller
         // Jika sampai sini, berarti user sudah pasti role 'ekspor'
         return view('response');
     }
+
+    public function requesteksportir()
+    {
+        return view('requesteksportir');
+    }
 }

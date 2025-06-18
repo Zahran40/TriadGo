@@ -32,6 +32,7 @@ Route::get('/', function () {
 Route::get('/importir', [ImportirController::class, 'homeimportir'])->name('importir')->middleware('role.protect:impor');
 Route::get('/catalog', [ImportirController::class, 'catalog'])->name('catalog')->middleware('role.protect:impor');
 Route::get('/formimportir', [ImportirController::class, 'formimportir'])->name('formimportir')->middleware('role.protect:impor');
+Route::get('/my-orders', [ImportirController::class, 'myOrders'])->name('my.orders')->middleware('role.protect:impor');
 Route::get('/detail', [ImportirController::class, 'detail'])->name('detail')->middleware('role.protect:impor');
 Route::get('/requestimportir', [ImportirController::class, 'request'])->name('requestimportir')->middleware('role.protect:impor');
 Route::get('/product-detail-importir/{id}', [ImportirController::class, 'showProductDetail'])->name('product.detail.importir')->middleware('role.protect:impor');

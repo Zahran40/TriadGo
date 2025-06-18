@@ -166,7 +166,75 @@
 
     <main class="flex-grow container mx-auto px-4 py-6">
         <div class="max-w-6xl mx-auto">
-            <h1 class="text-4xl font-bold text-blue-900 dark:text-blue-100 mb-8">Checkout</h1>
+            <div class="flex justify-between items-center mb-8">
+                <h1 class="text-4xl font-bold text-blue-900 dark:text-blue-100">Checkout</h1>
+                
+                <!-- My Orders & Invoice Access Button -->
+                @auth
+                <div class="flex gap-3">
+                    <a href="{{ route('my.orders') }}" 
+                       class="inline-flex items-center bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium transition-all transform hover:scale-105">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                        </svg>
+                        My Orders
+                    </a>
+                    
+                    @php
+                        $paidOrders = \App\Models\CheckoutOrder::where('user_id', Auth::id())
+                                                             ->where('status', 'paid')
+                                                             ->count();
+                    @endphp
+                    
+                    @if($paidOrders > 0)
+                    <a href="{{ route('my.orders') }}" 
+                       class="inline-flex items-center bg-amber-600 hover:bg-amber-700 text-white px-4 py-2 rounded-lg font-medium transition-all transform hover:scale-105">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        View Invoices
+                        <span class="ml-2 bg-amber-800 text-amber-100 px-2 py-1 text-xs rounded-full">{{ $paidOrders }}</span>
+                    </a>
+                    @endif
+                </div>
+                @endauth
+            </div>
+            
+            <!-- Quick Info Panel untuk Orders & Invoices -->
+            @auth
+            @php
+                $userOrders = \App\Models\CheckoutOrder::where('user_id', Auth::id());
+                $totalOrders = $userOrders->count();
+                $paidOrders = $userOrders->where('status', 'paid')->count();
+                $pendingOrders = $userOrders->where('status', 'pending')->count();
+            @endphp
+            
+            @if($totalOrders > 0)
+            <div class="bg-gradient-to-r from-blue-50 to-green-50 dark:from-slate-800 dark:to-slate-700 rounded-lg p-4 mb-6 border-l-4 border-blue-500">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <div>
+                            <p class="text-blue-900 dark:text-blue-100 font-semibold">You have {{ $totalOrders }} order(s)</p>
+                            <p class="text-blue-700 dark:text-blue-300 text-sm">
+                                {{ $paidOrders }} paid, {{ $pendingOrders }} pending
+                                @if($paidOrders > 0) • Invoices available @endif
+                            </p>
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        @if($paidOrders > 0)
+                        <a href="{{ route('my.orders') }}" class="text-blue-600 hover:text-blue-700 text-sm font-medium">
+                            View Invoices →
+                        </a>
+                        @endif
+                    </div>
+                </div>
+            </div>
+            @endif
+            @endauth
             
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <!-- Order Summary Section -->

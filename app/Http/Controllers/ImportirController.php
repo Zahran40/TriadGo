@@ -66,4 +66,20 @@ class ImportirController extends Controller
     {
         return view('requestimportir');
     }
+
+    public function detail($id)
+    {
+        // Cari produk berdasarkan product_id dengan relasi user
+        $product = Product::with('user','comments.user')
+                         ->where('product_id', $id)
+                         ->where('status', 'approved') // Hanya produk yang approved
+                         ->firstOrFail();
+
+        // Pastikan user yang mengakses adalah importir
+        if (Auth::user()->role !== 'impor') {
+            abort(403, 'Access denied. This page is for importers only.');
+        }
+
+        return view('detailproductimportir', compact('product'));
+    }
 }

@@ -50,8 +50,8 @@ class Product extends Model
     {
         // Cari SKU terakhir dengan format TD-XXX
         $lastProduct = static::where('product_sku', 'LIKE', 'TD-%')
-                            ->orderByRaw('CAST(SUBSTRING(product_sku, 4) AS UNSIGNED) DESC')
-                            ->first();
+            ->orderByRaw('CAST(SUBSTRING(product_sku, 4) AS UNSIGNED) DESC')
+            ->first();
 
         if ($lastProduct) {
             // Extract nomor dari SKU terakhir (TD-20 -> 20)
@@ -65,7 +65,7 @@ class Product extends Model
         return 'TD-' . $newNumber;
     }
 
-     public function scopeByStatus($query, $status)
+    public function scopeByStatus($query, $status)
     {
         return $query->where('status', $status);
     }
@@ -77,9 +77,9 @@ class Product extends Model
     {
         $statusColors = [
             'pending' => 'bg-yellow-100 text-yellow-800',
-            'approved' => 'bg-green-100 text-green-800', 
+            'approved' => 'bg-green-100 text-green-800',
             'rejected' => 'bg-red-100 text-red-800',
-            
+
         ];
 
         return $statusColors[$this->status] ?? 'bg-gray-100 text-gray-800';
@@ -91,5 +91,27 @@ class Product extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id', 'user_id');
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class, 'product_id', 'product_id')
+            ->orderBy('created_at', 'desc');
+    }
+
+    /**
+     * Get average rating dari komentar
+     */
+    public function getAverageRatingAttribute()
+    {
+        return $this->comments()->avg('rating') ?? 0;
+    }
+
+    /**
+     * Get total komentar
+     */
+    public function getTotalCommentsAttribute()
+    {
+        return $this->comments()->count();
     }
 }

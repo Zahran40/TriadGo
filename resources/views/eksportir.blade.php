@@ -144,80 +144,109 @@
     <section id="find-buyers" class="container mx-auto px-6 py-16 slide-in">
         <h2 class="text-3xl font-bold text-blue-900 mb-6 text-center">Find Buyers Respons</h2>
        
-
-        <!-- Buyers Response -->
+        <!-- ✅ REAL COMMENTS FROM DATABASE - ONLY THIS SECTION CHANGED -->
         <div class="mt-12">
-           
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="buyer-card shadow-md rounded-lg overflow-hidden hover:shadow-lg transition">
-                    <div class="p-4">
-                        <div class="flex items-center mb-4">
-                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Buyer"
-                                class="w-12 h-12 rounded-full mr-4">
-                            <div>
-                                <h4 class="font-semibold text-lg">Vincent Simbolon</h4>
-                                <p class="text-orange-500 text-sm">Indonesia</p>
+                @if(isset($recentComments) && $recentComments->count() > 0)
+                    @foreach($recentComments as $comment)
+                    <div class="buyer-card shadow-md rounded-lg overflow-hidden hover:shadow-lg transition">
+                        <div class="p-4">
+                            <div class="flex items-center mb-4">
+                                @if($comment->user->profile_picture)
+                                    <img src="{{ asset($comment->user->profile_picture) }}" alt="{{ $comment->user->name }}"
+                                        class="w-12 h-12 rounded-full mr-4 object-cover">
+                                @else
+                                    <div class="w-12 h-12 rounded-full mr-4 bg-gradient-to-r from-blue-500 to-indigo-500 flex items-center justify-center text-white font-bold">
+                                        {{ strtoupper(substr($comment->user->name, 0, 1)) }}
+                                    </div>
+                                @endif
+                                <div>
+                                    <h4 class="font-semibold text-lg">{{ $comment->user->name }}</h4>
+                                    <p class="text-orange-500 text-sm">{{ $comment->user->country }}</p>
+                                    <div class="flex text-yellow-400 text-xs mt-1">
+                                        @for($i = 1; $i <= 5; $i++)
+                                            @if($i <= $comment->rating)
+                                                ★
+                                            @else
+                                                ☆
+                                            @endif
+                                        @endfor
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="buyer-card-text mb-2 text-sm text-gray-600">
+                                <strong>Product:</strong> {{ Str::limit($comment->product->product_name, 30) }}
+                            </p>
+                            <p class="buyer-card-text mb-4">"{{ Str::limit($comment->comment_text, 80) }}"</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-500">{{ $comment->created_at->diffForHumans() }}</span>
                             </div>
                         </div>
-                        <p class="buyer-card-text mb-4">Plz sell more Product</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-sm text-gray-500">Last active: 2 days ago</span>
-
-                        </div>
                     </div>
-                </div>
-
-                <div class="buyer-card shadow-md rounded-lg overflow-hidden hover:shadow-lg transition">
-                    <div class="p-4">
-                        <div class="flex items-center mb-4">
-                            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Buyer"
-                                class="w-12 h-12 rounded-full mr-4">
-                            <div>
-                                <h4 class="font-semibold text-lg">Reagan Siahaan</h4>
-                                <p class="text-orange-500 text-sm">Singapore</p>
+                    @endforeach
+                @else
+                    <!-- Fallback if no comments -->
+                    <div class="buyer-card shadow-md rounded-lg overflow-hidden hover:shadow-lg transition">
+                        <div class="p-4">
+                            <div class="flex items-center mb-4">
+                                <div class="w-12 h-12 rounded-full mr-4 bg-gray-300 flex items-center justify-center text-gray-600">
+                                    📝
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-lg">No Comments Yet</h4>
+                                    <p class="text-orange-500 text-sm">Start getting reviews</p>
+                                </div>
+                            </div>
+                            <p class="buyer-card-text mb-4">Upload your products to start receiving customer feedback and reviews.</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-500">Get started today</span>
                             </div>
                         </div>
-                        <p class="buyer-card-text mb-4">Your Handyman Services is best</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-sm text-gray-500">Last active: 1 day ago</span>
-
-                        </div>
                     </div>
-                </div>
 
-                <div class="buyer-card shadow-md rounded-lg overflow-hidden hover:shadow-lg transition">
-                    <div class="p-4">
-                        <div class="flex items-center mb-4">
-                            <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Buyer"
-                                class="w-12 h-12 rounded-full mr-4">
-                            <div>
-                                <h4 class="font-semibold text-lg">Abbil Rizki Abdillah</h4>
-                                <p class="text-orange-500 text-sm">Cambodia</p>
+                    <div class="buyer-card shadow-md rounded-lg overflow-hidden hover:shadow-lg transition">
+                        <div class="p-4">
+                            <div class="flex items-center mb-4">
+                                <div class="w-12 h-12 rounded-full mr-4 bg-gray-300 flex items-center justify-center text-gray-600">
+                                    🌟
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-lg">Build Your Reputation</h4>
+                                    <p class="text-orange-500 text-sm">Quality products get reviews</p>
+                                </div>
+                            </div>
+                            <p class="buyer-card-text mb-4">Quality products attract positive reviews from satisfied customers worldwide.</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-500">Quality matters</span>
                             </div>
                         </div>
-                        <p class="buyer-card-text mb-4">I love All your Product</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-sm text-gray-500">Last active: Today</span>
+                    </div>
 
+                    <div class="buyer-card shadow-md rounded-lg overflow-hidden hover:shadow-lg transition">
+                        <div class="p-4">
+                            <div class="flex items-center mb-4">
+                                <div class="w-12 h-12 rounded-full mr-4 bg-gray-300 flex items-center justify-center text-gray-600">
+                                    🚀
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-lg">Growing Business</h4>
+                                    <p class="text-orange-500 text-sm">Reviews help growth</p>
+                                </div>
+                            </div>
+                            <p class="buyer-card-text mb-4">Customer reviews help build trust and grow your export business globally.</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-500">Keep growing</span>
+                            </div>
                         </div>
                     </div>
-                </div>
+                @endif
             </div>
 
             <div class="text-center mt-10">
-                <button
-                    class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-6 rounded-md transition pulse-on-hover inline-flex items-center">
-                    View All Responses
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                    </svg>
-                </button>
+                <a href="{{ route('response') }}" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-6 rounded-md transition pulse-on-hover inline-flex items-center">View All Response</a>
             </div>
         </div>
     </section>
-
-    
 
     <footer class="bg-blue-800 text-blue-100 py-6 mt-auto">
         <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center">

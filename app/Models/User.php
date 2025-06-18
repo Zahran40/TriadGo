@@ -63,4 +63,24 @@ class User extends Authenticatable implements FilamentUser
     {
         return true; // Middleware AdminAccess sudah handle filtering
     }
+
+     /**
+     * Relasi ke Comments yang dibuat user ini
+     */
+    public function comments()
+    {
+        return $this->hasMany(Comment::class, 'user_id', 'user_id');
+    }
+
+    /**
+     * ✅ ADD THIS METHOD - Get comments untuk produk milik user ini
+     */
+    public function receivedComments()
+    {
+        return Comment::join('products', 'comments.product_id', '=', 'products.product_id')
+                      ->where('products.user_id', $this->user_id)
+                      ->select('comments.*')
+                      ->with(['user', 'product'])
+                      ->orderBy('comments.created_at', 'desc');
+    }
 }

@@ -11,6 +11,7 @@ use App\Http\Controllers\ImportirController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OtherProfileController;
+use App\Http\Controllers\CommentController;
 
 
 
@@ -31,7 +32,9 @@ Route::get('/', function () {
 Route::get('/importir', [ImportirController::class, 'homeimportir'])->name('importir')->middleware('role.protect:impor');
 Route::get('/catalog', [ImportirController::class, 'catalog'])->name('catalog')->middleware('role.protect:impor');
 Route::get('/formimportir', [ImportirController::class, 'formimportir'])->name('formimportir')->middleware('role.protect:impor');
-Route::get('/detail', [ImportirController::class, 'detail'])->name('detail')->middleware('role.protect:impor');
+// Route::get('/detail', [ImportirController::class, 'detail'])->name('detail')->middleware('role.protect:impor');
+  Route::get('/product-detail-importir/{id}', [ImportirController::class, 'detail'])
+        ->name('product.detail.importir')->middleware('role.protect:impor');
 
 // // User Profile - hanya user yang login (bukan guest)
 // Route::get('/user-profile', [PageController::class, 'userprofile'])->name('userprofile')->middleware('role.protect:impor,ekspor');
@@ -55,6 +58,20 @@ Route::post('/contactus', [ContactusController::class, 'store'])->name('contactu
 Route::get('/ekspor', [EksportirController::class, 'homeeksportir'])->name('ekspor')->middleware('role.protect:ekspor');
 Route::get('formeksportir', [EksportirController::class, 'formeksportir'])->name('formeksportir')->middleware('role.protect:ekspor');
 
+// ✅ RESPONSE ROUTE - MUST BE DEFINED BEFORE COMMENT ROUTES
+Route::get('/response', [CommentController::class, 'response'])
+    ->name('response')
+    ->middleware('role.protect:ekspor');
+
+//Comment Routes - URUTKAN YANG SPESIFIK DAHULU
+Route::middleware('role.protect:impor')->group(function () {
+    // Routes yang spesifik harus di atas
+     Route::post('/product/{productId}/comment', [CommentController::class, 'store'])
+        ->name('comment.store');
+    Route::get('/product/{productId}/comments', [CommentController::class, 'getComments'])
+        ->name('comment.get');
+});
+
 
 
 // Product Routes - URUTKAN YANG SPESIFIK DAHULU
@@ -68,6 +85,10 @@ Route::middleware('role.protect:ekspor')->group(function () {
     Route::get('/product-detail/{id}', [ProductController::class, 'show'])->name('product.detail');
 });
 
+//Response comment
+Route::get('/requestimportir', [ImportirController::class, 'requestimportir'])->name('requestimportir')->middleware('role.protect:impor');
+// Route::get('/response', [EksportirController::class, 'response'])->name('response')->middleware('role.protect:ekspor');
+
 
 // Route fallback - letakkan di paling bawah
 Route::fallback(function () {
@@ -75,5 +96,3 @@ Route::fallback(function () {
     return response()->view('404', ['userRole' => $userRole], 404);
 });
 
-Route::get('/requestimportir', [ImportirController::class, 'requestimportir'])->name('requestimportir')->middleware('role.protect:impor');
-Route::get('/response', [EksportirController::class, 'response'])->name('response')->middleware('role.protect:ekspor');

@@ -76,3 +76,4 @@ Route::fallback(function () {
 });
 
 Route::get('/requestimportir', [ImportirController::class, 'requestimportir'])->name('requestimportir')->middleware('role.protect:impor');
+Route::get('/response', [EksportirController::class, 'response'])->name('response')->middleware('role.protect:ekspor');

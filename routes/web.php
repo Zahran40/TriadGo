@@ -75,4 +75,4 @@ Route::fallback(function () {
     return response()->view('404', ['userRole' => $userRole], 404);
 });
 
-Route::get('/requestimportir', [ImportirController::class, 'importir'])->name('requestimportir')->middleware('role.protect:impor');
+Route::get('/requestimportir', [ImportirController::class, 'requestimportir'])->name('requestimportir')->middleware('role.protect:impor');

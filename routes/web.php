@@ -56,7 +56,6 @@ Route::post('/contactus', [ContactusController::class, 'store'])->name('contactu
 Route::get('/ekspor', [EksportirController::class, 'homeeksportir'])->name('ekspor')->middleware('role.protect:ekspor');
 Route::get('formeksportir', [EksportirController::class, 'formeksportir'])->name('formeksportir')->middleware('role.protect:ekspor');
 
-
 // Product Routes - URUTKAN YANG SPESIFIK DAHULU
 Route::middleware('role.protect:ekspor')->group(function () {
     // Routes yang spesifik harus di atas
@@ -67,7 +66,6 @@ Route::middleware('role.protect:ekspor')->group(function () {
     // Route dengan parameter harus di bawah
     Route::get('/product-detail/{id}', [ProductController::class, 'show'])->name('product.detail');
 });
-
 
 // Midtrans Payment API Routes
 Route::prefix('api')->group(function () {

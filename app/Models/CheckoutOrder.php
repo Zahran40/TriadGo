@@ -41,6 +41,7 @@ class CheckoutOrder extends Model
     use HasFactory;
 
     protected $fillable = [
+        'user_id',
         'order_id',
         'total_amount',
         'currency',
@@ -82,6 +83,12 @@ class CheckoutOrder extends Model
     protected $dates = [
         'payment_completed_at'
     ];
+
+    // Relationships
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     // Generate unique order ID
     public static function generateOrderId()

@@ -66,18 +66,19 @@ class OrderMonitoring extends Page implements HasTable
                 Tables\Columns\TextColumn::make('total_amount')
                     ->label('Total Amount')
                     ->money('USD')
-                    ->sortable()
-                    ->weight('bold')
-                    ->color('success'),
+                    ->sortable()                ->weight('bold')
+                ->color('success'),
 
-                Tables\Columns\BadgeColumn::make('status')
-                    ->label('Status')
-                    ->colors([
-                        'warning' => 'pending',
-                        'success' => 'paid',
-                        'danger' => 'failed',
-                        'secondary' => 'cancelled',
-                    ])
+            Tables\Columns\TextColumn::make('status')
+                ->label('Status')
+                ->badge()
+                ->color(fn (string $state): string => match ($state) {
+                    'pending' => 'warning',
+                    'paid' => 'success',
+                    'failed' => 'danger',
+                    'cancelled' => 'gray',
+                    default => 'gray',
+                })
                     ->icons([
                         'heroicon-m-clock' => 'pending',
                         'heroicon-m-check-circle' => 'paid',

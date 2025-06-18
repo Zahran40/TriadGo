@@ -105,9 +105,7 @@ class MidtransHttpService
 
         $rate = $rates[$currency] ?? 15000; // Default to USD rate
         return (int) ($amount * $rate);
-    }
-
-    /**
+    }    /**
      * Build item details for Midtrans
      */
     private function buildItemDetails(CheckoutOrder $order)
@@ -119,10 +117,10 @@ class MidtransHttpService
         foreach ($cartItems as $item) {
             $priceInIDR = $this->convertToIDR($item['price'], $order->currency);
             $items[] = [
-                'id' => $item['id'],
+                'id' => $item['product_id'] ?? 'PRODUCT-' . rand(1000, 9999),
                 'price' => $priceInIDR,
-                'quantity' => $item['quantity'],
-                'name' => $item['name'],
+                'quantity' => $item['quantity'] ?? 1,
+                'name' => $item['product_name'] ?? $item['name'] ?? 'Product',
                 'brand' => 'TriadGO',
                 'category' => 'Products',
                 'merchant_name' => 'TriadGO'

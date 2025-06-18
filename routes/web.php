@@ -85,6 +85,15 @@ Route::prefix('api')->group(function () {
 // Midtrans Webhook (tidak perlu middleware karena dipanggil dari luar)
 Route::post('/midtrans/notification', [App\Http\Controllers\CheckoutController::class, 'handleNotification'])->name('midtrans.webhook');
 
+// Test routes untuk simulasi payment (tanpa CSRF untuk testing)
+Route::prefix('test')->group(function () {
+    Route::get('/payment/{orderId}', [App\Http\Controllers\CheckoutController::class, 'testPaymentPage'])->name('test.payment');
+    Route::get('/order-status/{orderId}', [App\Http\Controllers\CheckoutController::class, 'getOrderStatus'])->name('test.order.status');
+});
+
+// Force simulate payment route (tanpa CSRF untuk testing)
+Route::post('/force-simulate-payment/{orderId}', [App\Http\Controllers\CheckoutController::class, 'forceSimulatePayment'])->withoutMiddleware([\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
+
 // Route fallback - letakkan di paling bawah
 Route::fallback(function () {
     $userRole = Auth::check() ? Auth::user()->role : 'guest';

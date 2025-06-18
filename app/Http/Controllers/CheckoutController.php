@@ -7,6 +7,7 @@ use App\Models\CheckoutOrder;
 use App\Services\MidtransHttpService;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use Exception;
 
 class CheckoutController extends Controller
 {
@@ -130,12 +131,11 @@ class CheckoutController extends Controller
                     'token_length' => strlen($snapToken),
                     'order_id' => $order->order_id,
                     'total_amount' => $order->total_amount,
-                    'currency' => $order->currency
-                ]
-            ]);
+                    'currency' => $order->currency            ]
+        ]);
 
-        } catch (\Exception $e) {
-            Log::error('Checkout Error: ' . $e->getMessage(), [
+    } catch (Exception $e) {
+        Log::error('Checkout Error: ' . $e->getMessage(), [
                 'request' => $request->all(),
                 'exception' => $e->getTraceAsString(),
                 'file' => $e->getFile(),
@@ -161,13 +161,12 @@ class CheckoutController extends Controller
             
             $result = $this->midtransService->handleNotification($request->all());
             
-            if ($result) {
-                return response()->json(['status' => 'success']);
-            } else {
-                return response()->json(['status' => 'failed'], 400);
-            }
-        } catch (\Exception $e) {
-            Log::error('Midtrans notification error: ' . $e->getMessage());
+            if ($result) {            return response()->json(['status' => 'success']);
+        } else {
+            return response()->json(['status' => 'failed'], 400);
+        }
+    } catch (Exception $e) {
+        Log::error('Midtrans notification error: ' . $e->getMessage());
             return response()->json(['status' => 'error'], 500);
         }
     }
@@ -212,10 +211,9 @@ class CheckoutController extends Controller
                             'verified_at' => now()
                         ]);
                     }
-                }
-            } catch (\Exception $e) {
-                Log::warning('Failed to verify payment status: ' . $e->getMessage());
-            }
+                }        } catch (Exception $e) {
+            Log::warning('Failed to verify payment status: ' . $e->getMessage());
+        }
         }
 
         return view('checkout.success', compact('order'));
@@ -283,15 +281,163 @@ class CheckoutController extends Controller
                     'status' => $order->status,
                     'total_amount' => $order->formatted_total,
                     'payment_method' => $order->payment_method,
-                    'created_at' => $order->created_at->format('Y-m-d H:i:s'),
-                    'payment_completed_at' => $order->payment_completed_at ? $order->payment_completed_at->format('Y-m-d H:i:s') : null
-                ]
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
+                    'created_at' => $order->created_at->format('Y-m-d H:i:s'),                'payment_completed_at' => $order->payment_completed_at ? $order->payment_completed_at->format('Y-m-d H:i:s') : null
+            ]
+        ]);
+    } catch (Exception $e) {
+        return response()->json([
                 'success' => false,
                 'message' => 'Failed to get order status'
             ], 500);
+        }
+    }
+
+    /**
+     * Test payment page (tanpa middleware)
+     */
+    public function testPaymentPage($orderId)
+    {
+        try {
+            $order = CheckoutOrder::where('order_id', $orderId)->first();
+            
+            if (!$order) {
+                return response()->json(['error' => 'Order not found'], 404);        }
+        
+        return view('test.payment', compact('order'));
+        
+    } catch (Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
+    /**
+     * Simulate payment (tanpa middleware)
+     */
+    public function simulatePayment(Request $request, $orderId)
+    {
+        try {
+            $order = CheckoutOrder::where('order_id', $orderId)->first();
+            
+            if (!$order) {
+                return response()->json(['success' => false, 'message' => 'Order not found'], 404);
+            }
+            
+            if ($order->status !== 'pending') {
+                return response()->json(['success' => false, 'message' => 'Order is not pending'], 400);
+            }
+            
+            // Simulate successful payment
+            $transactionId = 'TEST-SIM-' . time();
+            
+            $order->update([
+                'status' => 'paid',
+                'payment_gateway_transaction_id' => $transactionId,
+                'payment_details' => [
+                    'transaction_id' => $transactionId,
+                    'payment_type' => 'test_simulation',
+                    'transaction_status' => 'capture',
+                    'gross_amount' => $order->total_amount,
+                    'currency' => $order->currency,
+                    'simulated_at' => now()->toISOString(),
+                    'simulation_method' => 'manual_test'
+                ],
+                'payment_completed_at' => now()
+            ]);
+            
+            Log::info('Payment simulated successfully', [
+                'order_id' => $orderId,
+                'transaction_id' => $transactionId,
+                'amount' => $order->total_amount
+            ]);
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Payment simulated successfully',
+                'order_id' => $orderId,
+                'transaction_id' => $transactionId,
+                'order_status' => 'paid',
+                'amount' => $order->total_amount        ]);
+        
+    } catch (Exception $e) {
+        Log::error('Payment simulation failed', [
+                'order_id' => $orderId,
+                'error' => $e->getMessage()
+            ]);
+            
+            return response()->json([
+                'success' => false,
+                'message' => 'Payment simulation failed: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Force simulate payment (tanpa middleware)
+     */
+    public function forceSimulatePayment(Request $request, $orderId)
+    {
+        try {
+            $order = CheckoutOrder::where('order_id', $orderId)->first();
+            
+            if (!$order) {
+                return response()->json(['success' => false, 'message' => 'Order not found'], 404);
+            }
+            
+            // Force simulate payment regardless of current status
+            $action = $request->input('action', 'success');
+            $transactionId = 'FORCE-SIM-' . time() . '-' . $orderId;
+            
+            if ($action === 'success') {
+                $order->update([
+                    'status' => 'paid',
+                    'payment_gateway_transaction_id' => $transactionId,
+                    'payment_details' => [
+                        'transaction_id' => $transactionId,
+                        'payment_type' => 'simulation',
+                        'gross_amount' => $order->total_amount,
+                        'currency' => $order->currency ?? 'USD',
+                        'status_code' => '200',
+                        'transaction_status' => 'settlement',
+                        'fraud_status' => 'accept',
+                        'simulated_at' => now(),
+                        'original_status' => $order->getOriginal('status')                ],
+                'payment_completed_at' => now(),
+            ]);
+            
+            Log::info("Force payment simulation completed for order: {$orderId}");
+                
+                return response()->json([
+                    'success' => true, 
+                    'message' => 'Payment simulation completed successfully',
+                    'transaction_id' => $transactionId,
+                    'status' => 'paid'
+                ]);
+            } else {
+                $order->update([
+                    'status' => 'failed',
+                    'payment_gateway_transaction_id' => $transactionId,
+                    'payment_details' => [
+                        'transaction_id' => $transactionId,
+                        'payment_type' => 'simulation',
+                        'error_message' => 'Simulated payment failure',
+                        'status_code' => '400',
+                        'transaction_status' => 'deny',
+                        'simulated_at' => now(),
+                        'original_status' => $order->getOriginal('status')
+                    ],
+                ]);
+                
+                return response()->json([
+                    'success' => true, 
+                    'message' => 'Payment failure simulation completed',
+                    'transaction_id' => $transactionId,
+                    'status' => 'failed'
+                ]);
+            }
+            
+        } catch (Exception $e) {
+            Log::error("Force payment simulation error: " . $e->getMessage());
+            return response()->json(['success' => false, 'message' => 'Simulation failed: ' . $e->getMessage()], 500);
         }
     }
 }

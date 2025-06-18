@@ -12,6 +12,7 @@ use App\Http\Controllers\MidtransController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OtherProfileController;
+use App\Http\Controllers\InvoiceController;
 
 // Register 
 Route::get('/sign-up', [RegisterController::class, 'signup'])->name('signup');
@@ -47,7 +48,7 @@ Route::get('/other-profile/{userId}', [OtherProfileController::class, 'show'])
 
 // Invoice - hanya user yang login
 Route::get('/invoice', [PageController::class, 'invoice'])->name('invoice')->middleware('role.protect:admin,impor,ekspor');
-Route::get('/invoice/{order_id}', [App\Http\Controllers\CheckoutController::class, 'showInvoice'])->name('invoice.show')->middleware('role.protect:admin,impor,ekspor');
+Route::get('/invoice/{order_id}', [InvoiceController::class, 'show'])->name('invoice.show')->middleware('role.protect:admin,impor,ekspor');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout')->middleware('role.protect:admin,impor,ekspor');
 
 // Contact us - semua bisa akses

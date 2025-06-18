@@ -136,7 +136,8 @@ Sistem checkout Laravel terintegrasi dengan Midtrans yang lengkap dengan:
 ## 🔧 TECHNICAL IMPLEMENTATION
 
 ### Key Files:
-- `app/Http/Controllers/CheckoutController.php` - Main checkout logic + Invoice method
+- `app/Http/Controllers/CheckoutController.php` - Main checkout logic
+- `app/Http/Controllers/InvoiceController.php` - Invoice display logic
 - `app/Models/CheckoutOrder.php` - Order model dengan JSON casting
 - `app/Filament/Pages/OrderMonitoring.php` - Admin order dashboard
 - `app/Filament/Pages/ProductApproval.php` - Admin product approval
@@ -146,7 +147,7 @@ Sistem checkout Laravel terintegrasi dengan Midtrans yang lengkap dengan:
 ### Routes Added:
 ```php
 // Invoice route
-Route::get('/invoice/{order_id}', [CheckoutController::class, 'showInvoice'])
+Route::get('/invoice/{order_id}', [InvoiceController::class, 'show'])
     ->name('invoice.show')
     ->middleware('role.protect:admin,impor,ekspor');
 ```

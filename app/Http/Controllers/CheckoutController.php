@@ -440,25 +440,4 @@ class CheckoutController extends Controller
             return response()->json(['success' => false, 'message' => 'Simulation failed: ' . $e->getMessage()], 500);
         }
     }
-
-    /**
-     * Show invoice for a specific order
-     */
-    public function showInvoice($order_id)
-    {
-        try {
-            // Find order by order_id
-            $order = CheckoutOrder::where('order_id', $order_id)->first();
-            
-            if (!$order) {
-                return redirect()->back()->with('error', 'Invoice not found');
-            }
-            
-            return view('invoice', compact('order'));
-            
-        } catch (Exception $e) {
-            Log::error('Error showing invoice: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Error loading invoice');
-        }
-    }
 }

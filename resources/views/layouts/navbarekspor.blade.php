@@ -7,7 +7,7 @@
         </div>
         <nav class="hidden md:flex items-center space-x-6 text-blue-700 font-semibold">
             <a href="{{ route('ekspor') }}" class="hover:text-orange-500 font-semibold nav-gradient-move transition">Home</a>
-            <a href="#" class="hover:text-orange-500 transition nav-gradient-move">Request</a>
+            <a href="{{ route('requesteksportir') }}" class="hover:text-orange-500 transition nav-gradient-move">Request</a>
             <a href="#" class="hover:text-orange-500 transition nav-gradient-move">Transactions</a>
             <a href="{{ route('user.profile') }}" class="hover:text-orange-500 transition nav-gradient-move flex items-center">
                 Account

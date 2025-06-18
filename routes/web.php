@@ -47,7 +47,7 @@ Route::get('/other-profile/{userId}', [OtherProfileController::class, 'show'])
 
 // Invoice - hanya user yang login
 Route::get('/invoice', [PageController::class, 'invoice'])->name('invoice')->middleware('role.protect:admin,impor,ekspor');
-Route::post('/logout', [PageController::class, 'logout'])->name('logout')->middleware('role.protect:admin,impor,ekspor');
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout')->middleware('role.protect:admin,impor,ekspor');
 
 // Contact us - semua bisa akses
 Route::post('/contactus', [ContactusController::class, 'store'])->name('contactus.store');

@@ -173,8 +173,14 @@ class OrderMonitoring extends Page implements HasTable
                                 fn (Builder $query, $amount): Builder => $query->where('total_amount', '<=', $amount),
                             );
                     }),
-            ])
-            ->actions([
+            ])            ->actions([
+                Action::make('view_invoice')
+                    ->label('Invoice')
+                    ->icon('heroicon-m-document-text')
+                    ->color('success')
+                    ->url(fn (CheckoutOrder $record): string => route('invoice.show', $record->order_id))
+                    ->openUrlInNewTab(),
+
                 Action::make('view_details')
                     ->label('View Details')
                     ->icon('heroicon-m-eye')

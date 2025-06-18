@@ -47,6 +47,7 @@ Route::get('/other-profile/{userId}', [OtherProfileController::class, 'show'])
 
 // Invoice - hanya user yang login
 Route::get('/invoice', [PageController::class, 'invoice'])->name('invoice')->middleware('role.protect:admin,impor,ekspor');
+Route::get('/invoice/{order_id}', [App\Http\Controllers\CheckoutController::class, 'showInvoice'])->name('invoice.show')->middleware('role.protect:admin,impor,ekspor');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout')->middleware('role.protect:admin,impor,ekspor');
 
 // Contact us - semua bisa akses

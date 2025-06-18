@@ -56,7 +56,7 @@
 
         <!-- Menu Items -->
         <a href="#" class="mb-4 text-blue-700 font-semibold hover:text-orange-500 transition nav-gradient-move">Home</a>
-        <a href="#"
+        <a href="{{ route('requesteksportir') }}"
             class="mb-4 text-blue-700 font-semibold hover:text-orange-500 transition nav-gradient-move">Request</a>
         <a href="#"
             class="mb-4 text-blue-700 font-semibold hover:text-orange-500 transition nav-gradient-move">Transactions</a>

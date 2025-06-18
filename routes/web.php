@@ -41,8 +41,8 @@ Route::get('/profile', [UserProfileController::class, 'index'])->name('user.prof
 Route::put('/profile/update', [UserProfileController::class, 'update'])->name('user.profile.update')->middleware('role.protect:impor,ekspor');
 Route::post('/profile/upload-picture', [UserProfileController::class, 'uploadProfilePicture'])->name('user.profile.upload')->middleware('role.protect:impor,ekspor');
 Route::delete('/profile/delete', [UserProfileController::class, 'destroy'])->name('user.profile.delete')->middleware('role.protect:impor,ekspor');
- Route::get('/other-profile/{userId}', [OtherProfileController::class, 'show'])
-        ->name('other.profile')->middleware('role.protect:impor,ekspor');
+Route::get('/other-profile/{userId}', [OtherProfileController::class, 'show'])
+    ->name('other.profile')->middleware('role.protect:impor,ekspor');
 
 // Invoice - hanya user yang login
 Route::get('/invoice', [PageController::class, 'invoice'])->name('invoice')->middleware('role.protect:admin,impor,ekspor');
@@ -54,6 +54,7 @@ Route::post('/contactus', [ContactusController::class, 'store'])->name('contactu
 // Halaman Ekspor - hanya role ekspor
 Route::get('/ekspor', [EksportirController::class, 'homeeksportir'])->name('ekspor')->middleware('role.protect:ekspor');
 Route::get('formeksportir', [EksportirController::class, 'formeksportir'])->name('formeksportir')->middleware('role.protect:ekspor');
+Route::get('/requesteksportir', [EksportirController::class, 'requesteksportir'])->name('requesteksportir')->middleware('role.protect:ekspor');
 
 
 
@@ -63,7 +64,7 @@ Route::middleware('role.protect:ekspor')->group(function () {
     Route::get('/myproduct', [ProductController::class, 'myProducts'])->name('myproduct');
     Route::post('/product/store', [ProductController::class, 'store'])->name('product.store');
     Route::delete('/product/{id}', [ProductController::class, 'destroy'])->name('product.destroy');
-    
+
     // Route dengan parameter harus di bawah
     Route::get('/product-detail/{id}', [ProductController::class, 'show'])->name('product.detail');
 });

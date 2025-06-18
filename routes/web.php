@@ -13,6 +13,7 @@ use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OtherProfileController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\CheckoutController;
 
 // Register 
 Route::get('/sign-up', [RegisterController::class, 'signup'])->name('signup');
@@ -71,12 +72,12 @@ Route::middleware('role.protect:ekspor')->group(function () {
 
 // Checkout Routes
 Route::middleware('role.protect:impor')->group(function () {
-    Route::get('/checkout', [App\Http\Controllers\CheckoutController::class, 'index'])->name('checkout.index');
-    Route::post('/checkout/create-snap-token', [App\Http\Controllers\CheckoutController::class, 'createSnapToken'])->name('checkout.create-token');
-    Route::get('/checkout/success/{orderId?}', [App\Http\Controllers\CheckoutController::class, 'success'])->name('checkout.success');
-    Route::get('/checkout/pending/{orderId?}', [App\Http\Controllers\CheckoutController::class, 'pending'])->name('checkout.pending');
-    Route::get('/checkout/error/{orderId?}', [App\Http\Controllers\CheckoutController::class, 'error'])->name('checkout.error');
-    Route::get('/checkout/status/{orderId}', [App\Http\Controllers\CheckoutController::class, 'getOrderStatus'])->name('checkout.status');
+    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+    Route::post('/checkout/create-snap-token', [CheckoutController::class, 'createSnapToken'])->name('checkout.create-token');
+    Route::get('/checkout/success/{orderId?}', [CheckoutController::class, 'success'])->name('checkout.success');
+    Route::get('/checkout/pending/{orderId?}', [CheckoutController::class, 'pending'])->name('checkout.pending');
+    Route::get('/checkout/error/{orderId?}', [CheckoutController::class, 'error'])->name('checkout.error');
+    Route::get('/checkout/status/{orderId}', [CheckoutController::class, 'getOrderStatus'])->name('checkout.status');
 });
 
 // Midtrans Payment API Routes
@@ -85,16 +86,16 @@ Route::prefix('api')->group(function () {
 });
 
 // Midtrans Webhook (tidak perlu middleware karena dipanggil dari luar)
-Route::post('/midtrans/notification', [App\Http\Controllers\CheckoutController::class, 'handleNotification'])->name('midtrans.webhook');
+Route::post('/midtrans/notification', [CheckoutController::class, 'handleNotification'])->name('midtrans.webhook');
 
 // Test routes untuk simulasi payment (tanpa CSRF untuk testing)
 Route::prefix('test')->group(function () {
-    Route::get('/payment/{orderId}', [App\Http\Controllers\CheckoutController::class, 'testPaymentPage'])->name('test.payment');
-    Route::get('/order-status/{orderId}', [App\Http\Controllers\CheckoutController::class, 'getOrderStatus'])->name('test.order.status');
+    Route::get('/payment/{orderId}', [CheckoutController::class, 'testPaymentPage'])->name('test.payment');
+    Route::get('/order-status/{orderId}', [CheckoutController::class, 'getOrderStatus'])->name('test.order.status');
 });
 
 // Force simulate payment route (tanpa CSRF untuk testing)
-Route::post('/force-simulate-payment/{orderId}', [App\Http\Controllers\CheckoutController::class, 'forceSimulatePayment'])->withoutMiddleware([\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
+Route::post('/force-simulate-payment/{orderId}', [CheckoutController::class, 'forceSimulatePayment'])->withoutMiddleware([\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
 
 // Route fallback - letakkan di paling bawah
 Route::fallback(function () {

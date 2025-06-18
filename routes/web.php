@@ -67,11 +67,23 @@ Route::middleware('role.protect:ekspor')->group(function () {
     Route::get('/product-detail/{id}', [ProductController::class, 'show'])->name('product.detail');
 });
 
+// Checkout Routes
+Route::middleware('role.protect:impor')->group(function () {
+    Route::get('/checkout', [App\Http\Controllers\CheckoutController::class, 'index'])->name('checkout.index');
+    Route::post('/checkout/create-snap-token', [App\Http\Controllers\CheckoutController::class, 'createSnapToken'])->name('checkout.create-token');
+    Route::get('/checkout/success/{orderId?}', [App\Http\Controllers\CheckoutController::class, 'success'])->name('checkout.success');
+    Route::get('/checkout/pending/{orderId?}', [App\Http\Controllers\CheckoutController::class, 'pending'])->name('checkout.pending');
+    Route::get('/checkout/error/{orderId?}', [App\Http\Controllers\CheckoutController::class, 'error'])->name('checkout.error');
+    Route::get('/checkout/status/{orderId}', [App\Http\Controllers\CheckoutController::class, 'getOrderStatus'])->name('checkout.status');
+});
+
 // Midtrans Payment API Routes
 Route::prefix('api')->group(function () {
     Route::post('/midtrans/token', [MidtransController::class, 'getSnapToken'])->name('midtrans.token');
-    Route::post('/midtrans/notification', [MidtransController::class, 'handleNotification'])->name('midtrans.notification');
 });
+
+// Midtrans Webhook (tidak perlu middleware karena dipanggil dari luar)
+Route::post('/midtrans/notification', [App\Http\Controllers\CheckoutController::class, 'handleNotification'])->name('midtrans.webhook');
 
 // Route fallback - letakkan di paling bawah
 Route::fallback(function () {

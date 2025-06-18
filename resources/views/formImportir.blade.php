@@ -12,7 +12,9 @@
     
     <!-- Payment Gateway Scripts -->
     <script src="https://app.midtrans.com/snap/snap.js" data-client-key="{{ env('MIDTRANS_CLIENT_KEY', 'SB-Mid-client-YOUR_CLIENT_KEY') }}"></script>
-    <script src="https://www.paypal.com/sdk/js?client-id={{ env('PAYPAL_CLIENT_ID', 'AYpPIo4n7iUjkD_M5bK7Vg_dq4z4v_K5nM3z') }}&currency=USD"></script>
+    @if(env('PAYPAL_CLIENT_ID'))
+    <script src="https://www.paypal.com/sdk/js?client-id={{ env('PAYPAL_CLIENT_ID') }}&currency=USD"></script>
+    @endif
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
     <script>
@@ -261,47 +263,47 @@
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                                 <div>
                                     <label class="block text-blue-900 dark:text-blue-100 mb-2">First Name*</label>
-                                    <input type="text" id="firstName" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="First name">
+                                    <input type="text" id="firstName" name="first_name" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="First name">
                                 </div>
                                 <div>
                                     <label class="block text-blue-900 dark:text-blue-100 mb-2">Last Name*</label>
-                                    <input type="text" id="lastName" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Last name">
+                                    <input type="text" id="lastName" name="last_name" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Last name">
                                 </div>
                             </div>
 
                             <div class="mb-4">
                                 <label class="block text-blue-900 dark:text-blue-100 mb-2">Email Address*</label>
-                                <input type="email" id="email" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="your@email.com">
+                                <input type="email" id="email" name="email" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="your@email.com">
                             </div>
 
                             <div class="mb-4">
                                 <label class="block text-blue-900 dark:text-blue-100 mb-2">Phone Number*</label>
-                                <input type="tel" id="phone" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="+62 812 3456 7890">
+                                <input type="tel" id="phone" name="phone" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="+62 812 3456 7890">
                             </div>
 
                             <div class="mb-4">
                                 <label class="block text-blue-900 dark:text-blue-100 mb-2">Address*</label>
-                                <textarea id="address" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Street address" rows="3"></textarea>
+                                <textarea id="address" name="address" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Street address" rows="3"></textarea>
                             </div>
 
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                                 <div>
                                     <label class="block text-blue-900 dark:text-blue-100 mb-2">City*</label>
-                                    <input type="text" id="city" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="City">
+                                    <input type="text" id="city" name="city" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="City">
                                 </div>
                                 <div>
                                     <label class="block text-blue-900 dark:text-blue-100 mb-2">State/Province*</label>
-                                    <input type="text" id="state" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="State">
+                                    <input type="text" id="state" name="state" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="State">
                                 </div>
                                 <div>
                                     <label class="block text-blue-900 dark:text-blue-100 mb-2">Postal Code*</label>
-                                    <input type="text" id="zipCode" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="12345">
+                                    <input type="text" id="zipCode" name="zip_code" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="12345">
                                 </div>
                             </div>
 
                             <div class="mb-6">
                                 <label class="block text-blue-900 dark:text-blue-100 mb-2">Country*</label>
-                                <select id="country" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary" onchange="updatePaymentMethods()">
+                                <select id="country" name="country" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary" onchange="updatePaymentMethods()">
                                     <option value="">Select Country</option>
                                     <option value="ID"> Indonesia</option>
                                     <option value="MY"> Malaysia</option>
@@ -630,6 +632,21 @@
 
     <!-- JavaScript Code -->
     <script>
+        // Check PayPal SDK availability and hide option if not available
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                if (typeof paypal === 'undefined') {
+                    const paypalOption = document.querySelector('input[value="paypal"]');
+                    if (paypalOption) {
+                        const paypalContainer = paypalOption.closest('label');
+                        if (paypalContainer) {
+                            paypalContainer.style.display = 'none';
+                        }
+                    }
+                }
+            }, 1000); // Wait 1 second for PayPal SDK to load
+        });
+
         // Cart Management Functions
         function loadCartItems() {
             const cart = JSON.parse(localStorage.getItem('importCart')) || [];
@@ -962,6 +979,17 @@
 
             // Initialize PayPal
             function initializePayPal() {
+                // Check if PayPal SDK is loaded
+                if (typeof paypal === 'undefined') {
+                    console.error('PayPal SDK not loaded');
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'PayPal Unavailable',
+                        text: 'PayPal payment is currently unavailable. Please try another payment method.'
+                    });
+                    return;
+                }
+
                 // Clear existing PayPal buttons
                 const paypalButtonsContainer = document.getElementById('paypal-buttons');
                 if (paypalButtonsContainer) {
@@ -1141,79 +1169,98 @@
 
             // Midtrans payment processing
             function processMidtransPayment() {
-                // Get total amount from the page
-                const totalElement = document.getElementById('totalAmount');
-                const totalAmount = totalElement ? totalElement.textContent.replace('$', '').replace(',', '') : '300.00';
-                
-                // Create order data
-                const orderData = {
-                    transaction_details: {
-                        order_id: 'TG-' + new Date().toISOString().replace(/[-:.]/g, '').slice(0, 14),
-                        gross_amount: Math.round(parseFloat(totalAmount) * 15000) // Convert USD to IDR roughly
-                    },
-                    customer_details: {
-                        first_name: document.getElementById('firstName').value,
-                        last_name: document.getElementById('lastName').value,
-                        email: document.getElementById('email').value,
-                        phone: document.getElementById('phone').value,
-                        billing_address: {
-                            address: document.getElementById('address').value,
-                            city: document.getElementById('city').value,
-                            postal_code: document.getElementById('zipCode').value,
-                            country_code: document.getElementById('country').value
-                        }
-                    }
+                // Get form data
+                const formData = {
+                    first_name: document.getElementById('firstName').value,
+                    last_name: document.getElementById('lastName').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value,
+                    address: document.getElementById('address').value,
+                    city: document.getElementById('city').value,
+                    state: document.getElementById('state').value,
+                    zip_code: document.getElementById('zipCode').value,
+                    country: document.getElementById('country').value,
+                    cart_items: JSON.parse(localStorage.getItem('importCart')) || [],
+                    subtotal: parseFloat(document.getElementById('subtotal').textContent.replace('$', '').replace(',', '')),
+                    shipping_cost: parseFloat(document.getElementById('shipping').textContent.replace('$', '').replace(',', '')),
+                    tax_amount: parseFloat(document.getElementById('tax').textContent.replace('$', '').replace(',', '')),
+                    total_amount: parseFloat(document.getElementById('totalAmount').textContent.replace('$', '').replace(',', '')),
+                    currency: document.getElementById('currencySelect').value || 'USD',
+                    coupon_code: document.getElementById('couponCode').value,
+                    discount_amount: 0, // Add discount logic if needed
+                    notes: ''
                 };
 
-                // Call your backend to get snap token
-                fetch('/api/midtrans/token', {
+                // Validate cart items
+                if (!formData.cart_items || formData.cart_items.length === 0) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Cart Empty',
+                        text: 'Please add items to your cart before proceeding.',
+                        confirmButtonColor: '#f97316'
+                    });
+                    resetFormState();
+                    return;
+                }
+
+                // Call backend to get snap token
+                fetch('/checkout/create-snap-token', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                     },
-                    body: JSON.stringify(orderData)
+                    body: JSON.stringify(formData)
                 })
                 .then(response => response.json())
                 .then(data => {
-                    if (data.snap_token) {
+                    if (data.success && data.snap_token) {
                         // Use Midtrans Snap
                         window.snap.pay(data.snap_token, {
                             onSuccess: function(result) {
+                                console.log('Payment Success:', result);
                                 Swal.fire({
                                     icon: 'success',
                                     title: 'Payment Successful!',
                                     text: 'Your payment has been processed successfully.',
                                     confirmButtonColor: '#f97316'
                                 }).then(() => {
-                                    // Redirect to success page or refresh
-                                    window.location.href = '/success?order_id=' + orderData.transaction_details.order_id;
+                                    // Clear cart and redirect to success page
+                                    localStorage.removeItem('importCart');
+                                    window.location.href = '/checkout/success/' + data.order_id;
                                 });
                             },
                             onPending: function(result) {
+                                console.log('Payment Pending:', result);
                                 Swal.fire({
                                     icon: 'info',
                                     title: 'Payment Pending',
                                     text: 'Please complete your payment.',
                                     confirmButtonColor: '#f97316'
+                                }).then(() => {
+                                    window.location.href = '/checkout/pending/' + data.order_id;
                                 });
                                 resetFormState();
                             },
                             onError: function(result) {
+                                console.error('Payment Error:', result);
                                 Swal.fire({
                                     icon: 'error',
                                     title: 'Payment Failed',
                                     text: 'There was an error processing your payment.',
                                     confirmButtonColor: '#f97316'
+                                }).then(() => {
+                                    window.location.href = '/checkout/error/' + data.order_id;
                                 });
                                 resetFormState();
                             },
                             onClose: function() {
+                                console.log('Payment popup closed');
                                 resetFormState();
                             }
                         });
                     } else {
-                        throw new Error('Failed to get payment token');
+                        throw new Error(data.message || 'Failed to get payment token');
                     }
                 })
                 .catch(error => {
@@ -1221,7 +1268,7 @@
                     Swal.fire({
                         icon: 'error',
                         title: 'Payment Error',
-                        text: 'Unable to process payment. Please try again.',
+                        text: error.message || 'Unable to process payment. Please try again.',
                         confirmButtonColor: '#f97316'
                     });
                     resetFormState();

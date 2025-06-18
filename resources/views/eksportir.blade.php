@@ -23,8 +23,12 @@
                     },
                     keyframes: {
                         float: {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-10px)' },
+                            '0%, 100%': {
+                                transform: 'translateY(0)'
+                            },
+                            '50%': {
+                                transform: 'translateY(-10px)'
+                            },
                         }
                     }
                 },
@@ -143,6 +147,7 @@
 
     <section id="find-buyers" class="container mx-auto px-6 py-16 slide-in">
         <h2 class="text-3xl font-bold text-blue-900 mb-6 text-center">Find Buyers Respons</h2>
+
        
         <!-- ✅ REAL COMMENTS FROM DATABASE - ONLY THIS SECTION CHANGED -->
         <div class="mt-12">
@@ -200,9 +205,11 @@
                             <p class="buyer-card-text mb-4">Upload your products to start receiving customer feedback and reviews.</p>
                             <div class="flex justify-between items-center">
                                 <span class="text-sm text-gray-500">Get started today</span>
-                            </div>
-                        </div>
-                    </div>
+=======
+
+
+       
+
 
                     <div class="buyer-card shadow-md rounded-lg overflow-hidden hover:shadow-lg transition">
                         <div class="p-4">
@@ -244,9 +251,13 @@
 
             <div class="text-center mt-10">
                 <a href="{{ route('response') }}" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-6 rounded-md transition pulse-on-hover inline-flex items-center">View All Response</a>
+
             </div>
+
+            
         </div>
     </section>
+
 
     <footer class="bg-blue-800 text-blue-100 py-6 mt-auto">
         <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
@@ -339,7 +350,7 @@
         }
 
         document.querySelectorAll('nav a[href^="#"], a[href^="#"]').forEach(link => {
-            link.addEventListener('click', function (event) {
+            link.addEventListener('click', function(event) {
                 if (this.getAttribute('href') !== '#') {
                     event.preventDefault();
                     const targetId = this.getAttribute('href').substring(1);
@@ -364,16 +375,16 @@
         const openSidebarBtn = document.querySelector('button.md\\:hidden[aria-label="Open Menu"]');
         const closeSidebarBtn = document.getElementById('closeSidebar');
 
-        openSidebarBtn.addEventListener('click', function () {
+        openSidebarBtn.addEventListener('click', function() {
             sidebar.classList.remove('hidden');
         });
 
-        closeSidebarBtn.addEventListener('click', function () {
+        closeSidebarBtn.addEventListener('click', function() {
             sidebar.classList.add('hidden');
         });
 
         // Tutup sidebar jika klik di luar sidebar
-        sidebar.addEventListener('click', function (e) {
+        sidebar.addEventListener('click', function(e) {
             if (e.target === sidebar) {
                 sidebar.classList.add('hidden');
             }
@@ -381,7 +392,7 @@
 
         // Scroll to section dari sidebar
         sidebar.querySelectorAll('a[href^="#"]').forEach(link => {
-            link.addEventListener('click', function (event) {
+            link.addEventListener('click', function(event) {
                 event.preventDefault();
                 sidebar.classList.add('hidden');
                 const targetId = this.getAttribute('href').substring(1);
@@ -390,7 +401,7 @@
         });
 
         // SweetAlert2 Logout Desktop
-        document.getElementById('logoutBtn')?.addEventListener('click', function (e) {
+        document.getElementById('logoutBtn')?.addEventListener('click', function(e) {
             Swal.fire({
                 title: 'Logout?',
                 text: "Are you sure you want to logout?",
@@ -414,7 +425,7 @@
         });
 
         // SweetAlert2 Logout Mobile
-        document.getElementById('logoutBtnMobile')?.addEventListener('click', function (e) {
+        document.getElementById('logoutBtnMobile')?.addEventListener('click', function(e) {
             Swal.fire({
                 title: 'Logout?',
                 text: "Are you sure you want to logout?",

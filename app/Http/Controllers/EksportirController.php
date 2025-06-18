@@ -91,4 +91,20 @@ class EksportirController extends Controller
     // {
     //     return view('response');
     // }
+
+
+    // public function detailproducteksportir()
+    // {
+    //     // Middleware sudah handle auth & role check
+    //     // Jika sampai sini, berarti user sudah pasti role 'ekspor'
+    //     return view('detailproductekspor');
+    // }
+
+   
+
+    public function requesteksportir()
+    {
+        return view('requesteksportir');
+    }
+
 }

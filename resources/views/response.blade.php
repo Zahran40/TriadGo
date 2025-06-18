@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,11 +19,13 @@
     <script>
         tailwind.config = {
             darkMode: 'class',
+
             theme: {
                 extend: {
                     colors: {
                         primary: '#2563eb',
                         accent: '#f97316',
+
                     }
                 }
             }
@@ -440,4 +443,9 @@
         console.log('Response page loaded with navigation functions');
     </script>
 </body>
+
+                     
+               
+
+       
 </html>

@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,7 +6,8 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product Detail | TriadGO</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>{{ $product->product_name }} | TriadGO</title>
     @vite('resources/css/app.css')
     <script src="https://cdn.tailwindcss.com"></script>
 
@@ -48,8 +50,8 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
-        .body {
-            font-family: poppins, sans-serif;
+        body {
+            font-family: 'Poppins', sans-serif;
         }
 
         /* SweetAlert2 Dark Mode Fix */
@@ -68,6 +70,17 @@
         .swal2-popup.swal2-dark .swal2-html-container {
             color: #d1d5db !important;
         }
+
+        .slide-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .slide-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
     </style>
 </head>
 
@@ -79,68 +92,144 @@
     <section id="" class="container mx-auto px-6 py-16 slide-in">
         <div class="min-h-screen flex items-center justify-center dark:bg-slate-900">
             <div class="product shadow-lg rounded-lg max-w-8xl w-full p-8 bg-white dark:bg-gray-800">
+                
+                <!-- Back Button -->
+                <div class="mb-6">
+                    <a href="{{ route('myproduct') }}" class="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 font-medium transition">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                        </svg>
+                        Back to My Products
+                    </a>
+                </div>
+
                 <div class="flex flex-col md:flex-row gap-8">
                     <div class="flex flex-col items-center md:items-start">
-                        <img src="https://png.pngtree.com/png-vector/20231023/ourmid/pngtree-mystery-box-with-question-mark-3d-illustration-png-image_10313605.png"
-                            alt="Product Image" class="w-80 h-80 object-cover rounded-lg mx-auto md:mx-0">
+                        @if($product->product_image)
+                            <img src="{{ asset($product->product_image) }}"
+                                alt="{{ $product->product_name }}" class="w-80 h-80 object-cover rounded-lg mx-auto md:mx-0 shadow-md">
+                        @else
+                            <img src="https://png.pngtree.com/png-vector/20231023/ourmid/pngtree-mystery-box-with-question-mark-3d-illustration-png-image_10313605.png"
+                                alt="No Image" class="w-80 h-80 object-cover rounded-lg mx-auto md:mx-0 shadow-md">
+                        @endif
+                        
+                        <!-- Status Badge -->
+                        <div class="mt-4">
+                            @if($product->status === 'pending')
+                                <span class="bg-yellow-100 text-yellow-800 px-4 py-2 rounded-full text-sm font-medium">
+                                    ⏳ Pending Review
+                                </span>
+                            @elseif($product->status === 'approved')
+                                <span class="bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm font-medium">
+                                    ✅ Approved
+                                </span>
+                            @elseif($product->status === 'rejected')
+                                <span class="bg-red-100 text-red-800 px-4 py-2 rounded-full text-sm font-medium">
+                                    ❌ Rejected
+                                </span>
+                            @else
+                                <span class="bg-gray-100 text-gray-800 px-4 py-2 rounded-full text-sm font-medium">
+                                    {{ ucfirst($product->status) }}
+                                </span>
+                            @endif
+                        </div>
                         
                         <p class="text-2xl font-medium text-blue-800 dark:text-blue-300 mt-6">Exported by</p>
                         
-                        <a href=""
-                            class="flex items-center gap-3 mt-6 bg-blue-700 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-500 p-4 rounded-lg shadow-sm">
-                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt=""
-                                class="w-[70px] h-[70px] rounded-full ml-3">
+                        <div class="flex items-center gap-3 mt-6 bg-blue-700 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-500 p-4 rounded-lg shadow-sm">
+                            @if($product->user->profile_picture)
+                                <img src="{{ asset($product->user->profile_picture) }}" alt="{{ $product->user->name }}"
+                                    class="w-[70px] h-[70px] rounded-full ml-3 object-cover">
+                            @else
+                                <div class="w-[70px] h-[70px] rounded-full ml-3 bg-blue-500 flex items-center justify-center text-white text-2xl font-bold">
+                                    {{ strtoupper(substr($product->user->name, 0, 1)) }}
+                                </div>
+                            @endif
+                            
                             <div class="flex flex-col ml-2">
-                                <p class="text-xl font-medium text-white">John Doe</p>
-                                <p class="text-lg font-medium text-white">Indonesia</p>
+                                <p class="text-xl font-medium text-white">{{ $product->user->name }}</p>
+                                <p class="text-lg font-medium text-white">{{ $product->user->country }}</p>
+                                <p class="text-sm text-blue-100">{{ $product->user->phone }}</p>
                             </div>
-                        </a>
+                        </div>
                     </div>
 
                     <div class="flex-1">
-                        <h1 class="text-3xl font-bold text-blue-900 dark:text-blue-100 mb-8 mt-3">Mystery Product Box</h1>
+                        <h1 class="text-3xl font-bold text-blue-900 dark:text-blue-100 mb-8 mt-3">{{ $product->product_name }}</h1>
                         
                         <!-- Category -->
                         <div class="mb-4">
                             <div class="flex items-center gap-2">
                                 <span class="text-sm font-medium text-blue-700 dark:text-blue-300">Category:</span>
-                                <span class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow-md">
-                                    Electronics
+                                @php
+                                    $categoryColors = [
+                                        'Electronics' => 'from-blue-500 to-blue-600',
+                                        'Food & Beverages' => 'from-orange-500 to-orange-600',
+                                        'Textile goods' => 'from-purple-500 to-purple-600',
+                                        'Raw materials' => 'from-gray-500 to-gray-600',
+                                        'Furniture items' => 'from-green-500 to-green-600',
+                                    ];
+                                    $gradient = $categoryColors[$product->category] ?? 'from-blue-500 to-blue-600';
+                                @endphp
+                                <span class="bg-gradient-to-r {{ $gradient }} text-white px-4 py-2 rounded-lg text-sm font-semibold shadow-md">
+                                    {{ $product->category }}
                                 </span>
                             </div>
                         </div>
 
                         <p class="text-lg text-blue-700 dark:text-blue-300 font-medium mb-4">
-                            High-quality electronic product with advanced features and reliable performance. Perfect for both personal and professional use.
+                            {{ $product->product_description }}
                         </p>
                         
-                        <p class="text-xl text-blue-700 dark:text-blue-300 mb-4 mt-5 font-semibold">
-                            Price : <span class="text-2xl font-bold text-blue-900 dark:text-blue-100">$100</span>
-                        </p>
-                        <p class="text-xl text-blue-700 dark:text-blue-300 mb-4 mt-2 font-semibold">
-                            Stock : <span class="text-2xl font-bold text-blue-900 dark:text-blue-100">50</span>
-                        </p>
-                        <p class="text-xl text-blue-700 dark:text-blue-300 mb-4 mt-2 font-semibold">
-                            Product ID : <span class="text-xl font-bold text-blue-900 dark:text-blue-100">TDR-3000</span>
-                        </p>
-                        <p class="text-xl text-blue-700 dark:text-blue-300 mb-4 mt-2 font-semibold">
-                            Weight : <span class="text-xl font-bold text-blue-900 dark:text-blue-100">5 kg</span>
-                        </p>
-                        <p class="text-xl text-blue-700 dark:text-blue-300 mb-6 mt-2 font-semibold">
-                            Country of Origin : <span class="text-xl font-bold text-blue-900 dark:text-blue-100">Indonesia</span>
-                        </p>
-
-                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                            <div class="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
+                                <p class="text-lg text-blue-700 dark:text-blue-300 mb-2 font-semibold">
+                                    Price: <span class="text-2xl font-bold text-blue-900 dark:text-blue-100">${{ number_format($product->price, 2) }}</span>
+                                </p>
+                            </div>
                             
-                            <button onclick="deleteProduct('TDR-3000')" 
+                            <div class="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg">
+                                <p class="text-lg text-blue-700 dark:text-blue-300 mb-2 font-semibold">
+                                    Stock: <span class="text-2xl font-bold text-blue-900 dark:text-blue-100">{{ $product->stock_quantity }}</span> units
+                                </p>
+                            </div>
+                            
+                            <div class="bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-lg">
+                                <p class="text-lg text-blue-700 dark:text-blue-300 mb-2 font-semibold">
+                                    SKU: <span class="text-xl font-bold text-blue-900 dark:text-blue-100">{{ $product->product_sku }}</span>
+                                </p>
+                            </div>
+                            
+                            <div class="bg-purple-50 dark:bg-purple-900/20 p-4 rounded-lg">
+                                <p class="text-lg text-blue-700 dark:text-blue-300 mb-2 font-semibold">
+                                    Weight: <span class="text-xl font-bold text-blue-900 dark:text-blue-100">{{ $product->weight }} kg</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg mb-6">
+                            <p class="text-lg text-blue-700 dark:text-blue-300 mb-2 font-semibold">
+                                Country of Origin: <span class="text-xl font-bold text-blue-900 dark:text-blue-100">{{ $product->country_of_origin }}</span>
+                            </p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">
+                                Created: {{ $product->created_at->format('F d, Y \a\t H:i') }}
+                            </p>
+                            @if($product->updated_at != $product->created_at)
+                                <p class="text-sm text-gray-500 dark:text-gray-400">
+                                    Last updated: {{ $product->updated_at->format('F d, Y \a\t H:i') }}
+                                </p>
+                            @endif
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="flex gap-4">
+                            <button onclick="deleteProduct({{ $product->product_id }})" 
                                     class="text-xl bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 text-white font-bold py-3 px-6 rounded-md transition flex items-center justify-center gap-2">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                                 </svg>
                                 Delete Product
                             </button>
-                            
-                            
                         </div>
                     </div>
                 </div>
@@ -283,12 +372,7 @@
             });
         });
 
-        // Product Management Functions
-        function editProduct(productId) {
-            // Redirect to edit product page
-            window.location.href = `/edit-product/${productId}`;
-        }
-
+        // Delete Product Function
         function deleteProduct(productId) {
             const isDark = document.documentElement.classList.contains('dark');
             
@@ -308,28 +392,60 @@
                 }
             }).then((result) => {
                 if (result.isConfirmed) {
-                    const isDarkSuccess = document.documentElement.classList.contains('dark');
-                    
-                    Swal.fire({
-                        title: 'Deleted!',
-                        text: 'Your product has been deleted successfully.',
-                        icon: 'success',
-                        background: isDarkSuccess ? '#374151' : '#ffffff',
-                        didOpen: () => {
-                            const popup = Swal.getPopup();
-                            if (isDarkSuccess) popup.classList.add('swal2-dark');
+                    // Send AJAX delete request
+                    fetch(`/product/${productId}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                         }
-                    }).then(() => {
-                        // Redirect to products list after deletion
-                        window.location.href = '/my-products';
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            const isDarkSuccess = document.documentElement.classList.contains('dark');
+                            
+                            Swal.fire({
+                                title: 'Deleted!',
+                                text: data.message,
+                                icon: 'success',
+                                background: isDarkSuccess ? '#374151' : '#ffffff',
+                                didOpen: () => {
+                                    const popup = Swal.getPopup();
+                                    if (isDarkSuccess) popup.classList.add('swal2-dark');
+                                }
+                            }).then(() => {
+                                // Redirect to products list after deletion
+                                window.location.href = '/myproduct';
+                            });
+                        } else {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: data.message,
+                                icon: 'error',
+                                background: isDark ? '#374151' : '#ffffff',
+                                didOpen: () => {
+                                    const popup = Swal.getPopup();
+                                    if (isDark) popup.classList.add('swal2-dark');
+                                }
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        Swal.fire({
+                            title: 'Error!',
+                            text: 'Something went wrong. Please try again.',
+                            icon: 'error',
+                            background: isDark ? '#374151' : '#ffffff',
+                            didOpen: () => {
+                                const popup = Swal.getPopup();
+                                if (isDark) popup.classList.add('swal2-dark');
+                            }
+                        });
                     });
                 }
             });
-        }
-
-        function viewAllProducts() {
-            // Redirect to products list page
-            window.location.href = '/my-products';
         }
 
         // Scroll animations

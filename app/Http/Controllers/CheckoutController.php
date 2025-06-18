@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\CheckoutOrder;
-use App\Services\MidtransService;
+use App\Services\MidtransHttpService;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
@@ -12,7 +12,7 @@ class CheckoutController extends Controller
 {
     protected $midtransService;
 
-    public function __construct(MidtransService $midtransService)
+    public function __construct(MidtransHttpService $midtransService)
     {
         $this->midtransService = $midtransService;
     }
@@ -30,7 +30,16 @@ class CheckoutController extends Controller
      */
     public function createSnapToken(Request $request)
     {
+        // Force JSON response for API endpoint
+        $request->headers->set('Accept', 'application/json');
+        
         try {
+            // Log data request untuk debugging
+            Log::info('Checkout createSnapToken request', [
+                'all_data' => $request->all(),
+                'headers' => $request->headers->all()
+            ]);
+            
             // Validate request
             $validator = Validator::make($request->all(), [
                 'first_name' => 'required|string|max:255',
@@ -51,11 +60,17 @@ class CheckoutController extends Controller
             ]);
 
             if ($validator->fails()) {
+                Log::warning('Validation failed', $validator->errors()->toArray());
                 return response()->json([
                     'success' => false,
+                    'message' => 'Validation failed',
                     'errors' => $validator->errors()
                 ], 422);
             }
+
+            // Log validated data
+            $validatedData = $validator->validated();
+            Log::info('Validated data', $validatedData);
 
             // Calculate total amount
             $subtotal = (float) $request->subtotal;
@@ -63,9 +78,17 @@ class CheckoutController extends Controller
             $tax = (float) $request->tax_amount;
             $discount = (float) ($request->discount_amount ?? 0);
             $totalAmount = $subtotal + $shipping + $tax - $discount;
+            
+            Log::info('Calculated amounts', [
+                'subtotal' => $subtotal,
+                'shipping' => $shipping,
+                'tax' => $tax,
+                'discount' => $discount,
+                'total' => $totalAmount
+            ]);
 
             // Create order
-            $order = CheckoutOrder::create([
+            $orderData = [
                 'order_id' => CheckoutOrder::generateOrderId(),
                 'total_amount' => $totalAmount,
                 'currency' => $request->currency,
@@ -87,10 +110,16 @@ class CheckoutController extends Controller
                 'coupon_code' => $request->coupon_code,
                 'discount_amount' => $discount,
                 'notes' => $request->notes
-            ]);
+            ];
+            
+            Log::info('Creating order with data', $orderData);
+            $order = CheckoutOrder::create($orderData);
+            Log::info('Order created successfully', ['order_id' => $order->order_id]);
 
             // Create Midtrans snap token
+            Log::info('Creating Midtrans snap token for order', ['order_id' => $order->order_id]);
             $snapToken = $this->midtransService->createSnapToken($order);
+            Log::info('Snap token created successfully', ['token' => substr($snapToken, 0, 20) . '...']);
 
             return response()->json([
                 'success' => true,
@@ -101,13 +130,16 @@ class CheckoutController extends Controller
         } catch (\Exception $e) {
             Log::error('Checkout Error: ' . $e->getMessage(), [
                 'request' => $request->all(),
-                'exception' => $e
+                'exception' => $e->getTraceAsString(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine()
             ]);
-
+            
             return response()->json([
                 'success' => false,
                 'message' => 'Failed to create payment. Please try again.',
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
+                'debug' => config('app.debug') ? $e->getTraceAsString() : null
             ], 500);
         }
     }
@@ -154,14 +186,25 @@ class CheckoutController extends Controller
         if ($order->status === 'pending') {
             try {
                 $status = $this->midtransService->getTransactionStatus($orderId);
-                
-                if (in_array($status->transaction_status, ['capture', 'settlement'])) {
-                    $order->markAsPaid($status->transaction_id, [
-                        'midtrans_transaction_id' => $status->transaction_id,
-                        'payment_type' => $status->payment_type,
-                        'transaction_time' => $status->transaction_time,
-                        'verified_at' => now()
-                    ]);
+                // Jika $status adalah array, akses dengan ['key']
+                if (is_array($status) && isset($status['transaction_status'])) {
+                    if (in_array($status['transaction_status'], ['capture', 'settlement'])) {
+                        $order->markAsPaid($status['transaction_id'], [
+                            'midtrans_transaction_id' => $status['transaction_id'],
+                            'payment_type' => $status['payment_type'] ?? null,
+                            'transaction_time' => $status['transaction_time'] ?? null,
+                            'verified_at' => now()
+                        ]);
+                    }
+                } elseif (is_object($status) && isset($status->transaction_status)) {
+                    if (in_array($status->transaction_status, ['capture', 'settlement'])) {
+                        $order->markAsPaid($status->transaction_id, [
+                            'midtrans_transaction_id' => $status->transaction_id,
+                            'payment_type' => $status->payment_type ?? null,
+                            'transaction_time' => $status->transaction_time ?? null,
+                            'verified_at' => now()
+                        ]);
+                    }
                 }
             } catch (\Exception $e) {
                 Log::warning('Failed to verify payment status: ' . $e->getMessage());

@@ -303,7 +303,7 @@
 
                             <div class="mb-6">
                                 <label class="block text-blue-900 dark:text-blue-100 mb-2">Country*</label>
-                                <select id="country" name="country" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary" onchange="updatePaymentMethods()">
+                                <select id="country" name="country" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary">
                                     <option value="">Select Country</option>
                                     <option value="ID"> Indonesia</option>
                                     <option value="MY"> Malaysia</option>
@@ -649,7 +649,35 @@
 
         // Cart Management Functions
         function loadCartItems() {
-            const cart = JSON.parse(localStorage.getItem('importCart')) || [];
+            let cart = JSON.parse(localStorage.getItem('importCart')) || [];
+            
+            // Add sample cart data if cart is empty (for testing)
+            if (cart.length === 0) {
+                cart = [
+                    {
+                        id: 1,
+                        name: "Premium Coffee Beans",
+                        origin: "Indonesia",
+                        price: 25.99,
+                        quantity: 2,
+                        weight: 1,
+                        sku: "COF-001",
+                        image: "/uploads/products/coffee-beans.jpg"
+                    },
+                    {
+                        id: 2,
+                        name: "Organic Tea Leaves",
+                        origin: "Sri Lanka",
+                        price: 18.50,
+                        quantity: 1,
+                        weight: 0.5,
+                        sku: "TEA-001",
+                        image: "/uploads/products/tea-leaves.jpg"
+                    }
+                ];
+                localStorage.setItem('importCart', JSON.stringify(cart));
+            }
+            
             const cartItemsContainer = document.getElementById('cartItemsCheckout');
             const emptyCartMessage = document.getElementById('emptyCartMessage');
             const pricingBreakdown = document.getElementById('pricingBreakdown');
@@ -1181,15 +1209,32 @@
                     zip_code: document.getElementById('zipCode').value,
                     country: document.getElementById('country').value,
                     cart_items: JSON.parse(localStorage.getItem('importCart')) || [],
-                    subtotal: parseFloat(document.getElementById('subtotal').textContent.replace('$', '').replace(',', '')),
-                    shipping_cost: parseFloat(document.getElementById('shipping').textContent.replace('$', '').replace(',', '')),
-                    tax_amount: parseFloat(document.getElementById('tax').textContent.replace('$', '').replace(',', '')),
-                    total_amount: parseFloat(document.getElementById('totalAmount').textContent.replace('$', '').replace(',', '')),
+                    subtotal: parseFloat(document.getElementById('subtotal').textContent.replace('$', '').replace(',', '')) || 0,
+                    shipping_cost: parseFloat(document.getElementById('shipping').textContent.replace('$', '').replace(',', '')) || 0,
+                    tax_amount: parseFloat(document.getElementById('tax').textContent.replace('$', '').replace(',', '')) || 0,
+                    total_amount: parseFloat(document.getElementById('totalAmount').textContent.replace('$', '').replace(',', '')) || 0,
                     currency: document.getElementById('currencySelect').value || 'USD',
-                    coupon_code: document.getElementById('couponCode').value,
+                    coupon_code: document.getElementById('couponCode').value || '',
                     discount_amount: 0, // Add discount logic if needed
                     notes: ''
                 };
+
+                // Debug: Log form data before sending
+                console.log('Form data before sending:', formData);
+                console.log('Cart items:', formData.cart_items);
+                console.log('Total amount:', formData.total_amount);
+
+                // Validate form data
+                if (!formData.first_name || !formData.last_name || !formData.email || !formData.phone || !formData.address || !formData.city || !formData.state || !formData.zip_code || !formData.country) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Missing Information',
+                        text: 'Please fill in all required fields.',
+                        confirmButtonColor: '#f97316'
+                    });
+                    resetFormState();
+                    return;
+                }
 
                 // Validate cart items
                 if (!formData.cart_items || formData.cart_items.length === 0) {
@@ -1203,17 +1248,39 @@
                     return;
                 }
 
+                // Validate amounts
+                if (isNaN(formData.total_amount) || formData.total_amount <= 0) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Invalid Amount',
+                        text: 'Please check the total amount.',
+                        confirmButtonColor: '#f97316'
+                    });
+                    resetFormState();
+                    return;
+                }
+
                 // Call backend to get snap token
+                console.log('Sending request to create snap token...');
                 fetch('/checkout/create-snap-token', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
+                        'Accept': 'application/json',
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                     },
                     body: JSON.stringify(formData)
                 })
-                .then(response => response.json())
+                .then(response => {
+                    console.log('Response status:', response.status);
+                    console.log('Response headers:', response.headers);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
                 .then(data => {
+                    console.log('Response data:', data);
                     if (data.success && data.snap_token) {
                         // Use Midtrans Snap
                         window.snap.pay(data.snap_token, {
@@ -1260,15 +1327,28 @@
                             }
                         });
                     } else {
-                        throw new Error(data.message || 'Failed to get payment token');
+                        console.error('Backend error:', data);
+                        throw new Error(data.message || data.error || 'Failed to get payment token');
                     }
                 })
                 .catch(error => {
-                    console.error('Error:', error);
+                    console.error('Payment Error Details:', error);
+                    console.error('Error stack:', error.stack);
+                    
+                    let errorMessage = 'Unable to process payment. Please try again.';
+                    
+                    if (error.message.includes('HTTP error! status: 500')) {
+                        errorMessage = 'Server error occurred. Please check the form data and try again.';
+                    } else if (error.message.includes('HTTP error! status: 422')) {
+                        errorMessage = 'Please check all required fields are filled correctly.';
+                    } else if (error.message) {
+                        errorMessage = error.message;
+                    }
+                    
                     Swal.fire({
                         icon: 'error',
                         title: 'Payment Error',
-                        text: error.message || 'Unable to process payment. Please try again.',
+                        text: errorMessage,
                         confirmButtonColor: '#f97316'
                     });
                     resetFormState();

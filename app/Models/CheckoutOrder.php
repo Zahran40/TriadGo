@@ -5,6 +5,37 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property string $order_id
+ * @property float $total_amount
+ * @property string $currency
+ * @property string $status
+ * @property string $first_name
+ * @property string $last_name
+ * @property string $email
+ * @property string $phone
+ * @property string $address
+ * @property string $city
+ * @property string $state
+ * @property string $zip_code
+ * @property string $country
+ * @property string $payment_method
+ * @property string|null $payment_gateway_order_id
+ * @property string|null $payment_gateway_transaction_id
+ * @property array|null $payment_details
+ * @property array $cart_items
+ * @property float $subtotal
+ * @property float $shipping_cost
+ * @property float $tax_amount
+ * @property string|null $coupon_code
+ * @property float $discount_amount
+ * @property string|null $notes
+ * @property \Carbon\Carbon|null $payment_completed_at
+ * @property-read string $formatted_total
+ * @property-read string $full_name
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ */
 class CheckoutOrder extends Model
 {
     use HasFactory;

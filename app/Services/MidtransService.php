@@ -12,11 +12,23 @@ use Illuminate\Support\Facades\Log;
 class MidtransService
 {    public function __construct()
     {
-        // Set Midtrans configuration - use env() directly if config() fails
-        Config::$serverKey = config('midtrans.server_key') ?: env('MIDTRANS_SERVER_KEY');
-        Config::$isProduction = config('midtrans.is_production') ?: env('MIDTRANS_IS_PRODUCTION', false);
-        Config::$isSanitized = config('midtrans.is_sanitized', true) ?: env('MIDTRANS_IS_SANITIZED', true);
-        Config::$is3ds = config('midtrans.is_3ds', true) ?: env('MIDTRANS_IS_3DS', true);
+        // Debug: Check curl availability
+        if (!function_exists('curl_init')) {
+            Log::error('cURL extension is not available');
+            throw new \Exception('cURL extension is required for Midtrans');
+        }
+        
+        // Set Midtrans configuration - use services.midtrans config
+        Config::$serverKey = config('services.midtrans.server_key') ?: env('MIDTRANS_SERVER_KEY');
+        Config::$isProduction = config('services.midtrans.is_production') ?: env('MIDTRANS_IS_PRODUCTION', false);
+        Config::$isSanitized = config('services.midtrans.is_sanitized', true) ?: env('MIDTRANS_IS_SANITIZED', true);
+        Config::$is3ds = config('services.midtrans.is_3ds', true) ?: env('MIDTRANS_IS_3DS', true);
+        
+        Log::info('Midtrans Config initialized', [
+            'server_key' => substr(Config::$serverKey, 0, 10) . '...',
+            'is_production' => Config::$isProduction,
+            'curl_available' => function_exists('curl_init')
+        ]);
     }
 
     /**

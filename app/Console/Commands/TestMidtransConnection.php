@@ -39,10 +39,10 @@ class TestMidtransConnection extends Command
 
         // Test configuration
         $this->info('=== Configuration Check ===');
-        $merchantId = config('midtrans.merchant_id');
-        $clientKey = config('midtrans.client_key');
-        $serverKey = config('midtrans.server_key');
-        $isProduction = config('midtrans.is_production');
+        $merchantId = config('services.midtrans.merchant_id');
+        $clientKey = config('services.midtrans.client_key');
+        $serverKey = config('services.midtrans.server_key');
+        $isProduction = config('services.midtrans.is_production');
 
         $this->line("Merchant ID: " . ($merchantId ? $merchantId : 'NOT SET'));
         $this->line("Client Key: " . ($clientKey ? substr($clientKey, 0, 10) . '...' : 'NOT SET'));

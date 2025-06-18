@@ -61,7 +61,7 @@
                             <div class="flex items-center">
                                 <p class="text-md font-semibold text-blue-700">Product Imported : </p>
                                 <a href="">
-                                    <p class="text-md font-bold text-blue-700 ml-2"> Kapal Karam</p>
+                                    <p class="text-md font-bold text-blue-700 ml-2"> Kapal Andre</p>
                                 </a>  
                             </div>
                     </div>

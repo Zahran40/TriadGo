@@ -33,4 +33,11 @@ class EksportirController extends Controller
     //     // Jika sampai sini, berarti user sudah pasti role 'ekspor'
     //     return view('detailproductekspor');
     // }
+
+    public function response()
+    {
+        // Middleware sudah handle auth & role check
+        // Jika sampai sini, berarti user sudah pasti role 'ekspor'
+        return view('response');
+    }
 }

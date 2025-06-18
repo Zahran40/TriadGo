@@ -1,7 +1,7 @@
     <header class="bg-white shadow-md sticky top-0 z-50">
         <div class="container mx-auto px-6 py-4 flex justify-between items-center">
             <div class="flex items-center">
-                <img src="tglogo.png" alt="Logo" class="h-12 w-12 mr-2 " style="width: 65px;  height: 65px" />
+                <img src="{{ asset('tglogo.png') }}" alt="Logo" class="h-12 w-12 mr-2 " style="width: 65px;  height: 65px" />
                 <h1 class="text-2xl font-bold text-blue-900 gradient-move">Triad</h1>
                 <h1 class="text-2xl font-bold text-orange-500 gradient-move">Go</h1>
             </div>
@@ -10,10 +10,13 @@
                 <a href="{{ route('catalog') }}" class="hover:text-orange-500 transition nav-gradient-move">Catalog</a>
                 <a href="{{ route('requestimportir') }}" class="hover:text-orange-500 transition nav-gradient-move">Request</a>
                 <a href="#about" class="hover:text-orange-500 transition nav-gradient-move">Transaction</a>
-                <a href="{{ route('userprofile') }}" class="hover:text-orange-500 transition nav-gradient-move">Account
-                    <img src="https://cdn-icons-png.freepik.com/512/8345/8345339.png" alt=""
-                        style="width: 40px; height: 40px;" class="inline-block ml-2" />
-                </a>
+                <a href="{{ route('user.profile') }}" class="hover:text-orange-500 transition nav-gradient-move flex items-center">
+                Account
+                <img src="{{ Auth::user()->profile_picture ? asset(Auth::user()->profile_picture) : 'https://randomuser.me/api/portraits/men/' . (Auth::user()->user_id % 100) . '.jpg' }}" 
+                     alt="Profile Picture"
+                     style="width: 40px; height: 40px;" 
+                     class="inline-block ml-2 rounded-full object-cover border-2 border-blue-200" />
+            </a>
                 
                 <!-- Cart Button -->
                 <a href="{{ route('formimportir') }}" class="hover:text-orange-500 transition nav-gradient-move relative">
@@ -69,7 +72,7 @@
             <a href="{{ route('catalog') }}" class="mb-4 text-blue-700 font-semibold hover:text-orange-500 transition nav-gradient-move">Catalog</a>
             <a href="{{ route('requestimportir') }}" class="mb-4 text-blue-700 font-semibold hover:text-orange-500 transition nav-gradient-move">Request</a>
             <a href="#" class="mb-4 text-blue-700 font-semibold hover:text-orange-500 transition nav-gradient-move">Transactions</a>
-            <a href="{{ route('userprofile') }}" class="mb-4 text-blue-700 font-semibold hover:text-orange-500 transition nav-gradient-move">Account</a>
+            <a href="{{ route('user.profile') }}" class="mb-4 text-blue-700 font-semibold hover:text-orange-500 transition nav-gradient-move">Account</a>
 
             <!-- Logout Button -->
             <form method="POST" action="{{ route('logout') }}" class="mt-auto">

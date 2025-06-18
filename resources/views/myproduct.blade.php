@@ -5,6 +5,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>My Products | TriadGO</title>
     @vite('resources/css/app.css')
     <script src="https://cdn.tailwindcss.com"></script>
@@ -99,6 +100,22 @@
             <h1 class="text-4xl font-bold text-blue-900 dark:text-blue-100 mb-4">My Products</h1>
             <p class="text-xl text-blue-700 dark:text-blue-300">Manage and view all your exported products</p>
             
+            <!-- Stats -->
+            <div class="flex justify-center gap-8 mt-6">
+                <div class="text-center">
+                    <p class="text-2xl font-bold text-blue-600 dark:text-blue-400">{{ $products->count() }}</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Total Products</p>
+                </div>
+                <div class="text-center">
+                    <p class="text-2xl font-bold text-yellow-600 dark:text-yellow-400">{{ $products->where('status', 'pending')->count() }}</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Pending</p>
+                </div>
+                <div class="text-center">
+                    <p class="text-2xl font-bold text-green-600 dark:text-green-400">{{ $products->where('status', 'approved')->count() }}</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Approved</p>
+                </div>
+            </div>
+            
             <!-- Add Product Button -->
             <div class="mt-6">
                 <a href="{{ route('formeksportir') }}" class="inline-block bg-amber-500 hover:bg-amber-600 dark:bg-amber-600 dark:hover:bg-amber-500 text-white font-bold py-3 px-8 rounded-md shadow-md transition pulse-on-hover">
@@ -110,97 +127,109 @@
             </div>
         </div>
 
-        <!-- Search and Filter Section -->
-        <div class="mb-8 slide-in">
-            <div class="flex flex-col md:flex-row gap-4 justify-between items-center">
-                <!-- Search Bar -->
-                <div class="relative flex-1 max-w-md">
-                    <input type="text" id="searchInput" placeholder="Search products..." 
-                           class="w-full px-4 py-2.5 pl-10 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
-                    <svg class="absolute left-3 top-3 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                    </svg>
-                </div>
-                
-                <!-- Filter Dropdown -->
-                <select id="categoryFilter" class="px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
-                    <option value="">All Categories</option>
-                    <option value="Electronics">Electronics</option>
-                    <option value="Textile goods">Textile goods</option>
-                    <option value="Raw materials">Raw materials</option>
-                    <option value="Furniture items">Furniture items</option>
-                    <option value="Sports equipment">Sports equipment</option>
-                    <option value="Medical/health supplies">Medical/health supplies</option>
-                    <option value="Others">Others</option>
-                </select>
-            </div>
-        </div>
-
-        <!-- Products Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 slide-in" id="productsGrid">
-            <!-- Product Card 1 -->
-            <div class="product-card bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden" data-category="Electronics">
-                <div class="relative">
-                    <img src="https://png.pngtree.com/png-vector/20231023/ourmid/pngtree-mystery-box-with-question-mark-3d-illustration-png-image_10313605.png" 
-                         alt="Product" class="w-full h-48 object-cover">
-                  
-                </div>
-                
-                <div class="p-6">
-                    <div class="flex justify-between items-start mb-2">
-                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">Mystery Product Box</h3>
-                        <span class="text-sm text-gray-500 dark:text-gray-400">ID: TDR-3000</span>
-                    </div>
-                    
-                    <div class="mb-3">
-                        <span class="inline-block bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded-full text-sm font-medium">
-                            Electronics
-                        </span>
-                    </div>
-                    
-                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-2">
-                        High-quality electronic product with advanced features and reliable performance.
-                    </p>
-                    
-                    <div class="flex justify-between items-center mb-4">
-                        <div>
-                            <p class="text-2xl font-bold text-blue-600 dark:text-blue-400">$100.00</p>
-                            <p class="text-sm text-gray-500 dark:text-gray-400">Stock: 50 units</p>
+        @if($products->count() > 0)
+            <!-- Products Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 slide-in" id="productsGrid">
+                @foreach($products as $product)
+                    <div class="product-card bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+                        <div class="relative">
+                            @if($product->product_image)
+                                <img src="{{ asset($product->product_image) }}" 
+                                     alt="{{ $product->product_name }}" class="w-full h-48 object-cover">
+                            @else
+                                <img src="https://png.pngtree.com/png-vector/20231023/ourmid/pngtree-mystery-box-with-question-mark-3d-illustration-png-image_10313605.png" 
+                                     alt="No Image" class="w-full h-48 object-cover">
+                            @endif
+                            
+                            <!-- Status Badge -->
+                            <div class="absolute top-2 left-2">
+                                @if($product->status === 'pending')
+                                    <span class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-xs font-medium">
+                                        Pending
+                                    </span>
+                                @elseif($product->status === 'approved')
+                                    <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-medium">
+                                        Approved
+                                    </span>
+                                @elseif($product->status === 'rejected')
+                                    <span class="bg-red-100 text-red-800 px-3 py-1 rounded-full text-xs font-medium">
+                                        Rejected
+                                    </span>
+                                @else
+                                    <span class="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-xs font-medium">
+                                        {{ ucfirst($product->status) }}
+                                    </span>
+                                @endif
+                            </div>
                         </div>
-                        <div class="text-right">
-                            <p class="text-sm text-gray-500 dark:text-gray-400">Weight: 5 kg</p>
-                            <p class="text-sm text-gray-500 dark:text-gray-400">Origin: Indonesia</p>
+                        
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-xl font-bold text-gray-900 dark:text-white">{{ $product->product_name }}</h3>
+                                <span class="text-sm text-gray-500 dark:text-gray-400">SKU: {{ $product->product_sku }}</span>
+                            </div>
+                            
+                            <div class="mb-3">
+                                @php
+                                    $categoryColors = [
+                                        'Electronics' => 'bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200',
+                                        'Food & Beverages' => 'bg-orange-100 dark:bg-orange-900 text-orange-800 dark:text-orange-200',
+                                        'Textile goods' => 'bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200',
+                                        'Raw materials' => 'bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200',
+                                        'Furniture items' => 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200',
+                                    ];
+                                    $colorClass = $categoryColors[$product->category] ?? 'bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200';
+                                @endphp
+                                <span class="inline-block {{ $colorClass }} px-3 py-1 rounded-full text-sm font-medium">
+                                    {{ $product->category }}
+                                </span>
+                            </div>
+                            
+                            <p class="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-2">
+                                {{ Str::limit($product->product_description, 100) }}
+                            </p>
+                            
+                            <div class="flex justify-between items-center mb-4">
+                                <div>
+                                    <p class="text-2xl font-bold text-blue-600 dark:text-blue-400">${{ number_format($product->price, 2) }}</p>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">Stock: {{ $product->stock_quantity }} units</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">Weight: {{ $product->weight }} kg</p>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">Origin: {{ $product->country_of_origin }}</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex gap-2">
+    <a href="{{ route('product.detail', $product->product_id) }}" class="bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-500 text-white py-2 px-3 rounded-md text-sm font-medium transition">View</a>
+                             
+                                <button onclick="deleteProduct({{ $product->product_id }})" class="bg-red-500 hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-500 text-white py-2 px-3 rounded-md text-sm font-medium transition">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            
+                            <div class="mt-2 text-xs text-gray-400 dark:text-gray-500">
+                                Created: {{ $product->created_at->format('M d, Y') }}
+                            </div>
                         </div>
                     </div>
-                    
-                    <div class="flex gap-2">
-                        <a href="{{ route("detailproducteksportir") }}" class="bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-500 text-white py-2 px-3 rounded-md text-sm font-medium transition">View</a>
-                     
-                        <button onclick="deleteProduct('TDR-3000')" class="bg-red-500 hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-500 text-white py-2 px-3 rounded-md text-sm font-medium transition">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
+                @endforeach
             </div>
-
-           
-            
-            
-        </div>
-
-        <!-- Empty State -->
-        <div id="emptyState" class="text-center py-16 hidden">
-            <svg class="mx-auto h-24 w-24 text-gray-400 dark:text-gray-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
-            </svg>
-            <h3 class="text-xl font-semibold text-gray-500 dark:text-gray-400 mb-2">No products found</h3>
-            <p class="text-gray-400 dark:text-gray-500 mb-6">Try adjusting your search or filter criteria</p>
-            <a href="{{ route('formeksportir') }}" class="inline-block bg-amber-500 hover:bg-amber-600 dark:bg-amber-600 dark:hover:bg-amber-500 text-white font-bold py-2 px-6 rounded-md transition">
-                Add Your First Product
-            </a>
-        </div>
+        @else
+            <!-- Empty State -->
+            <div id="emptyState" class="text-center py-16 slide-in">
+                <svg class="mx-auto h-24 w-24 text-gray-400 dark:text-gray-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                </svg>
+                <h3 class="text-xl font-semibold text-gray-500 dark:text-gray-400 mb-2">No products found</h3>
+                <p class="text-gray-400 dark:text-gray-500 mb-6">You haven't added any products yet</p>
+                <a href="{{ route('formeksportir') }}" class="inline-block bg-amber-500 hover:bg-amber-600 dark:bg-amber-600 dark:hover:bg-amber-500 text-white font-bold py-2 px-6 rounded-md transition">
+                    Add Your First Product
+                </a>
+            </div>
+        @endif
     </main>
 
     <!-- Footer -->
@@ -228,7 +257,7 @@
     </footer>
 
     <script>
-        // Dark Mode Toggle - sama seperti page lain
+        // Dark Mode Toggle
         const darkModeToggle = document.getElementById('darkModeToggle');
         const darkModeThumb = document.getElementById('darkModeThumb');
         const htmlElement = document.documentElement;
@@ -316,55 +345,7 @@
             });
         });
 
-        // Search and Filter Functions
-        const searchInput = document.getElementById('searchInput');
-        const categoryFilter = document.getElementById('categoryFilter');
-        const productsGrid = document.getElementById('productsGrid');
-        const emptyState = document.getElementById('emptyState');
-
-        function filterProducts() {
-            const searchTerm = searchInput.value.toLowerCase();
-            const selectedCategory = categoryFilter.value;
-            const productCards = productsGrid.querySelectorAll('.product-card');
-            let visibleCount = 0;
-
-            productCards.forEach(card => {
-                const productName = card.querySelector('h3').textContent.toLowerCase();
-                const productCategory = card.getAttribute('data-category');
-                
-                const matchesSearch = productName.includes(searchTerm);
-                const matchesCategory = !selectedCategory || productCategory === selectedCategory;
-                
-                if (matchesSearch && matchesCategory) {
-                    card.style.display = 'block';
-                    visibleCount++;
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-
-            // Show/hide empty state
-            if (visibleCount === 0) {
-                productsGrid.style.display = 'none';
-                emptyState.classList.remove('hidden');
-            } else {
-                productsGrid.style.display = 'grid';
-                emptyState.classList.add('hidden');
-            }
-        }
-
-        searchInput.addEventListener('input', filterProducts);
-        categoryFilter.addEventListener('change', filterProducts);
-
-        // Product Actions
-        function viewProduct(productId) {
-            window.location.href = `/detail/${productId}`;
-        }
-
-        function editProduct(productId) {
-            window.location.href = `/edit-product/${productId}`;
-        }
-
+        // Delete Product Function dengan AJAX
         function deleteProduct(productId) {
             const isDark = document.documentElement.classList.contains('dark');
             
@@ -383,22 +364,58 @@
                 }
             }).then((result) => {
                 if (result.isConfirmed) {
-                    const isDarkSuccess = document.documentElement.classList.contains('dark');
-                    
-                    Swal.fire({
-                        title: 'Deleted!',
-                        text: 'Your product has been deleted.',
-                        icon: 'success',
-                        background: isDarkSuccess ? '#374151' : '#ffffff',
-                        didOpen: () => {
-                            const popup = Swal.getPopup();
-                            if (isDarkSuccess) popup.classList.add('swal2-dark');
+                    // Send AJAX delete request
+                    fetch(`/product/${productId}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                         }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            const isDarkSuccess = document.documentElement.classList.contains('dark');
+                            
+                            Swal.fire({
+                                title: 'Deleted!',
+                                text: data.message,
+                                icon: 'success',
+                                background: isDarkSuccess ? '#374151' : '#ffffff',
+                                didOpen: () => {
+                                    const popup = Swal.getPopup();
+                                    if (isDarkSuccess) popup.classList.add('swal2-dark');
+                                }
+                            }).then(() => {
+                                // Reload page to update the list
+                                location.reload();
+                            });
+                        } else {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: data.message,
+                                icon: 'error',
+                                background: isDark ? '#374151' : '#ffffff',
+                                didOpen: () => {
+                                    const popup = Swal.getPopup();
+                                    if (isDark) popup.classList.add('swal2-dark');
+                                }
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        Swal.fire({
+                            title: 'Error!',
+                            text: 'Something went wrong. Please try again.',
+                            icon: 'error',
+                            background: isDark ? '#374151' : '#ffffff',
+                            didOpen: () => {
+                                const popup = Swal.getPopup();
+                                if (isDark) popup.classList.add('swal2-dark');
+                            }
+                        });
                     });
-                    
-                    // Remove card from DOM
-                    document.querySelector(`[onclick="deleteProduct('${productId}')"]`).closest('.product-card').remove();
-                    filterProducts(); // Update display
                 }
             });
         }

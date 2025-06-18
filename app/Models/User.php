@@ -23,6 +23,7 @@ class User extends Authenticatable implements FilamentUser
         'country',
         'phone',
         'role',
+        'profile_picture', // Tambah ini
     ];
 
     protected $hidden = [
@@ -36,6 +37,14 @@ class User extends Authenticatable implements FilamentUser
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Relationship: User has many Products (One-to-Many)
+     */
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'user_id', 'user_id');
     }
 
     // Override untuk primary key custom

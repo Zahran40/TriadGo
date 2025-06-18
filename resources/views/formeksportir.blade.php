@@ -5,6 +5,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Add Product | TriadGO</title>
     @vite('resources/css/app.css')
     <script src="https://cdn.tailwindcss.com"></script>
@@ -45,7 +46,7 @@
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-        
+
         body {
             font-family: 'Poppins', sans-serif;
         }
@@ -74,15 +75,15 @@
         .swal2-popup .swal2-title {
             color: #1f2937 !important;
         }
-        
+
         .swal2-popup .swal2-html-container {
             color: #374151 !important;
         }
-        
+
         .swal2-popup.swal2-dark .swal2-title {
             color: #ffffff !important;
         }
-        
+
         .swal2-popup.swal2-dark .swal2-html-container {
             color: #d1d5db !important;
         }
@@ -101,7 +102,8 @@
             <p class="text-xl text-blue-700 dark:text-blue-300">Fill in the details to list your export product</p>
         </div>
 
-        <form class="max-w-6xl mx-auto space-y-8">
+        <form id="productForm" class="max-w-6xl mx-auto space-y-8" enctype="multipart/form-data">
+            @csrf
             <!-- Product Information Section -->
             <div class="export-card bg-blue-50 dark:bg-gray-800 rounded-lg shadow-md p-8 slide-in">
                 <div class="flex justify-between items-center mb-6 border-b dark:border-gray-600 pb-4">
@@ -113,18 +115,27 @@
                     <div class="flex flex-col items-center">
                         <div class="w-full max-w-xs mb-4">
                             <label class="block text-blue-900 dark:text-blue-300 mb-2">Product Image*</label>
-                            <div class="border-2 border-dashed border-blue-300 dark:border-gray-600 rounded-lg p-8 text-center">
+                            <div
+                                class="border-2 border-dashed border-blue-300 dark:border-gray-600 rounded-lg p-8 text-center">
                                 <div id="imagePreview" class="hidden">
-                                    <img id="previewImg" src="" alt="Preview" class="w-full h-48 object-cover rounded-lg mb-4">
-                                    <button type="button" onclick="removeImage()" class="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 text-sm">Remove Image</button>
+                                    <img id="previewImg" src="" alt="Preview"
+                                        class="w-full h-48 object-cover rounded-lg mb-4">
+                                    <button type="button" onclick="removeImage()"
+                                        class="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 text-sm">Remove
+                                        Image</button>
                                 </div>
                                 <div id="uploadArea">
-                                    <svg class="mx-auto h-12 w-12 text-blue-400 dark:text-gray-500" stroke="currentColor" fill="none" viewBox="0 0 48 48">
-                                        <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                    <svg class="mx-auto h-12 w-12 text-blue-400 dark:text-gray-500"
+                                        stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                                        <path
+                                            d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                     </svg>
                                     <div class="mt-4">
-                                        <input type="file" id="productImage" class="hidden" accept="image/*" onchange="previewImage(this)" onblur="checkImageInput()">
-                                        <label for="productImage" class="cursor-pointer bg-blue-600 dark:bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700 dark:hover:bg-blue-600 transition">
+                                        <input type="file" id="productImage" name="product_image" class="hidden"
+                                            accept="image/*" onchange="previewImage(this)" onblur="checkImageInput()">
+                                        <label for="productImage"
+                                            class="cursor-pointer bg-blue-600 dark:bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700 dark:hover:bg-blue-600 transition">
                                             Choose Image
                                         </label>
                                         <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">PNG, JPG up to 5MB</p>
@@ -140,69 +151,120 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <label class="block text-blue-900 dark:text-blue-300 mb-2">Product Name*</label>
-                                <input type="text" id="ProductName" class="w-full px-4 py-2.5 border border-gray-light dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-light placeholder-gray-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white" placeholder="Enter product name" onblur="checkInput(this)">
+                                <input type="text" id="ProductName" name="product_name"
+                                    class="w-full px-4 py-2.5 border border-gray-light dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-light placeholder-gray-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                                    placeholder="Enter product name" onblur="checkInput(this)">
                                 <p id="nameWarning" class="text-red-500 text-sm mt-1 hidden">This field is required.</p>
                             </div>
                             <div>
                                 <label class="block text-blue-900 dark:text-blue-300 mb-2">Category*</label>
-                                <select id="productCategory" class="w-full px-4 py-2.5 border border-gray-light dark:border-gray-600 rounded-md text-gray-900 dark:text-white bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-light" onblur="checkInput(this)">
+                                <select id="productCategory" name="category"
+                                    class="w-full px-4 py-2.5 border border-gray-light dark:border-gray-600 rounded-md text-gray-900 dark:text-white bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-light"
+                                    onblur="checkInput(this)">
                                     <option value="" disabled selected hidden>Select Category</option>
-                                    <option>Electronics</option>
-                                    <option>Textile goods</option>
-                                    <option>Raw materials</option>
-                                    <option>Furniture items</option>
-                                    <option>Sports equipment</option>
-                                    <option>Medical/health supplies</option>
-                                    <option>Others</option>
+                                    <option value="Electronics">Electronics</option>
+                                    <option value="Textile goods">Textile goods</option>
+                                    <option value="Raw materials">Raw materials</option>
+                                    <option value="Furniture items">Furniture items</option>
+                                    <option value="Sports equipment">Sports equipment</option>
+                                    <option value="Food & Beverages">Food & Beverages</option>
+                                    <option value="Automotive Parts">Automotive Parts</option>
+                                    <option value="Medical Equipment">Medical Equipment</option>
+                                    <option value="Others">Others</option>
                                 </select>
-                                <p id="categoryWarning" class="text-red-500 text-sm mt-1 hidden">This field is required.</p>
+                                <p id="categoryWarning" class="text-red-500 text-sm mt-1 hidden">This field is required.
+                                </p>
                             </div>
-                            
+
                             <!-- Price and Stock Row -->
                             <div>
                                 <label class="block text-blue-900 dark:text-blue-300 mb-2">Price (USD)*</label>
-                                <input type="number" id="productPrice" min="1" step="0.01" class="w-full px-4 py-2.5 border border-gray-light dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-light placeholder-gray-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white" placeholder="100.00" onblur="checkInput(this)">
-                                <p id="priceWarning" class="text-red-500 text-sm mt-1 hidden">This field is required.</p>
+                                <input type="number" id="productPrice" name="price" min="0.01" step="0.01"
+                                    class="w-full px-4 py-2.5 border border-gray-light dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-light placeholder-gray-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                                    placeholder="100.00" onblur="checkInput(this)">
+                                <p id="priceWarning" class="text-red-500 text-sm mt-1 hidden">This field is required.
+                                </p>
                             </div>
                             <div>
                                 <label class="block text-blue-900 dark:text-blue-300 mb-2">Stock Quantity*</label>
-                                <input type="number" id="stockQuantity" min="1" class="w-full px-4 py-2.5 border border-gray-light dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-light placeholder-gray-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white" placeholder="50" onblur="checkInput(this)">
-                                <p id="stockWarning" class="text-red-500 text-sm mt-1 hidden">This field is required.</p>
+                                <input type="number" id="stockQuantity" name="stock_quantity" min="1"
+                                    class="w-full px-4 py-2.5 border border-gray-light dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-light placeholder-gray-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                                    placeholder="50" onblur="checkInput(this)">
+                                <p id="stockWarning" class="text-red-500 text-sm mt-1 hidden">This field is required.
+                                </p>
                             </div>
-                            
-                            <!-- Product ID and Weight Row -->
+
+                            <!-- Auto-Generated SKU Display -->
                             <div>
-                                <label class="block text-blue-900 dark:text-blue-300 mb-2">Product ID/SKU*</label>
-                                <input type="text" id="productSKU" class="w-full px-4 py-2.5 border border-gray-light dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-light placeholder-gray-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white" placeholder="TDR-3000" onblur="checkInput(this)">
-                                <p id="skuWarning" class="text-red-500 text-sm mt-1 hidden">This field is required.</p>
+                                <label class="block text-blue-900 dark:text-blue-300 mb-2">Product SKU</label>
+                                <div
+                                    class="w-full px-4 py-2.5 border border-gray-light dark:border-gray-600 rounded-md bg-gray-100 dark:bg-gray-600 text-gray-600 dark:text-gray-300 flex items-center">
+                                    <svg class="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 4v16m8-8H4"></path>
+                                    </svg>
+                                    Auto-generated (TD-XXX)
+                                </div>
+                                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">SKU will be automatically
+                                    generated when product is created</p>
                             </div>
+
+                            <div>
+                                <label class="block text-blue-900 dark:text-blue-300 mb-2">Product Status</label>
+                                <div
+                                    class="w-full px-4 py-2.5 border border-gray-light dark:border-gray-600 rounded-md bg-yellow-50 dark:bg-yellow-900 text-yellow-700 dark:text-yellow-300 flex items-center">
+                                    <svg class="w-5 h-5 mr-2 text-yellow-500" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    Pending Review
+                                </div>
+                                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">All products start with pending
+                                    status and require admin approval</p>
+                            </div>
+
                             <div>
                                 <label class="block text-blue-900 dark:text-blue-300 mb-2">Product Weight (kg)*</label>
-                                <input type="number" id="productWeight" min="0.1" step="0.1" class="w-full px-4 py-2.5 border border-gray-light dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-light placeholder-gray-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white" placeholder="5.0" onblur="checkInput(this)">
-                                <p id="productWeightWarning" class="text-red-500 text-sm mt-1 hidden">This field is required.</p>
+                                <input type="number" id="productWeight" name="weight" min="0.1" step="0.1"
+                                    class="w-full px-4 py-2.5 border border-gray-light dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-light placeholder-gray-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                                    placeholder="5.0" onblur="checkInput(this)">
+                                <p id="productWeightWarning" class="text-red-500 text-sm mt-1 hidden">This field is
+                                    required.</p>
                             </div>
-                            
+
                             <!-- Country of Origin -->
                             <div class="md:col-span-2">
                                 <label class="block text-blue-900 dark:text-blue-300 mb-2">Country of Origin*</label>
-                                <select id="countryOrigin" class="w-full px-4 py-2.5 border border-gray-light dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-light bg-white dark:bg-gray-700 text-gray-900 dark:text-white" onblur="checkInput(this)">
+                                <select id="countryOrigin" name="country_of_origin"
+                                    class="w-full px-4 py-2.5 border border-gray-light dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-light bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                                    onblur="checkInput(this)">
                                     <option value="" disabled selected hidden>Select Country</option>
-                                    <option>Indonesia</option>
-                                    <option>Malaysia</option>
-                                    <option>Thailand</option>
-                                    <option>Singapore</option>
-                                    <option>Vietnam</option>
-                                    <option>Philippines</option>
-                                    <option>China</option>
-                                    <option>India</option>
-                                    <option>Others</option>
+                                    <option value="Indonesia">Indonesia</option>
+                                    <option value="Malaysia">Malaysia</option>
+                                    <option value="Thailand">Thailand</option>
+                                    <option value="Singapore">Singapore</option>
+                                    <option value="Vietnam">Vietnam</option>
+                                    <option value="Philippines">Philippines</option>
+                                    <option value="Brunei">Brunei</option>
+                                    <option value="Cambodia">Cambodia</option>
+                                    <option value="Laos">Laos</option>
+                                    <option value="Myanmar">Myanmar</option>
+                                    <option value="China">China</option>
+                                    <option value="India">India</option>
+                                    <option value="Others">Others</option>
                                 </select>
-                                <p id="countryWarning" class="text-red-500 text-sm mt-1 hidden">This field is required.</p>
+                                <p id="countryWarning" class="text-red-500 text-sm mt-1 hidden">This field is required.
+                                </p>
                             </div>
-                            
+
                             <div class="md:col-span-2">
                                 <label class="block text-blue-900 dark:text-blue-300 mb-2">Product Description*</label>
-                                <textarea id="productDescription" class="w-full px-4 py-2.5 border border-gray-light dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-light placeholder-gray-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white" rows="4" placeholder="Detailed product description..." onblur="checkInput(this)"></textarea>
+                                <textarea id="productDescription" name="product_description"
+                                    class="w-full px-4 py-2.5 border border-gray-light dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-light placeholder-gray-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                                    rows="4" placeholder="Detailed product description..."
+                                    onblur="checkInput(this)"></textarea>
                                 <p id="descWarning" class="text-red-500 text-sm mt-1 hidden">This field is required.</p>
                             </div>
                         </div>
@@ -212,8 +274,12 @@
 
             <!-- Form Actions -->
             <div class="flex flex-col sm:flex-row gap-4 justify-center slide-in">
-                
-                <button type="submit" class="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white font-bold py-3 px-8 rounded-md transition-all duration-300 transform hover:scale-105">
+                <button type="button" onclick="resetForm()"
+                    class="bg-gray-500 hover:bg-gray-600 dark:bg-gray-600 dark:hover:bg-gray-700 text-white font-bold py-3 px-8 rounded-md transition-all duration-300">
+                    Reset Form
+                </button>
+                <button type="submit"
+                    class="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white font-bold py-3 px-8 rounded-md transition-all duration-300 transform hover:scale-105">
                     Publish Product
                 </button>
             </div>
@@ -226,18 +292,26 @@
             <p>© 2025 TriadGO. All rights reserved.</p>
             <div class="space-x-4 mt-4 md:mt-0">
                 <a href="#" aria-label="Facebook" class="hover:text-amber-400 transition">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="inline h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M22 12.07c0-5.52-4.48-10-10-10s-10 4.48-10 10c0 4.99 3.66 9.12 8.44 9.88v-6.99h-2.54v-2.89h2.54v-2.21c0-2.5 1.49-3.89 3.78-3.89 1.1 0 2.25.2 2.25.2v2.49h-1.27c-1.25 0-1.64.78-1.64 1.57v1.84h2.78l-.44 2.89h-2.34v6.99c4.78-.76 8.44-4.89 8.44-9.88z" />
+                    <svg xmlns="http://www.w3.org/2000/svg" class="inline h-6 w-6" fill="currentColor"
+                        viewBox="0 0 24 24">
+                        <path
+                            d="M22 12.07c0-5.52-4.48-10-10-10s-10 4.48-10 10c0 4.99 3.66 9.12 8.44 9.88v-6.99h-2.54v-2.89h2.54v-2.21c0-2.5 1.49-3.89 3.78-3.89 1.1 0 2.25.2 2.25.2v2.49h-1.27c-1.25 0-1.64.78-1.64 1.57v1.84h2.78l-.44 2.89h-2.34v6.99c4.78-.76 8.44-4.89 8.44-9.88z" />
                     </svg>
                 </a>
-                <a href="https://github.com/Zahran40/TriadGo" aria-label="GitHub" class="hover:text-amber-400 transition">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="inline h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 2C6.477 2 2 6.484 2 12.021c0 4.428 2.865 8.184 6.839 9.504.5.092.682-.217.682-.482 0-.237-.009-.868-.014-1.703-2.782.605-3.369-1.342-3.369-1.342-.454-1.157-1.11-1.465-1.11-1.465-.908-.62.069-.608.069-.608 1.004.07 1.532 1.032 1.532 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.339-2.221-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.025A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.295 2.748-1.025 2.748-1.025.546 1.378.202 2.397.1 2.65.64.7 1.028 1.595 1.028 2.688 0 3.847-2.337 4.695-4.566 4.944.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.744 0 .267.18.579.688.481C19.138 20.203 22 16.447 22 12.021 22 6.484 17.523 2 12 2z" />
+                <a href="https://github.com/Zahran40/TriadGo" aria-label="GitHub"
+                    class="hover:text-amber-400 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="inline h-6 w-6" fill="currentColor"
+                        viewBox="0 0 24 24">
+                        <path
+                            d="M12 2C6.477 2 2 6.484 2 12.021c0 4.428 2.865 8.184 6.839 9.504.5.092.682-.217.682-.482 0-.237-.009-.868-.014-1.703-2.782.605-3.369-1.342-3.369-1.342-.454-1.157-1.11-1.465-1.11-1.465-.908-.62.069-.608.069-.608 1.004.07 1.532 1.032 1.532 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.339-2.221-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.025A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.295 2.748-1.025 2.748-1.025.546 1.378.202 2.397.1 2.65.64.7 1.028 1.595 1.028 2.688 0 3.847-2.337 4.695-4.566 4.944.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.744 0 .267.18.579.688.481C19.138 20.203 22 16.447 22 12.021 22 6.484 17.523 2 12 2z" />
                     </svg>
                 </a>
-                <a href="https://www.instagram.com/official.usu" aria-label="Instagram" class="hover:text-amber-400 transition">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="inline h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5A4.25 4.25 0 0 0 20.5 16.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5zm4.25 3.25a5.25 5.25 0 1 1 0 10.5 5.25 5.25 0 0 1 0-10.5zm0 1.5a3.75 3.75 0 1 0 0 7.5 3.75 3.75 0 0 0 0-7.5zm5.13.62a1.13 1.13 0 1 1-2.25 0 1.13 1.13 0 0 1 2.25 0z" />
+                <a href="https://www.instagram.com/official.usu" aria-label="Instagram"
+                    class="hover:text-amber-400 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="inline h-6 w-6" fill="currentColor"
+                        viewBox="0 0 24 24">
+                        <path
+                            d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5A4.25 4.25 0 0 0 20.5 16.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5zm4.25 3.25a5.25 5.25 0 1 1 0 10.5 5.25 5.25 0 0 1 0-10.5zm0 1.5a3.75 3.75 0 1 0 0 7.5 3.75 3.75 0 0 0 0-7.5zm5.13.62a1.13 1.13 0 1 1-2.25 0 1.13 1.13 0 0 1 2.25 0z" />
                     </svg>
                 </a>
             </div>
@@ -292,15 +366,15 @@
         const closeSidebarBtn = document.getElementById('closeSidebar');
 
         if (openSidebarBtn && closeSidebarBtn) {
-            openSidebarBtn.addEventListener('click', function() {
+            openSidebarBtn.addEventListener('click', function () {
                 sidebar.classList.remove('hidden');
             });
 
-            closeSidebarBtn.addEventListener('click', function() {
+            closeSidebarBtn.addEventListener('click', function () {
                 sidebar.classList.add('hidden');
             });
 
-            sidebar.addEventListener('click', function(e) {
+            sidebar.addEventListener('click', function (e) {
                 if (e.target === sidebar) {
                     sidebar.classList.add('hidden');
                 }
@@ -308,9 +382,9 @@
         }
 
         // SweetAlert2 Logout Desktop
-        document.getElementById('logoutBtn')?.addEventListener('click', function(e) {
+        document.getElementById('logoutBtn')?.addEventListener('click', function (e) {
             const isDark = document.documentElement.classList.contains('dark');
-            
+
             Swal.fire({
                 title: 'Logout?',
                 text: "Are you sure you want to logout?",
@@ -332,9 +406,9 @@
         });
 
         // SweetAlert2 Logout Mobile
-        document.getElementById('logoutBtnMobile')?.addEventListener('click', function(e) {
+        document.getElementById('logoutBtnMobile')?.addEventListener('click', function (e) {
             const isDark = document.documentElement.classList.contains('dark');
-            
+
             Swal.fire({
                 title: 'Logout?',
                 text: "Are you sure you want to logout?",
@@ -359,7 +433,7 @@
         function previewImage(input) {
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
-                reader.onload = function(e) {
+                reader.onload = function (e) {
                     document.getElementById('previewImg').src = e.target.result;
                     document.getElementById('imagePreview').classList.remove('hidden');
                     document.getElementById('uploadArea').classList.add('hidden');
@@ -372,12 +446,13 @@
             document.getElementById('productImage').value = '';
             document.getElementById('imagePreview').classList.add('hidden');
             document.getElementById('uploadArea').classList.remove('hidden');
+            document.getElementById('imageWarning').classList.add('hidden');
         }
 
         function checkImageInput() {
             const imageInput = document.getElementById('productImage');
             const imageWarning = document.getElementById('imageWarning');
-            
+
             if (!imageInput.files || imageInput.files.length === 0) {
                 imageWarning.classList.remove('hidden');
                 return false;
@@ -388,21 +463,20 @@
         }
 
         // Form Validation Function
-        window.checkInput = function(element) {
+        window.checkInput = function (element) {
             const value = element.value.trim();
             let warningId = "";
-            
+
             const fieldMap = {
                 "ProductName": "nameWarning",
-                "productDescription": "descWarning", 
+                "productDescription": "descWarning",
                 "productCategory": "categoryWarning",
                 "productPrice": "priceWarning",
                 "stockQuantity": "stockWarning",
-                "productSKU": "skuWarning",
                 "productWeight": "productWeightWarning",
                 "countryOrigin": "countryWarning"
             };
-            
+
             warningId = fieldMap[element.id];
 
             if (warningId) {
@@ -417,17 +491,60 @@
             return true;
         };
 
+        // Reset Form Function
+        function resetForm() {
+            const isDark = document.documentElement.classList.contains('dark');
+
+            Swal.fire({
+                title: 'Reset Form?',
+                text: "All form data will be cleared. This action cannot be undone.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'Yes, Reset',
+                background: isDark ? '#374151' : '#ffffff',
+                didOpen: () => {
+                    const popup = Swal.getPopup();
+                    if (isDark) popup.classList.add('swal2-dark');
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('productForm').reset();
+                    removeImage();
+
+                    // Hide all warning messages
+                    document.querySelectorAll('[id$="Warning"]').forEach(warning => {
+                        warning.classList.add('hidden');
+                    });
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Form Reset!',
+                        text: 'All form fields have been cleared.',
+                        timer: 1500,
+                        showConfirmButton: false,
+                        background: isDark ? '#374151' : '#ffffff',
+                        didOpen: () => {
+                            const popup = Swal.getPopup();
+                            if (isDark) popup.classList.add('swal2-dark');
+                        }
+                    });
+                }
+            });
+        }
+
         // Form Submission Validation
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             function validateAll() {
                 const requiredFields = [
-                    'ProductName', 'productCategory', 'productDescription', 
-                    'productPrice', 'stockQuantity', 'productSKU', 'productWeight',
+                    'ProductName', 'productCategory', 'productDescription',
+                    'productPrice', 'stockQuantity', 'productWeight', // REMOVED 'productSKU'
                     'countryOrigin'
                 ];
-                
+
                 let allValid = true;
-                
+
                 // Check image
                 if (!checkImageInput()) {
                     allValid = false;
@@ -440,14 +557,14 @@
                         allValid = false;
                     }
                 });
-                
+
                 return allValid;
             }
 
-            // Form submission with SweetAlert
-            document.querySelector('form').addEventListener('submit', function(e) {
+            // Form submission with AJAX
+            document.getElementById('productForm').addEventListener('submit', function (e) {
                 e.preventDefault();
-                
+
                 if (!validateAll()) {
                     const isDark = document.documentElement.classList.contains('dark');
                     Swal.fire({
@@ -463,20 +580,89 @@
                     return;
                 }
 
+                // Prepare form data (WITHOUT product_sku)
+                const formData = new FormData();
+                formData.append('product_name', document.getElementById('ProductName').value);
+                formData.append('product_description', document.getElementById('productDescription').value);
+                formData.append('category', document.getElementById('productCategory').value);
+                formData.append('price', document.getElementById('productPrice').value);
+                formData.append('stock_quantity', document.getElementById('stockQuantity').value);
+                // REMOVED: formData.append('product_sku', document.getElementById('productSKU').value);
+                formData.append('weight', document.getElementById('productWeight').value);
+                formData.append('country_of_origin', document.getElementById('countryOrigin').value);
+                formData.append('_token', document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
+
+                // Add product image if selected
+                const productImage = document.getElementById('productImage');
+                if (productImage.files && productImage.files[0]) {
+                    formData.append('product_image', productImage.files[0]);
+                }
+
+                // Show loading
                 const isDark = document.documentElement.classList.contains('dark');
                 Swal.fire({
-                    icon: 'success',
-                    title: 'Product Published!',
-                    text: 'Your product has been successfully published.',
-                    background: isDark ? '#374151' : '#ffffff',
+                    title: 'Publishing...',
+                    text: 'Please wait while we publish your product.',
+                    allowOutsideClick: false,
                     didOpen: () => {
-                        const popup = Swal.getPopup();
-                        if (isDark) popup.classList.add('swal2-dark');
+                        Swal.showLoading();
                     }
                 });
-            });
 
-            
+                // Send AJAX request
+                fetch('{{ route("product.store") }}', {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Product Published!',
+                                html: `Your product has been successfully published.<br><strong>SKU: ${data.product_sku || 'Generated'}</strong>`,
+                                background: isDark ? '#374151' : '#ffffff',
+                                didOpen: () => {
+                                    const popup = Swal.getPopup();
+                                    if (isDark) popup.classList.add('swal2-dark');
+                                }
+                            }).then(() => {
+                                // Reset form after success
+                                document.getElementById('productForm').reset();
+                                removeImage();
+
+                                // Hide all warning messages
+                                document.querySelectorAll('[id$="Warning"]').forEach(warning => {
+                                    warning.classList.add('hidden');
+                                });
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error!',
+                                text: data.message || 'Failed to publish product.',
+                                background: isDark ? '#374151' : '#ffffff',
+                                didOpen: () => {
+                                    const popup = Swal.getPopup();
+                                    if (isDark) popup.classList.add('swal2-dark');
+                                }
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error!',
+                            text: 'Something went wrong. Please try again.',
+                            background: isDark ? '#374151' : '#ffffff',
+                            didOpen: () => {
+                                const popup = Swal.getPopup();
+                                if (isDark) popup.classList.add('swal2-dark');
+                            }
+                        });
+                    });
+            });
         });
 
         // Scroll Animation
@@ -514,7 +700,7 @@
         }
 
         document.querySelectorAll('nav a[href^="#"], a[href^="#"]').forEach(link => {
-            link.addEventListener('click', function(event) {
+            link.addEventListener('click', function (event) {
                 if (this.getAttribute('href') !== '#') {
                     event.preventDefault();
                     const targetId = this.getAttribute('href').substring(1);

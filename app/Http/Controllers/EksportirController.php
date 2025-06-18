@@ -22,15 +22,15 @@ class EksportirController extends Controller
         return view('formeksportir');
     }
 
-    public function myproduct()
-    {
-        return view('myproduct');
-    }
+    // public function myproduct()
+    // {
+    //     return view('myproduct');
+    // }
 
-    public function detailproducteksportir()
-    {
-        // Middleware sudah handle auth & role check
-        // Jika sampai sini, berarti user sudah pasti role 'ekspor'
-        return view('detailproductekspor');
-    }
+    // public function detailproducteksportir()
+    // {
+    //     // Middleware sudah handle auth & role check
+    //     // Jika sampai sini, berarti user sudah pasti role 'ekspor'
+    //     return view('detailproductekspor');
+    // }
 }

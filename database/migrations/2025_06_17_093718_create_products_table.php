@@ -38,7 +38,7 @@ return new class extends Migration
             // Indexes
             $table->index('user_id');
             $table->index('category');
-            $table->unique('product_sku');
+            // $table->unique('product_sku');
         });
     }
 

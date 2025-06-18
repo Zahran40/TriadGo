@@ -31,9 +31,7 @@ Route::get('/', function () {
 Route::get('/importir', [ImportirController::class, 'homeimportir'])->name('importir')->middleware('role.protect:impor');
 Route::get('/catalog', [ImportirController::class, 'catalog'])->name('catalog')->middleware('role.protect:impor');
 Route::get('/formimportir', [ImportirController::class, 'formimportir'])->name('formimportir')->middleware('role.protect:impor');
-
-// FIX: Update route detail untuk importir
-Route::get('/product-detail-importir/{id}', [ImportirController::class, 'detail'])->name('product.detail.importir')->middleware('role.protect:impor');
+Route::get('/detail', [ImportirController::class, 'detail'])->name('detail')->middleware('role.protect:impor');
 
 // // User Profile - hanya user yang login (bukan guest)
 // Route::get('/user-profile', [PageController::class, 'userprofile'])->name('userprofile')->middleware('role.protect:impor,ekspor');
@@ -77,3 +75,5 @@ Route::fallback(function () {
     return response()->view('404', ['userRole' => $userRole], 404);
 });
 
+Route::get('/requestimportir', [ImportirController::class, 'requestimportir'])->name('requestimportir')->middleware('role.protect:impor');
+Route::get('/response', [EksportirController::class, 'response'])->name('response')->middleware('role.protect:ekspor');

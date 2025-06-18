@@ -62,18 +62,8 @@ class ImportirController extends Controller
         return view('formImportir');
     }
 
-    public function detail($id)
+    public function requestimportir()
     {
-        // Get product detail with user info
-        $product = Product::with('user')
-                         ->where('product_id', $id)
-                         ->where('status', 'approved')
-                         ->first();
-
-        if (!$product) {
-            return redirect()->route('catalog')->with('error', 'Product not found');
-        }
-
-        return view('detailproductimportir', compact('product'));
+        return view('requestimportir');
     }
 }

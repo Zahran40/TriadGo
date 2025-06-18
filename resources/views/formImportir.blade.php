@@ -170,6 +170,16 @@
                         <!-- Items will be loaded from cart -->
                     </div>
                     
+                    <!-- Add More Products Button -->
+                    <div id="addMoreProductsBtn" class="mb-6 pt-4 border-t border-gray-300 dark:border-gray-600 text-center hidden">
+                        <a href="{{ url('/catalog') }}" class="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-all">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                            </svg>
+                            Add More Products
+                        </a>
+                    </div>
+                    
                     <!-- Empty Cart Message -->
                     <div id="emptyCartMessage" class="text-center py-8 hidden">
                         <svg class="w-16 h-16 mx-auto text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -239,15 +249,6 @@
                         </div>
                     </div>
 
-                    <!-- Add More Products Button -->
-                    <div class="mt-4 pt-4 border-t border-gray-300 dark:border-gray-600 text-center">
-                        <a href="{{ url('/catalog') }}" class="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-all">
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                            </svg>
-                            Add More Products
-                        </a>
-                    </div>
                 </div> <!-- Penutup card Order Summary -->
 
                 <!-- Payment & Billing Section -->
@@ -629,7 +630,118 @@
 
     <!-- JavaScript Code -->
     <script>
+        // Cart Management Functions
+        function loadCartItems() {
+            const cart = JSON.parse(localStorage.getItem('importCart')) || [];
+            const cartItemsContainer = document.getElementById('cartItemsCheckout');
+            const emptyCartMessage = document.getElementById('emptyCartMessage');
+            const pricingBreakdown = document.getElementById('pricingBreakdown');
+            const addMoreProductsBtn = document.getElementById('addMoreProductsBtn');
+
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = '';
+                emptyCartMessage.classList.remove('hidden');
+                pricingBreakdown.classList.add('hidden');
+                addMoreProductsBtn.classList.add('hidden');
+                return;
+            }
+
+            emptyCartMessage.classList.add('hidden');
+            pricingBreakdown.classList.remove('hidden');
+            addMoreProductsBtn.classList.remove('hidden');
+
+            let cartHTML = '';
+            let subtotal = 0;
+
+            cart.forEach((item, index) => {
+                const itemTotal = item.price * item.quantity;
+                subtotal += itemTotal;
+
+                cartHTML += `
+                    <div class="border-b border-gray-200 dark:border-gray-600 pb-4">
+                        <div class="flex items-center space-x-4">
+                            <img src="${item.image}" alt="${item.name}" class="w-20 h-20 object-cover rounded-lg shadow-sm">
+                            <div class="flex-1">
+                                <h3 class="font-semibold text-blue-900 dark:text-blue-100">${item.name}</h3>
+                                <p class="text-gray-600 dark:text-gray-300 text-sm">Origin: ${item.origin}</p>
+                                <p class="text-gray-600 dark:text-gray-300 text-sm">Weight: ${item.weight}kg</p>
+                                <p class="text-gray-600 dark:text-gray-300 text-sm">SKU: ${item.sku}</p>
+                                <div class="flex items-center mt-2">
+                                    <label class="text-sm text-blue-900 dark:text-blue-100 mr-2">Qty:</label>
+                                    <select class="border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded px-2 py-1 text-sm" onchange="updateCartItemQuantity(${index}, this.value)">
+                                        ${generateQuantityOptions(item.quantity)}
+                                    </select>
+                                    <button onclick="removeCartItem(${index})" class="ml-3 text-red-500 hover:text-red-700 text-sm">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <p class="font-semibold text-blue-900 dark:text-blue-100">$${itemTotal.toFixed(2)}</p>
+                                <p class="text-sm text-gray-600 dark:text-gray-300">$${item.price.toFixed(2)} each</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            cartItemsContainer.innerHTML = cartHTML;
+            updatePricing(subtotal);
+        }
+
+        function generateQuantityOptions(currentQty) {
+            let options = '';
+            for (let i = 1; i <= 10; i++) {
+                options += `<option value="${i}" ${i === currentQty ? 'selected' : ''}>${i}</option>`;
+            }
+            return options;
+        }
+
+        function updateCartItemQuantity(index, newQuantity) {
+            const cart = JSON.parse(localStorage.getItem('importCart')) || [];
+            if (cart[index]) {
+                cart[index].quantity = parseInt(newQuantity);
+                localStorage.setItem('importCart', JSON.stringify(cart));
+                loadCartItems(); // Reload to update display
+                
+                // Dispatch cart update event
+                window.dispatchEvent(new CustomEvent('cartUpdated'));
+            }
+        }
+
+        function removeCartItem(index) {
+            const cart = JSON.parse(localStorage.getItem('importCart')) || [];
+            cart.splice(index, 1);
+            localStorage.setItem('importCart', JSON.stringify(cart));
+            loadCartItems(); // Reload to update display
+            
+            // Dispatch cart update event
+            window.dispatchEvent(new CustomEvent('cartUpdated'));
+        }
+
+        function updatePricing(subtotal) {
+            const shipping = 25.00;
+            const taxRate = 0.10;
+            const tax = subtotal * taxRate;
+            const total = subtotal + shipping + tax;
+
+            document.getElementById('subtotal').textContent = `$${subtotal.toFixed(2)}`;
+            document.getElementById('shipping').textContent = `$${shipping.toFixed(2)}`;
+            document.getElementById('tax').textContent = `$${tax.toFixed(2)}`;
+            document.getElementById('totalAmount').textContent = `$${total.toFixed(2)}`;
+            
+            // Update currency conversions if function exists
+            if (typeof updateCurrency === 'function') {
+                updateCurrency();
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
+            // Load cart items on page load
+            loadCartItems();
+            
             // Dark mode functionality
             const darkModeToggle = document.getElementById('darkModeToggle');
             const darkModeThumb = document.getElementById('darkModeThumb');
@@ -1140,6 +1252,105 @@
             // Initialize bank transfer functionality
             setupBankTransfer();
         });
+
+        // Additional Cart and Currency Functions
+        function updateCurrency() {
+            const currencySelect = document.getElementById('currencySelect');
+            const totalAmountElement = document.getElementById('totalAmount');
+            
+            if (!currencySelect || !totalAmountElement) return;
+            
+            const selectedCurrency = currencySelect.value;
+            const totalInUSD = parseFloat(totalAmountElement.textContent.replace('$', '').replace(',', ''));
+            
+            // Exchange rates (simplified - in production, use live rates)
+            const exchangeRates = {
+                'USD': 1,
+                'IDR': 15000,
+                'MYR': 4.70,
+                'SGD': 1.35,
+                'THB': 35.50,
+                'PHP': 56.00,
+                'VND': 24000,
+                'BND': 1.35,
+                'LAK': 21000,
+                'KHR': 4100,
+                'MMK': 2100
+            };
+            
+            const convertedAmount = totalInUSD * exchangeRates[selectedCurrency];
+            const currencySymbols = {
+                'USD': '$',
+                'IDR': 'Rp ',
+                'MYR': 'RM ',
+                'SGD': 'S$',
+                'THB': '฿',
+                'PHP': '₱',
+                'VND': '₫',
+                'BND': 'B$',
+                'LAK': '₭',
+                'KHR': '៛',
+                'MMK': 'K'
+            };
+            
+            totalAmountElement.textContent = currencySymbols[selectedCurrency] + convertedAmount.toLocaleString();
+        }
+
+        function applyCoupon() {
+            const couponCode = document.getElementById('couponCode').value.trim();
+            
+            if (!couponCode) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Coupon Required',
+                    text: 'Please enter a coupon code'
+                });
+                return;
+            }
+            
+            // Sample coupon codes (in production, validate with backend)
+            const validCoupons = {
+                'WELCOME10': { discount: 0.10, type: 'percentage', description: '10% off' },
+                'SAVE25': { discount: 25, type: 'fixed', description: '$25 off' },
+                'NEWUSER': { discount: 0.15, type: 'percentage', description: '15% off' }
+            };
+            
+            const coupon = validCoupons[couponCode.toUpperCase()];
+            
+            if (coupon) {
+                const subtotalElement = document.getElementById('subtotal');
+                const subtotal = parseFloat(subtotalElement.textContent.replace('$', '').replace(',', ''));
+                
+                let discountAmount = 0;
+                if (coupon.type === 'percentage') {
+                    discountAmount = subtotal * coupon.discount;
+                } else {
+                    discountAmount = coupon.discount;
+                }
+                
+                // Apply discount and recalculate
+                const newSubtotal = Math.max(0, subtotal - discountAmount);
+                subtotalElement.textContent = `$${newSubtotal.toFixed(2)}`;
+                
+                // Update total
+                updatePricing(newSubtotal);
+                
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Coupon Applied!',
+                    text: `${coupon.description} discount applied successfully`
+                });
+                
+                // Clear coupon input
+                document.getElementById('couponCode').value = '';
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Invalid Coupon',
+                    text: 'The coupon code you entered is not valid'
+                });
+            }
+        }
     </script>
 </body>
 </html>

@@ -241,6 +241,14 @@
                                 Add to Import Cart
                             </button>
                             
+                            <button onclick="viewCart()"
+                                class="text-xl bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-500 text-white font-bold py-3 px-6 rounded-md transition flex items-center justify-center gap-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                </svg>
+                                View Cart
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -460,6 +468,34 @@
                 }
             }).then((result) => {
                 if (result.isConfirmed) {
+                    // Add product to localStorage cart
+                    const product = {
+                        id: {{ $product->product_id }},
+                        name: "{{ $product->product_name }}",
+                        price: {{ $product->price }},
+                        image: "{{ $product->product_image ? asset('uploads/products/' . $product->product_image) : 'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=150&h=150&fit=crop&crop=center' }}",
+                        origin: "{{ $product->country_of_origin }}",
+                        weight: {{ $product->weight }},
+                        quantity: quantity,
+                        sku: "{{ $product->product_sku }}"
+                    };
+
+                    let cart = JSON.parse(localStorage.getItem('importCart')) || [];
+                    
+                    // Check if product already exists in cart
+                    const existingProductIndex = cart.findIndex(item => item.id === product.id);
+                    
+                    if (existingProductIndex > -1) {
+                        // Update quantity if product exists
+                        cart[existingProductIndex].quantity += quantity;
+                    } else {
+                        // Add new product to cart
+                        cart.push(product);
+                    }
+                    
+                    localStorage.setItem('importCart', JSON.stringify(cart));
+                    updateCartCount();
+
                     const isDarkSuccess = document.documentElement.classList.contains('dark');
                     
                     Swal.fire({
@@ -478,6 +514,35 @@
                 }
             });
         }
+
+        function viewCart() {
+            // Redirect to formImportir (checkout page)
+            window.location.href = "{{ route('formimportir') }}";
+        }
+
+        function updateCartCount() {
+            const cart = JSON.parse(localStorage.getItem('importCart')) || [];
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            
+            // Update cart count in navbar if element exists
+            const cartCountElement = document.querySelector('.cart-count');
+            if (cartCountElement) {
+                cartCountElement.textContent = totalItems;
+                if (totalItems > 0) {
+                    cartCountElement.classList.remove('hidden');
+                } else {
+                    cartCountElement.classList.add('hidden');
+                }
+            }
+
+            // Dispatch custom event for other scripts to listen
+            window.dispatchEvent(new CustomEvent('cartUpdated'));
+        }
+
+        // Initialize cart count on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCartCount();
+        });
 
         function contactExporter() {
             const isDark = document.documentElement.classList.contains('dark');

@@ -61,4 +61,11 @@ class ImportirController extends Controller
     {
         return view('formImportir');
     }
+
+    public function showProductDetail($id)
+{
+    // Contoh: ambil data produk dari model Product
+    $product = Product::findOrFail($id);
+    return view('detailproductimportir', compact('product'));
+}
 }

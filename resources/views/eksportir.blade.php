@@ -23,8 +23,12 @@
                     },
                     keyframes: {
                         float: {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-10px)' },
+                            '0%, 100%': {
+                                transform: 'translateY(0)'
+                            },
+                            '50%': {
+                                transform: 'translateY(-10px)'
+                            },
                         }
                     }
                 },
@@ -143,81 +147,53 @@
 
     <section id="find-buyers" class="container mx-auto px-6 py-16 slide-in">
         <h2 class="text-3xl font-bold text-blue-900 mb-6 text-center">Find Buyers Respons</h2>
-       
+
 
         <!-- Buyers Response -->
         <div class="mt-12">
-           
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="buyer-card shadow-md rounded-lg overflow-hidden hover:shadow-lg transition">
-                    <div class="p-4">
-                        <div class="flex items-center mb-4">
-                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Buyer"
-                                class="w-12 h-12 rounded-full mr-4">
-                            <div>
-                                <h4 class="font-semibold text-lg">Vincent Simbolon</h4>
-                                <p class="text-orange-500 text-sm">Indonesia</p>
-                            </div>
-                        </div>
-                        <p class="buyer-card-text mb-4">Plz sell more Product</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-sm text-gray-500">Last active: 2 days ago</span>
 
+            <div class="mt-12">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 ml-6">
+                    <div class="buyer-card text-md rounded-lg shadow-lg">
+                        <div class="p-4">
+                            <div class="flex items-center mb-4">
+                                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Buyer"
+                                    class="w-[60px] h-[60px] rounded-full mr-4">
+                                <div>
+                                    <a href="">
+                                        <h4 class="font-bold text-blue-800 text-lg">Vincent Simbolon</h4>
+                                        <p class="text-amber-500 text-sm font-semibold">Indonesia</p>
+                                    </a>
+                                </div>
+                            </div>
+                            <p class="buyer-card-text text-md mb-4">Plz sell more Product</p>
+                            <div class="flex items-center">
+                                <p class="text-md font-semibold text-blue-700">Product Imported : </p>
+                                <a href="">
+                                    <p class="text-md font-bold text-blue-700 ml-2"> Kapal Karam</p>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="buyer-card shadow-md rounded-lg overflow-hidden hover:shadow-lg transition">
-                    <div class="p-4">
-                        <div class="flex items-center mb-4">
-                            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Buyer"
-                                class="w-12 h-12 rounded-full mr-4">
-                            <div>
-                                <h4 class="font-semibold text-lg">Reagan Siahaan</h4>
-                                <p class="text-orange-500 text-sm">Singapore</p>
-                            </div>
-                        </div>
-                        <p class="buyer-card-text mb-4">Your Handyman Services is best</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-sm text-gray-500">Last active: 1 day ago</span>
 
-                        </div>
-                    </div>
-                </div>
-
-                <div class="buyer-card shadow-md rounded-lg overflow-hidden hover:shadow-lg transition">
-                    <div class="p-4">
-                        <div class="flex items-center mb-4">
-                            <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Buyer"
-                                class="w-12 h-12 rounded-full mr-4">
-                            <div>
-                                <h4 class="font-semibold text-lg">Abbil Rizki Abdillah</h4>
-                                <p class="text-orange-500 text-sm">Cambodia</p>
-                            </div>
-                        </div>
-                        <p class="buyer-card-text mb-4">I love All your Product</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-sm text-gray-500">Last active: Today</span>
-
-                        </div>
-                    </div>
-                </div>
             </div>
 
             <div class="text-center mt-10">
-                <button
-                    class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-6 rounded-md transition pulse-on-hover inline-flex items-center">
+                <a href="{{ route('response') }}"
+                    class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-6 rounded-md transition pulse-on-hover inline-flex items-center">
                     View All Responses
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                     </svg>
-                </button>
+                </a>
             </div>
         </div>
     </section>
 
-    
+
 
     <footer class="bg-blue-800 text-blue-100 py-6 mt-auto">
         <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
@@ -310,7 +286,7 @@
         }
 
         document.querySelectorAll('nav a[href^="#"], a[href^="#"]').forEach(link => {
-            link.addEventListener('click', function (event) {
+            link.addEventListener('click', function(event) {
                 if (this.getAttribute('href') !== '#') {
                     event.preventDefault();
                     const targetId = this.getAttribute('href').substring(1);
@@ -335,16 +311,16 @@
         const openSidebarBtn = document.querySelector('button.md\\:hidden[aria-label="Open Menu"]');
         const closeSidebarBtn = document.getElementById('closeSidebar');
 
-        openSidebarBtn.addEventListener('click', function () {
+        openSidebarBtn.addEventListener('click', function() {
             sidebar.classList.remove('hidden');
         });
 
-        closeSidebarBtn.addEventListener('click', function () {
+        closeSidebarBtn.addEventListener('click', function() {
             sidebar.classList.add('hidden');
         });
 
         // Tutup sidebar jika klik di luar sidebar
-        sidebar.addEventListener('click', function (e) {
+        sidebar.addEventListener('click', function(e) {
             if (e.target === sidebar) {
                 sidebar.classList.add('hidden');
             }
@@ -352,7 +328,7 @@
 
         // Scroll to section dari sidebar
         sidebar.querySelectorAll('a[href^="#"]').forEach(link => {
-            link.addEventListener('click', function (event) {
+            link.addEventListener('click', function(event) {
                 event.preventDefault();
                 sidebar.classList.add('hidden');
                 const targetId = this.getAttribute('href').substring(1);
@@ -361,7 +337,7 @@
         });
 
         // SweetAlert2 Logout Desktop
-        document.getElementById('logoutBtn')?.addEventListener('click', function (e) {
+        document.getElementById('logoutBtn')?.addEventListener('click', function(e) {
             Swal.fire({
                 title: 'Logout?',
                 text: "Are you sure you want to logout?",
@@ -385,7 +361,7 @@
         });
 
         // SweetAlert2 Logout Mobile
-        document.getElementById('logoutBtnMobile')?.addEventListener('click', function (e) {
+        document.getElementById('logoutBtnMobile')?.addEventListener('click', function(e) {
             Swal.fire({
                 title: 'Logout?',
                 text: "Are you sure you want to logout?",

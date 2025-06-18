@@ -11,11 +11,17 @@
     <script src="https://cdn.tailwindcss.com"></script>
     
     <!-- Payment Gateway Scripts -->
-    <script src="https://app.midtrans.com/snap/snap.js" data-client-key="{{ env('MIDTRANS_CLIENT_KEY', 'SB-Mid-client-YOUR_CLIENT_KEY') }}"></script>
+    <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ config('services.midtrans.client_key') }}"></script>
     @if(env('PAYPAL_CLIENT_ID'))
     <script src="https://www.paypal.com/sdk/js?client-id={{ env('PAYPAL_CLIENT_ID') }}&currency=USD"></script>
     @endif
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <!-- Debug Midtrans Config -->
+    <script>
+        console.log('Midtrans Client Key:', '{{ config('services.midtrans.client_key') }}');
+        console.log('Midtrans Environment:', 'sandbox');
+    </script>
     
     <script>
         tailwind.config = {
@@ -1282,6 +1288,22 @@
                 .then(data => {
                     console.log('Response data:', data);
                     if (data.success && data.snap_token) {
+                        console.log('Opening Midtrans popup with token:', data.snap_token);
+                        console.log('Order ID:', data.order_id);
+                        
+                        // Check if snap is available
+                        if (typeof window.snap === 'undefined') {
+                            console.error('Midtrans Snap is not loaded!');
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Payment System Error',
+                                text: 'Midtrans payment system is not loaded. Please refresh the page.',
+                                confirmButtonColor: '#f97316'
+                            });
+                            resetFormState();
+                            return;
+                        }
+                        
                         // Use Midtrans Snap
                         window.snap.pay(data.snap_token, {
                             onSuccess: function(result) {
@@ -1323,6 +1345,12 @@
                             },
                             onClose: function() {
                                 console.log('Payment popup closed');
+                                Swal.fire({
+                                    icon: 'info',
+                                    title: 'Payment Cancelled',
+                                    text: 'You have cancelled the payment. You can try again anytime.',
+                                    confirmButtonColor: '#f97316'
+                                });
                                 resetFormState();
                             }
                         });

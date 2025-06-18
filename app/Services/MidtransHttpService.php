@@ -28,14 +28,13 @@ class MidtransHttpService
     {
         try {
             // Convert USD to IDR for Midtrans (Midtrans only accepts IDR)
-            $amountInIDR = $this->convertToIDR($order->total_amount, $order->currency);
-
-            // Prepare transaction parameters
+            $amountInIDR = $this->convertToIDR($order->total_amount, $order->currency);            // Prepare transaction parameters
             $params = [
                 'transaction_details' => [
                     'order_id' => $order->order_id,
                     'gross_amount' => $amountInIDR
-                ],                'customer_details' => [
+                ],
+                'customer_details' => [
                     'first_name' => $order->first_name,
                     'last_name' => $order->last_name,
                     'email' => $order->email,

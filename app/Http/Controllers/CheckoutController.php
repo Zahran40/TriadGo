@@ -124,7 +124,14 @@ class CheckoutController extends Controller
             return response()->json([
                 'success' => true,
                 'snap_token' => $snapToken,
-                'order_id' => $order->order_id
+                'order_id' => $order->order_id,
+                'message' => 'Payment token created successfully',
+                'debug' => [
+                    'token_length' => strlen($snapToken),
+                    'order_id' => $order->order_id,
+                    'total_amount' => $order->total_amount,
+                    'currency' => $order->currency
+                ]
             ]);
 
         } catch (\Exception $e) {

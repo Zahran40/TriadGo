@@ -8,6 +8,26 @@ use Illuminate\Notifications\Notifiable;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 
+/**
+ * @property int $id
+ * @property string $first_name
+ * @property string $last_name
+ * @property string $email
+ * @property string $phone
+ * @property string $role
+ * @property string $company_name
+ * @property string $address
+ * @property string $city
+ * @property string $state
+ * @property string $postal_code
+ * @property string $country
+ * @property string|null $profile_picture
+ * @property \Carbon\Carbon|null $email_verified_at
+ * @property string $password
+ * @property string|null $remember_token
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ */
 class User extends Authenticatable implements FilamentUser
 {
     use HasFactory, Notifiable;

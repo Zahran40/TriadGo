@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Invoice - TriadGo</title>
+    <title>Invoice - {{ $order->order_id }} - TriadGo</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -25,18 +25,18 @@
         <div class="bg-gradient-to-r from-triad-blue to-triad-green text-white p-8">
             <div class="flex justify-between items-start">
                 <div class="flex items-center space-x-4">
-                    <img src="tglogo.png" alt="Logo" class="h-16 w-16 mr-2" style="width: 100px; height: 100px" />
+                    <img src="{{ asset('tglogo.png') }}" alt="Logo" class="h-16 w-16 mr-2" style="width: 100px; height: 100px" />
                     <div class="ml-4">
                         <h2 class="text-3xl font-bold">INVOICE</h2>
-                        <p class="text-blue-100 mt-1 text-lg">Invoice #INV-2025-001</p>
+                        <p class="text-blue-100 mt-1 text-lg">Invoice #{{ $order->order_id }}</p>
                     </div>
                 </div>
                 <div class="text-right">
-                    <div class="text-lg font-medium text-blue-100">Global Trade Solutions</div>
+                    <div class="text-lg font-medium text-blue-100">TriadGo Global Trade Solutions</div>
                     <p class="text-blue-100 mt-2">Jl. Sudirman No. 123</p>
                     <p class="text-blue-100">Jakarta 12345, Indonesia</p>
                     <p class="text-blue-100">Phone: +62 21 123-4567</p>
-                    <p class="text-blue-100">Email: AbbilAdmin@triadgo.com</p>
+                    <p class="text-blue-100">Email: admin@triadgo.com</p>
                 </div>
             </div>
         </div>
@@ -46,12 +46,12 @@
                 <div>
                     <h3 class="text-xl font-bold text-triad-blue mb-4 border-b-2 border-triad-orange pb-2">Bill To:</h3>
                     <div class="bg-gradient-to-br from-gray-50 to-gray-100 p-6 rounded-xl border-l-4 border-triad-green">
-                        <p class="font-bold text-gray-800 text-lg">PT. Klien Terbaik</p>
-                        <p class="text-gray-600 mt-1">Vincent Jose</p>
-                        <p class="text-gray-600">Jl. Gatot Subroto No. 456</p>
-                        <p class="text-gray-600">Medan 54321, Indonesia</p>
-                        <p class="text-gray-600 mt-2">Phone: +62 21 987-6543</p>
-                        <p class="text-triad-blue font-medium">VincentJose@example.com</p>
+                        <p class="font-bold text-gray-800 text-lg">{{ $order->full_name }}</p>
+                        <p class="text-gray-600 mt-1">{{ $order->email }}</p>
+                        <p class="text-gray-600">{{ $order->address }}</p>
+                        <p class="text-gray-600">{{ $order->city }}, {{ $order->state }} {{ $order->zip_code }}</p>
+                        <p class="text-gray-600">{{ $order->country }}</p>
+                        <p class="text-gray-600 mt-2">Phone: {{ $order->phone }}</p>
                     </div>
                 </div>
 
@@ -61,20 +61,29 @@
                         <div class="space-y-3">
                             <div class="flex justify-between">
                                 <span class="text-gray-600 font-medium">Invoice Date:</span>
-                                <span class="font-bold text-gray-800">14 Juni 2025</span>
+                                <span class="font-bold text-gray-800">{{ $order->created_at->format('d M Y') }}</span>
                             </div>
                             <div class="flex justify-between">
                                 <span class="text-gray-600 font-medium">Due Date:</span>
-                                <span class="font-bold text-gray-800">28 Juni 2025</span>
+                                <span class="font-bold text-gray-800">{{ $order->created_at->addDays(14)->format('d M Y') }}</span>
                             </div>
                             <div class="flex justify-between">
-                                <span class="text-gray-600 font-medium">Payment Terms:</span>
-                                <span class="font-bold text-gray-800">Net 14 Days</span>
+                                <span class="text-gray-600 font-medium">Payment Method:</span>
+                                <span class="font-bold text-gray-800">{{ ucfirst($order->payment_method ?? 'Midtrans') }}</span>
                             </div>
                             <div class="flex justify-between items-center">
                                 <span class="text-gray-600 font-medium">Status:</span>
-                                <span class="bg-gradient-to-r from-triad-orange to-yellow-500 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">
-                                    Pending Payment
+                                @php
+                                    $statusColor = match($order->status) {
+                                        'paid' => 'from-triad-green to-green-600',
+                                        'pending' => 'from-triad-orange to-yellow-500',
+                                        'failed' => 'from-red-500 to-red-600',
+                                        'cancelled' => 'from-gray-500 to-gray-600',
+                                        default => 'from-triad-orange to-yellow-500'
+                                    };
+                                @endphp
+                                <span class="bg-gradient-to-r {{ $statusColor }} text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">
+                                    {{ ucfirst($order->status) }}
                                 </span>
                             </div>
                         </div>
@@ -83,36 +92,52 @@
             </div>
 
             <div class="mb-10">
-                <h3 class="text-xl font-bold text-triad-blue mb-6 border-b-2 border-triad-orange pb-2">Service Items:</h3>
+                <h3 class="text-xl font-bold text-triad-blue mb-6 border-b-2 border-triad-orange pb-2">Order Items:</h3>
                 <div class="overflow-x-auto rounded-xl shadow-lg">
                     <table class="w-full border-collapse bg-white">
                         <thead>
                             <tr class="bg-gradient-to-r from-triad-blue to-triad-green text-white">
-                                <th class="px-6 py-4 text-left font-bold">Description</th>
+                                <th class="px-6 py-4 text-left font-bold">Product</th>
                                 <th class="px-6 py-4 text-center font-bold">Qty</th>
                                 <th class="px-6 py-4 text-right font-bold">Unit Price</th>
                                 <th class="px-6 py-4 text-right font-bold">Total</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="border-b border-gray-200 hover:bg-triad-blue/5 transition-colors">
-                                <td class="px-6 py-4 font-medium text-gray-800">Biaya Kapal & Pengiriman</td>
-                                <td class="px-6 py-4 text-center text-gray-600">1</td>
-                                <td class="px-6 py-4 text-right text-gray-800">Rp 15,000,000</td>
-                                <td class="px-6 py-4 text-right font-bold text-triad-blue">Rp 15,000,000</td>
-                            </tr>
-                            <tr class="border-b border-gray-200 hover:bg-triad-green/5 transition-colors">
-                                <td class="px-6 py-4 font-medium text-gray-800">Pajak Ekspor & Bea Cukai</td>
-                                <td class="px-6 py-4 text-center text-gray-600">1</td>
-                                <td class="px-6 py-4 text-right text-gray-800">Rp 20,000,000</td>
-                                <td class="px-6 py-4 text-right font-bold text-triad-green">Rp 20,000,000</td>
-                            </tr>
-                            <tr class="border-b border-gray-200 hover:bg-triad-orange/5 transition-colors">
-                                <td class="px-6 py-4 font-medium text-gray-800">Biaya Pelancar Ekspor</td>
-                                <td class="px-6 py-4 text-center text-gray-600">3</td>
-                                <td class="px-6 py-4 text-right text-gray-800">Rp 2,500,000</td>
-                                <td class="px-6 py-4 text-right font-bold text-triad-orange">Rp 7,500,000</td>
-                            </tr>
+                            @foreach($order->cart_items as $index => $item)
+                                @php
+                                    $itemTotal = ($item['price'] ?? 0) * ($item['quantity'] ?? 1);
+                                    $hoverClass = match($index % 3) {
+                                        0 => 'hover:bg-triad-blue/5',
+                                        1 => 'hover:bg-triad-green/5',
+                                        2 => 'hover:bg-triad-orange/5',
+                                        default => 'hover:bg-gray-50'
+                                    };
+                                    $totalClass = match($index % 3) {
+                                        0 => 'text-triad-blue',
+                                        1 => 'text-triad-green', 
+                                        2 => 'text-triad-orange',
+                                        default => 'text-gray-800'
+                                    };
+                                @endphp
+                                <tr class="border-b border-gray-200 {{ $hoverClass }} transition-colors">
+                                    <td class="px-6 py-4">
+                                        <div>
+                                            <div class="font-medium text-gray-800">{{ $item['name'] ?? 'Product' }}</div>
+                                            @if(isset($item['description']) && $item['description'])
+                                                <div class="text-sm text-gray-500 mt-1">{{ $item['description'] }}</div>
+                                            @endif
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 text-center text-gray-600">{{ $item['quantity'] ?? 1 }}</td>
+                                    <td class="px-6 py-4 text-right text-gray-800">
+                                        {{ $order->currency === 'IDR' ? 'Rp ' : '$' }}{{ number_format($item['price'] ?? 0, $order->currency === 'IDR' ? 0 : 2) }}
+                                    </td>
+                                    <td class="px-6 py-4 text-right font-bold {{ $totalClass }}">
+                                        {{ $order->currency === 'IDR' ? 'Rp ' : '$' }}{{ number_format($itemTotal, $order->currency === 'IDR' ? 0 : 2) }}
+                                    </td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -124,17 +149,37 @@
                         <div class="space-y-4">
                             <div class="flex justify-between text-lg">
                                 <span class="text-gray-600 font-medium">Subtotal:</span>
-                                <span class="font-bold text-gray-800">Rp 42,500,000</span>
+                                <span class="font-bold text-gray-800">{{ $order->formatted_total }}</span>
                             </div>
+                            @if($order->shipping_cost > 0)
                             <div class="flex justify-between text-lg">
-                                <span class="text-gray-600 font-medium">Tax (11%):</span>
-                                <span class="font-bold text-gray-800">Rp 4,675,000</span>
+                                <span class="text-gray-600 font-medium">Shipping:</span>
+                                <span class="font-bold text-gray-800">
+                                    {{ $order->currency === 'IDR' ? 'Rp ' : '$' }}{{ number_format($order->shipping_cost, $order->currency === 'IDR' ? 0 : 2) }}
+                                </span>
                             </div>
+                            @endif
+                            @if($order->tax_amount > 0)
+                            <div class="flex justify-between text-lg">
+                                <span class="text-gray-600 font-medium">Tax:</span>
+                                <span class="font-bold text-gray-800">
+                                    {{ $order->currency === 'IDR' ? 'Rp ' : '$' }}{{ number_format($order->tax_amount, $order->currency === 'IDR' ? 0 : 2) }}
+                                </span>
+                            </div>
+                            @endif
+                            @if($order->discount_amount > 0)
+                            <div class="flex justify-between text-lg">
+                                <span class="text-gray-600 font-medium">Discount:</span>
+                                <span class="font-bold text-red-600">
+                                    -{{ $order->currency === 'IDR' ? 'Rp ' : '$' }}{{ number_format($order->discount_amount, $order->currency === 'IDR' ? 0 : 2) }}
+                                </span>
+                            </div>
+                            @endif
                             <div class="border-t-2 border-triad-orange pt-4">
                                 <div class="flex justify-between">
                                     <span class="text-2xl font-bold text-gray-800">Grand Total:</span>
                                     <span class="text-2xl font-bold text-triad-blue">
-                                        Rp 47,175,000
+                                        {{ $order->formatted_total }}
                                     </span>
                                 </div>
                             </div>
@@ -152,14 +197,24 @@
                 </h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="space-y-2">
-                        <p class="text-gray-700"><strong class="text-triad-blue">Bank:</strong> Bank Central Asia (BCA)</p>
-                        <p class="text-gray-700"><strong class="text-triad-blue">Account Name:</strong> PT. TriadGo Indonesia</p>
-                        <p class="text-gray-700"><strong class="text-triad-blue">Account Number:</strong> 1234567890</p>
+                        <p class="text-gray-700"><strong class="text-triad-blue">Order ID:</strong> {{ $order->order_id }}</p>
+                        <p class="text-gray-700"><strong class="text-triad-blue">Payment Method:</strong> {{ ucfirst($order->payment_method ?? 'Midtrans') }}</p>
+                        @if($order->payment_gateway_order_id)
+                        <p class="text-gray-700"><strong class="text-triad-blue">Gateway Order ID:</strong> {{ $order->payment_gateway_order_id }}</p>
+                        @endif
+                        @if($order->payment_gateway_transaction_id)
+                        <p class="text-gray-700"><strong class="text-triad-blue">Transaction ID:</strong> {{ $order->payment_gateway_transaction_id }}</p>
+                        @endif
                     </div>
                     <div class="space-y-2">
-                        <p class="text-gray-700"><strong class="text-triad-green">SWIFT Code:</strong> CENAIDJA</p>
-                        <p class="text-gray-700"><strong class="text-triad-green">Reference:</strong> INV-2025-001</p>
-                        <p class="text-gray-700"><strong class="text-triad-green">Currency:</strong> Indonesian Rupiah (IDR)</p>
+                        <p class="text-gray-700"><strong class="text-triad-green">Currency:</strong> {{ $order->currency }}</p>
+                        <p class="text-gray-700"><strong class="text-triad-green">Order Date:</strong> {{ $order->created_at->format('d M Y H:i') }}</p>
+                        @if($order->payment_completed_at)
+                        <p class="text-gray-700"><strong class="text-triad-green">Payment Date:</strong> {{ $order->payment_completed_at->format('d M Y H:i') }}</p>
+                        @endif
+                        @if($order->notes)
+                        <p class="text-gray-700"><strong class="text-triad-green">Notes:</strong> {{ $order->notes }}</p>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -167,7 +222,7 @@
             <div class="pt-8 border-t-2 border-gray-200">
                 <div class="text-center">
                     <div class="flex justify-center items-center mb-4">
-                        <img src="tglogo.png" alt="Logo" class="h-8 w-8 mr-2" style="width: 32px; height: 32px" />
+                        <img src="{{ asset('tglogo.png') }}" alt="Logo" class="h-8 w-8 mr-2" style="width: 32px; height: 32px" />
                         <h4 class="text-2xl font-bold text-triad-blue mr-1">Triad</h4>
                         <h4 class="text-2xl font-bold text-triad-orange">Go</h4>
                     </div>

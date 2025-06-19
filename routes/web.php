@@ -8,6 +8,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\EksportirController;
 use App\Http\Controllers\ImportirController;
+use App\Http\Controllers\TransactionController;
 
 
 
@@ -27,26 +28,6 @@ Route::get('/', function () {
 // Halaman Importir - hanya role impor
 Route::get('/importir', [ImportirController::class, 'homeimportir'])->name('importir')->middleware('role.protect:impor');
 Route::get('/catalog', [ImportirController::class, 'catalog'])->name('catalog')->middleware('role.protect:impor');
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -77,4 +58,8 @@ Route::fallback(function () {
     $userRole = Auth::check() ? Auth::user()->role : 'guest';
     return response()->view('404', ['userRole' => $userRole], 404);
 });
+
+Route::get('trackingekspor', [EksportirController::class, ''])->name('trackingekspor')->middleware('role.protect:ekspor');
+Route::get('updateeksportir', [EksportirController::class, 'listTracking'])->name('updateeksportir')->middleware('role.protect:ekspor');
+
 

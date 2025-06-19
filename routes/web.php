@@ -81,9 +81,11 @@ Route::middleware('role.protect:ekspor')->group(function () {
     Route::get('/myproduct', [ProductController::class, 'myProducts'])->name('myproduct');
     Route::post('/product/store', [ProductController::class, 'store'])->name('product.store');
     Route::delete('/product/{id}', [ProductController::class, 'destroy'])->name('product.destroy');
+    
 
     // Route dengan parameter harus di bawah
     Route::get('/product-detail/{id}', [ProductController::class, 'show'])->name('product.detail');
+    Route::put('/product/{id}/update-field', [ProductController::class, 'updateField'])->name('product.updateField');
 });
 
 //Response comment

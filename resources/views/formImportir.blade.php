@@ -451,44 +451,7 @@
     </div>
 </label>
 
-                            <!-- Bank Transfer with Credit Card -->
-                            <label class="payment-option custom-radio flex flex-col items-center justify-center min-h-[160px] p-6 border-2 border-blue-300 dark:border-blue-600 rounded-xl cursor-pointer hover:bg-blue-100 dark:hover:bg-blue-800/20 transition-all w-full text-center bg-blue-50 dark:bg-blue-800/20" data-countries="all">
-    <input type="radio" name="paymentMethod" value="bank" class="mb-3" />
-    <div class="flex flex-col items-center w-full">
-        <div class="w-16 h-10 mb-2 bg-white rounded-lg border flex items-center justify-center">
-            <img src="https://static.vecteezy.com/system/resources/previews/013/948/616/original/bank-icon-logo-design-vector.jpg" alt="Bank Logo" class="w-8 h-8 object-contain" />
-        </div>
-        <div class="font-semibold text-blue-900 dark:text-blue-100 text-lg">Bank Transfer + Credit Card</div>
-        <div class="text-sm text-gray-600 dark:text-gray-300 mb-2">Direct bank transfer or credit card payment</div>
-        <div class="flex flex-wrap gap-2 justify-center mt-2">
-            <div class="w-10 h-5 bg-white rounded border flex items-center justify-center">
-                <svg width="24" height="8" viewBox="0 0 30 12" fill="none">
-                    <rect width="30" height="12" fill="#2196F3"/>
-                    <text x="15" y="8" font-family="Arial, sans-serif" font-size="5" font-weight="bold" text-anchor="middle" fill="white">BCA</text>
-                </svg>
-            </div>
-            <div class="w-12 h-5 bg-white rounded border flex items-center justify-center">
-                <svg width="28" height="8" viewBox="0 0 30 12" fill="none">
-                    <rect width="30" height="12" fill="#FFD700"/>
-                    <text x="15" y="8" font-family="Arial, sans-serif" font-size="3" font-weight="bold" text-anchor="middle" fill="#003876">MANDIRI</text>
-                </svg>
-            </div>
-            <div class="w-12 h-5 bg-white rounded border flex items-center justify-center">
-                <svg width="28" height="8" viewBox="0 0 30 12" fill="none">
-                    <rect width="30" height="12" fill="#1A1F71"/>
-                    <text x="15" y="8" font-family="Arial, sans-serif" font-size="4" font-weight="bold" text-anchor="middle" fill="white">VISA</text>
-                </svg>
-            </div>
-            <div class="w-12 h-5 bg-white rounded border flex items-center justify-center">
-                <svg width="28" height="8" viewBox="0 0 30 12" fill="none">
-                    <rect width="30" height="12" fill="#EB001B"/>
-                    <circle cx="10" cy="6" r="4" fill="#FF5F00"/>
-                    <circle cx="20" cy="6" r="4" fill="#F79E1B"/>
-                </svg>
-            </div>
-        </div>
-    </div>
-</label>
+                          
                         </div>
 
                         <!-- Credit Card Form (Only for Bank Transfer) -->

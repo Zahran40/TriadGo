@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -81,6 +80,19 @@
             opacity: 1;
             transform: translateY(0);
         }
+
+        /* ✅ Edit Mode Styles */
+        .edit-input {
+            border: 2px solid #3b82f6;
+            background: rgba(59, 130, 246, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .edit-input:focus {
+            outline: none;
+            border-color: #1d4ed8;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
     </style>
 </head>
 
@@ -155,7 +167,15 @@
                     </div>
 
                     <div class="flex-1">
-                        <h1 class="text-3xl font-bold text-blue-900 dark:text-blue-100 mb-8 mt-3">{{ $product->product_name }}</h1>
+                        <!-- ✅ Product Name - Editable -->
+                        <div class="mb-8 mt-3">
+                            <h1 id="productNameDisplay" class="text-3xl font-bold text-blue-900 dark:text-blue-100 cursor-pointer hover:bg-blue-50 dark:hover:bg-blue-900/20 p-2 rounded-lg transition" onclick="editField('productName')">
+                                {{ $product->product_name }} ✏️
+                            </h1>
+                            <input id="productNameEdit" type="text" value="{{ $product->product_name }}" 
+                                   class="hidden text-3xl font-bold text-blue-900 dark:text-blue-100 bg-transparent edit-input w-full p-2 rounded-lg dark:text-white"
+                                   onblur="saveField('productName')" onkeydown="handleKeyDown(event, 'productName')">
+                        </div>
                         
                         <!-- Category -->
                         <div class="mb-4">
@@ -182,16 +202,26 @@
                         </p>
                         
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                            <!-- ✅ Price - Editable -->
                             <div class="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
-                                <p class="text-lg text-blue-700 dark:text-blue-300 mb-2 font-semibold">
-                                    Price: <span class="text-2xl font-bold text-blue-900 dark:text-blue-100">${{ number_format($product->price, 2) }}</span>
-                                </p>
+                                <p class="text-lg text-blue-700 dark:text-blue-300 mb-2 font-semibold">Price:</p>
+                                <div id="priceDisplay" class="cursor-pointer hover:bg-blue-100 dark:hover:bg-blue-800/30 p-2 rounded transition" onclick="editField('price')">
+                                    <span class="text-2xl font-bold text-blue-900 dark:text-blue-100">${{ number_format($product->price, 2) }}</span> ✏️
+                                </div>
+                                <input id="priceEdit" type="number" step="0.01" min="0" value="{{ $product->price }}" 
+                                       class="hidden text-2xl font-bold text-blue-900 dark:text-blue-100 bg-transparent edit-input w-full p-2 rounded-lg dark:text-white"
+                                       onblur="saveField('price')" onkeydown="handleKeyDown(event, 'price')">
                             </div>
                             
+                            <!-- ✅ Stock - Editable -->
                             <div class="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg">
-                                <p class="text-lg text-blue-700 dark:text-blue-300 mb-2 font-semibold">
-                                    Stock: <span class="text-2xl font-bold text-blue-900 dark:text-blue-100">{{ $product->stock_quantity }}</span> units
-                                </p>
+                                <p class="text-lg text-blue-700 dark:text-blue-300 mb-2 font-semibold">Stock:</p>
+                                <div id="stockDisplay" class="cursor-pointer hover:bg-green-100 dark:hover:bg-green-800/30 p-2 rounded transition" onclick="editField('stock')">
+                                    <span class="text-2xl font-bold text-blue-900 dark:text-blue-100">{{ $product->stock_quantity }}</span> units ✏️
+                                </div>
+                                <input id="stockEdit" type="number" min="0" value="{{ $product->stock_quantity }}" 
+                                       class="hidden text-2xl font-bold text-blue-900 dark:text-blue-100 bg-transparent edit-input w-full p-2 rounded-lg dark:text-white"
+                                       onblur="saveField('stock')" onkeydown="handleKeyDown(event, 'stock')">
                             </div>
                             
                             <div class="bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-lg">
@@ -200,10 +230,15 @@
                                 </p>
                             </div>
                             
+                            <!-- ✅ Weight - Editable -->
                             <div class="bg-purple-50 dark:bg-purple-900/20 p-4 rounded-lg">
-                                <p class="text-lg text-blue-700 dark:text-blue-300 mb-2 font-semibold">
-                                    Weight: <span class="text-xl font-bold text-blue-900 dark:text-blue-100">{{ $product->weight }} kg</span>
-                                </p>
+                                <p class="text-lg text-blue-700 dark:text-blue-300 mb-2 font-semibold">Weight:</p>
+                                <div id="weightDisplay" class="cursor-pointer hover:bg-purple-100 dark:hover:bg-purple-800/30 p-2 rounded transition" onclick="editField('weight')">
+                                    <span class="text-xl font-bold text-blue-900 dark:text-blue-100">{{ $product->weight }}</span> kg ✏️
+                                </div>
+                                <input id="weightEdit" type="number" step="0.1" min="0" value="{{ $product->weight }}" 
+                                       class="hidden text-xl font-bold text-blue-900 dark:text-blue-100 bg-transparent edit-input w-full p-2 rounded-lg dark:text-white"
+                                       onblur="saveField('weight')" onkeydown="handleKeyDown(event, 'weight')">
                             </div>
                         </div>
 
@@ -230,6 +265,13 @@
                                 </svg>
                                 Delete Product
                             </button>
+                        </div>
+
+                        <!-- ✅ Edit Instructions -->
+                        <div class="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border-l-4 border-blue-500">
+                            <p class="text-sm text-blue-700 dark:text-blue-300">
+                                💡 <strong>Quick Edit:</strong> Click on product name, price, stock, or weight to edit inline. Press Enter to save or click outside to cancel.
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -262,6 +304,179 @@
     </footer>
 
     <script>
+        // ✅ INLINE EDITING FUNCTIONALITY
+        let originalValues = {
+            productName: '{{ $product->product_name }}',
+            price: {{ $product->price }},
+            stock: {{ $product->stock_quantity }},
+            weight: {{ $product->weight }}
+        };
+
+        function editField(field) {
+            const display = document.getElementById(field + 'Display');
+            const edit = document.getElementById(field + 'Edit');
+            
+            if (display && edit) {
+                display.classList.add('hidden');
+                edit.classList.remove('hidden');
+                edit.focus();
+                edit.select();
+            }
+        }
+
+        function cancelEdit(field) {
+            const display = document.getElementById(field + 'Display');
+            const edit = document.getElementById(field + 'Edit');
+            
+            if (display && edit) {
+                edit.value = originalValues[field];
+                edit.classList.add('hidden');
+                display.classList.remove('hidden');
+            }
+        }
+
+        function handleKeyDown(event, field) {
+            if (event.key === 'Enter') {
+                saveField(field);
+            } else if (event.key === 'Escape') {
+                cancelEdit(field);
+            }
+        }
+
+        async function saveField(field) {
+            const edit = document.getElementById(field + 'Edit');
+            const newValue = edit.value.trim();
+            
+            // Validation
+            if (!newValue) {
+                cancelEdit(field);
+                return;
+            }
+
+            if (field === 'price' && (parseFloat(newValue) < 0 || isNaN(parseFloat(newValue)))) {
+                showError('Price must be a valid positive number');
+                cancelEdit(field);
+                return;
+            }
+
+            if ((field === 'stock' || field === 'weight') && (parseFloat(newValue) < 0 || isNaN(parseFloat(newValue)))) {
+                showError(`${field.charAt(0).toUpperCase() + field.slice(1)} must be a valid positive number`);
+                cancelEdit(field);
+                return;
+            }
+
+            // If no change, just cancel
+            if (newValue == originalValues[field]) {
+                cancelEdit(field);
+                return;
+            }
+
+            try {
+                // Show loading state
+                edit.disabled = true;
+                edit.classList.add('opacity-50');
+
+                const response = await fetch(`/product/{{ $product->product_id }}/update-field`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    },
+                    body: JSON.stringify({
+                        field: field,
+                        value: newValue
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Update display
+                    updateDisplay(field, newValue);
+                    originalValues[field] = newValue;
+                    showSuccess(`${field.charAt(0).toUpperCase() + field.slice(1)} updated successfully!`);
+                } else {
+                    throw new Error(data.message || 'Update failed');
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+                showError(`Failed to update ${field}: ${error.message}`);
+                cancelEdit(field);
+            } finally {
+                edit.disabled = false;
+                edit.classList.remove('opacity-50');
+            }
+        }
+
+        function updateDisplay(field, value) {
+            const display = document.getElementById(field + 'Display');
+            const edit = document.getElementById(field + 'Edit');
+
+            if (field === 'productName') {
+                display.innerHTML = `${value} ✏️`;
+            } else if (field === 'price') {
+                display.innerHTML = `<span class="text-2xl font-bold text-blue-900 dark:text-blue-100">$${parseFloat(value).toFixed(2)}</span> ✏️`;
+            } else if (field === 'stock') {
+                display.innerHTML = `<span class="text-2xl font-bold text-blue-900 dark:text-blue-100">${value}</span> units ✏️`;
+            } else if (field === 'weight') {
+                display.innerHTML = `<span class="text-xl font-bold text-blue-900 dark:text-blue-100">${value}</span> kg ✏️`;
+            }
+
+            edit.classList.add('hidden');
+            display.classList.remove('hidden');
+        }
+
+        function showSuccess(message) {
+            const isDark = document.documentElement.classList.contains('dark');
+            
+            Swal.fire({
+                title: 'Success!',
+                text: message,
+                icon: 'success',
+                timer: 2000,
+                showConfirmButton: false,
+                background: isDark ? '#374151' : '#ffffff',
+                color: isDark ? '#ffffff' : '#1f2937',
+                didOpen: () => {
+                    const popup = Swal.getPopup();
+                    if (isDark) {
+                        popup.classList.add('swal2-dark');
+                    } else {
+                        popup.style.color = '#1f2937';
+                        const title = popup.querySelector('.swal2-title');
+                        const content = popup.querySelector('.swal2-html-container');
+                        if (title) title.style.color = '#1f2937';
+                        if (content) content.style.color = '#1f2937';
+                    }
+                }
+            });
+        }
+
+        function showError(message) {
+            const isDark = document.documentElement.classList.contains('dark');
+            
+            Swal.fire({
+                title: 'Error!',
+                text: message,
+                icon: 'error',
+                background: isDark ? '#374151' : '#ffffff',
+                color: isDark ? '#ffffff' : '#1f2937',
+                didOpen: () => {
+                    const popup = Swal.getPopup();
+                    if (isDark) {
+                        popup.classList.add('swal2-dark');
+                    } else {
+                        popup.style.color = '#1f2937';
+                        const title = popup.querySelector('.swal2-title');
+                        const content = popup.querySelector('.swal2-html-container');
+                        if (title) title.style.color = '#1f2937';
+                        if (content) content.style.color = '#1f2937';
+                    }
+                }
+            });
+        }
+
         // Dark Mode Toggle
         const darkModeToggle = document.getElementById('darkModeToggle');
         const darkModeThumb = document.getElementById('darkModeThumb');
@@ -337,9 +552,18 @@
                 cancelButtonColor: '#eea133',
                 confirmButtonText: 'Logout',
                 background: isDark ? '#374151' : '#ffffff',
+                color: isDark ? '#ffffff' : '#1f2937',
                 didOpen: () => {
                     const popup = Swal.getPopup();
-                    if (isDark) popup.classList.add('swal2-dark');
+                    if (isDark) {
+                        popup.classList.add('swal2-dark');
+                    } else {
+                        popup.style.color = '#1f2937';
+                        const title = popup.querySelector('.swal2-title');
+                        const content = popup.querySelector('.swal2-html-container');
+                        if (title) title.style.color = '#1f2937';
+                        if (content) content.style.color = '#1f2937';
+                    }
                 }
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -361,9 +585,18 @@
                 cancelButtonColor: '#eea133',
                 confirmButtonText: 'Logout',
                 background: isDark ? '#374151' : '#ffffff',
+                color: isDark ? '#ffffff' : '#1f2937',
                 didOpen: () => {
                     const popup = Swal.getPopup();
-                    if (isDark) popup.classList.add('swal2-dark');
+                    if (isDark) {
+                        popup.classList.add('swal2-dark');
+                    } else {
+                        popup.style.color = '#1f2937';
+                        const title = popup.querySelector('.swal2-title');
+                        const content = popup.querySelector('.swal2-html-container');
+                        if (title) title.style.color = '#1f2937';
+                        if (content) content.style.color = '#1f2937';
+                    }
                 }
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -386,9 +619,18 @@
                 confirmButtonText: 'Yes, delete it!',
                 cancelButtonText: 'Cancel',
                 background: isDark ? '#374151' : '#ffffff',
+                color: isDark ? '#ffffff' : '#1f2937',
                 didOpen: () => {
                     const popup = Swal.getPopup();
-                    if (isDark) popup.classList.add('swal2-dark');
+                    if (isDark) {
+                        popup.classList.add('swal2-dark');
+                    } else {
+                        popup.style.color = '#1f2937';
+                        const title = popup.querySelector('.swal2-title');
+                        const content = popup.querySelector('.swal2-html-container');
+                        if (title) title.style.color = '#1f2937';
+                        if (content) content.style.color = '#1f2937';
+                    }
                 }
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -410,9 +652,18 @@
                                 text: data.message,
                                 icon: 'success',
                                 background: isDarkSuccess ? '#374151' : '#ffffff',
+                                color: isDarkSuccess ? '#ffffff' : '#1f2937',
                                 didOpen: () => {
                                     const popup = Swal.getPopup();
-                                    if (isDarkSuccess) popup.classList.add('swal2-dark');
+                                    if (isDarkSuccess) {
+                                        popup.classList.add('swal2-dark');
+                                    } else {
+                                        popup.style.color = '#1f2937';
+                                        const title = popup.querySelector('.swal2-title');
+                                        const content = popup.querySelector('.swal2-html-container');
+                                        if (title) title.style.color = '#1f2937';
+                                        if (content) content.style.color = '#1f2937';
+                                    }
                                 }
                             }).then(() => {
                                 // Redirect to products list after deletion
@@ -424,9 +675,18 @@
                                 text: data.message,
                                 icon: 'error',
                                 background: isDark ? '#374151' : '#ffffff',
+                                color: isDark ? '#ffffff' : '#1f2937',
                                 didOpen: () => {
                                     const popup = Swal.getPopup();
-                                    if (isDark) popup.classList.add('swal2-dark');
+                                    if (isDark) {
+                                        popup.classList.add('swal2-dark');
+                                    } else {
+                                        popup.style.color = '#1f2937';
+                                        const title = popup.querySelector('.swal2-title');
+                                        const content = popup.querySelector('.swal2-html-container');
+                                        if (title) title.style.color = '#1f2937';
+                                        if (content) content.style.color = '#1f2937';
+                                    }
                                 }
                             });
                         }
@@ -438,9 +698,18 @@
                             text: 'Something went wrong. Please try again.',
                             icon: 'error',
                             background: isDark ? '#374151' : '#ffffff',
+                            color: isDark ? '#ffffff' : '#1f2937',
                             didOpen: () => {
                                 const popup = Swal.getPopup();
-                                if (isDark) popup.classList.add('swal2-dark');
+                                if (isDark) {
+                                    popup.classList.add('swal2-dark');
+                                } else {
+                                    popup.style.color = '#1f2937';
+                                    const title = popup.querySelector('.swal2-title');
+                                    const content = popup.querySelector('.swal2-html-container');
+                                    if (title) title.style.color = '#1f2937';
+                                    if (content) content.style.color = '#1f2937';
+                                }
                             }
                         });
                     });

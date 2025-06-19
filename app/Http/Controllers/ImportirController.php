@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Product;
+use App\Models\CheckoutOrder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -81,5 +82,21 @@ class ImportirController extends Controller
         }
 
         return view('detailproductimportir', compact('product'));
+    }
+
+    public function showProductDetail($id)
+    {
+        // Alias untuk fungsi detail yang lebih konsisten
+        return $this->detail($id);
+    }
+
+    public function myOrders()
+    {
+        // Get orders for current logged in user
+        $orders = CheckoutOrder::where('user_id', Auth::id())
+                              ->orderBy('created_at', 'desc')
+                              ->get();
+
+        return view('my-orders', compact('orders'));
     }
 }

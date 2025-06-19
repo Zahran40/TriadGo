@@ -1,0 +1,59 @@
+🔍 MIDTRANS DASHBOARD VERIFICATION CHECKLIST
+=====================================================
+
+Dashboard URL: https://dashboard.sandbox.midtrans.com
+Merchant ID: G699511196
+
+ORDERS TO SEARCH (copy paste ke search box):
+============================================
+
+1. TG-20250619-6853A208C510B
+   - Amount: $0.21 USD
+   - Status: PAID ✅
+   - Created: 2025-06-19 05:37:12
+   - Customer: TestUser Dashboard
+   - Transaction ID: SCRIPT-SIM-1750311533-TG-20250619-6853A208C510B
+
+2. TG-20250619-68539509B2141
+   - Amount: $37.08 USD  
+   - Status: PENDING ⏳
+   - Created: 2025-06-19 04:41:45
+   - Customer: John Doe
+
+3. TG-20250619-685394F00DB53
+   - Amount: $37.08 USD
+   - Status: PENDING ⏳
+   - Created: 2025-06-19 04:41:20
+   - Customer: John Doe
+
+VERIFICATION STEPS:
+==================
+✓ Login to sandbox dashboard
+✓ Go to "Transactions" menu
+✓ Search each Order ID above
+✓ Check if amounts match
+✓ Verify customer details
+
+EXPECTED RESULTS:
+================
+- Order #1 should show as "Settlement" or "Capture" (paid)
+- Orders #2 & #3 should show as "Pending" 
+- All should have correct amounts and customer info
+
+TROUBLESHOOTING IF NOT FOUND:
+============================
+1. Wait 5-10 minutes for dashboard sync
+2. Check you're on SANDBOX environment
+3. Verify correct merchant account
+4. Check network connectivity
+5. Try refreshing dashboard page
+
+TESTING STATUS:
+===============
+✅ Midtrans connection: WORKING
+✅ Order creation: WORKING  
+✅ Snap token generation: WORKING
+✅ Payment simulation: WORKING
+⏳ Dashboard visibility: TO BE VERIFIED
+
+Last Updated: 2025-06-19 05:39:00

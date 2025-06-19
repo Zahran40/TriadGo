@@ -8,13 +8,12 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\EksportirController;
 use App\Http\Controllers\ImportirController;
-use App\Http\Controllers\MidtransController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OtherProfileController;
 use App\Http\Controllers\CommentController;
-
-
+use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\CheckoutController;
 
 // Register 
 Route::get('/sign-up', [RegisterController::class, 'signup'])->name('signup');
@@ -31,8 +30,10 @@ Route::get('/', [PageController::class, 'home'])->name('homepage');
 Route::get('/importir', [ImportirController::class, 'homeimportir'])->name('importir')->middleware('role.protect:impor');
 Route::get('/catalog', [ImportirController::class, 'catalog'])->name('catalog')->middleware('role.protect:impor');
 Route::get('/formimportir', [ImportirController::class, 'formimportir'])->name('formimportir')->middleware('role.protect:impor');
-// Route::get('/detail', [ImportirController::class, 'detail'])->name('detail')->middleware('role.protect:impor');
-  Route::get('/product-detail-importir/{id}', [ImportirController::class, 'detail'])
+Route::get('/my-orders', [ImportirController::class, 'myOrders'])->name('my.orders')->middleware('role.protect:impor');
+Route::get('/detail', [ImportirController::class, 'detail'])->name('detail')->middleware('role.protect:impor');
+Route::get('/requestimportir', [ImportirController::class, 'requestimportir'])->name('requestimportir')->middleware('role.protect:impor');
+Route::get('/product-detail-importir/{id}', [ImportirController::class, 'detail'])
         ->name('product.detail.importir')->middleware('role.protect:impor');
 
 // // User Profile - hanya user yang login (bukan guest)
@@ -48,7 +49,8 @@ Route::get('/other-profile/{userId}', [OtherProfileController::class, 'show'])
 
 // Invoice - hanya user yang login
 Route::get('/invoice', [PageController::class, 'invoice'])->name('invoice')->middleware('role.protect:admin,impor,ekspor');
-Route::post('/logout', [PageController::class, 'logout'])->name('logout')->middleware('role.protect:admin,impor,ekspor');
+Route::get('/invoice/{order_id}', [InvoiceController::class, 'show'])->name('invoice.show')->middleware('role.protect:admin,impor,ekspor');
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout')->middleware('role.protect:admin,impor,ekspor');
 
 // Contact us - semua bisa akses
 Route::post('/contact-us', [ContactusController::class, 'storeContactUs'])->name('contactus.store');
@@ -72,8 +74,6 @@ Route::middleware('role.protect:impor')->group(function () {
         ->name('comment.get');
 });
 
-
-
 // Product Routes - URUTKAN YANG SPESIFIK DAHULU
 Route::middleware('role.protect:ekspor')->group(function () {
     // Routes yang spesifik harus di atas
@@ -87,16 +87,33 @@ Route::middleware('role.protect:ekspor')->group(function () {
     Route::put('/product/{id}/update-field', [ProductController::class, 'updateField'])->name('product.updateField');
 });
 
-//Response comment
-Route::get('/requestimportir', [ImportirController::class, 'requestimportir'])->name('requestimportir')->middleware('role.protect:impor');
-// Route::get('/response', [EksportirController::class, 'response'])->name('response')->middleware('role.protect:ekspor');
-
-
 // Midtrans Payment API Routes
 Route::prefix('api')->group(function () {
-    Route::post('/midtrans/token', [MidtransController::class, 'getSnapToken'])->name('midtrans.token');
-    Route::post('/midtrans/notification', [MidtransController::class, 'handleNotification'])->name('midtrans.notification');
+    Route::post('/midtrans/token', [CheckoutController::class, 'createSnapToken'])->name('midtrans.token');
+    Route::post('/midtrans/notification', [CheckoutController::class, 'handleNotification'])->name('midtrans.notification');
 });
+
+// Checkout Routes
+Route::middleware('role.protect:impor')->group(function () {
+    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+    Route::post('/checkout/create-snap-token', [CheckoutController::class, 'createSnapToken'])->name('checkout.create-token');
+    Route::get('/checkout/success/{orderId?}', [CheckoutController::class, 'success'])->name('checkout.success');
+    Route::get('/checkout/pending/{orderId?}', [CheckoutController::class, 'pending'])->name('checkout.pending');
+    Route::get('/checkout/error/{orderId?}', [CheckoutController::class, 'error'])->name('checkout.error');
+    Route::get('/checkout/status/{orderId}', [CheckoutController::class, 'getOrderStatus'])->name('checkout.status');
+});
+
+// Midtrans Webhook (tidak perlu middleware karena dipanggil dari luar)
+Route::post('/midtrans/notification', [CheckoutController::class, 'handleNotification'])->name('midtrans.webhook');
+
+// Test routes untuk simulasi payment (tanpa CSRF untuk testing)
+Route::prefix('test')->group(function () {
+    Route::get('/payment/{orderId}', [CheckoutController::class, 'testPaymentPage'])->name('test.payment');
+    Route::get('/order-status/{orderId}', [CheckoutController::class, 'getOrderStatus'])->name('test.order.status');
+});
+
+// Force simulate payment route (tanpa CSRF untuk testing)
+Route::post('/force-simulate-payment/{orderId}', [CheckoutController::class, 'forceSimulatePayment'])->withoutMiddleware([\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
 
 // Route fallback - letakkan di paling bawah
 Route::fallback(function () {

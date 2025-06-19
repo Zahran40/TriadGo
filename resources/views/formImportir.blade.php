@@ -11,9 +11,17 @@
     <script src="https://cdn.tailwindcss.com"></script>
     
     <!-- Payment Gateway Scripts -->
-    <script src="https://app.midtrans.com/snap/snap.js" data-client-key="{{ env('MIDTRANS_CLIENT_KEY', 'SB-Mid-client-YOUR_CLIENT_KEY') }}"></script>
-    <script src="https://www.paypal.com/sdk/js?client-id={{ env('PAYPAL_CLIENT_ID', 'AYpPIo4n7iUjkD_M5bK7Vg_dq4z4v_K5nM3z') }}&currency=USD"></script>
+    <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ config('services.midtrans.client_key') }}"></script>
+    @if(env('PAYPAL_CLIENT_ID'))
+    <script src="https://www.paypal.com/sdk/js?client-id={{ env('PAYPAL_CLIENT_ID') }}&currency=USD"></script>
+    @endif
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <!-- Debug Midtrans Config -->
+    <script>
+        console.log('Midtrans Client Key:', '{{ config('services.midtrans.client_key') }}');
+        console.log('Midtrans Environment:', 'sandbox');
+    </script>
     
     <script>
         tailwind.config = {
@@ -158,7 +166,75 @@
 
     <main class="flex-grow container mx-auto px-4 py-6">
         <div class="max-w-6xl mx-auto">
-            <h1 class="text-4xl font-bold text-blue-900 dark:text-blue-100 mb-8">Checkout</h1>
+            <div class="flex justify-between items-center mb-8">
+                <h1 class="text-4xl font-bold text-blue-900 dark:text-blue-100">Checkout</h1>
+                
+                <!-- My Orders & Invoice Access Button -->
+                @auth
+                <div class="flex gap-3">
+                    <a href="{{ route('my.orders') }}" 
+                       class="inline-flex items-center bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium transition-all transform hover:scale-105">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                        </svg>
+                        My Orders
+                    </a>
+                    
+                    @php
+                        $paidOrders = \App\Models\CheckoutOrder::where('user_id', Auth::id())
+                                                             ->where('status', 'paid')
+                                                             ->count();
+                    @endphp
+                    
+                    @if($paidOrders > 0)
+                    <a href="{{ route('my.orders') }}" 
+                       class="inline-flex items-center bg-amber-600 hover:bg-amber-700 text-white px-4 py-2 rounded-lg font-medium transition-all transform hover:scale-105">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        View Invoices
+                        <span class="ml-2 bg-amber-800 text-amber-100 px-2 py-1 text-xs rounded-full">{{ $paidOrders }}</span>
+                    </a>
+                    @endif
+                </div>
+                @endauth
+            </div>
+            
+            <!-- Quick Info Panel untuk Orders & Invoices -->
+            @auth
+            @php
+                $userOrders = \App\Models\CheckoutOrder::where('user_id', Auth::id());
+                $totalOrders = $userOrders->count();
+                $paidOrders = $userOrders->where('status', 'paid')->count();
+                $pendingOrders = $userOrders->where('status', 'pending')->count();
+            @endphp
+            
+            @if($totalOrders > 0)
+            <div class="bg-gradient-to-r from-blue-50 to-green-50 dark:from-slate-800 dark:to-slate-700 rounded-lg p-4 mb-6 border-l-4 border-blue-500">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <div>
+                            <p class="text-blue-900 dark:text-blue-100 font-semibold">You have {{ $totalOrders }} order(s)</p>
+                            <p class="text-blue-700 dark:text-blue-300 text-sm">
+                                {{ $paidOrders }} paid, {{ $pendingOrders }} pending
+                                @if($paidOrders > 0) • Invoices available @endif
+                            </p>
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        @if($paidOrders > 0)
+                        <a href="{{ route('my.orders') }}" class="text-blue-600 hover:text-blue-700 text-sm font-medium">
+                            View Invoices →
+                        </a>
+                        @endif
+                    </div>
+                </div>
+            </div>
+            @endif
+            @endauth
             
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <!-- Order Summary Section -->
@@ -168,6 +244,16 @@
                     <!-- Cart Items -->
                     <div id="cartItemsCheckout" class="space-y-4 mb-6">
                         <!-- Items will be loaded from cart -->
+                    </div>
+                    
+                    <!-- Add More Products Button -->
+                    <div id="addMoreProductsBtn" class="mb-6 pt-4 border-t border-gray-300 dark:border-gray-600 text-center hidden">
+                        <a href="{{ url('/catalog') }}" class="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-all">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                            </svg>
+                            Add More Products
+                        </a>
                     </div>
                     
                     <!-- Empty Cart Message -->
@@ -239,15 +325,6 @@
                         </div>
                     </div>
 
-                    <!-- Add More Products Button -->
-                    <div class="mt-4 pt-4 border-t border-gray-300 dark:border-gray-600 text-center">
-                        <a href="{{ url('/catalog') }}" class="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-all">
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                            </svg>
-                            Add More Products
-                        </a>
-                    </div>
                 </div> <!-- Penutup card Order Summary -->
 
                 <!-- Payment & Billing Section -->
@@ -260,47 +337,47 @@
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                                 <div>
                                     <label class="block text-blue-900 dark:text-blue-100 mb-2">First Name*</label>
-                                    <input type="text" id="firstName" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="First name">
+                                    <input type="text" id="firstName" name="first_name" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="First name">
                                 </div>
                                 <div>
                                     <label class="block text-blue-900 dark:text-blue-100 mb-2">Last Name*</label>
-                                    <input type="text" id="lastName" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Last name">
+                                    <input type="text" id="lastName" name="last_name" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Last name">
                                 </div>
                             </div>
 
                             <div class="mb-4">
                                 <label class="block text-blue-900 dark:text-blue-100 mb-2">Email Address*</label>
-                                <input type="email" id="email" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="your@email.com">
+                                <input type="email" id="email" name="email" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="your@email.com">
                             </div>
 
                             <div class="mb-4">
                                 <label class="block text-blue-900 dark:text-blue-100 mb-2">Phone Number*</label>
-                                <input type="tel" id="phone" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="+62 812 3456 7890">
+                                <input type="tel" id="phone" name="phone" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="+62 812 3456 7890">
                             </div>
 
                             <div class="mb-4">
                                 <label class="block text-blue-900 dark:text-blue-100 mb-2">Address*</label>
-                                <textarea id="address" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Street address" rows="3"></textarea>
+                                <textarea id="address" name="address" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Street address" rows="3"></textarea>
                             </div>
 
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                                 <div>
                                     <label class="block text-blue-900 dark:text-blue-100 mb-2">City*</label>
-                                    <input type="text" id="city" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="City">
+                                    <input type="text" id="city" name="city" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="City">
                                 </div>
                                 <div>
                                     <label class="block text-blue-900 dark:text-blue-100 mb-2">State/Province*</label>
-                                    <input type="text" id="state" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="State">
+                                    <input type="text" id="state" name="state" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="State">
                                 </div>
                                 <div>
                                     <label class="block text-blue-900 dark:text-blue-100 mb-2">Postal Code*</label>
-                                    <input type="text" id="zipCode" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="12345">
+                                    <input type="text" id="zipCode" name="zip_code" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="12345">
                                 </div>
                             </div>
 
                             <div class="mb-6">
                                 <label class="block text-blue-900 dark:text-blue-100 mb-2">Country*</label>
-                                <select id="country" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary" onchange="updatePaymentMethods()">
+                                <select id="country" name="country" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary">
                                     <option value="">Select Country</option>
                                     <option value="ID"> Indonesia</option>
                                     <option value="MY"> Malaysia</option>
@@ -606,7 +683,7 @@
                 <!-- Place Order Button -->
                 <div class="export-card bg-blue-50 dark:bg-slate-800 rounded-lg shadow-md p-6">
                     <button id="submitPayment" class="w-full px-6 py-3 bg-orange-500 text-white rounded-lg font-semibold hover:bg-orange-600 transition-colors focus:outline-none focus:ring-2 focus:ring-orange-400 disabled:opacity-50 disabled:cursor-not-allowed">
-                        <span id="buttonText">Complete Order - $300.00</span>
+                        <span id="buttonText">Complete Order - $0.21</span>
                         <span id="spinner" class="hidden">
                             <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -629,7 +706,170 @@
 
     <!-- JavaScript Code -->
     <script>
+        // Check PayPal SDK availability and hide option if not available
         document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                if (typeof paypal === 'undefined') {
+                    const paypalOption = document.querySelector('input[value="paypal"]');
+                    if (paypalOption) {
+                        const paypalContainer = paypalOption.closest('label');
+                        if (paypalContainer) {
+                            paypalContainer.style.display = 'none';
+                        }
+                    }
+                }
+            }, 1000); // Wait 1 second for PayPal SDK to load
+        });
+
+        // Cart Management Functions
+        function loadCartItems() {
+            let cart = JSON.parse(localStorage.getItem('importCart')) || [];
+            
+            const cartItemsContainer = document.getElementById('cartItemsCheckout');
+            const emptyCartMessage = document.getElementById('emptyCartMessage');
+            const pricingBreakdown = document.getElementById('pricingBreakdown');
+            const addMoreProductsBtn = document.getElementById('addMoreProductsBtn');
+
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = '';
+                emptyCartMessage.classList.remove('hidden');
+                pricingBreakdown.classList.add('hidden');
+                addMoreProductsBtn.classList.add('hidden');
+                return;
+            }
+
+            emptyCartMessage.classList.add('hidden');
+            pricingBreakdown.classList.remove('hidden');
+            addMoreProductsBtn.classList.remove('hidden');
+
+            let cartHTML = '';
+            let subtotal = 0;
+
+            cart.forEach((item, index) => {
+                const itemTotal = item.price * item.quantity;
+                subtotal += itemTotal;
+
+                cartHTML += `
+                    <div class="border-b border-gray-200 dark:border-gray-600 pb-4">
+                        <div class="flex items-center space-x-4">
+                            <img src="${item.image}" alt="${item.name}" class="w-20 h-20 object-cover rounded-lg shadow-sm">
+                            <div class="flex-1">
+                                <h3 class="font-semibold text-blue-900 dark:text-blue-100">${item.name}</h3>
+                                <p class="text-gray-600 dark:text-gray-300 text-sm">Origin: ${item.origin}</p>
+                                <p class="text-gray-600 dark:text-gray-300 text-sm">Weight: ${item.weight}kg</p>
+                                <p class="text-gray-600 dark:text-gray-300 text-sm">SKU: ${item.sku}</p>
+                                <div class="flex items-center mt-2">
+                                    <label class="text-sm text-blue-900 dark:text-blue-100 mr-2">Qty:</label>
+                                    <select class="border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded px-2 py-1 text-sm" onchange="updateCartItemQuantity(${index}, this.value)">
+                                        ${generateQuantityOptions(item.quantity)}
+                                    </select>
+                                    <button onclick="removeCartItem(${index})" class="ml-3 text-red-500 hover:text-red-700 text-sm">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <p class="font-semibold text-blue-900 dark:text-blue-100">$${itemTotal.toFixed(2)}</p>
+                                <p class="text-sm text-gray-600 dark:text-gray-300">$${item.price.toFixed(2)} each</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            cartItemsContainer.innerHTML = cartHTML;
+            updatePricing(subtotal);
+        }
+
+        function generateQuantityOptions(currentQty) {
+            let options = '';
+            for (let i = 1; i <= 10; i++) {
+                options += `<option value="${i}" ${i === currentQty ? 'selected' : ''}>${i}</option>`;
+            }
+            return options;
+        }
+
+        function updateCartItemQuantity(index, newQuantity) {
+            const cart = JSON.parse(localStorage.getItem('importCart')) || [];
+            if (cart[index]) {
+                cart[index].quantity = parseInt(newQuantity);
+                localStorage.setItem('importCart', JSON.stringify(cart));
+                loadCartItems(); // Reload to update display
+                
+                // Dispatch cart update event
+                window.dispatchEvent(new CustomEvent('cartUpdated'));
+            }
+        }
+
+        function removeCartItem(index) {
+            const cart = JSON.parse(localStorage.getItem('importCart')) || [];
+            cart.splice(index, 1);
+            localStorage.setItem('importCart', JSON.stringify(cart));
+            loadCartItems(); // Reload to update display
+            
+            // Dispatch cart update event
+            window.dispatchEvent(new CustomEvent('cartUpdated'));
+        }
+
+        function updatePricing(subtotal) {
+            const shipping = 0.10;
+            const taxRate = 0.10;
+            const tax = subtotal * taxRate;
+            const total = subtotal + shipping + tax;
+
+            document.getElementById('subtotal').textContent = `$${subtotal.toFixed(2)}`;
+            document.getElementById('shipping').textContent = `$${shipping.toFixed(2)}`;
+            document.getElementById('tax').textContent = `$${tax.toFixed(2)}`;
+            document.getElementById('totalAmount').textContent = `$${total.toFixed(2)}`;
+            
+            // Update Complete Order button text
+            const buttonText = document.getElementById('buttonText');
+            if (buttonText) {
+                buttonText.textContent = `Complete Order - $${total.toFixed(2)}`;
+            }
+            
+            // Update transfer amount if exists
+            const transferAmount = document.getElementById('transferAmount');
+            if (transferAmount) {
+                transferAmount.textContent = `$${total.toFixed(2)}`;
+            }
+            
+            // Update currency conversions if function exists
+            if (typeof updateCurrency === 'function') {
+                updateCurrency();
+            }
+        }
+
+        // Function to update complete order button text
+        function updateCompleteOrderButton() {
+            const totalElement = document.getElementById('totalAmount');
+            const buttonText = document.getElementById('buttonText');
+            const transferAmount = document.getElementById('transferAmount');
+            
+            if (totalElement && buttonText) {
+                const total = totalElement.textContent;
+                buttonText.textContent = `Complete Order - ${total}`;
+                
+                if (transferAmount) {
+                    transferAmount.textContent = total;
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load cart items on page load
+            loadCartItems();
+            
+            // Ensure complete order button shows correct amount
+            setTimeout(updateCompleteOrderButton, 100);
+            
+            // Listen for cart updates to refresh button text
+            window.addEventListener('cartUpdated', function() {
+                setTimeout(updateCompleteOrderButton, 50);
+            });
+            
             // Dark mode functionality
             const darkModeToggle = document.getElementById('darkModeToggle');
             const darkModeThumb = document.getElementById('darkModeThumb');
@@ -754,9 +994,9 @@
                             <div class="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
                                 <div>
                                     <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Transfer Amount</label>
-                                    <p class="text-xl font-bold text-green-600 dark:text-green-400" id="transferAmount">$300.00</p>
+                                    <p class="text-xl font-bold text-green-600 dark:text-green-400" id="transferAmount">$0.21</p>
                                 </div>
-                                <button onclick="copyToClipboard('300.00')" class="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors text-sm">
+                                <button onclick="copyToClipboard(document.getElementById('transferAmount').textContent.replace('$', ''))" class="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors text-sm">
                                     Copy
                                 </button>
                             </div>
@@ -850,6 +1090,17 @@
 
             // Initialize PayPal
             function initializePayPal() {
+                // Check if PayPal SDK is loaded
+                if (typeof paypal === 'undefined') {
+                    console.error('PayPal SDK not loaded');
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'PayPal Unavailable',
+                        text: 'PayPal payment is currently unavailable. Please try another payment method.'
+                    });
+                    return;
+                }
+
                 // Clear existing PayPal buttons
                 const paypalButtonsContainer = document.getElementById('paypal-buttons');
                 if (paypalButtonsContainer) {
@@ -857,7 +1108,7 @@
                     
                     // Get total amount
                     const totalElement = document.getElementById('totalAmount');
-                    const totalAmount = totalElement ? totalElement.textContent.replace('$', '').replace(',', '') : '300.00';
+                    const totalAmount = totalElement ? totalElement.textContent.replace('$', '').replace(',', '') : '0.21';
                     
                     paypal.Buttons({
                         style: {
@@ -1029,87 +1280,180 @@
 
             // Midtrans payment processing
             function processMidtransPayment() {
-                // Get total amount from the page
-                const totalElement = document.getElementById('totalAmount');
-                const totalAmount = totalElement ? totalElement.textContent.replace('$', '').replace(',', '') : '300.00';
-                
-                // Create order data
-                const orderData = {
-                    transaction_details: {
-                        order_id: 'TG-' + new Date().toISOString().replace(/[-:.]/g, '').slice(0, 14),
-                        gross_amount: Math.round(parseFloat(totalAmount) * 15000) // Convert USD to IDR roughly
-                    },
-                    customer_details: {
-                        first_name: document.getElementById('firstName').value,
-                        last_name: document.getElementById('lastName').value,
-                        email: document.getElementById('email').value,
-                        phone: document.getElementById('phone').value,
-                        billing_address: {
-                            address: document.getElementById('address').value,
-                            city: document.getElementById('city').value,
-                            postal_code: document.getElementById('zipCode').value,
-                            country_code: document.getElementById('country').value
-                        }
-                    }
+                // Get form data
+                const formData = {
+                    first_name: document.getElementById('firstName').value,
+                    last_name: document.getElementById('lastName').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value,
+                    address: document.getElementById('address').value,
+                    city: document.getElementById('city').value,
+                    state: document.getElementById('state').value,
+                    zip_code: document.getElementById('zipCode').value,
+                    country: document.getElementById('country').value,
+                    cart_items: JSON.parse(localStorage.getItem('importCart')) || [],
+                    subtotal: parseFloat(document.getElementById('subtotal').textContent.replace('$', '').replace(',', '')) || 0,
+                    shipping_cost: parseFloat(document.getElementById('shipping').textContent.replace('$', '').replace(',', '')) || 0,
+                    tax_amount: parseFloat(document.getElementById('tax').textContent.replace('$', '').replace(',', '')) || 0,
+                    total_amount: parseFloat(document.getElementById('totalAmount').textContent.replace('$', '').replace(',', '')) || 0,
+                    currency: document.getElementById('currencySelect').value || 'USD',
+                    coupon_code: document.getElementById('couponCode').value || '',
+                    discount_amount: 0, // Add discount logic if needed
+                    notes: ''
                 };
 
-                // Call your backend to get snap token
-                fetch('/api/midtrans/token', {
+                // Debug: Log form data before sending
+                console.log('Form data before sending:', formData);
+                console.log('Cart items:', formData.cart_items);
+                console.log('Total amount:', formData.total_amount);
+
+                // Validate form data
+                if (!formData.first_name || !formData.last_name || !formData.email || !formData.phone || !formData.address || !formData.city || !formData.state || !formData.zip_code || !formData.country) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Missing Information',
+                        text: 'Please fill in all required fields.',
+                        confirmButtonColor: '#f97316'
+                    });
+                    resetFormState();
+                    return;
+                }
+
+                // Validate cart items
+                if (!formData.cart_items || formData.cart_items.length === 0) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Cart Empty',
+                        text: 'Please add items to your cart before proceeding.',
+                        confirmButtonColor: '#f97316'
+                    });
+                    resetFormState();
+                    return;
+                }
+
+                // Validate amounts
+                if (isNaN(formData.total_amount) || formData.total_amount <= 0) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Invalid Amount',
+                        text: 'Please check the total amount.',
+                        confirmButtonColor: '#f97316'
+                    });
+                    resetFormState();
+                    return;
+                }
+
+                // Call backend to get snap token
+                console.log('Sending request to create snap token...');
+                fetch('/checkout/create-snap-token', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
+                        'Accept': 'application/json',
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                     },
-                    body: JSON.stringify(orderData)
+                    body: JSON.stringify(formData)
                 })
-                .then(response => response.json())
+                .then(response => {
+                    console.log('Response status:', response.status);
+                    console.log('Response headers:', response.headers);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
                 .then(data => {
-                    if (data.snap_token) {
+                    console.log('Response data:', data);
+                    if (data.success && data.snap_token) {
+                        console.log('Opening Midtrans popup with token:', data.snap_token);
+                        console.log('Order ID:', data.order_id);
+                        
+                        // Check if snap is available
+                        if (typeof window.snap === 'undefined') {
+                            console.error('Midtrans Snap is not loaded!');
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Payment System Error',
+                                text: 'Midtrans payment system is not loaded. Please refresh the page.',
+                                confirmButtonColor: '#f97316'
+                            });
+                            resetFormState();
+                            return;
+                        }
+                        
                         // Use Midtrans Snap
                         window.snap.pay(data.snap_token, {
                             onSuccess: function(result) {
+                                console.log('Payment Success:', result);
                                 Swal.fire({
                                     icon: 'success',
                                     title: 'Payment Successful!',
                                     text: 'Your payment has been processed successfully.',
                                     confirmButtonColor: '#f97316'
                                 }).then(() => {
-                                    // Redirect to success page or refresh
-                                    window.location.href = '/success?order_id=' + orderData.transaction_details.order_id;
+                                    // Clear cart and redirect to success page
+                                    localStorage.removeItem('importCart');
+                                    window.location.href = '/checkout/success/' + data.order_id;
                                 });
                             },
                             onPending: function(result) {
+                                console.log('Payment Pending:', result);
                                 Swal.fire({
                                     icon: 'info',
                                     title: 'Payment Pending',
                                     text: 'Please complete your payment.',
                                     confirmButtonColor: '#f97316'
+                                }).then(() => {
+                                    window.location.href = '/checkout/pending/' + data.order_id;
                                 });
                                 resetFormState();
                             },
                             onError: function(result) {
+                                console.error('Payment Error:', result);
                                 Swal.fire({
                                     icon: 'error',
                                     title: 'Payment Failed',
                                     text: 'There was an error processing your payment.',
                                     confirmButtonColor: '#f97316'
+                                }).then(() => {
+                                    window.location.href = '/checkout/error/' + data.order_id;
                                 });
                                 resetFormState();
                             },
                             onClose: function() {
+                                console.log('Payment popup closed');
+                                Swal.fire({
+                                    icon: 'info',
+                                    title: 'Payment Cancelled',
+                                    text: 'You have cancelled the payment. You can try again anytime.',
+                                    confirmButtonColor: '#f97316'
+                                });
                                 resetFormState();
                             }
                         });
                     } else {
-                        throw new Error('Failed to get payment token');
+                        console.error('Backend error:', data);
+                        throw new Error(data.message || data.error || 'Failed to get payment token');
                     }
                 })
                 .catch(error => {
-                    console.error('Error:', error);
+                    console.error('Payment Error Details:', error);
+                    console.error('Error stack:', error.stack);
+                    
+                    let errorMessage = 'Unable to process payment. Please try again.';
+                    
+                    if (error.message.includes('HTTP error! status: 500')) {
+                        errorMessage = 'Server error occurred. Please check the form data and try again.';
+                    } else if (error.message.includes('HTTP error! status: 422')) {
+                        errorMessage = 'Please check all required fields are filled correctly.';
+                    } else if (error.message) {
+                        errorMessage = error.message;
+                    }
+                    
                     Swal.fire({
                         icon: 'error',
                         title: 'Payment Error',
-                        text: 'Unable to process payment. Please try again.',
+                        text: errorMessage,
                         confirmButtonColor: '#f97316'
                     });
                     resetFormState();
@@ -1140,6 +1484,105 @@
             // Initialize bank transfer functionality
             setupBankTransfer();
         });
+
+        // Additional Cart and Currency Functions
+        function updateCurrency() {
+            const currencySelect = document.getElementById('currencySelect');
+            const totalAmountElement = document.getElementById('totalAmount');
+            
+            if (!currencySelect || !totalAmountElement) return;
+            
+            const selectedCurrency = currencySelect.value;
+            const totalInUSD = parseFloat(totalAmountElement.textContent.replace('$', '').replace(',', ''));
+            
+            // Exchange rates (simplified - in production, use live rates)
+            const exchangeRates = {
+                'USD': 1,
+                'IDR': 15000,
+                'MYR': 4.70,
+                'SGD': 1.35,
+                'THB': 35.50,
+                'PHP': 56.00,
+                'VND': 24000,
+                'BND': 1.35,
+                'LAK': 21000,
+                'KHR': 4100,
+                'MMK': 2100
+            };
+            
+            const convertedAmount = totalInUSD * exchangeRates[selectedCurrency];
+            const currencySymbols = {
+                'USD': '$',
+                'IDR': 'Rp ',
+                'MYR': 'RM ',
+                'SGD': 'S$',
+                'THB': '฿',
+                'PHP': '₱',
+                'VND': '₫',
+                'BND': 'B$',
+                'LAK': '₭',
+                'KHR': '៛',
+                'MMK': 'K'
+            };
+            
+            totalAmountElement.textContent = currencySymbols[selectedCurrency] + convertedAmount.toLocaleString();
+        }
+
+        function applyCoupon() {
+            const couponCode = document.getElementById('couponCode').value.trim();
+            
+            if (!couponCode) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Coupon Required',
+                    text: 'Please enter a coupon code'
+                });
+                return;
+            }
+            
+            // Sample coupon codes (in production, validate with backend)
+            const validCoupons = {
+                'WELCOME10': { discount: 0.10, type: 'percentage', description: '10% off' },
+                'SAVE25': { discount: 25, type: 'fixed', description: '$25 off' },
+                'NEWUSER': { discount: 0.15, type: 'percentage', description: '15% off' }
+            };
+            
+            const coupon = validCoupons[couponCode.toUpperCase()];
+            
+            if (coupon) {
+                const subtotalElement = document.getElementById('subtotal');
+                const subtotal = parseFloat(subtotalElement.textContent.replace('$', '').replace(',', ''));
+                
+                let discountAmount = 0;
+                if (coupon.type === 'percentage') {
+                    discountAmount = subtotal * coupon.discount;
+                } else {
+                    discountAmount = coupon.discount;
+                }
+                
+                // Apply discount and recalculate
+                const newSubtotal = Math.max(0, subtotal - discountAmount);
+                subtotalElement.textContent = `$${newSubtotal.toFixed(2)}`;
+                
+                // Update total
+                updatePricing(newSubtotal);
+                
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Coupon Applied!',
+                    text: `${coupon.description} discount applied successfully`
+                });
+                
+                // Clear coupon input
+                document.getElementById('couponCode').value = '';
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Invalid Coupon',
+                    text: 'The coupon code you entered is not valid'
+                });
+            }
+        }
     </script>
 </body>
 </html>

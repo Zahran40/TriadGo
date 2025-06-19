@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart Testing Tool</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-2xl mx-auto bg-white rounded-lg shadow-lg p-6">
+        <h1 class="text-2xl font-bold text-gray-800 mb-6">🛒 Cart Testing Tool</h1>
+        
+        <div class="space-y-4">
+            <div class="bg-blue-50 p-4 rounded-lg">
+                <h3 class="font-semibold text-blue-800 mb-2">Current Cart Status:</h3>
+                <pre id="cartStatus" class="bg-white p-3 rounded border text-sm"></pre>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <button onclick="clearCart()" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-semibold">
+                    🗑️ Clear Cart
+                </button>
+                
+                <button onclick="addSampleItem()" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-semibold">
+                    ➕ Add Sample Item
+                </button>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <button onclick="refreshStatus()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold">
+                    🔄 Refresh Status
+                </button>
+                
+                <a href="/TriadGo/public/formImportir" class="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded-lg font-semibold text-center inline-block">
+                    🛒 Open Checkout
+                </a>
+            </div>
+
+            <div class="bg-yellow-50 p-4 rounded-lg">
+                <h3 class="font-semibold text-yellow-800 mb-2">Testing Instructions:</h3>
+                <ol class="list-decimal list-inside text-sm text-yellow-700 space-y-1">
+                    <li>Click "Clear Cart" to empty the cart</li>
+                    <li>Click "Open Checkout" to open formImportir page</li>
+                    <li>Verify cart is empty and no items auto-populate</li>
+                    <li>Add items manually and test delete button</li>
+                    <li>Items should delete properly without re-appearing</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function refreshStatus() {
+            const cart = JSON.parse(localStorage.getItem('importCart')) || [];
+            const statusElement = document.getElementById('cartStatus');
+            
+            statusElement.textContent = JSON.stringify({
+                itemCount: cart.length,
+                items: cart.map(item => ({
+                    name: item.name,
+                    price: item.price,
+                    quantity: item.quantity
+                }))
+            }, null, 2);
+        }
+
+        function clearCart() {
+            localStorage.removeItem('importCart');
+            localStorage.setItem('importCart', JSON.stringify([]));
+            refreshStatus();
+            alert('✅ Cart cleared!');
+        }
+
+        function addSampleItem() {
+            const cart = JSON.parse(localStorage.getItem('importCart')) || [];
+            cart.push({
+                id: Date.now(),
+                name: "Test Product",
+                origin: "Test Country",
+                price: 0.10,
+                quantity: 1,
+                weight: 0.1,
+                sku: "TEST-001",
+                image: "/uploads/products/test.jpg"
+            });
+            localStorage.setItem('importCart', JSON.stringify(cart));
+            refreshStatus();
+            alert('✅ Sample item added!');
+        }
+
+        // Load initial status
+        document.addEventListener('DOMContentLoaded', refreshStatus);
+    </script>
+</body>
+</html>

@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Product;
+use App\Models\CheckoutOrder;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
+use Exception;
 
 class ImportirController extends Controller
 {
@@ -69,17 +72,57 @@ class ImportirController extends Controller
 
     public function detail($id)
     {
-        // Cari produk berdasarkan product_id dengan relasi user
-        $product = Product::with('user','comments.user')
-                         ->where('product_id', $id)
-                         ->where('status', 'approved') // Hanya produk yang approved
-                         ->firstOrFail();
+        // Debug: Check if we reach this method
+        error_log("Detail method called with ID: " . $id);
+        
+        try {
+            // Cari produk berdasarkan product_id dengan relasi user
+            $product = Product::with('user','comments.user')
+                             ->where('product_id', $id)
+                             ->where('status', 'approved') // Hanya produk yang approved
+                             ->first(); // Using first() instead of firstOrFail() for debugging
 
-        // Pastikan user yang mengakses adalah importir
-        if (Auth::user()->role !== 'impor') {
-            abort(403, 'Access denied. This page is for importers only.');
+            error_log("Product query result: " . ($product ? "Found: " . $product->product_name : "Not found"));
+
+            if (!$product) {
+                error_log("Product with ID $id not found or not approved");
+                abort(404, 'Product not found or not approved');
+            }
+
+            // Pastikan user yang mengakses adalah importir
+            if (!Auth::check()) {
+                error_log("User not authenticated");
+                return redirect()->route('login');
+            }
+
+            if (Auth::user()->role !== 'impor') {
+                error_log("User role is: " . Auth::user()->role . " (expected: impor)");
+                abort(403, 'Access denied. This page is for importers only.');
+            }
+
+            error_log("About to return view with product: " . $product->product_name);
+            
+            return view('detailproductimportir', compact('product'));
+            
+        } catch (Exception $e) {
+            error_log("Exception in detail method: " . $e->getMessage());
+            throw $e;
         }
+    }
 
-        return view('detailproductimportir', compact('product'));
+    public function showProductDetail($id)
+    {
+        // Alias untuk fungsi detail yang lebih konsisten
+        return $this->detail($id);
+    }
+
+    public function myOrders()
+    {
+        // Get orders for current logged in user
+        $orders = CheckoutOrder::where('user_id', Auth::id())
+                              ->orderBy('created_at', 'desc')
+                              ->get();
+
+        return view('my-orders', compact('orders'));
     }
 }

@@ -35,6 +35,7 @@ class RegisterController extends Controller
             'role' => $request->role,
         ]);
 
-        return redirect()->route('login')->with('success', 'User registered successfully.');
+        // Setelah registrasi berhasil, arahkan ke halaman login dengan pesan sukses
+        return redirect()->route('login')->with('success', 'Pendaftaran berhasil! Silakan login dengan akun Anda.');
     }
 }

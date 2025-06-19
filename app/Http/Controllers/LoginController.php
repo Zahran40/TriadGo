@@ -49,7 +49,16 @@ class LoginController extends Controller
 
     private function redirectToUserHome()
     {
-        $role = Auth::user()->role;
+        $user = Auth::user();
+        $role = $user->role;
+
+        // Log untuk debugging
+        Log::info('Redirecting user based on role', [
+            'user_id' => $user->user_id,
+            'email' => $user->email,
+            'role' => $role,
+            'name' => $user->name
+        ]);
 
         switch ($role) {
             case 'ekspor':
@@ -57,12 +66,35 @@ class LoginController extends Controller
             case 'impor':
                 return redirect()->route('importir');
             case 'admin':
+                // Redirect ke Filament admin panel
                 return redirect('/admin1');
             default:
+                // Logout user dengan role yang tidak valid
                 Auth::logout();
                 return redirect()->route('login')->withErrors([
-                    'email' => 'Role tidak valid: ' . $role,
+                    'email' => 'Role tidak valid: ' . $role . '. Silakan hubungi administrator.',
                 ]);
         }
+    }
+
+    public function logout(Request $request)
+    {
+        $user = Auth::user();
+        
+        // Log logout activity
+        if ($user) {
+            Log::info('User logged out', [
+                'user_id' => $user->user_id,
+                'email' => $user->email,
+                'role' => $user->role,
+                'name' => $user->name
+            ]);
+        }
+
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('login')->with('success', 'Anda telah berhasil logout.');
     }
 }

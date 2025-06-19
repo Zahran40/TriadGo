@@ -6,13 +6,14 @@
     <title>Payment Successful - TriadGo</title>
     @vite('resources/css/app.css')
     <script src="https://cdn.tailwindcss.com"></script>
+    
 </head>
-<body class="bg-gray-100 dark:bg-gray-900 min-h-screen">
+<body class="bg-white min-h-screen">
     @include('layouts.navbarimportir')
     
     <div class="container mx-auto px-4 py-12">
         <div class="max-w-2xl mx-auto">
-            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 text-center">
+            <div class="product rounded-lg shadow-lg p-8 text-center">
                 <!-- Success Icon -->
                 <div class="w-24 h-24 mx-auto mb-6 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center">
                     <svg class="w-12 h-12 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -30,37 +31,37 @@
                 </p>
                 
                 <!-- Order Details -->
-                <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-6 mb-8 text-left">
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Order Details</h3>
+                <div class=" rounded-lg p-6 mb-8 text-left">
+                    <h3 class="text-lg font-semibold text-blue-700  mb-4">Order Details</h3>
                     
                     <div class="space-y-3">
                         <div class="flex justify-between">
-                            <span class="text-gray-600 dark:text-gray-300">Order ID:</span>
-                            <span class="font-semibold text-gray-900 dark:text-white">{{ $order->order_id }}</span>
+                            <span class="text-blue-800 ">Order ID:</span>
+                            <span class="font-semibold text-blue-700 ">{{ $order->order_id }}</span>
                         </div>
                         
                         <div class="flex justify-between">
-                            <span class="text-gray-600 dark:text-gray-300">Customer:</span>
-                            <span class="font-semibold text-gray-900 dark:text-white">{{ $order->full_name }}</span>
+                            <span class="text-blue-800 ">Customer:</span>
+                            <span class="font-semibold text-blue-700 ">{{ $order->full_name }}</span>
                         </div>
                         
                         <div class="flex justify-between">
-                            <span class="text-gray-600 dark:text-gray-300">Email:</span>
-                            <span class="font-semibold text-gray-900 dark:text-white">{{ $order->email }}</span>
+                            <span class="text-blue-800 ">Email:</span>
+                            <span class="font-semibold text-blue-700 ">{{ $order->email }}</span>
                         </div>
                         
                         <div class="flex justify-between">
-                            <span class="text-gray-600 dark:text-gray-300">Total Amount:</span>
+                            <span class="text-blue-800 ">Total Amount:</span>
                             <span class="font-semibold text-green-600 dark:text-green-400">{{ $order->formatted_total }}</span>
                         </div>
                         
                         <div class="flex justify-between">
-                            <span class="text-gray-600 dark:text-gray-300">Payment Method:</span>
-                            <span class="font-semibold text-gray-900 dark:text-white">{{ ucfirst($order->payment_method) }}</span>
+                            <span class="text-blue-800 ">Payment Method:</span>
+                            <span class="font-semibold text-blue-700 ">{{ ucfirst($order->payment_method) }}</span>
                         </div>
                         
                         <div class="flex justify-between">
-                            <span class="text-gray-600 dark:text-gray-300">Status:</span>
+                            <span class="text-blue-800 ">Status:</span>
                             <span class="px-3 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full text-sm font-medium">
                                 {{ ucfirst($order->status) }}
                             </span>
@@ -69,7 +70,7 @@
                         @if($order->payment_completed_at)
                         <div class="flex justify-between">
                             <span class="text-gray-600 dark:text-gray-300">Payment Date:</span>
-                            <span class="font-semibold text-gray-900 dark:text-white">{{ $order->payment_completed_at->format('M d, Y H:i') }}</span>
+                            <span class="font-semibold text-blue-700 ">{{ $order->payment_completed_at->format('M d, Y H:i') }}</span>
                         </div>
                         @endif
                     </div>
@@ -104,5 +105,45 @@
             </div>
         </div>
     </div>
+    
+    <script>
+        const isDarkMode = document.documentElement.classList.contains('dark');
+
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const darkModeThumb = document.getElementById('darkModeThumb');
+        const htmlElement = document.documentElement;
+
+        function updateDarkModeSwitch() {
+            if (htmlElement.classList.contains('dark')) {
+                darkModeToggle.checked = true;
+                darkModeThumb.style.transform = 'translateX(1.25rem)';
+                darkModeThumb.style.backgroundColor = '#003355';
+                darkModeThumb.style.borderColor = '#003355';
+            } else {
+                darkModeToggle.checked = false;
+                darkModeThumb.style.transform = 'translateX(0)';
+                darkModeThumb.style.backgroundColor = '#fff';
+                darkModeThumb.style.borderColor = '#ccc';
+            }
+        }
+
+        if (localStorage.getItem('darkMode') === 'enabled') {
+            htmlElement.classList.add('dark');
+        }
+
+        updateDarkModeSwitch();
+
+        darkModeToggle.addEventListener('change', () => {
+            htmlElement.classList.toggle('dark');
+            if (htmlElement.classList.contains('dark')) {
+                localStorage.setItem('darkMode', 'enabled');
+            } else {
+                localStorage.setItem('darkMode', 'disabled');
+            }
+            updateDarkModeSwitch();
+        });
+
+    </script>
 </body>
+
 </html>

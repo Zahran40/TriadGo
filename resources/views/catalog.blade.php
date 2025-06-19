@@ -431,6 +431,7 @@
         
     </section>
 
+    
     <!-- FIXED: Footer dengan class yang proper -->
     <footer class="catalog-footer text-blue-100 py-6 mt-auto">
         <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center">

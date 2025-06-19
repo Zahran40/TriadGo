@@ -30,43 +30,14 @@
                 <!-- Logo TriadGO yang Benar -->
                 <div class="flex items-center space-x-3">
                     <!-- SVG Logo TriadGO -->
-                    <div class="w-12 h-12 flex-shrink-0">
-                        <svg viewBox="0 0 120 120" class="w-full h-full">
-                            <!-- Orange Curve -->
-                            <path d="M20 60 Q40 20, 80 30" stroke="#EEA133" stroke-width="8" fill="none" stroke-linecap="round"/>
-                            
-                            <!-- Ship -->
-                            <g fill="#003355">
-                                <!-- Ship Hull -->
-                                <path d="M30 70 L85 70 L90 85 L25 85 Z"/>
-                                <!-- Ship Cabin -->
-                                <rect x="35" y="55" width="15" height="15" rx="2"/>
-                                <!-- Ship Chimney -->
-                                <rect x="38" y="45" width="4" height="10"/>
-                                <rect x="43" y="48" width="4" height="7"/>
-                                <!-- Windows -->
-                                <circle cx="32" cy="77" r="2" fill="white"/>
-                                <circle cx="38" cy="77" r="2" fill="white"/>
-                                <circle cx="44" cy="77" r="2" fill="white"/>
-                            </g>
-                            
-                            <!-- Airplane -->
-                            <g fill="#003355">
-                                <ellipse cx="75" cy="35" rx="15" ry="4" transform="rotate(15 75 35)"/>
-                                <ellipse cx="70" cy="38" rx="8" ry="3" transform="rotate(15 70 38)"/>
-                                <ellipse cx="82" cy="32" rx="6" ry="2" transform="rotate(15 82 32)"/>
-                            </g>
-                            
-                            <!-- Blue Waves -->
-                            <path d="M20 90 Q35 85, 50 90 T80 90 T110 90" stroke="#186094" stroke-width="4" fill="none"/>
-                            <path d="M15 95 Q30 92, 45 95 T75 95 T105 95" stroke="#186094" stroke-width="3" fill="none" opacity="0.7"/>
-                        </svg>
+                    <div class="w-12 h-12 ">
+                        <img src="../../public/tglogo.png" alt="">
                     </div>
                     
                     <!-- Text Logo -->
                     <div class="flex flex-col">
-                        <span class="text-2xl font-bold text-blue-900 dark:text-blue-100 transition-colors duration-300">
-                            Triad<span class="text-orange-500">GO</span>
+                        <span class="text-2xl font-bold text-blue-800 transition-colors duration-300">
+                            Triad<span class="text-amber-500">GO</span>
                         </span>
                     </div>
                 </div>
@@ -100,11 +71,11 @@
         <div class="text-center max-w-2xl mx-auto">
             <!-- 404 Number dengan Animasi -->
             <div class="mb-8 relative">
-                <h1 class="text-8xl md:text-9xl lg:text-[12rem] font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-800 to-orange-500 dark:from-blue-400 dark:via-blue-300 dark:to-orange-400 animate-pulse select-none">
+                <h1 class="text-8xl md:text-9xl lg:text-[12rem] font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-600 via-red-800 to-red-500 dark:from-red-500 dark:via-red-400 dark:to-red-500 animate-pulse select-none">
                     404
                 </h1>
                 <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-10 dark:opacity-20">
-                    <svg class="w-32 h-32 md:w-48 md:h-48 text-blue-600 dark:text-blue-400" fill="currentColor" viewBox="0 0 20 20">
+                    <svg class="w-32 h-32 md:w-48 md:h-48 text-red-700" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
                     </svg>
                 </div>
@@ -112,18 +83,18 @@
 
             <!-- Error Message -->
             <div class="mb-12 space-y-4">
-                <h2 class="text-3xl md:text-4xl font-bold text-blue-800 dark:text-blue-300 mb-4 transition-colors duration-300">
+                <h2 class="text-3xl md:text-4xl font-bold text-red-600 mb-4 transition-colors duration-300">
                     Oops! Page Not Found
                 </h2>
-                <p class="text-lg md:text-xl text-blue-600 dark:text-blue-400 mb-6 max-w-lg mx-auto transition-colors duration-300">
+                <p class="text-lg md:text-xl text-red-500 mb-6 max-w-lg mx-auto transition-colors duration-300">
                     Sorry, the page you are looking for doesn't exist or you don't have permission to access it.
                 </p>
                 @if(Auth::check())
-                    <div class="inline-flex items-center bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-300 px-4 py-2 rounded-full text-sm font-medium transition-colors duration-300">
+                    <div class="inline-flex items-center bg-amber-500 dark:text-white px-4 py-2 rounded-full text-sm font-medium transition-colors duration-300">
                         <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
                         </svg>
-                        Logged in as: {{ ucfirst(Auth::user()->role) }}
+                        You were Logged in as : {{ ucfirst(Auth::user()->role) }}
                     </div>
                 @endif
             </div>
@@ -133,44 +104,11 @@
                 <div class="inline-block relative">
                     <div class="w-64 h-64 md:w-80 md:h-80 mx-auto bg-gradient-to-br from-blue-50 to-orange-50 dark:from-blue-900/20 dark:to-orange-900/20 rounded-full flex items-center justify-center shadow-2xl">
                         <!-- Logo TriadGO di tengah dengan ukuran besar -->
-                        <div class="w-32 h-32 md:w-40 md:h-40 opacity-60 dark:opacity-80">
-                            <svg viewBox="0 0 120 120" class="w-full h-full filter drop-shadow-lg">
-                                <!-- Orange Curve -->
-                                <path d="M20 60 Q40 20, 80 30" stroke="#EEA133" stroke-width="10" fill="none" stroke-linecap="round"/>
-                                
-                                <!-- Ship -->
-                                <g fill="#003355" class="dark:fill-blue-300">
-                                    <!-- Ship Hull -->
-                                    <path d="M30 70 L85 70 L90 85 L25 85 Z"/>
-                                    <!-- Ship Cabin -->
-                                    <rect x="35" y="55" width="15" height="15" rx="2"/>
-                                    <!-- Ship Chimney -->
-                                    <rect x="38" y="45" width="4" height="10"/>
-                                    <rect x="43" y="48" width="4" height="7"/>
-                                    <!-- Windows -->
-                                    <circle cx="32" cy="77" r="2" fill="white"/>
-                                    <circle cx="38" cy="77" r="2" fill="white"/>
-                                    <circle cx="44" cy="77" r="2" fill="white"/>
-                                </g>
-                                
-                                <!-- Airplane -->
-                                <g fill="#003355" class="dark:fill-blue-300">
-                                    <ellipse cx="75" cy="35" rx="15" ry="4" transform="rotate(15 75 35)"/>
-                                    <ellipse cx="70" cy="38" rx="8" ry="3" transform="rotate(15 70 38)"/>
-                                    <ellipse cx="82" cy="32" rx="6" ry="2" transform="rotate(15 82 32)"/>
-                                </g>
-                                
-                                <!-- Blue Waves -->
-                                <path d="M20 90 Q35 85, 50 90 T80 90 T110 90" stroke="#186094" stroke-width="5" fill="none"/>
-                                <path d="M15 95 Q30 92, 45 95 T75 95 T105 95" stroke="#186094" stroke-width="4" fill="none" opacity="0.7"/>
-                            </svg>
+                        <div class="w-48 h-48  opacity-60 dark:opacity-80">
+                            <img src="https://cdn3.iconfinder.com/data/icons/security-flat-style/128/Security_-_Flat_Style-3-30-512.png" alt="">
                         </div>
                         
-                        <!-- Floating Question Marks -->
-                        <div class="absolute top-8 left-8 text-4xl text-blue-600 dark:text-blue-400 opacity-40 animate-bounce" style="animation-delay: 0.5s">?</div>
-                        <div class="absolute top-12 right-12 text-3xl text-orange-500 dark:text-orange-400 opacity-50 animate-bounce" style="animation-delay: 1s">?</div>
-                        <div class="absolute bottom-16 left-12 text-5xl text-blue-700 dark:text-blue-300 opacity-30 animate-bounce" style="animation-delay: 1.5s">?</div>
-                        <div class="absolute bottom-8 right-8 text-4xl text-orange-600 dark:text-orange-300 opacity-40 animate-bounce" style="animation-delay: 2s">?</div>
+                        
                     </div>
                 </div>
             </div>
@@ -286,8 +224,8 @@
                         <path d="M15 95 Q30 92, 45 95 T75 95 T105 95" stroke="#186094" stroke-width="3" fill="none" opacity="0.7"/>
                     </svg>
                 </div>
-                <span class="text-lg font-bold text-blue-900 dark:text-blue-100 transition-colors duration-300">
-                    Triad<span class="text-orange-500">GO</span>
+                <span class="text-lg font-bold text-blue-800  transition-colors duration-300">
+                    Triad<span class="text-amber-500">GO</span>
                 </span>
             </div>
             <p class="text-sm text-blue-600 dark:text-blue-400 transition-colors duration-300">

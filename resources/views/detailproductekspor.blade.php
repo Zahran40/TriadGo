@@ -5,7 +5,8 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product Detail | TriadGO</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>{{ $product->product_name }} | TriadGO</title>
     @vite('resources/css/app.css')
     <script src="https://cdn.tailwindcss.com"></script>
 
@@ -48,8 +49,8 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
-        .body {
-            font-family: poppins, sans-serif;
+        body {
+            font-family: 'Poppins', sans-serif;
         }
 
         /* SweetAlert2 Dark Mode Fix */
@@ -68,6 +69,30 @@
         .swal2-popup.swal2-dark .swal2-html-container {
             color: #d1d5db !important;
         }
+
+        .slide-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .slide-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ✅ Edit Mode Styles */
+        .edit-input {
+            border: 2px solid #3b82f6;
+            background: rgba(59, 130, 246, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .edit-input:focus {
+            outline: none;
+            border-color: #1d4ed8;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
     </style>
 </head>
 
@@ -79,68 +104,174 @@
     <section id="" class="container mx-auto px-6 py-16 slide-in">
         <div class="min-h-screen flex items-center justify-center dark:bg-slate-900">
             <div class="product shadow-lg rounded-lg max-w-8xl w-full p-8 bg-white dark:bg-gray-800">
+                
+                <!-- Back Button -->
+                <div class="mb-6">
+                    <a href="{{ route('myproduct') }}" class="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 font-medium transition">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                        </svg>
+                        Back to My Products
+                    </a>
+                </div>
+
                 <div class="flex flex-col md:flex-row gap-8">
                     <div class="flex flex-col items-center md:items-start">
-                        <img src="https://png.pngtree.com/png-vector/20231023/ourmid/pngtree-mystery-box-with-question-mark-3d-illustration-png-image_10313605.png"
-                            alt="Product Image" class="w-80 h-80 object-cover rounded-lg mx-auto md:mx-0">
+                        @if($product->product_image)
+                            <img src="{{ asset($product->product_image) }}"
+                                alt="{{ $product->product_name }}" class="w-80 h-80 object-cover rounded-lg mx-auto md:mx-0 shadow-md">
+                        @else
+                            <img src="https://png.pngtree.com/png-vector/20231023/ourmid/pngtree-mystery-box-with-question-mark-3d-illustration-png-image_10313605.png"
+                                alt="No Image" class="w-80 h-80 object-cover rounded-lg mx-auto md:mx-0 shadow-md">
+                        @endif
+                        
+                        <!-- Status Badge -->
+                        <div class="mt-4">
+                            @if($product->status === 'pending')
+                                <span class="bg-yellow-100 text-yellow-800 px-4 py-2 rounded-full text-sm font-medium">
+                                    ⏳ Pending Review
+                                </span>
+                            @elseif($product->status === 'approved')
+                                <span class="bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm font-medium">
+                                    ✅ Approved
+                                </span>
+                            @elseif($product->status === 'rejected')
+                                <span class="bg-red-100 text-red-800 px-4 py-2 rounded-full text-sm font-medium">
+                                    ❌ Rejected
+                                </span>
+                            @else
+                                <span class="bg-gray-100 text-gray-800 px-4 py-2 rounded-full text-sm font-medium">
+                                    {{ ucfirst($product->status) }}
+                                </span>
+                            @endif
+                        </div>
                         
                         <p class="text-2xl font-medium text-blue-800 dark:text-blue-300 mt-6">Exported by</p>
                         
-                        <a href=""
-                            class="flex items-center gap-3 mt-6 bg-blue-700 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-500 p-4 rounded-lg shadow-sm">
-                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt=""
-                                class="w-[70px] h-[70px] rounded-full ml-3">
+                        <div class="flex items-center gap-3 mt-6 bg-blue-700 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-500 p-4 rounded-lg shadow-sm">
+                            @if($product->user->profile_picture)
+                                <img src="{{ asset($product->user->profile_picture) }}" alt="{{ $product->user->name }}"
+                                    class="w-[70px] h-[70px] rounded-full ml-3 object-cover">
+                            @else
+                                <div class="w-[70px] h-[70px] rounded-full ml-3 bg-blue-500 flex items-center justify-center text-white text-2xl font-bold">
+                                    {{ strtoupper(substr($product->user->name, 0, 1)) }}
+                                </div>
+                            @endif
+                            
                             <div class="flex flex-col ml-2">
-                                <p class="text-xl font-medium text-white">John Doe</p>
-                                <p class="text-lg font-medium text-white">Indonesia</p>
+                                <p class="text-xl font-medium text-white">{{ $product->user->name }}</p>
+                                <p class="text-lg font-medium text-white">{{ $product->user->country }}</p>
+                                <p class="text-sm text-blue-100">{{ $product->user->phone }}</p>
                             </div>
-                        </a>
+                        </div>
                     </div>
 
                     <div class="flex-1">
-                        <h1 class="text-3xl font-bold text-blue-900 dark:text-blue-100 mb-8 mt-3">Mystery Product Box</h1>
+                        <!-- ✅ Product Name - Editable -->
+                        <div class="mb-8 mt-3">
+                            <h1 id="productNameDisplay" class="text-3xl font-bold text-blue-900 dark:text-blue-100 cursor-pointer hover:bg-blue-50 dark:hover:bg-blue-900/20 p-2 rounded-lg transition" onclick="editField('productName')">
+                                {{ $product->product_name }} ✏️
+                            </h1>
+                            <input id="productNameEdit" type="text" value="{{ $product->product_name }}" 
+                                   class="hidden text-3xl font-bold text-blue-900 dark:text-blue-100 bg-transparent edit-input w-full p-2 rounded-lg dark:text-white"
+                                   onblur="saveField('productName')" onkeydown="handleKeyDown(event, 'productName')">
+                        </div>
                         
                         <!-- Category -->
                         <div class="mb-4">
                             <div class="flex items-center gap-2">
                                 <span class="text-sm font-medium text-blue-700 dark:text-blue-300">Category:</span>
-                                <span class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow-md">
-                                    Electronics
+                                @php
+                                    $categoryColors = [
+                                        'Electronics' => 'from-blue-500 to-blue-600',
+                                        'Food & Beverages' => 'from-orange-500 to-orange-600',
+                                        'Textile goods' => 'from-purple-500 to-purple-600',
+                                        'Raw materials' => 'from-gray-500 to-gray-600',
+                                        'Furniture items' => 'from-green-500 to-green-600',
+                                    ];
+                                    $gradient = $categoryColors[$product->category] ?? 'from-blue-500 to-blue-600';
+                                @endphp
+                                <span class="bg-gradient-to-r {{ $gradient }} text-white px-4 py-2 rounded-lg text-sm font-semibold shadow-md">
+                                    {{ $product->category }}
                                 </span>
                             </div>
                         </div>
 
                         <p class="text-lg text-blue-700 dark:text-blue-300 font-medium mb-4">
-                            High-quality electronic product with advanced features and reliable performance. Perfect for both personal and professional use.
+                            {{ $product->product_description }}
                         </p>
                         
-                        <p class="text-xl text-blue-700 dark:text-blue-300 mb-4 mt-5 font-semibold">
-                            Price : <span class="text-2xl font-bold text-blue-900 dark:text-blue-100">$100</span>
-                        </p>
-                        <p class="text-xl text-blue-700 dark:text-blue-300 mb-4 mt-2 font-semibold">
-                            Stock : <span class="text-2xl font-bold text-blue-900 dark:text-blue-100">50</span>
-                        </p>
-                        <p class="text-xl text-blue-700 dark:text-blue-300 mb-4 mt-2 font-semibold">
-                            Product ID : <span class="text-xl font-bold text-blue-900 dark:text-blue-100">TDR-3000</span>
-                        </p>
-                        <p class="text-xl text-blue-700 dark:text-blue-300 mb-4 mt-2 font-semibold">
-                            Weight : <span class="text-xl font-bold text-blue-900 dark:text-blue-100">5 kg</span>
-                        </p>
-                        <p class="text-xl text-blue-700 dark:text-blue-300 mb-6 mt-2 font-semibold">
-                            Country of Origin : <span class="text-xl font-bold text-blue-900 dark:text-blue-100">Indonesia</span>
-                        </p>
-
-                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                            <!-- ✅ Price - Editable -->
+                            <div class="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
+                                <p class="text-lg text-blue-700 dark:text-blue-300 mb-2 font-semibold">Price:</p>
+                                <div id="priceDisplay" class="cursor-pointer hover:bg-blue-100 dark:hover:bg-blue-800/30 p-2 rounded transition" onclick="editField('price')">
+                                    <span class="text-2xl font-bold text-blue-900 dark:text-blue-100">${{ number_format($product->price, 2) }}</span> ✏️
+                                </div>
+                                <input id="priceEdit" type="number" step="0.01" min="0" value="{{ $product->price }}" 
+                                       class="hidden text-2xl font-bold text-blue-900 dark:text-blue-100 bg-transparent edit-input w-full p-2 rounded-lg dark:text-white"
+                                       onblur="saveField('price')" onkeydown="handleKeyDown(event, 'price')">
+                            </div>
                             
-                            <button onclick="deleteProduct('TDR-3000')" 
+                            <!-- ✅ Stock - Editable -->
+                            <div class="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg">
+                                <p class="text-lg text-blue-700 dark:text-blue-300 mb-2 font-semibold">Stock:</p>
+                                <div id="stockDisplay" class="cursor-pointer hover:bg-green-100 dark:hover:bg-green-800/30 p-2 rounded transition" onclick="editField('stock')">
+                                    <span class="text-2xl font-bold text-blue-900 dark:text-blue-100">{{ $product->stock_quantity }}</span> units ✏️
+                                </div>
+                                <input id="stockEdit" type="number" min="0" value="{{ $product->stock_quantity }}" 
+                                       class="hidden text-2xl font-bold text-blue-900 dark:text-blue-100 bg-transparent edit-input w-full p-2 rounded-lg dark:text-white"
+                                       onblur="saveField('stock')" onkeydown="handleKeyDown(event, 'stock')">
+                            </div>
+                            
+                            <div class="bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-lg">
+                                <p class="text-lg text-blue-700 dark:text-blue-300 mb-2 font-semibold">
+                                    SKU: <span class="text-xl font-bold text-blue-900 dark:text-blue-100">{{ $product->product_sku }}</span>
+                                </p>
+                            </div>
+                            
+                            <!-- ✅ Weight - Editable -->
+                            <div class="bg-purple-50 dark:bg-purple-900/20 p-4 rounded-lg">
+                                <p class="text-lg text-blue-700 dark:text-blue-300 mb-2 font-semibold">Weight:</p>
+                                <div id="weightDisplay" class="cursor-pointer hover:bg-purple-100 dark:hover:bg-purple-800/30 p-2 rounded transition" onclick="editField('weight')">
+                                    <span class="text-xl font-bold text-blue-900 dark:text-blue-100">{{ $product->weight }}</span> kg ✏️
+                                </div>
+                                <input id="weightEdit" type="number" step="0.1" min="0" value="{{ $product->weight }}" 
+                                       class="hidden text-xl font-bold text-blue-900 dark:text-blue-100 bg-transparent edit-input w-full p-2 rounded-lg dark:text-white"
+                                       onblur="saveField('weight')" onkeydown="handleKeyDown(event, 'weight')">
+                            </div>
+                        </div>
+
+                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg mb-6">
+                            <p class="text-lg text-blue-700 dark:text-blue-300 mb-2 font-semibold">
+                                Country of Origin: <span class="text-xl font-bold text-blue-900 dark:text-blue-100">{{ $product->country_of_origin }}</span>
+                            </p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">
+                                Created: {{ $product->created_at->format('F d, Y \a\t H:i') }}
+                            </p>
+                            @if($product->updated_at != $product->created_at)
+                                <p class="text-sm text-gray-500 dark:text-gray-400">
+                                    Last updated: {{ $product->updated_at->format('F d, Y \a\t H:i') }}
+                                </p>
+                            @endif
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="flex gap-4">
+                            <button onclick="deleteProduct({{ $product->product_id }})" 
                                     class="text-xl bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 text-white font-bold py-3 px-6 rounded-md transition flex items-center justify-center gap-2">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                                 </svg>
                                 Delete Product
                             </button>
-                            
-                            
+                        </div>
+
+                        <!-- ✅ Edit Instructions -->
+                        <div class="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border-l-4 border-blue-500">
+                            <p class="text-sm text-blue-700 dark:text-blue-300">
+                                💡 <strong>Quick Edit:</strong> Click on product name, price, stock, or weight to edit inline. Press Enter to save or click outside to cancel.
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -173,6 +304,179 @@
     </footer>
 
     <script>
+        // ✅ INLINE EDITING FUNCTIONALITY
+        let originalValues = {
+            productName: '{{ $product->product_name }}',
+            price: {{ $product->price }},
+            stock: {{ $product->stock_quantity }},
+            weight: {{ $product->weight }}
+        };
+
+        function editField(field) {
+            const display = document.getElementById(field + 'Display');
+            const edit = document.getElementById(field + 'Edit');
+            
+            if (display && edit) {
+                display.classList.add('hidden');
+                edit.classList.remove('hidden');
+                edit.focus();
+                edit.select();
+            }
+        }
+
+        function cancelEdit(field) {
+            const display = document.getElementById(field + 'Display');
+            const edit = document.getElementById(field + 'Edit');
+            
+            if (display && edit) {
+                edit.value = originalValues[field];
+                edit.classList.add('hidden');
+                display.classList.remove('hidden');
+            }
+        }
+
+        function handleKeyDown(event, field) {
+            if (event.key === 'Enter') {
+                saveField(field);
+            } else if (event.key === 'Escape') {
+                cancelEdit(field);
+            }
+        }
+
+        async function saveField(field) {
+            const edit = document.getElementById(field + 'Edit');
+            const newValue = edit.value.trim();
+            
+            // Validation
+            if (!newValue) {
+                cancelEdit(field);
+                return;
+            }
+
+            if (field === 'price' && (parseFloat(newValue) < 0 || isNaN(parseFloat(newValue)))) {
+                showError('Price must be a valid positive number');
+                cancelEdit(field);
+                return;
+            }
+
+            if ((field === 'stock' || field === 'weight') && (parseFloat(newValue) < 0 || isNaN(parseFloat(newValue)))) {
+                showError(`${field.charAt(0).toUpperCase() + field.slice(1)} must be a valid positive number`);
+                cancelEdit(field);
+                return;
+            }
+
+            // If no change, just cancel
+            if (newValue == originalValues[field]) {
+                cancelEdit(field);
+                return;
+            }
+
+            try {
+                // Show loading state
+                edit.disabled = true;
+                edit.classList.add('opacity-50');
+
+                const response = await fetch(`/product/{{ $product->product_id }}/update-field`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    },
+                    body: JSON.stringify({
+                        field: field,
+                        value: newValue
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Update display
+                    updateDisplay(field, newValue);
+                    originalValues[field] = newValue;
+                    showSuccess(`${field.charAt(0).toUpperCase() + field.slice(1)} updated successfully!`);
+                } else {
+                    throw new Error(data.message || 'Update failed');
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+                showError(`Failed to update ${field}: ${error.message}`);
+                cancelEdit(field);
+            } finally {
+                edit.disabled = false;
+                edit.classList.remove('opacity-50');
+            }
+        }
+
+        function updateDisplay(field, value) {
+            const display = document.getElementById(field + 'Display');
+            const edit = document.getElementById(field + 'Edit');
+
+            if (field === 'productName') {
+                display.innerHTML = `${value} ✏️`;
+            } else if (field === 'price') {
+                display.innerHTML = `<span class="text-2xl font-bold text-blue-900 dark:text-blue-100">$${parseFloat(value).toFixed(2)}</span> ✏️`;
+            } else if (field === 'stock') {
+                display.innerHTML = `<span class="text-2xl font-bold text-blue-900 dark:text-blue-100">${value}</span> units ✏️`;
+            } else if (field === 'weight') {
+                display.innerHTML = `<span class="text-xl font-bold text-blue-900 dark:text-blue-100">${value}</span> kg ✏️`;
+            }
+
+            edit.classList.add('hidden');
+            display.classList.remove('hidden');
+        }
+
+        function showSuccess(message) {
+            const isDark = document.documentElement.classList.contains('dark');
+            
+            Swal.fire({
+                title: 'Success!',
+                text: message,
+                icon: 'success',
+                timer: 2000,
+                showConfirmButton: false,
+                background: isDark ? '#374151' : '#ffffff',
+                color: isDark ? '#ffffff' : '#1f2937',
+                didOpen: () => {
+                    const popup = Swal.getPopup();
+                    if (isDark) {
+                        popup.classList.add('swal2-dark');
+                    } else {
+                        popup.style.color = '#1f2937';
+                        const title = popup.querySelector('.swal2-title');
+                        const content = popup.querySelector('.swal2-html-container');
+                        if (title) title.style.color = '#1f2937';
+                        if (content) content.style.color = '#1f2937';
+                    }
+                }
+            });
+        }
+
+        function showError(message) {
+            const isDark = document.documentElement.classList.contains('dark');
+            
+            Swal.fire({
+                title: 'Error!',
+                text: message,
+                icon: 'error',
+                background: isDark ? '#374151' : '#ffffff',
+                color: isDark ? '#ffffff' : '#1f2937',
+                didOpen: () => {
+                    const popup = Swal.getPopup();
+                    if (isDark) {
+                        popup.classList.add('swal2-dark');
+                    } else {
+                        popup.style.color = '#1f2937';
+                        const title = popup.querySelector('.swal2-title');
+                        const content = popup.querySelector('.swal2-html-container');
+                        if (title) title.style.color = '#1f2937';
+                        if (content) content.style.color = '#1f2937';
+                    }
+                }
+            });
+        }
+
         // Dark Mode Toggle
         const darkModeToggle = document.getElementById('darkModeToggle');
         const darkModeThumb = document.getElementById('darkModeThumb');
@@ -248,9 +552,18 @@
                 cancelButtonColor: '#eea133',
                 confirmButtonText: 'Logout',
                 background: isDark ? '#374151' : '#ffffff',
+                color: isDark ? '#ffffff' : '#1f2937',
                 didOpen: () => {
                     const popup = Swal.getPopup();
-                    if (isDark) popup.classList.add('swal2-dark');
+                    if (isDark) {
+                        popup.classList.add('swal2-dark');
+                    } else {
+                        popup.style.color = '#1f2937';
+                        const title = popup.querySelector('.swal2-title');
+                        const content = popup.querySelector('.swal2-html-container');
+                        if (title) title.style.color = '#1f2937';
+                        if (content) content.style.color = '#1f2937';
+                    }
                 }
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -272,9 +585,18 @@
                 cancelButtonColor: '#eea133',
                 confirmButtonText: 'Logout',
                 background: isDark ? '#374151' : '#ffffff',
+                color: isDark ? '#ffffff' : '#1f2937',
                 didOpen: () => {
                     const popup = Swal.getPopup();
-                    if (isDark) popup.classList.add('swal2-dark');
+                    if (isDark) {
+                        popup.classList.add('swal2-dark');
+                    } else {
+                        popup.style.color = '#1f2937';
+                        const title = popup.querySelector('.swal2-title');
+                        const content = popup.querySelector('.swal2-html-container');
+                        if (title) title.style.color = '#1f2937';
+                        if (content) content.style.color = '#1f2937';
+                    }
                 }
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -283,12 +605,7 @@
             });
         });
 
-        // Product Management Functions
-        function editProduct(productId) {
-            // Redirect to edit product page
-            window.location.href = `/edit-product/${productId}`;
-        }
-
+        // Delete Product Function
         function deleteProduct(productId) {
             const isDark = document.documentElement.classList.contains('dark');
             
@@ -302,34 +619,102 @@
                 confirmButtonText: 'Yes, delete it!',
                 cancelButtonText: 'Cancel',
                 background: isDark ? '#374151' : '#ffffff',
+                color: isDark ? '#ffffff' : '#1f2937',
                 didOpen: () => {
                     const popup = Swal.getPopup();
-                    if (isDark) popup.classList.add('swal2-dark');
+                    if (isDark) {
+                        popup.classList.add('swal2-dark');
+                    } else {
+                        popup.style.color = '#1f2937';
+                        const title = popup.querySelector('.swal2-title');
+                        const content = popup.querySelector('.swal2-html-container');
+                        if (title) title.style.color = '#1f2937';
+                        if (content) content.style.color = '#1f2937';
+                    }
                 }
             }).then((result) => {
                 if (result.isConfirmed) {
-                    const isDarkSuccess = document.documentElement.classList.contains('dark');
-                    
-                    Swal.fire({
-                        title: 'Deleted!',
-                        text: 'Your product has been deleted successfully.',
-                        icon: 'success',
-                        background: isDarkSuccess ? '#374151' : '#ffffff',
-                        didOpen: () => {
-                            const popup = Swal.getPopup();
-                            if (isDarkSuccess) popup.classList.add('swal2-dark');
+                    // Send AJAX delete request
+                    fetch(`/product/${productId}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                         }
-                    }).then(() => {
-                        // Redirect to products list after deletion
-                        window.location.href = '/my-products';
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            const isDarkSuccess = document.documentElement.classList.contains('dark');
+                            
+                            Swal.fire({
+                                title: 'Deleted!',
+                                text: data.message,
+                                icon: 'success',
+                                background: isDarkSuccess ? '#374151' : '#ffffff',
+                                color: isDarkSuccess ? '#ffffff' : '#1f2937',
+                                didOpen: () => {
+                                    const popup = Swal.getPopup();
+                                    if (isDarkSuccess) {
+                                        popup.classList.add('swal2-dark');
+                                    } else {
+                                        popup.style.color = '#1f2937';
+                                        const title = popup.querySelector('.swal2-title');
+                                        const content = popup.querySelector('.swal2-html-container');
+                                        if (title) title.style.color = '#1f2937';
+                                        if (content) content.style.color = '#1f2937';
+                                    }
+                                }
+                            }).then(() => {
+                                // Redirect to products list after deletion
+                                window.location.href = '/myproduct';
+                            });
+                        } else {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: data.message,
+                                icon: 'error',
+                                background: isDark ? '#374151' : '#ffffff',
+                                color: isDark ? '#ffffff' : '#1f2937',
+                                didOpen: () => {
+                                    const popup = Swal.getPopup();
+                                    if (isDark) {
+                                        popup.classList.add('swal2-dark');
+                                    } else {
+                                        popup.style.color = '#1f2937';
+                                        const title = popup.querySelector('.swal2-title');
+                                        const content = popup.querySelector('.swal2-html-container');
+                                        if (title) title.style.color = '#1f2937';
+                                        if (content) content.style.color = '#1f2937';
+                                    }
+                                }
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        Swal.fire({
+                            title: 'Error!',
+                            text: 'Something went wrong. Please try again.',
+                            icon: 'error',
+                            background: isDark ? '#374151' : '#ffffff',
+                            color: isDark ? '#ffffff' : '#1f2937',
+                            didOpen: () => {
+                                const popup = Swal.getPopup();
+                                if (isDark) {
+                                    popup.classList.add('swal2-dark');
+                                } else {
+                                    popup.style.color = '#1f2937';
+                                    const title = popup.querySelector('.swal2-title');
+                                    const content = popup.querySelector('.swal2-html-container');
+                                    if (title) title.style.color = '#1f2937';
+                                    if (content) content.style.color = '#1f2937';
+                                }
+                            }
+                        });
                     });
                 }
             });
-        }
-
-        function viewAllProducts() {
-            // Redirect to products list page
-            window.location.href = '/my-products';
         }
 
         // Scroll animations

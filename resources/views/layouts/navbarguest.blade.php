@@ -8,7 +8,7 @@
         <nav class="hidden md:flex items-center space-x-6 text-blue-700 font-semibold">
             <a href="#services" class="hover:text-orange-500 transition nav-gradient-move">Services</a>
             <a href="#about" class="hover:text-orange-500 transition nav-gradient-move">About Us</a>
-            <a href="#contact" class="hover:text-orange-500 transition nav-gradient-move">Contact</a>
+            <a href="#contact" class="hover:text-orange-500 transition nav-gradient-move">Testimonials</a>
             <a href="{{ route('login') }}">
                 <button
                     class="ml-6 px-4 py-1.5 bg-blue-400 text-white rounded-md font-semibold hover:bg-blue-600 transition pulse-on-hover">
@@ -55,7 +55,7 @@
         <a href="#about"
             class="mb-4 text-blue-700 font-semibold hover:text-orange-500 transition nav-gradient-move">About Us</a>
         <a href="#contact"
-            class="mb-4 text-blue-700 font-semibold hover:text-orange-500 transition nav-gradient-move">Contact</a>
+            class="mb-4 text-blue-700 font-semibold hover:text-orange-500 transition nav-gradient-move">Testimonials</a>
         <a href="{{ route('login') }}">
             <button
                 class="w-full mb-3 px-4 py-2 bg-blue-400 text-white rounded-md font-semibold hover:bg-blue-600 transition">Login</button>

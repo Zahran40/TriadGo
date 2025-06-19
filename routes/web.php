@@ -24,9 +24,7 @@ Route::get('/login', [LoginController::class, 'login'])->name('login');
 Route::post('/login', [LoginController::class, 'authenticate'])->name('login.authenticate');
 
 // Homepage - semua bisa akses
-Route::get('/', function () {
-    return view('homepage');
-})->name('homepage');
+Route::get('/', [PageController::class, 'home'])->name('homepage');
 
 // Halaman Importir - hanya role impor
 Route::get('/importir', [ImportirController::class, 'homeimportir'])->name('importir')->middleware('role.protect:impor');
@@ -52,7 +50,7 @@ Route::get('/invoice', [PageController::class, 'invoice'])->name('invoice')->mid
 Route::post('/logout', [PageController::class, 'logout'])->name('logout')->middleware('role.protect:admin,impor,ekspor');
 
 // Contact us - semua bisa akses
-Route::post('/contactus', [ContactusController::class, 'store'])->name('contactus.store');
+Route::post('/contact-us', [ContactusController::class, 'storeContactUs'])->name('contactus.store');
 
 // Halaman Ekspor - hanya role ekspor
 Route::get('/ekspor', [EksportirController::class, 'homeeksportir'])->name('ekspor')->middleware('role.protect:ekspor');

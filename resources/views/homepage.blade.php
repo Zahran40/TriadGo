@@ -7,9 +7,6 @@
     <title>TriadGO</title>
     @vite('resources/css/app.css')
 
-    {{-- <!-- <link rel="stylesheet" href="{{ asset('css/app.css') }}" />
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script> --> --}}
-
     <script type="module">
         import 'https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4'
 
@@ -24,14 +21,25 @@
             },
         }
 
-
         tailwind.scan()
     </script>
+
+    <style>
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .line-clamp-3 {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+    </style>
 </head>
-
-
-
-
 
 <body class="home-bg">
     @if(session('success'))
@@ -49,6 +57,21 @@
         </script>
     @endif
 
+    @if(session('error'))
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: "{{ session('error') }}",
+                background: '#dc2626',
+                color: '#fff',
+                confirmButtonColor: '#dc2626',
+                confirmButtonText: 'OK'
+            });
+        </script>
+    @endif
+
     @include('layouts.navbarguest')
 
     <section class="flex-grow container mx-auto px-6 md:px-12 py-16 flex flex-col md:flex-row items-center">
@@ -61,7 +84,7 @@
             </p>
             <a href="#contact"
                 class="inline-block bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-8 rounded-md shadow-md transition pulse-on-hover">
-                Contact Us
+                Send Us Testimonials
             </a>
         </div>
         <div class="md:w-1/2 mt-10 md:mt-0">
@@ -116,7 +139,8 @@
                                 d="M12 12h3l3 9m-3-9v-7a7 7 0 00-14 0v7" />
                         </svg>
                     </div>
-                    <h4 class="text-2xl font-semibold text-blue-800 mb-2 text-center md:text-left">Pemasaran Se - ASEAN</h4>
+                    <h4 class="text-2xl font-semibold text-blue-800 mb-2 text-center md:text-left">Pemasaran Se - ASEAN
+                    </h4>
                     <p class="text-blue-700 text-center md:text-left">
                         Membuka akses pasar internasional untuk produk Anda dengan strategi pemasaran yang efektif.
                     </p>
@@ -125,7 +149,7 @@
         </div>
     </section>
 
-    <section id="about" class="container mx-autof px-6 md:px-12 py-16 slide-in">
+    <section id="about" class="container mx-auto px-6 md:px-12 py-16 slide-in">
         <div class="max-w-4xl mx-auto text-center">
             <h3 class="text-3xl font-bold mb-6 text-blue-900">About Us</h3>
             <p class="text-blue-700 text-lg leading-relaxed">
@@ -135,57 +159,117 @@
         </div>
     </section>
 
+       <!-- ✅ FIXED: Add isset check for testimonials -->
     <section id="testimoni" class="bg-white py-16 slide-in">
         <div class="container mx-auto px-6 md:px-12">
-            <h3 class="text-3xl font-bold text-blue-900 mb-12 text-center">Testimoni Pelanggan</h3>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-                <div class="bg-blue-50 p-8 rounded-lg shadow hover:shadow-lg transition text-center card-animate">
-                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Pelanggan 1"
-                        class="w-16 h-16 rounded-full mx-auto mb-4">
-                    <p class="text-blue-700 mb-4">Kece abis. Beli perlengkapan duduk duduk dari negara ASEAN mana aja
-                        jadi
-                        simple</p>
-                    <h4 class="font-semibold text-blue-800">Andre Sebayang</h4>
-                    <span class="text-sm text-blue-800">Pengusaha Teteng</span>
+            <h3 class="text-3xl font-bold text-blue-900 mb-12 text-center">Customer Testimonials</h3>
+            
+            @if(isset($testimonials) && $testimonials->count() > 0)
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                    @foreach($testimonials->take(3) as $testimonial)
+                        <div class="bg-blue-50 p-8 rounded-lg shadow hover:shadow-lg transition text-center card-animate">
+                            <!-- Anonymous Profile Picture -->
+                            <div class="w-16 h-16 rounded-full mx-auto mb-4 bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center">
+                                <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            
+                            <!-- Message from Contact Us -->
+                            <p class="text-blue-700 mb-4 line-clamp-3">
+                                "{{ Str::limit($testimonial->message, 120) }}"
+                            </p>
+                            
+                            <!-- Name and Email -->
+                            <h4 class="font-semibold text-blue-800">{{ $testimonial->name }}</h4>
+                            <span class="text-sm text-blue-600">{{ $testimonial->email }}</span>
+                            
+                            <!-- Date -->
+                            <div class="mt-2">
+                                <span class="text-xs text-gray-500">{{ $testimonial->created_at->format('M d, Y') }}</span>
+                            </div>
+                        </div>
+                    @endforeach
                 </div>
-                <div class="bg-blue-50 p-8 rounded-lg shadow hover:shadow-lg transition text-center card-animate">
-                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Pelanggan 1"
-                        class="w-16 h-16 rounded-full mx-auto mb-4">
-                    <p class="text-blue-700 mb-4">Kece parah sih. Mau top up Football Manager jadi gampang. Makasih
-                        TriadGO.
-                        Sukses!</p>
-                    <h4 class="font-semibold text-blue-800">Daniele Siahaan</h4>
-                    <span class="text-sm text-blue-800">Appara Reagan</span>
+                
+                <!-- Show More Testimonials if available -->
+                @if($testimonials->count() > 3)
+                    <div class="mt-12">
+                        <h4 class="text-xl font-semibold text-blue-900 mb-6 text-center">More Customer Feedback</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                            @foreach($testimonials->skip(3)->take(3) as $testimonial)
+                                <div class="bg-gray-50 p-6 rounded-lg shadow hover:shadow-lg transition text-center card-animate">
+                                    <div class="w-12 h-12 rounded-full mx-auto mb-3 bg-gradient-to-r from-gray-400 to-gray-500 flex items-center justify-center">
+                                        <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
+                                        </svg>
+                                    </div>
+                                    <p class="text-gray-700 mb-3 text-sm line-clamp-2">
+                                        "{{ Str::limit($testimonial->message, 80) }}"
+                                    </p>
+                                    <h5 class="font-medium text-gray-800 text-sm">{{ $testimonial->name }}</h5>
+                                    <span class="text-xs text-gray-500">{{ $testimonial->created_at->format('M d, Y') }}</span>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
+            @else
+                <!-- ✅ Default Testimonials when no contact data available -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                    <div class="bg-blue-50 p-8 rounded-lg shadow hover:shadow-lg transition text-center card-animate">
+                        <div class="w-16 h-16 rounded-full mx-auto mb-4 bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center">
+                            <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <p class="text-blue-700 mb-4">"Kece abis. Beli perlengkapan duduk duduk dari negara ASEAN mana aja jadi simple"</p>
+                        <h4 class="font-semibold text-blue-800">Andre Sebayang</h4>
+                        <span class="text-sm text-blue-600">Pengusaha Teteng</span>
+                    </div>
+                    <div class="bg-blue-50 p-8 rounded-lg shadow hover:shadow-lg transition text-center card-animate">
+                        <div class="w-16 h-16 rounded-full mx-auto mb-4 bg-gradient-to-r from-green-500 to-green-600 flex items-center justify-center">
+                            <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <p class="text-blue-700 mb-4">"Kece parah sih. Mau top up Football Manager jadi gampang. Makasih TriadGO. Sukses!"</p>
+                        <h4 class="font-semibold text-blue-800">Daniele Siahaan</h4>
+                        <span class="text-sm text-blue-600">Appara Reagan</span>
+                    </div>
+                    <div class="bg-blue-50 p-8 rounded-lg shadow hover:shadow-lg transition text-center card-animate">
+                        <div class="w-16 h-16 rounded-full mx-auto mb-4 bg-gradient-to-r from-purple-500 to-purple-600 flex items-center justify-center">
+                            <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <p class="text-blue-700 mb-4">"Bener kata appara gw. Bukan cuma top up, tapi ekspor impor WDP pun bisa. Mudah + aman"</p>
+                        <h4 class="font-semibold text-blue-800">Reagan Siahaan</h4>
+                        <span class="text-sm text-blue-600">Appara Daniele</span>
+                    </div>
                 </div>
-                <div class="bg-blue-50 p-8 rounded-lg shadow hover:shadow-lg transition text-center card-animate">
-                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Pelanggan 1"
-                        class="w-16 h-16 rounded-full mx-auto mb-4">
-                    <p class="text-blue-700 mb-4">Bener kata appara gw. Bukan cuma top up, tapi ekspor impor WDP pun
-                        bisa.
-                        Mudah + aman</p>
-                    <h4 class="font-semibold text-blue-800">Reagan Siahaan</h4>
-                    <span class="text-sm text-blue-800">Appara Daniele</span>
-                </div>
-            </div>
+            @endif
         </div>
     </section>
 
     <section id="contact" class="bg-white py-12 px-6 max-w-2xl mx-auto my-8 slide-in">
         <div class="text-center">
-            <h2 class="text-3xl font-bold mb-2 text-blue-800 text-primary">Contact Us</h2>
+            <h2 class="text-3xl font-bold mb-2 text-blue-800 text-primary">Testimonials</h2>
             <p class="mb-6 text-amber-600">Send us a message and we'll get back to you soon.</p>
         </div>
+
+        <!-- ✅ UPDATED: Form action to use route -->
         <form action="{{ route('contactus.store') }}" method="POST" class="space-y-4">
             @csrf
             <input class="w-full border dark:text-black border-gray-300 p-3 rounded focus:border-primary input-animate"
-                name="name" type="text" placeholder="Your Name" />
+                name="name" type="text" placeholder="Your Name" required value="{{ old('name') }}" />
             <input class="w-full border dark:text-black border-gray-300 p-3 rounded focus:border-primary input-animate"
-                name="email" type="email" placeholder="Email" />
+                name="email" type="email" placeholder="Email" required value="{{ old('email') }}" />
             <textarea
                 class="w-full border dark:text-black border-gray-300 p-3 rounded focus:border-primary input-animate"
-                name="message" rows="5" placeholder="Message"></textarea>
+                name="message" rows="5" placeholder="Message" required>{{ old('message') }}</textarea>
             <button class="bg-amber-500 text-white px-6 py-3 rounded hover:bg-blue-600 transition-colors w-full"
-                type="submit">Send</button>
+                type="submit">Send Message</button>
         </form>
     </section>
 
@@ -222,7 +306,7 @@
 
     <script>
         const isDarkMode = document.documentElement.classList.contains('dark');
-        
+
         const darkModeToggle = document.getElementById('darkModeToggle');
         const darkModeThumb = document.getElementById('darkModeThumb');
         const htmlElement = document.documentElement;
@@ -231,12 +315,12 @@
             if (htmlElement.classList.contains('dark')) {
                 darkModeToggle.checked = true;
                 darkModeThumb.style.transform = 'translateX(1.25rem)';
-                darkModeThumb.style.backgroundColor = '#003355'; // dark mode
+                darkModeThumb.style.backgroundColor = '#003355';
                 darkModeThumb.style.borderColor = '#003355';
             } else {
                 darkModeToggle.checked = false;
                 darkModeThumb.style.transform = 'translateX(0)';
-                darkModeThumb.style.backgroundColor = '#fff'; // white mode
+                darkModeThumb.style.backgroundColor = '#fff';
                 darkModeThumb.style.borderColor = '#ccc';
             }
         }
@@ -303,32 +387,34 @@
         const openSidebarBtn = document.querySelector('button.md\\:hidden[aria-label="Open Menu"]');
         const closeSidebarBtn = document.getElementById('closeSidebar');
 
-        openSidebarBtn.addEventListener('click', function () {
-            sidebar.classList.remove('hidden');
-        });
-
-        closeSidebarBtn.addEventListener('click', function () {
-            sidebar.classList.add('hidden');
-        });
-
-        // Tutup sidebar jika klik di luar sidebar
-        sidebar.addEventListener('click', function (e) {
-            if (e.target === sidebar) {
-                sidebar.classList.add('hidden');
-            }
-        });
-
-        // Scroll to section dari sidebar
-        sidebar.querySelectorAll('a[href^="#"]').forEach(link => {
-            link.addEventListener('click', function (event) {
-                event.preventDefault();
-                sidebar.classList.add('hidden');
-                const targetId = this.getAttribute('href').substring(1);
-                scrollToSectionWithSlide(targetId);
+        if (openSidebarBtn && closeSidebarBtn) {
+            openSidebarBtn.addEventListener('click', function () {
+                sidebar.classList.remove('hidden');
             });
-        });
 
-        // Validasi Contact Us Form
+            closeSidebarBtn.addEventListener('click', function () {
+                sidebar.classList.add('hidden');
+            });
+
+            // Tutup sidebar jika klik di luar sidebar
+            sidebar.addEventListener('click', function (e) {
+                if (e.target === sidebar) {
+                    sidebar.classList.add('hidden');
+                }
+            });
+
+            // Scroll to section dari sidebar
+            sidebar.querySelectorAll('a[href^="#"]').forEach(link => {
+                link.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    sidebar.classList.add('hidden');
+                    const targetId = this.getAttribute('href').substring(1);
+                    scrollToSectionWithSlide(targetId);
+                });
+            });
+        }
+
+        // Enhanced form validation
         document.querySelector('form').addEventListener('submit', function (event) {
             const name = document.querySelector('input[name="name"]').value.trim();
             const email = document.querySelector('input[name="email"]').value.trim();
@@ -336,10 +422,13 @@
 
             if (!name || !email || !message) {
                 event.preventDefault();
-                alert('Isi semua kolom terlebih dahulu.');
+                alert('Please fill all fields before submitting.');
             } else if (!/\S+@\S+\.\S+/.test(email)) {
                 event.preventDefault();
                 alert('Please enter a valid email address.');
+            } else if (message.length < 10) {
+                event.preventDefault();
+                alert('Please write at least 10 characters in your message.');
             }
         });
     </script>

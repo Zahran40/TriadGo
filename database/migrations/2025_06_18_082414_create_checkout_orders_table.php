@@ -40,7 +40,7 @@ return new class extends Migration
             // Cart Items
             $table->json('cart_items');
             $table->decimal('subtotal', 10, 2);
-            $table->decimal('shipping_cost', 10, 2)->default(25.00);
+            $table->decimal('shipping_cost', 10, 2)->default(0.10);
             $table->decimal('tax_amount', 10, 2);
             $table->string('coupon_code')->nullable();
             $table->decimal('discount_amount', 10, 2)->default(0);

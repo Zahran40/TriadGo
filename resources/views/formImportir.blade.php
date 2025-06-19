@@ -683,7 +683,7 @@
                 <!-- Place Order Button -->
                 <div class="export-card bg-blue-50 dark:bg-slate-800 rounded-lg shadow-md p-6">
                     <button id="submitPayment" class="w-full px-6 py-3 bg-orange-500 text-white rounded-lg font-semibold hover:bg-orange-600 transition-colors focus:outline-none focus:ring-2 focus:ring-orange-400 disabled:opacity-50 disabled:cursor-not-allowed">
-                        <span id="buttonText">Complete Order - $300.00</span>
+                        <span id="buttonText">Complete Order - $0.21</span>
                         <span id="spinner" class="hidden">
                             <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -724,33 +724,6 @@
         // Cart Management Functions
         function loadCartItems() {
             let cart = JSON.parse(localStorage.getItem('importCart')) || [];
-            
-            // Add sample cart data if cart is empty (for testing)
-            if (cart.length === 0) {
-                cart = [
-                    {
-                        id: 1,
-                        name: "Premium Coffee Beans",
-                        origin: "Indonesia",
-                        price: 25.99,
-                        quantity: 2,
-                        weight: 1,
-                        sku: "COF-001",
-                        image: "/uploads/products/coffee-beans.jpg"
-                    },
-                    {
-                        id: 2,
-                        name: "Organic Tea Leaves",
-                        origin: "Sri Lanka",
-                        price: 18.50,
-                        quantity: 1,
-                        weight: 0.5,
-                        sku: "TEA-001",
-                        image: "/uploads/products/tea-leaves.jpg"
-                    }
-                ];
-                localStorage.setItem('importCart', JSON.stringify(cart));
-            }
             
             const cartItemsContainer = document.getElementById('cartItemsCheckout');
             const emptyCartMessage = document.getElementById('emptyCartMessage');
@@ -841,7 +814,7 @@
         }
 
         function updatePricing(subtotal) {
-            const shipping = 25.00;
+            const shipping = 0.10;
             const taxRate = 0.10;
             const tax = subtotal * taxRate;
             const total = subtotal + shipping + tax;
@@ -851,15 +824,51 @@
             document.getElementById('tax').textContent = `$${tax.toFixed(2)}`;
             document.getElementById('totalAmount').textContent = `$${total.toFixed(2)}`;
             
+            // Update Complete Order button text
+            const buttonText = document.getElementById('buttonText');
+            if (buttonText) {
+                buttonText.textContent = `Complete Order - $${total.toFixed(2)}`;
+            }
+            
+            // Update transfer amount if exists
+            const transferAmount = document.getElementById('transferAmount');
+            if (transferAmount) {
+                transferAmount.textContent = `$${total.toFixed(2)}`;
+            }
+            
             // Update currency conversions if function exists
             if (typeof updateCurrency === 'function') {
                 updateCurrency();
             }
         }
 
+        // Function to update complete order button text
+        function updateCompleteOrderButton() {
+            const totalElement = document.getElementById('totalAmount');
+            const buttonText = document.getElementById('buttonText');
+            const transferAmount = document.getElementById('transferAmount');
+            
+            if (totalElement && buttonText) {
+                const total = totalElement.textContent;
+                buttonText.textContent = `Complete Order - ${total}`;
+                
+                if (transferAmount) {
+                    transferAmount.textContent = total;
+                }
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             // Load cart items on page load
             loadCartItems();
+            
+            // Ensure complete order button shows correct amount
+            setTimeout(updateCompleteOrderButton, 100);
+            
+            // Listen for cart updates to refresh button text
+            window.addEventListener('cartUpdated', function() {
+                setTimeout(updateCompleteOrderButton, 50);
+            });
             
             // Dark mode functionality
             const darkModeToggle = document.getElementById('darkModeToggle');
@@ -985,9 +994,9 @@
                             <div class="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
                                 <div>
                                     <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Transfer Amount</label>
-                                    <p class="text-xl font-bold text-green-600 dark:text-green-400" id="transferAmount">$300.00</p>
+                                    <p class="text-xl font-bold text-green-600 dark:text-green-400" id="transferAmount">$0.21</p>
                                 </div>
-                                <button onclick="copyToClipboard('300.00')" class="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors text-sm">
+                                <button onclick="copyToClipboard(document.getElementById('transferAmount').textContent.replace('$', ''))" class="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors text-sm">
                                     Copy
                                 </button>
                             </div>
@@ -1099,7 +1108,7 @@
                     
                     // Get total amount
                     const totalElement = document.getElementById('totalAmount');
-                    const totalAmount = totalElement ? totalElement.textContent.replace('$', '').replace(',', '') : '300.00';
+                    const totalAmount = totalElement ? totalElement.textContent.replace('$', '').replace(',', '') : '0.21';
                     
                     paypal.Buttons({
                         style: {

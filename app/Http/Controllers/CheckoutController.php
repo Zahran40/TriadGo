@@ -115,12 +115,35 @@ class CheckoutController extends Controller
             
             Log::info('Creating order with data', $orderData);
             $order = CheckoutOrder::create($orderData);
-            Log::info('Order created successfully', ['order_id' => $order->order_id]);
+            Log::info('Order created successfully', [
+                'order_id' => $order->order_id,
+                'database_id' => $order->id,
+                'amount' => $order->total_amount,
+                'currency' => $order->currency,
+                'status' => $order->status,
+                'customer' => $order->first_name . ' ' . $order->last_name,
+                'email' => $order->email
+            ]);
 
             // Create Midtrans snap token
-            Log::info('Creating Midtrans snap token for order', ['order_id' => $order->order_id]);
+            Log::info('Creating Midtrans snap token for order', [
+                'order_id' => $order->order_id,
+                'merchant_id' => config('services.midtrans.merchant_id'),
+                'environment' => config('services.midtrans.is_production') ? 'production' : 'sandbox'
+            ]);
+            
             $snapToken = $this->midtransService->createSnapToken($order);
-            Log::info('Snap token created successfully', ['token' => substr($snapToken, 0, 20) . '...']);
+            
+            Log::info('Snap token created successfully', [
+                'order_id' => $order->order_id,
+                'token_preview' => substr($snapToken, 0, 20) . '...',
+                'token_length' => strlen($snapToken),
+                'dashboard_url' => config('services.midtrans.is_production') 
+                    ? 'https://dashboard.midtrans.com' 
+                    : 'https://dashboard.sandbox.midtrans.com',
+                'should_appear_in_dashboard' => true,
+                'search_order_id' => $order->order_id
+            ]);
 
             return response()->json([
                 'success' => true,

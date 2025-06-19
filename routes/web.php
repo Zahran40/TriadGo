@@ -8,7 +8,6 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\EksportirController;
 use App\Http\Controllers\ImportirController;
-use App\Http\Controllers\MidtransController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OtherProfileController;
@@ -81,10 +80,6 @@ Route::middleware('role.protect:impor')->group(function () {
     Route::get('/checkout/status/{orderId}', [CheckoutController::class, 'getOrderStatus'])->name('checkout.status');
 });
 
-// Midtrans Payment API Routes
-Route::prefix('api')->group(function () {
-    Route::post('/midtrans/token', [MidtransController::class, 'getSnapToken'])->name('midtrans.token');
-});
 
 // Midtrans Webhook (tidak perlu middleware karena dipanggil dari luar)
 Route::post('/midtrans/notification', [CheckoutController::class, 'handleNotification'])->name('midtrans.webhook');

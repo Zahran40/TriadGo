@@ -30,7 +30,7 @@
                 </p>
                 
                 <!-- Order Details -->
-                <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-6 mb-8 text-left">
+                <div class=" rounded-lg p-6 mb-8 text-left">
                     <h3 class="text-lg font-semibold text-blue-700  mb-4">Order Details</h3>
                     
                     <div class="space-y-3">
@@ -88,41 +88,42 @@
     </div>
 
     <script>
-        async function checkPaymentStatus() {
-            const btn = document.getElementById('checkStatusBtn');
-            const originalText = btn.textContent;
-            
-            btn.textContent = 'Checking...';
-            btn.disabled = true;
-            
-            try {
-                const response = await fetch('/checkout/status/{{ $order->order_id }}');
-                const data = await response.json();
-                
-                if (data.success) {
-                    if (data.order.status === 'paid') {
-                        window.location.href = '/checkout/success/{{ $order->order_id }}';
-                    } else if (data.order.status === 'failed') {
-                        window.location.href = '/checkout/error/{{ $order->order_id }}';
-                    } else {
-                        alert('Payment is still pending. Please wait or complete your payment.');
-                    }
-                } else {
-                    alert('Unable to check payment status. Please try again.');
-                }
-            } catch (error) {
-                console.error('Error checking status:', error);
-                alert('Error checking payment status. Please try again.');
-            } finally {
-                btn.textContent = originalText;
-                btn.disabled = false;
+        const isDarkMode = document.documentElement.classList.contains('dark');
+
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const darkModeThumb = document.getElementById('darkModeThumb');
+        const htmlElement = document.documentElement;
+
+        function updateDarkModeSwitch() {
+            if (htmlElement.classList.contains('dark')) {
+                darkModeToggle.checked = true;
+                darkModeThumb.style.transform = 'translateX(1.25rem)';
+                darkModeThumb.style.backgroundColor = '#003355';
+                darkModeThumb.style.borderColor = '#003355';
+            } else {
+                darkModeToggle.checked = false;
+                darkModeThumb.style.transform = 'translateX(0)';
+                darkModeThumb.style.backgroundColor = '#fff';
+                darkModeThumb.style.borderColor = '#ccc';
             }
         }
-        
-        // Auto-refresh status every 30 seconds
-        setInterval(() => {
-            checkPaymentStatus();
-        }, 30000);
+
+        if (localStorage.getItem('darkMode') === 'enabled') {
+            htmlElement.classList.add('dark');
+        }
+
+        updateDarkModeSwitch();
+
+        darkModeToggle.addEventListener('change', () => {
+            htmlElement.classList.toggle('dark');
+            if (htmlElement.classList.contains('dark')) {
+                localStorage.setItem('darkMode', 'enabled');
+            } else {
+                localStorage.setItem('darkMode', 'disabled');
+            }
+            updateDarkModeSwitch();
+        });
+
     </script>
 </body>
 </html>

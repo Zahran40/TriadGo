@@ -11,6 +11,11 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        // Configure CSRF exclusions
+        $middleware->validateCsrfTokens(except: [
+            'midtrans/*',
+        ]);
+        
         // Register middleware alias
         $middleware->alias([
             'admin.access' => \App\Http\Middleware\AdminAccess::class,

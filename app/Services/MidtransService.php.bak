@@ -10,7 +10,8 @@ use App\Models\CheckoutOrder;
 use Illuminate\Support\Facades\Log;
 
 class MidtransService
-{    public function __construct()
+{
+    public function __construct()
     {
         // Debug: Check curl availability
         if (!function_exists('curl_init')) {
@@ -46,13 +47,13 @@ class MidtransService
                     'gross_amount' => (int) $amountInIDR,
                 ],
                 'customer_details' => [
-                    'first_name' => $order->first_name,
-                    'last_name' => $order->last_name,
+                    'first_name' => explode(' ', $order->name)[0] ?? $order->name,
+                    'last_name' => implode(' ', array_slice(explode(' ', $order->name), 1)) ?: $order->name,
                     'email' => $order->email,
                     'phone' => $order->phone,
                     'billing_address' => [
-                        'first_name' => $order->first_name,
-                        'last_name' => $order->last_name,
+                        'first_name' => explode(' ', $order->name)[0] ?? $order->name,
+                        'last_name' => implode(' ', array_slice(explode(' ', $order->name), 1)) ?: $order->name,
                         'address' => $order->address,
                         'city' => $order->city,
                         'postal_code' => $order->zip_code,
@@ -61,9 +62,9 @@ class MidtransService
                 ],
                 'item_details' => $this->formatItemDetails($order),
                 'callbacks' => [
-                    'finish' => route('checkout.success', ['order' => $order->order_id]),
-                    'unfinish' => route('checkout.pending', ['order' => $order->order_id]),
-                    'error' => route('checkout.error', ['order' => $order->order_id])
+                    'finish' => route('transactions.show', ['orderId' => $order->order_id]),
+                    'unfinish' => route('transactions.show', ['orderId' => $order->order_id]) . '?status=pending',
+                    'error' => route('transactions.show', ['orderId' => $order->order_id]) . '?status=error'
                 ]
             ];
 

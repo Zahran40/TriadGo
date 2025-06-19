@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cart API Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.6; }
+        .section { border: 1px solid #ddd; padding: 15px; margin: 15px 0; border-radius: 5px; }
+        .result { background: #f9f9f9; padding: 10px; margin: 10px 0; border-radius: 3px; }
+        .error { color: red; font-weight: bold; }
+        .success { color: green; font-weight: bold; }
+        .info { color: blue; }
+        pre { background: #f5f5f5; padding: 10px; overflow-x: auto; border-radius: 3px; }
+        button { padding: 10px 15px; background: #007bff; color: white; border: none; border-radius: 3px; cursor: pointer; margin: 5px; }
+        button:hover { background: #0056b3; }
+    </style>
+</head>
+<body>
+    <h1>🛒 Cart API Test & Debug</h1>
+    
+    <div class="section">
+        <h2>Environment Info</h2>
+        <div id="env-info">
+            <p><strong>Current URL:</strong> <span id="current-url"></span></p>
+            <p><strong>CSRF Token:</strong> <span id="csrf-token"></span></p>
+            <p><strong>User Agent:</strong> <span id="user-agent"></span></p>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Test Cart API</h2>
+        <button onclick="testCartAPI()">🧪 Test Cart API</button>
+        <button onclick="testCartCount()">📊 Test Cart Count</button>
+        <button onclick="clearResult()">🗑️ Clear Results</button>
+        <div id="api-result" class="result"></div>
+    </div>
+
+    <div class="section">
+        <h2>Test FormImportir Logic</h2>
+        <button onclick="testFormImportirLogic()">🔍 Test loadCartItems Logic</button>
+        <div id="logic-result" class="result"></div>
+    </div>
+
+    <script>
+        // Initialize environment info
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('current-url').textContent = window.location.href;
+            document.getElementById('user-agent').textContent = navigator.userAgent.substring(0, 80) + '...';
+            
+            const csrfMeta = document.querySelector('meta[name="csrf-token"]');
+            document.getElementById('csrf-token').innerHTML = csrfMeta ? 
+                '<span class="success">' + csrfMeta.content.substring(0, 20) + '...</span>' :
+                '<span class="error">Not found (testing without Laravel session)</span>';
+        });
+
+        function clearResult() {
+            document.getElementById('api-result').innerHTML = '';
+            document.getElementById('logic-result').innerHTML = '';
+        }
+
+        function testCartAPI() {
+            const resultDiv = document.getElementById('api-result');
+            resultDiv.innerHTML = '<p class="info">🔄 Testing Cart API...</p>';
+
+            console.log('=== CART API TEST ===');
+            
+            fetch('/api/cart')
+                .then(response => {
+                    console.log('Response status:', response.status);
+                    console.log('Response headers:', response.headers);
+                    
+                    if (!response.ok) {
+                        throw new Error('HTTP ' + response.status + ': ' + response.statusText);
+                    }
+                    
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Response data:', data);
+                    
+                    let html = '<h3 class="success">✅ Cart API Success</h3>';
+                    html += '<p><strong>Status:</strong> ' + (data.status || 'unknown') + '</p>';
+                    html += '<p><strong>Cart Items Count:</strong> ' + (data.cart_items ? data.cart_items.length : 0) + '</p>';
+                    html += '<p><strong>Cart Total Count:</strong> ' + (data.cart_count || 0) + '</p>';
+                    html += '<p><strong>Cart Total Price:</strong> $' + (data.cart_total || '0.00') + '</p>';
+                    
+                    if (data.cart_items && data.cart_items.length > 0) {
+                        html += '<h4>Cart Items:</h4>';
+                        data.cart_items.forEach((item, index) => {
+                            html += '<div style="border: 1px solid #ccc; padding: 8px; margin: 5px 0; border-radius: 3px;">';
+                            html += '<strong>Item ' + (index + 1) + ':</strong> ' + item.product_name + '<br>';
+                            html += 'Price: $' + item.price + ' | Qty: ' + item.quantity + ' | Unit: ' + (item.unit || 'pcs') + '<br>';
+                            html += 'Product ID: ' + item.product_id + '<br>';
+                            html += '</div>';
+                        });
+                    }
+                    
+                    html += '<h4>Raw Response:</h4>';
+                    html += '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+                    
+                    resultDiv.innerHTML = html;
+                })
+                .catch(error => {
+                    console.error('Cart API Error:', error);
+                    resultDiv.innerHTML = '<h3 class="error">❌ Cart API Error</h3>' +
+                                         '<p class="error">' + error.message + '</p>' +
+                                         '<p>Check browser console for more details.</p>';
+                });
+        }
+
+        function testCartCount() {
+            const resultDiv = document.getElementById('api-result');
+            resultDiv.innerHTML = '<p class="info">🔄 Testing Cart Count...</p>';
+
+            fetch('/api/cart/count')
+                .then(response => response.json())
+                .then(data => {
+                    let html = '<h3 class="success">✅ Cart Count API Success</h3>';
+                    html += '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+                    resultDiv.innerHTML = html;
+                })
+                .catch(error => {
+                    resultDiv.innerHTML = '<h3 class="error">❌ Cart Count Error</h3>' +
+                                         '<p class="error">' + error.message + '</p>';
+                });
+        }
+
+        function testFormImportirLogic() {
+            const resultDiv = document.getElementById('logic-result');
+            resultDiv.innerHTML = '<p class="info">🔄 Testing FormImportir loadCartItems logic...</p>';
+
+            // Replicate exact logic from formImportir.blade.php loadCartItems function
+            console.log('=== LOADING CART ITEMS TEST ===');
+            
+            fetch('/api/cart')
+                .then(response => {
+                    console.log('Cart API response status:', response.status);
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Cart API response data:', data);
+                    
+                    let html = '<h3>🧪 FormImportir Logic Test Results</h3>';
+                    html += '<div style="background: #f0f8ff; padding: 10px; border-radius: 5px; margin: 10px 0;">';
+                    html += '<h4>Condition Analysis:</h4>';
+                    html += '<p><strong>data.status:</strong> ' + (data.status || 'undefined') + '</p>';
+                    html += '<p><strong>data.cart_items exists:</strong> ' + (data.cart_items ? 'Yes' : 'No') + '</p>';
+                    html += '<p><strong>data.cart_items.length:</strong> ' + (data.cart_items ? data.cart_items.length : 'N/A') + '</p>';
+                    
+                    // Test the exact condition from formImportir.blade.php
+                    if (data.status !== 'success' || !data.cart_items || data.cart_items.length === 0) {
+                        html += '<p class="error"><strong>🚫 RESULT: Will show empty cart message</strong></p>';
+                        html += '<p><strong>Reasons:</strong> ';
+                        let reasons = [];
+                        if (data.status !== 'success') reasons.push('Status is not "success"');
+                        if (!data.cart_items) reasons.push('cart_items property missing');
+                        if (data.cart_items && data.cart_items.length === 0) reasons.push('cart_items array is empty');
+                        html += reasons.join(', ') + '</p>';
+                    } else {
+                        html += '<p class="success"><strong>✅ RESULT: Will show cart items</strong></p>';
+                        html += '<p><strong>Items to display:</strong> ' + data.cart_items.length + '</p>';
+                        
+                        html += '<h4>Cart Items Preview:</h4>';
+                        data.cart_items.forEach((item, index) => {
+                            const itemTotal = item.price * item.quantity;
+                            html += '<div style="border: 1px solid #ddd; padding: 8px; margin: 5px 0; background: white;">';
+                            html += '<strong>' + item.product_name + '</strong><br>';
+                            html += 'Price: $' + item.price + ' x ' + item.quantity + ' = $' + itemTotal.toFixed(2) + '<br>';
+                            html += 'Unit: ' + (item.unit || 'pcs') + '<br>';
+                            html += '</div>';
+                        });
+                    }
+                    html += '</div>';
+                    
+                    html += '<h4>Raw API Response:</h4>';
+                    html += '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+                    
+                    resultDiv.innerHTML = html;
+                })
+                .catch(error => {
+                    console.error('❌ Error in FormImportir logic test:', error);
+                    resultDiv.innerHTML = '<h3 class="error">❌ FormImportir Logic Test Error</h3>' +
+                                         '<p class="error">' + error.message + '</p>';
+                });
+        }
+    </script>
+</body>
+</html>

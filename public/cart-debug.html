@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart Debug Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .status { padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .info { background-color: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+        button { margin: 5px; padding: 10px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        #cartData { background: #f8f9fa; padding: 15px; border-radius: 5px; white-space: pre-wrap; }
+    </style>
+</head>
+<body>
+    <h1>🛒 Cart Debug Test</h1>
+    
+    <div class="status info">
+        <h3>Cart Testing untuk User ID: [USER_ID_PLACEHOLDER]</h3>
+        <p>Gunakan halaman ini untuk debug masalah cart yang tidak tampil di formImportir</p>
+    </div>
+    
+    <h2>🔧 Debug Actions:</h2>
+    <button onclick="testAddToCart()">1. Test Add Product to Cart</button>
+    <button onclick="showCartData()">2. Show Current Cart Data</button>
+    <button onclick="clearCart()">3. Clear Cart Data</button>
+    <button onclick="testOldCartKey()">4. Check Old Cart Key</button>
+    <button onclick="migrateOldCart()">5. Migrate Old Cart to New Key</button>
+    
+    <h2>📊 Cart Data:</h2>
+    <div id="cartData">Click "Show Current Cart Data" to see cart contents</div>
+    
+    <h2>🚨 Common Issues Fixed:</h2>
+    <div class="status success">
+        <h4>✅ Issues Fixed:</h4>
+        <ul>
+            <li>detailproductimportir.blade.php - Updated to use user-specific cart key</li>
+            <li>navbarimportir.blade.php - Updated to use user-specific cart key</li>
+            <li>formImportir.blade.php - Already using correct cart key</li>
+            <li>Added debugging console.log statements</li>
+        </ul>
+    </div>
+    
+    <div class="status info">
+        <h4>🔍 How to Debug:</h4>
+        <ol>
+            <li>Open browser Developer Tools (F12)</li>
+            <li>Go to Console tab</li>
+            <li>Add product to cart from detail page</li>
+            <li>Check console for debug messages</li>
+            <li>Go to formImportir page</li>
+            <li>Check console for cart loading messages</li>
+        </ol>
+    </div>
+
+    <script>
+        // Use a placeholder user ID for testing
+        const userId = 1; // Change this to actual user ID when testing
+        const cartKey = `importCart_${userId}`;
+        
+        function testAddToCart() {
+            const testProduct = {
+                id: 999,
+                name: "Test Product",
+                price: 25.00,
+                image: "test.jpg",
+                origin: "Test Country",
+                weight: 1.5,
+                quantity: 1,
+                sku: "TEST-001"
+            };
+            
+            let cart = JSON.parse(localStorage.getItem(cartKey)) || [];
+            cart.push(testProduct);
+            localStorage.setItem(cartKey, JSON.stringify(cart));
+            
+            alert('Test product added to cart!');
+            showCartData();
+        }
+        
+        function showCartData() {
+            const cartData = localStorage.getItem(cartKey);
+            const cartDataDiv = document.getElementById('cartData');
+            
+            if (cartData) {
+                const cart = JSON.parse(cartData);
+                cartDataDiv.innerHTML = `
+Cart Key: ${cartKey}
+Cart Length: ${cart.length}
+Cart Data:
+${JSON.stringify(cart, null, 2)}
+                `;
+            } else {
+                cartDataDiv.innerHTML = `
+Cart Key: ${cartKey}
+Status: No cart data found
+                `;
+            }
+        }
+        
+        function clearCart() {
+            localStorage.removeItem(cartKey);
+            alert('Cart cleared!');
+            showCartData();
+        }
+        
+        function testOldCartKey() {
+            const oldCartData = localStorage.getItem('importCart');
+            const cartDataDiv = document.getElementById('cartData');
+            
+            if (oldCartData) {
+                const cart = JSON.parse(oldCartData);
+                cartDataDiv.innerHTML = `
+OLD CART FOUND!
+Key: importCart
+Length: ${cart.length}
+Data:
+${JSON.stringify(cart, null, 2)}
+                `;
+            } else {
+                cartDataDiv.innerHTML = `
+OLD CART CHECK:
+Key: importCart
+Status: No old cart data found (this is good!)
+                `;
+            }
+        }
+        
+        function migrateOldCart() {
+            const oldCartData = localStorage.getItem('importCart');
+            if (oldCartData) {
+                // Copy old cart to new key
+                localStorage.setItem(cartKey, oldCartData);
+                localStorage.removeItem('importCart');
+                alert('Old cart data migrated to new key!');
+                showCartData();
+            } else {
+                alert('No old cart data found to migrate');
+            }
+        }
+        
+        // Show initial cart data on load
+        window.addEventListener('load', function() {
+            showCartData();
+        });
+    </script>
+</body>
+</html>

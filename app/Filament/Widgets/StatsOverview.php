@@ -1,0 +1,72 @@
+<?php
+
+namespace App\Filament\Widgets;
+
+use Filament\Widgets\StatsOverviewWidget as BaseWidget;
+use Filament\Widgets\StatsOverviewWidget\Stat;
+use App\Models\Product;
+use App\Models\User;
+use App\Models\CheckoutOrder;
+use Illuminate\Support\Facades\DB;
+
+class StatsOverview extends BaseWidget
+{
+    protected static ?int $sort = 0;
+
+    protected function getStats(): array
+    {
+        // Total products approved
+        $totalProducts = Product::where('status', 'approved')->count();
+        
+        // Total importir users
+        $totalImportir = User::where('role', 'impor')->count();
+        
+        // Total eksportir users
+        $totalEksportir = User::where('role', 'ekspor')->count();
+        
+        // Total successful orders this month
+        $totalOrders = CheckoutOrder::whereMonth('created_at', now()->month)
+            ->where('status', '!=', 'failed')
+            ->count();
+        
+        // Total revenue this month
+        $totalRevenue = CheckoutOrder::whereMonth('created_at', now()->month)
+            ->where('status', '!=', 'failed')
+            ->sum('total_amount');
+        
+        // Pending products for approval
+        $pendingProducts = Product::where('status', 'pending')->count();
+
+        return [
+            Stat::make('Total Produk Aktif', $totalProducts)
+                ->description('Produk yang sudah disetujui')
+                ->descriptionIcon('heroicon-m-check-circle')
+                ->color('success'),
+                
+            Stat::make('Total Importir', $totalImportir)
+                ->description('Pengguna pembeli')
+                ->descriptionIcon('heroicon-m-shopping-cart')
+                ->color('info'),
+                
+            Stat::make('Total Eksportir', $totalEksportir)
+                ->description('Pengguna penjual')
+                ->descriptionIcon('heroicon-m-building-storefront')
+                ->color('warning'),
+                
+            Stat::make('Order Bulan Ini', $totalOrders)
+                ->description('Transaksi berhasil')
+                ->descriptionIcon('heroicon-m-banknotes')
+                ->color('primary'),
+                
+            Stat::make('Revenue Bulan Ini', 'Rp ' . number_format($totalRevenue, 0, ',', '.'))
+                ->description('Total pendapatan')
+                ->descriptionIcon('heroicon-m-currency-dollar')
+                ->color('success'),
+                
+            Stat::make('Produk Pending', $pendingProducts)
+                ->description('Menunggu persetujuan')
+                ->descriptionIcon('heroicon-m-clock')
+                ->color($pendingProducts > 0 ? 'danger' : 'gray'),
+        ];
+    }
+}

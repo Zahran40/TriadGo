@@ -107,6 +107,7 @@ Route::middleware('role.protect:impor')->group(function () {
 
 // Midtrans Webhook (tidak perlu middleware karena dipanggil dari luar)
 Route::post('/midtrans/notification', [CheckoutController::class, 'handleNotification'])->name('midtrans.webhook');
+Route::post('/midtrans/callback', [CheckoutController::class, 'handleNotification'])->name('midtrans.callback');
 
 // Test routes untuk simulasi payment (tanpa CSRF untuk testing)
 Route::prefix('test')->group(function () {

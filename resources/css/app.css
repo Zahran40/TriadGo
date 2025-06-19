@@ -513,11 +513,6 @@ label {
     transform: translateY(0);
 }
 
-.export-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-}
-
 .glow-on-hover:hover {
     box-shadow: 0 0 15px rgba(249, 115, 22, 0.5);
 }
@@ -563,6 +558,19 @@ html.dark .product-text {
 
 html.dark .export-card {
     background-color: #2d3748;
+}
+
+.export-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+html.dark .comment {
+    background-color: #2d3748
+}
+
+html.dark .comment-text {
+    color: #fff;
 }
 
 /* Navbar Background */

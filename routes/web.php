@@ -18,6 +18,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\RequestController;
+use App\Http\Controllers\AdminController;
 
 // Register 
 Route::get('/sign-up', [RegisterController::class, 'signup'])->name('signup');

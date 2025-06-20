@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TriadGO - Export Solutions</title>
@@ -22,66 +23,24 @@
                     },
                     keyframes: {
                         float: {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-10px)' },
+                            '0%, 100%': {
+                                transform: 'translateY(0)'
+                            },
+                            '50%': {
+                                transform: 'translateY(-10px)'
+                            },
                         }
                     }
                 },
             },
         }
+
+        tailwind.scan()
     </script>
 </head>
 
-<body class="home-bg min-h-screen flex flex-col">
-    <header class="bg-white shadow-md sticky top-0 z-50">
-        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="flex items-center">
-                <img src="tglogo.png" alt="Logo" class="h-12 w-12 mr-2" style="width: 65px; height: 65px" />
-                <h1 class="text-2xl font-bold text-blue-900 gradient-move">Triad</h1>
-                <h1 class="text-2xl font-bold text-orange-500 gradient-move">Go</h1>
-            </div>
-            <nav class="hidden md:flex items-center space-x-6 text-blue-700 font-semibold">
-                <a href="#" class="hover:text-orange-500 transition nav-gradient-move">Request</a>
-                <a href="#" class="hover:text-orange-500 transition nav-gradient-move">Transactions</a>
-                <a href="#" class="hover:text-orange-500 transition nav-gradient-move">Account
-                    <img src="https://cdn-icons-png.freepik.com/512/8345/8345339.png" alt=""
-                        style="width: 40px; height: 40px;" class="inline-block ml-2" />
-                </a>
-            </nav>
-            <div class="flex items-center space-x-4">
-                <label for="darkModeToggle" class="flex items-center cursor-pointer select-none">
-                    <span class="mr-2 text-sm font-medium text-gray-700 dark:text-gray-200"
-                        style="font-size: 30px">☀️</span>
-                    <div class="relative">
-                        <input type="checkbox" id="darkModeToggle" class="sr-only" />
-                        <div class="block w-12 h-7 rounded-full bg-gray-300 dark:bg-gray-600 transition"></div>
-                        <div id="darkModeThumb"
-                            class="dot absolute left-1 top-1 w-5 h-5 rounded-full bg-white border border-gray-400 dark:bg-[#003355] transition-transform duration-300">
-                        </div>
-                    </div>
-                    <span class="ml-2 text-sm font-medium text-gray-700 dark:text-gray-200"
-                        style="font-size: 30px">🌙</span>
-                </label>
-                <button class="md:hidden text-blue-700 focus:outline-none" aria-label="Open Menu">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 wiggle" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 8h16M4 16h16" />
-                    </svg>
-                </button>
-                <!-- Tambahkan di dalam <nav> atau di tempat yang diinginkan -->
-                <form action="{{ route('logout') }}" method="POST" style="display:inline;">
-                    @csrf
-                    <button type="submit"
-                        class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition"
-                        onclick="return confirm('Yakin ingin logout?')">
-                        Logout
-                    </button>
-                </form>
-            </div>
-        </div>
-    </header>
-
-
+<body class="home-bg min-h-screen flex flex-col" id="home">
+    @include('layouts.navbarekspor')
 
     <section class="flex-grow container mx-auto px-6 md:px-12 py-16 flex flex-col md:flex-row items-center">
         <div class="md:w-1/2 text-center md:text-left">
@@ -94,19 +53,22 @@
                 you need to connect with international buyers and streamline your export operations.
             </p>
             <div class="flex flex-col sm:flex-row gap-4">
-                <a href="#export-services"
+                <a href="{{ route('formeksportir') }}"
                     class="inline-block bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-8 rounded-md shadow-md transition pulse-on-hover glow-on-hover">
                     Upload Your Products
                 </a>
-                <a href="#find-buyers"
+                <a href="{{ route('myproduct') }}"
                     class="inline-block bg-blue-700 hover:bg-blue-600 text-white font-bold py-3 px-8 rounded-md shadow-md transition pulse-on-hover">
-                    Find International Buyers
+                    My Product
+                </a>
+                <a href="{{ route('eksportir.transactions.index') }}"
+                    class="inline-block bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-md shadow-md transition pulse-on-hover">
+                    Manage Orders
                 </a>
             </div>
         </div>
         <div class="md:w-1/2 mt-10 md:mt-0">
-            <img src="eksportir.png"
-                alt="Export Illustration" class="floating-img w-full max-w-lg" />
+            <img src="eksportir.png" alt="Export Illustration" class="floating-img w-full max-w-lg" />
         </div>
     </section>
 
@@ -186,112 +148,112 @@
             </div>
         </div>
     </section>
-
+    
+    <!-- Comment dari Database -->
     <section id="find-buyers" class="container mx-auto px-6 py-16 slide-in">
-        <h2 class="text-3xl font-bold text-blue-900 mb-6 text-center">Find Buyers Respons</h2>
-        <form action="" class="flex flex-col md:flex-row items-center max-w-2xl mx-auto">
-            <input type="text" name="" placeholder="Search for buyers Respons..."
-                class="flex-grow px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 mr-4 mb-4 md:mb-0"
-                required />
-            <button type="submit"
-                class="bg-blue-700 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-md transition pulse-on-hover flex items-center">
-                <img src="https://img.icons8.com/m_outlined/512/FFFFFF/search.png" alt=""
-                    style="width: 20px; height: 20px;" class="mr-2" />
-                Search
-            </button>
-        </form>
+        <h2 class="text-3xl font-bold text-blue-900 mb-6 text-center">Find Buyers Response</h2>
 
-        <!-- Respons Buyer Cards -->
         <div class="mt-12">
-            <h3 class="text-2xl font-bold text-blue-900 mb-6 text-center">Respons Buyer</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="buyer-card shadow-md rounded-lg overflow-hidden hover:shadow-lg transition">
-                    <div class="p-4">
-                        <div class="flex items-center mb-4">
-                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Buyer"
-                                class="w-12 h-12 rounded-full mr-4">
-                            <div>
-                                <h4 class="font-semibold text-lg">Vincent Simbolon</h4>
-                                <p class="text-orange-500 text-sm">Indonesia</p>
+            @if(isset($recentComments) && $recentComments->count() > 0)
+                <div class="comment grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    @foreach($recentComments as $comment)
+                        <div class="buyer-card shadow-md rounded-lg overflow-hidden hover:shadow-lg transition">
+                            <div class="p-4">
+                                <div class="flex items-center mb-4">
+                                    @if($comment->user->profile_picture)
+                                        <img src="{{ asset($comment->user->profile_picture) }}" alt="{{ $comment->user->name }}"
+                                            class="w-12 h-12 rounded-full mr-4 object-cover">
+                                    @else
+                                        <div
+                                            class="w-12 h-12 rounded-full mr-4 bg-gradient-to-r from-blue-500 to-indigo-500 flex items-center justify-center text-white font-bold">
+                                            {{ strtoupper(substr($comment->user->name, 0, 1)) }}
+                                        </div>
+                                    @endif
+                                    <div>
+                                        <h4 class="font-semibold text-lg">{{ $comment->user->name }}</h4>
+                                        <p class="text-orange-500 text-sm">{{ $comment->user->country }}</p>
+                                        <div class="flex text-yellow-400 text-xs mt-1">
+                                            @for($i = 1; $i <= 5; $i++)
+                                                @if($i <= $comment->rating)
+                                                    ★
+                                                @else
+                                                    ☆
+                                                @endif
+                                            @endfor
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="buyer-card-text mb-2 text-sm text-gray-600">
+                                    <strong>Product:</strong> {{ Str::limit($comment->product->product_name, 30) }}
+                                </p>
+                                <p class="buyer-card-text mb-4">"{{ Str::limit($comment->comment_text, 80) }}"</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm text-gray-500">{{ $comment->created_at->diffForHumans() }}</span>
+                                </div>
                             </div>
                         </div>
-                        <p class="buyer-card-text mb-4">I love Your All Product</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-sm text-gray-500">Last active: 2 days ago</span>
-                            
+                    @endforeach
+                </div>
+            @else
+                <!-- No Comments State - Matches the screenshot design -->
+                <div class="comment bg-blue-100 rounded-lg p-12 text-center max-w-md mx-auto">
+                    <div class="mb-6">
+                        <div class="w-16 h-16 bg-gray-300 rounded-full mx-auto flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-500" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                            </svg>
                         </div>
                     </div>
-                </div>
+                    <h3 class="comment-text text-xl font-semibold mb-2">No Comments Yet</h3>
+                    <p class="text-orange-500 text-sm mb-4">Start getting reviews</p>
+                    <p class="comment-text mb-6">Upload your products to start receiving customer feedback and reviews.
+                    </p>
 
-                <div class="buyer-card shadow-md rounded-lg overflow-hidden hover:shadow-lg transition">
-                    <div class="p-4">
-                        <div class="flex items-center mb-4">
-                            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Buyer"
-                                class="w-12 h-12 rounded-full mr-4">
-                            <div>
-                                <h4 class="font-semibold text-lg">Reagan Siahaan</h4>
-                                <p class="text-orange-500 text-sm">Singapore</p>
+                    <!-- Feature cards in a row -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+                        <div class="text-center">
+                            <div class="w-12 h-12 bg-orange-100 rounded-full mx-auto mb-3 flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-orange-500" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
                             </div>
+                            <h4 class="font-medium comment-text mb-1">Build Your Reputation</h4>
+                            <p class="text-sm text-orange-500">Quality products</p>
+                            <p class="text-xs comment-text mt-2">Quality products attract positive reviews from
+                                satisfied customers worldwide.</p>
                         </div>
-                        <p class="buyer-card-text mb-4">Your electronic product give me anxiety</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-sm text-gray-500">Last active: 1 day ago</span>
-                           
-                        </div>
-                    </div>
-                </div>
 
-                <div class="buyer-card shadow-md rounded-lg overflow-hidden hover:shadow-lg transition">
-                    <div class="p-4">
-                        <div class="flex items-center mb-4">
-                            <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Buyer"
-                                class="w-12 h-12 rounded-full mr-4">
-                            <div>
-                                <h4 class="font-semibold text-lg">Abbil Rizki Abdillah</h4>
-                                <p class="text-orange-500 text-sm">Cambodia</p>
+                        <div class="text-center">
+                            <div class="w-12 h-12 bg-blue-100 rounded-full mx-auto mb-3 flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                                </svg>
                             </div>
-                        </div>
-                        <p class="buyer-card-text mb-4">Your Product is the best in the world</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-sm text-gray-500">Last active: Today</span>
-                          
+                            <h4 class="font-medium comment-text mb-1">Growing Business</h4>
+                            <p class="text-sm text-orange-500">Reviews help growth</p>
+                            <p class="text-xs comment-text mt-2">Customer reviews help build trust and grow your export
+                                business globally.</p>
                         </div>
                     </div>
                 </div>
-            </div>
+            @endif
 
             <div class="text-center mt-10">
-                <button
-                    class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-6 rounded-md transition pulse-on-hover inline-flex items-center">
-                    View All Respons
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                    </svg>
-                </button>
+                <a href="{{ route('response') }}"
+                    class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-6 rounded-md transition pulse-on-hover inline-flex items-center">View
+                    All Response</a>
             </div>
         </div>
     </section>
 
-    <section id="services" class="bg-blue-800 text-white py-16 slide-in">
-        <div class="container mx-auto px-6 text-center">
-            <h2 class="text-3xl font-bold mb-6">Ready to Start Exporting?</h2>
-            <p class="text-xl mb-8 max-w-2xl mx-auto">Join thousands of businesses expanding their reach globally with
-                TriadGO</p>
-            <div class="flex flex-col sm:flex-row justify-center gap-4">
-                <button
-                    class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-8 rounded-md shadow-md transition pulse-on-hover">
-                    Create Export Profile
-                </button>
-                <button
-                    class="bg-blue-700 hover:bg-orange-600 text-white font-bold py-3 px-8 rounded-md shadow-md transition pulse-on-hover">
-                    Schedule Consultation
-                </button>
-            </div>
-        </div>
-    </section>
 
-    <footer class="bg-blue-900 text-blue-100 py-6 mt-auto">
+    <footer class="bg-blue-800 text-blue-100 py-6 mt-auto">
         <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
             <p>© 2025 TriadGO. All rights reserved.</p>
             <div class="space-x-4 mt-4 md:mt-0">
@@ -323,6 +285,8 @@
     </footer>
 
     <script>
+        const isDarkMode = document.documentElement.classList.contains('dark');
+
         const darkModeToggle = document.getElementById('darkModeToggle');
         const darkModeThumb = document.getElementById('darkModeThumb');
         const htmlElement = document.documentElement;
@@ -398,6 +362,84 @@
             }
             window.addEventListener('scroll', checkSlide);
             checkSlide();
+        });
+
+        // Sidebar mobile
+        const sidebar = document.getElementById('mobileSidebar');
+        const openSidebarBtn = document.querySelector('button.md\\:hidden[aria-label="Open Menu"]');
+        const closeSidebarBtn = document.getElementById('closeSidebar');
+
+        openSidebarBtn.addEventListener('click', function () {
+            sidebar.classList.remove('hidden');
+        });
+
+        closeSidebarBtn.addEventListener('click', function () {
+            sidebar.classList.add('hidden');
+        });
+
+        // Tutup sidebar jika klik di luar sidebar
+        sidebar.addEventListener('click', function (e) {
+            if (e.target === sidebar) {
+                sidebar.classList.add('hidden');
+            }
+        });
+
+        // Scroll to section dari sidebar
+        sidebar.querySelectorAll('a[href^="#"]').forEach(link => {
+            link.addEventListener('click', function (event) {
+                event.preventDefault();
+                sidebar.classList.add('hidden');
+                const targetId = this.getAttribute('href').substring(1);
+                scrollToSectionWithSlide(targetId);
+            });
+        });
+
+        // SweetAlert2 Logout Desktop
+        document.getElementById('logoutBtn')?.addEventListener('click', function (e) {
+            Swal.fire({
+                title: 'Logout?',
+                text: "Are you sure you want to logout?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#eea133',
+                confirmButtonText: 'Logout',
+                customClass: {
+                    popup: 'bg-white dark:bg-red-600',
+                    title: 'text-black dark:text-white',
+                    content: 'text-black dark:text-white',
+                    confirmButton: 'text-white',
+                    cancelButton: 'text-white'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('logoutForm').submit();
+                }
+            });
+        });
+
+        // SweetAlert2 Logout Mobile
+        document.getElementById('logoutBtnMobile')?.addEventListener('click', function (e) {
+            Swal.fire({
+                title: 'Logout?',
+                text: "Are you sure you want to logout?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#eea133',
+                confirmButtonText: 'Logout',
+                customClass: {
+                    popup: 'bg-white dark:bg-red-600',
+                    title: 'text-black dark:text-white',
+                    content: 'text-black dark:text-white',
+                    confirmButton: 'text-white',
+                    cancelButton: 'text-white'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('logoutForm').submit();
+                }
+            });
         });
     </script>
 </body>

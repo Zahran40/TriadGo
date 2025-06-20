@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- TAMBAHKAN SweetAlert2 seperti di importir -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Detail | TriadGO</title>
+    @vite('resources/css/app.css')
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Dark Mode Script - SAMA seperti importir -->
+    <script>
+        if (localStorage.getItem('darkMode') === 'enabled') {
+            document.documentElement.classList.add('dark');
+        }
+    </script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+    </style>
+</head>
+
+<body class="home-bg min-h-screen dark:bg-slate-900">
+    <!-- Header/Navbar -->
+    @include('layouts.navbarimportir')
+
+    <!-- Main Content -->
+    <main class="py-16">
+        <div class="container mx-auto px-6">
+            <!-- Breadcrumb -->
+            <nav class="mb-8">
+                <ol class="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
+                    <li><a href="{{ route('catalog') }}" class="hover:text-blue-600 dark:hover:text-blue-400">Catalog</a></li>
+                    <li><span class="mx-2">/</span></li>
+                    <li><span class="text-gray-900 dark:text-gray-100">Premium Smartphone</span></li>
+                </ol>
+            </nav>
+
+            <!-- Product Detail Section -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
+                <!-- Product Images -->
+                <div class="space-y-4">
+                    <div class="aspect-square bg-gradient-to-br from-blue-400 to-blue-600 rounded-xl flex items-center justify-center">
+                        <span class="text-white text-8xl">📱</span>
+                    </div>
+                    <div class="grid grid-cols-4 gap-4">
+                        <div class="aspect-square bg-gradient-to-br from-blue-300 to-blue-500 rounded-lg flex items-center justify-center cursor-pointer">
+                            <span class="text-white text-2xl">📱</span>
+                        </div>
+                        <div class="aspect-square bg-gradient-to-br from-gray-300 to-gray-500 rounded-lg flex items-center justify-center cursor-pointer">
+                            <span class="text-white text-2xl">📷</span>
+                        </div>
+                        <div class="aspect-square bg-gradient-to-br from-purple-300 to-purple-500 rounded-lg flex items-center justify-center cursor-pointer">
+                            <span class="text-white text-2xl">🔋</span>
+                        </div>
+                        <div class="aspect-square bg-gradient-to-br from-green-300 to-green-500 rounded-lg flex items-center justify-center cursor-pointer">
+                            <span class="text-white text-2xl">📦</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Info -->
+                <div class="space-y-6">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded-full text-sm font-medium">Electronics</span>
+                            <div class="flex items-center">
+                                <span class="text-yellow-400">★★★★★</span>
+                                <span class="text-gray-500 text-sm ml-2">(4.8/5 from 256 reviews)</span>
+                            </div>
+                        </div>
+                        <h1 class="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">Premium Smartphone</h1>
+                        <p class="text-gray-600 dark:text-gray-400 text-lg leading-relaxed">
+                            Experience the latest technology with our premium smartphone featuring advanced camera systems, 
+                            long-lasting battery life, and cutting-edge performance. Perfect for both business and personal use.
+                        </p>
+                    </div>
+
+                    <!-- Pricing -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg">
+                        <div class="flex items-center space-x-4 mb-4">
+                            <span class="text-3xl font-bold text-blue-600 dark:text-blue-400">$399.00</span>
+                            <span class="text-xl text-gray-500 line-through">$499.00</span>
+                            <span class="bg-red-500 text-white px-2 py-1 rounded-full text-sm font-bold">-20%</span>
+                        </div>
+                        <div class="text-green-600 dark:text-green-400 font-medium mb-4">✓ In Stock - Ready to Ship</div>
+                        
+                        <!-- Quantity Selector -->
+                        <div class="flex items-center space-x-4 mb-6">
+                            <label class="text-gray-700 dark:text-gray-300 font-medium">Quantity:</label>
+                            <div class="flex items-center border border-gray-300 dark:border-gray-600 rounded-lg">
+                                <button class="px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400">-</button>
+                                <span class="px-4 py-2 border-x border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100">1</span>
+                                <button class="px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400">+</button>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="space-y-4">
+                            <button class="w-full bg-orange-500 hover:bg-orange-600 text-white py-4 rounded-xl font-semibold text-lg transition-all duration-300 transform hover:scale-105">
+                                Add to Cart
+                            </button>
+                            <button class="w-full bg-blue-600 hover:bg-blue-700 text-white py-4 rounded-xl font-semibold text-lg transition-all duration-300 transform hover:scale-105">
+                                Buy Now
+                            </button>
+                            <button class="w-full border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 py-4 rounded-xl font-semibold text-lg transition-all duration-300">
+                                Add to Wishlist ❤️
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Product Features -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4">Key Features</h3>
+                        <ul class="space-y-2 text-gray-600 dark:text-gray-400">
+                            <li class="flex items-center">✓ 6.7" Super Retina XDR Display</li>
+                            <li class="flex items-center">✓ Pro Camera System with 48MP Main</li>
+                            <li class="flex items-center">✓ A17 Pro Chip with 6-core GPU</li>
+                            <li class="flex items-center">✓ All-Day Battery Life</li>
+                            <li class="flex items-center">✓ 5G Connectivity</li>
+                            <li class="flex items-center">✓ Face ID Security</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Reviews & Comments Section -->
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 mb-8">
+                <div class="flex items-center justify-between mb-8">
+                    <h2 class="text-3xl font-bold text-gray-900 dark:text-gray-100">Customer Reviews</h2>
+                    <div class="flex items-center space-x-2">
+                        <span class="text-2xl font-bold text-gray-900 dark:text-gray-100">4.8</span>
+                        <div class="flex text-yellow-400">
+                            <span>★★★★★</span>
+                        </div>
+                        <span class="text-gray-500 dark:text-gray-400">(256 reviews)</span>
+                    </div>
+                </div>
+
+                <!-- Existing Comments Display -->
+                <div class="space-y-6 mb-8" id="commentsSection">
+                    <!-- Sample Comment 1 -->
+                    <div class="border-b border-gray-200 dark:border-gray-600 pb-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-semibold">
+                                    JD
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-900 dark:text-gray-100">John Doe</h4>
+                                    <div class="flex items-center space-x-2">
+                                        <span class="text-yellow-400">★★★★★</span>
+                                        <span class="text-sm text-gray-500 dark:text-gray-400">2 days ago</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 dark:text-gray-400 leading-relaxed">
+                            Excellent product! The camera quality is outstanding and the battery life exceeds expectations. 
+                            Highly recommended for anyone looking for a premium smartphone experience.
+                        </p>
+                    </div>
+
+                    <!-- Sample Comment 2 -->
+                    <div class="border-b border-gray-200 dark:border-gray-600 pb-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center text-white font-semibold">
+                                    AS
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-900 dark:text-gray-100">Alice Smith</h4>
+                                    <div class="flex items-center space-x-2">
+                                        <span class="text-yellow-400">★★★★☆</span>
+                                        <span class="text-sm text-gray-500 dark:text-gray-400">1 week ago</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 dark:text-gray-400 leading-relaxed">
+                            Great phone overall. The performance is smooth and the display is beautiful. 
+                            Only minor complaint is that it could use better low-light photography, but still very satisfied with the purchase.
+                        </p>
+                    </div>
+
+                    <!-- Sample Comment 3 -->
+                    <div class="border-b border-gray-200 dark:border-gray-600 pb-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center text-white font-semibold">
+                                    MJ
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-900 dark:text-gray-100">Mike Johnson</h4>
+                                    <div class="flex items-center space-x-2">
+                                        <span class="text-yellow-400">★★★★★</span>
+                                        <span class="text-sm text-gray-500 dark:text-gray-400">2 weeks ago</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 dark:text-gray-400 leading-relaxed">
+                            Fast delivery and excellent packaging. The phone works perfectly and all features are as described. 
+                            Will definitely buy from this seller again!
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Add Comment Form -->
+                <div class="bg-gray-50 dark:bg-gray-700 rounded-xl p-6">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4">Write a Review</h3>
+                    <form id="commentForm" class="space-y-4">
+                        @csrf
+                        <!-- Rating Selection -->
+                        <div>
+                            <label class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Your Rating</label>
+                            <div class="flex items-center space-x-1" id="ratingStars">
+                                <button type="button" class="star text-2xl text-gray-300 hover:text-yellow-400 focus:outline-none" data-rating="1">★</button>
+                                <button type="button" class="star text-2xl text-gray-300 hover:text-yellow-400 focus:outline-none" data-rating="2">★</button>
+                                <button type="button" class="star text-2xl text-gray-300 hover:text-yellow-400 focus:outline-none" data-rating="3">★</button>
+                                <button type="button" class="star text-2xl text-gray-300 hover:text-yellow-400 focus:outline-none" data-rating="4">★</button>
+                                <button type="button" class="star text-2xl text-gray-300 hover:text-yellow-400 focus:outline-none" data-rating="5">★</button>
+                            </div>
+                            <input type="hidden" id="selectedRating" name="rating" value="0">
+                        </div>
+
+                        <!-- Name Input -->
+                        <div>
+                            <label for="reviewerName" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Your Name</label>
+                            <input type="text" id="reviewerName" name="name" required
+                                   class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-800 dark:text-white"
+                                   placeholder="Enter your name">
+                        </div>
+
+                        <!-- Comment Textarea -->
+                        <div>
+                            <label for="reviewComment" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Your Review</label>
+                            <textarea id="reviewComment" name="comment" rows="4" required
+                                      class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none dark:bg-gray-800 dark:text-white"
+                                      placeholder="Share your experience with this product..."></textarea>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="flex justify-end">
+                            <button type="submit" 
+                                    class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                                Submit Review
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Related Products -->
+            <div class="mb-16">
+                <h2 class="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-8">Related Products</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <!-- Related Product Cards (keep existing styling) -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+                        <!-- Related product content -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-blue-900 dark:bg-slate-900 text-blue-100 py-8">
+        <div class="container mx-auto px-6 text-center">
+            <div class="flex items-center justify-center space-x-3 mb-4">
+                <div class="w-8 h-8">
+                    <svg viewBox="0 0 120 120" class="w-full h-full">
+                        <path d="M20 60 Q40 20, 80 30" stroke="#EEA133" stroke-width="8" fill="none" stroke-linecap="round"/>
+                        <g fill="#003355" class="dark:fill-blue-300">
+                            <path d="M30 70 L85 70 L90 85 L25 85 Z"/>
+                            <rect x="35" y="55" width="15" height="15" rx="2"/>
+                            <rect x="38" y="45" width="4" height="10"/>
+                            <rect x="43" y="48" width="4" height="7"/>
+                            <circle cx="32" cy="77" r="2" fill="white"/>
+                            <circle cx="38" cy="77" r="2" fill="white"/>
+                            <circle cx="44" cy="77" r="2" fill="white"/>
+                        </g>
+                        <g fill="#003355" class="dark:fill-blue-300">
+                            <ellipse cx="75" cy="35" rx="15" ry="4" transform="rotate(15 75 35)"/>
+                            <ellipse cx="70" cy="38" rx="8" ry="3" transform="rotate(15 70 38)"/>
+                            <ellipse cx="82" cy="32" rx="6" ry="2" transform="rotate(15 82 32)"/>
+                        </g>
+                        <path d="M20 90 Q35 85, 50 90 T80 90 T110 90" stroke="#186094" stroke-width="4" fill="none"/>
+                        <path d="M15 95 Q30 92, 45 95 T75 95 T105 95" stroke="#186094" stroke-width="3" fill="none" opacity="0.7"/>
+                    </svg>
+                </div>
+                <span class="text-2xl font-bold text-blue-100">
+                    Triad<span class="text-orange-500">GO</span>
+                </span>
+            </div>
+            <p class="text-blue-200">
+                © 2024 TriadGO. All rights reserved. | Premium Import Solutions
+            </p>
+        </div>
+    </footer>
+
+    <!-- Script LENGKAP - SAMA seperti importir -->
+    <script>
+        // Dark Mode Toggle - SAMA seperti importir dengan 'enabled'/'disabled'
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const darkModeThumb = document.getElementById('darkModeThumb');
+        const htmlElement = document.documentElement;
+
+        function updateDarkModeSwitch() {
+            if (htmlElement.classList.contains('dark')) {
+                if (darkModeToggle) darkModeToggle.checked = true;
+                if (darkModeThumb) {
+                    darkModeThumb.style.transform = 'translateX(1.25rem)';
+                    darkModeThumb.style.backgroundColor = '#003355';
+                    darkModeThumb.style.borderColor = '#003355';
+                }
+            } else {
+                if (darkModeToggle) darkModeToggle.checked = false;
+                if (darkModeThumb) {
+                    darkModeThumb.style.transform = 'translateX(0)';
+                    darkModeThumb.style.backgroundColor = '#fff';
+                    darkModeThumb.style.borderColor = '#ccc';
+                }
+            }
+        }
+
+        // Initialize dark mode dari localStorage - SAMA seperti importir
+        if (localStorage.getItem('darkMode') === 'enabled') {
+            htmlElement.classList.add('dark');
+        }
+
+        updateDarkModeSwitch();
+
+        // Toggle event listener - SAMA seperti importir
+        if (darkModeToggle) {
+            darkModeToggle.addEventListener('change', () => {
+                htmlElement.classList.toggle('dark');
+                if (htmlElement.classList.contains('dark')) {
+                    localStorage.setItem('darkMode', 'enabled');
+                } else {
+                    localStorage.setItem('darkMode', 'disabled');
+                }
+                updateDarkModeSwitch();
+            });
+        }
+
+        // Sidebar Mobile
+        const sidebar = document.getElementById('mobileSidebar');
+        const openSidebarBtn = document.querySelector('button.md\\:hidden[aria-label="Open Menu"]');
+        const closeSidebarBtn = document.getElementById('closeSidebar');
+
+        if (openSidebarBtn && closeSidebarBtn) {
+            openSidebarBtn.addEventListener('click', function () {
+                sidebar.classList.remove('hidden');
+            });
+
+            closeSidebarBtn.addEventListener('click', function () {
+                sidebar.classList.add('hidden');
+            });
+
+            sidebar.addEventListener('click', function (e) {
+                if (e.target === sidebar) {
+                    sidebar.classList.add('hidden');
+                }
+            });
+        }
+
+        // SweetAlert2 Logout Desktop
+        document.getElementById('logoutBtn')?.addEventListener('click', function (e) {
+            Swal.fire({
+                title: 'Logout?',
+                text: "Are you sure you want to logout?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#eea133',
+                confirmButtonText: 'Logout',
+                customClass: {
+                    popup: 'bg-white dark:bg-red-600',
+                    title: 'text-black dark:text-white',
+                    content: 'text-black dark:text-white',
+                    confirmButton: 'text-white',
+                    cancelButton: 'text-white'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('logoutForm').submit();
+                }
+            });
+        });
+
+        // SweetAlert2 Logout Mobile
+        document.getElementById('logoutBtnMobile')?.addEventListener('click', function (e) {
+            Swal.fire({
+                title: 'Logout?',
+                text: "Are you sure you want to logout?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#eea133',
+                confirmButtonText: 'Logout',
+                customClass: {
+                    popup: 'bg-white dark:bg-red-600',
+                    title: 'text-black dark:text-white',
+                    content: 'text-black dark:text-white',
+                    confirmButton: 'text-white',
+                    cancelButton: 'text-white'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('logoutForm').submit();
+                }
+            });
+        });
+
+        // Rating Stars Functionality
+        const stars = document.querySelectorAll('.star');
+        const selectedRatingInput = document.getElementById('selectedRating');
+        let currentRating = 0;
+
+        stars.forEach((star, index) => {
+            star.addEventListener('click', function() {
+                currentRating = parseInt(this.dataset.rating);
+                selectedRatingInput.value = currentRating;
+                updateStarDisplay();
+            });
+
+            star.addEventListener('mouseover', function() {
+                const rating = parseInt(this.dataset.rating);
+                highlightStars(rating);
+            });
+        });
+
+        document.getElementById('ratingStars').addEventListener('mouseleave', function() {
+            updateStarDisplay();
+        });
+
+        function highlightStars(rating) {
+            stars.forEach((star, index) => {
+                if (index < rating) {
+                    star.classList.remove('text-gray-300');
+                    star.classList.add('text-yellow-400');
+                } else {
+                    star.classList.remove('text-yellow-400');
+                    star.classList.add('text-gray-300');
+                }
+            });
+        }
+
+        function updateStarDisplay() {
+            highlightStars(currentRating);
+        }
+
+        // Comment Form Submission
+        document.getElementById('commentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('reviewerName').value;
+            const comment = document.getElementById('reviewComment').value;
+            const rating = selectedRatingInput.value;
+            
+            if (rating === '0') {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Rating Required',
+                    text: 'Please select a rating before submitting your review.',
+                    customClass: {
+                        popup: 'bg-white dark:bg-gray-800',
+                        title: 'text-black dark:text-white',
+                        content: 'text-black dark:text-white'
+                    }
+                });
+                return;
+            }
+
+            // Create new comment element
+            const commentsSection = document.getElementById('commentsSection');
+            const newComment = document.createElement('div');
+            newComment.className = 'border-b border-gray-200 dark:border-gray-600 pb-6';
+            
+            // Generate stars display
+            let starsDisplay = '';
+            for(let i = 1; i <= 5; i++) {
+                starsDisplay += i <= rating ? '★' : '☆';
+            }
+            
+            // Generate random color for avatar
+            const colors = ['bg-blue-500', 'bg-green-500', 'bg-purple-500', 'bg-red-500', 'bg-yellow-500', 'bg-pink-500'];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            
+            // Get initials
+            const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+            
+            newComment.innerHTML = `
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 ${randomColor} rounded-full flex items-center justify-center text-white font-semibold">
+                            ${initials}
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-900 dark:text-gray-100">${name}</h4>
+                            <div class="flex items-center space-x-2">
+                                <span class="text-yellow-400">${starsDisplay}</span>
+                                <span class="text-sm text-gray-500 dark:text-gray-400">Just now</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-gray-600 dark:text-gray-400 leading-relaxed">${comment}</p>
+            `;
+            
+            // Insert at the beginning of comments section
+            commentsSection.insertBefore(newComment, commentsSection.firstChild);
+            
+            // Show success message
+            Swal.fire({
+                icon: 'success',
+                title: 'Review Submitted!',
+                text: 'Thank you for your review. It has been added successfully.',
+                customClass: {
+                    popup: 'bg-white dark:bg-gray-800',
+                    title: 'text-black dark:text-white',
+                    content: 'text-black dark:text-white'
+                }
+            });
+            
+            // Reset form
+            this.reset();
+            currentRating = 0;
+            selectedRatingInput.value = '0';
+            updateStarDisplay();
+        });
+    </script>
+</body>
+
+</html>

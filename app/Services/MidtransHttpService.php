@@ -183,7 +183,8 @@ class MidtransHttpService
                 // Payment pending
                 $order->update(['status' => 'pending']);
             } elseif ($transactionStatus == 'deny' || $transactionStatus == 'expire' || $transactionStatus == 'cancel') {
-                $order->update(['status' => 'failed']);
+                // Mark as cancelled (this will restore stock if order was previously paid)
+                $order->markAsCancelled("Payment {$transactionStatus} by Midtrans");
             }
 
             return true;

@@ -191,64 +191,23 @@
                                 <option value="Vietnam">Vietnam</option>
                                 <option value="Other">Other</option>
                             </select>
-                        </div>                        <!-- Payment Method -->
+                        </div>
+
+                        <!-- Payment Method -->
                         <div class="border-t border-gray-200 dark:border-gray-600 pt-6 mt-6">
                             <h3 class="text-lg font-semibold text-blue-900 dark:text-blue-100 mb-4">Payment Method</h3>
                             
-                            <!-- Midtrans Payment Only -->
-                            <div class="payment-method-container">
-                                <label class="payment-option custom-radio flex flex-col items-center justify-center min-h-[160px] p-6 border-2 border-blue-500 rounded-xl cursor-pointer bg-blue-50 dark:bg-blue-900/30 transition-all w-full text-center">
-                                    <input type="radio" name="paymentMethod" value="midtrans" class="mb-3" id="midtransRadio" checked />
-                                    <div class="flex flex-col items-center w-full">
-                                        <div class="w-20 h-12 mb-3 bg-white rounded-lg border flex items-center justify-center shadow-sm">
-                                            <svg width="60" height="24" viewBox="0 0 120 48" fill="none">
-                                                <rect width="120" height="48" rx="8" fill="#00AEEF"/>
-                                                <text x="60" y="30" font-family="Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="white">MIDTRANS</text>
-                                            </svg>
+                            <div class="space-y-3">
+                                <div class="custom-radio">
+                                    <label class="flex items-center p-4 border border-gray-200 dark:border-gray-600 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
+                                        <input type="radio" name="paymentMethod" value="midtrans" checked class="mr-3">
+                                        <div class="flex-1">
+                                            <div class="font-semibold text-blue-900 dark:text-blue-100">Midtrans Payment Gateway</div>
+                                            <div class="text-sm text-gray-600 dark:text-gray-300">Secure payment via Midtrans (Credit Card, Bank Transfer, E-Wallet)</div>
                                         </div>
-                                        <div class="font-semibold text-blue-900 dark:text-blue-100 text-lg">Midtrans Payment Gateway</div>
-                                        <div class="text-sm text-gray-600 dark:text-gray-300 mb-3">Credit Card, Debit, E-Wallet, Bank Transfer, QRIS</div>
-                                        <div class="grid grid-cols-4 gap-2 mt-2 w-full max-w-xs">
-                                            <div class="text-xs bg-gray-100 dark:bg-gray-700 p-1 rounded text-center">Visa</div>
-                                            <div class="text-xs bg-gray-100 dark:bg-gray-700 p-1 rounded text-center">Mastercard</div>
-                                            <div class="text-xs bg-gray-100 dark:bg-gray-700 p-1 rounded text-center">GoPay</div>
-                                            <div class="text-xs bg-gray-100 dark:bg-gray-700 p-1 rounded text-center">OVO</div>
-                                            <div class="text-xs bg-gray-100 dark:bg-gray-700 p-1 rounded text-center">DANA</div>
-                                            <div class="text-xs bg-gray-100 dark:bg-gray-700 p-1 rounded text-center">ShopeePay</div>
-                                            <div class="text-xs bg-gray-100 dark:bg-gray-700 p-1 rounded text-center">QRIS</div>
-                                            <div class="text-xs bg-gray-100 dark:bg-gray-700 p-1 rounded text-center">Bank</div>
-                                        </div>
-                                    </div>
-                                </label>
-                            </div>
-                            
-                            <!-- Payment Info -->
-                            <div class="mt-4 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-                                <div class="flex items-start">
-                                    <svg class="w-5 h-5 text-blue-600 mt-0.5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
-                                    </svg>
-                                    <div class="text-sm text-blue-800 dark:text-blue-200">
-                                        <p class="font-medium">Secure Payment Processing</p>
-                                        <p>Your payment is processed securely through Midtrans. You'll be redirected to complete your payment after clicking "Proceed to Payment".</p>
-                                    </div>
+                                        <div class="text-blue-600 text-sm font-medium">Recommended</div>
+                                    </label>
                                 </div>
-                            </div>
-                        </div>
-
-                        <!-- Security Features -->
-                        <div class="mt-6 p-4 bg-green-50 dark:bg-green-900 rounded-lg border border-green-200 dark:border-green-700">
-                            <div class="flex items-center">
-                                <svg class="w-5 h-5 text-green-600 dark:text-green-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/>
-                                </svg>
-                                <span class="text-sm text-green-800 dark:text-green-200">Your payment information is encrypted and secure</span>
-                            </div>
-                            <div class="flex items-center mt-2">
-                                <svg class="w-5 h-5 text-green-600 dark:text-green-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                                </svg>
-                                <span class="text-sm text-green-800 dark:text-green-200">SSL Certificate • PCI Compliant • 256-bit Encryption</span>
                             </div>
                         </div>
 
@@ -287,31 +246,6 @@
         let cartItems = [];
         let cartTotal = 0;
         let orderData = {};
-
-        // Helper function to get proper product image URL
-        function getProductImageUrl(imagePath) {
-            if (!imagePath) {
-                return 'https://png.pngtree.com/png-vector/20231023/ourmid/pngtree-mystery-box-with-question-mark-3d-illustration-png-image_10313605.png';
-            }
-            
-            // If it's already a full URL (starts with http/https)
-            if (imagePath.startsWith('http')) {
-                return imagePath;
-            }
-            
-            // If it already starts with uploads/, don't add it again
-            if (imagePath.startsWith('uploads/')) {
-                return '/' + imagePath;
-            }
-            
-            // If it already starts with /uploads/, use as is
-            if (imagePath.startsWith('/uploads/')) {
-                return imagePath;
-            }
-            
-            // Otherwise, assume it's just the filename and add the uploads/products/ path
-            return '/uploads/products/' + imagePath;
-        }
 
         // Initialize page
         document.addEventListener('DOMContentLoaded', function() {
@@ -374,14 +308,14 @@
             let html = '';
             cartItems.forEach((item, index) => {
                 const itemTotal = parseFloat(item.price) * parseInt(item.quantity);
-                html += `                <div class="flex items-center space-x-4 p-4 border border-gray-200 dark:border-gray-600 rounded-lg">                    <img src="${getProductImageUrl(item.product.product_image)}" 
+                html += `
+                <div class="flex items-center space-x-4 p-4 border border-gray-200 dark:border-gray-600 rounded-lg">
+                    <img src="${item.product.product_image ? '/' + item.product.product_image : 'https://png.pngtree.com/png-vector/20231023/ourmid/pngtree-mystery-box-with-question-mark-3d-illustration-png-image_10313605.png'}" 
                          alt="${item.product.product_name}" 
-                         class="w-16 h-16 object-cover rounded-lg shadow-sm"
-                         onerror="this.src='https://png.pngtree.com/png-vector/20231023/ourmid/pngtree-mystery-box-with-question-mark-3d-illustration-png-image_10313605.png'">
+                         class="w-16 h-16 object-cover rounded-lg shadow-sm">
                     <div class="flex-1">
                         <h3 class="font-semibold text-blue-900 dark:text-blue-100">${item.product.product_name}</h3>
                         <p class="text-sm text-gray-600 dark:text-gray-300">Origin: ${item.product.country_of_origin}</p>
-                        <p class="text-sm text-gray-600 dark:text-gray-300">Weight: ${item.product.weight}kg</p>
                         <p class="text-sm text-gray-600 dark:text-gray-300">SKU: ${item.product.product_sku}</p>
                         <div class="flex items-center mt-2">
                             <label class="text-sm text-gray-600 dark:text-gray-300 mr-2">Qty:</label>
@@ -606,26 +540,30 @@
                 alert('Checkout failed: ' + error.message);
                 resetCheckoutButton();
             });
-        }        // Handle payment success
+        }
+
+        // Handle payment success
         function handlePaymentSuccess(result, orderId) {
             Swal.fire({
                 icon: 'success',
                 title: 'Payment Successful!',
                 text: `Your order ${orderId} has been processed successfully.`,
-                confirmButtonText: 'View Order Details'
+                confirmButtonText: 'View Order'
             }).then(() => {
-                // Clear cart and redirect to transactions page
-                clearCartAndRedirect(orderId);
+                // Clear cart and redirect
+                clearCartAndRedirect();
             });
-        }        // Handle payment pending
+        }
+
+        // Handle payment pending
         function handlePaymentPending(result, orderId) {
             Swal.fire({
                 icon: 'info',
                 title: 'Payment Pending',
                 text: `Your order ${orderId} is being processed. You will receive a confirmation email shortly.`,
-                confirmButtonText: 'View Order Status'
+                confirmButtonText: 'OK'
             }).then(() => {
-                clearCartAndRedirect(orderId);
+                clearCartAndRedirect();
             });
         }
 
@@ -638,10 +576,10 @@
                 confirmButtonText: 'OK'
             });
             resetCheckoutButton();
-        }        // Clear cart and redirect
-        function clearCartAndRedirect(orderId = null) {
-            console.log('Redirecting with order ID:', orderId);
-            
+        }
+
+        // Clear cart and redirect
+        function clearCartAndRedirect() {
             fetch('/cart', {
                 method: 'DELETE',
                 headers: {
@@ -650,31 +588,7 @@
                 }
             })
             .then(() => {
-                console.log('Cart cleared successfully');
-                if (orderId) {
-                    // Redirect to specific order detail page
-                    const redirectUrl = `/transactions/${orderId}`;
-                    console.log('Redirecting to:', redirectUrl);
-                    window.location.href = redirectUrl;
-                } else {
-                    // Redirect to transactions list page
-                    const redirectUrl = '{{ route("transactions.index") }}';
-                    console.log('Redirecting to transactions list:', redirectUrl);
-                    window.location.href = redirectUrl;
-                }
-            })
-            .catch((error) => {
-                console.error('Error clearing cart:', error);
-                // Even if cart clearing fails, still redirect to show the order
-                if (orderId) {
-                    const redirectUrl = `/transactions/${orderId}`;
-                    console.log('Fallback redirect to order:', redirectUrl);
-                    window.location.href = redirectUrl;
-                } else {
-                    const redirectUrl = '{{ route("transactions.index") }}';
-                    console.log('Fallback redirect to transactions list:', redirectUrl);
-                    window.location.href = redirectUrl;
-                }
+                window.location.href = '{{ route("importir") }}';
             });
         }
 

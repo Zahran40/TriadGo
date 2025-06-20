@@ -8,6 +8,23 @@
     @vite('resources/css/app.css')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <script type="module">
+        import 'https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4'
+
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2563eb',
+                        accent: '#f97316',
+                    },
+                },
+            },
+        }
+
+        tailwind.scan()
+    </script>
 </head>
 
 <body class="home-bg min-h-screen flex flex-col">
@@ -21,16 +38,19 @@
                 <div class="mb-4">
                     <label for="product_name" class="block font-semibold text-blue-700  mb-1">Product Name</label>
                     <input type="text" id="product_name" name="product_name" required
-                        class=" bg-white   dark:border-[#4a5568] hover:border-blue-700  rounded px-3 py-2 w-full text-blue-900 focus:ring-2 " placeholder="Enter product name">
+                        class=" bg-white   dark:border-[#4a5568] hover:border-blue-700  rounded px-3 py-2 w-full text-blue-900 focus:ring-2 "
+                        placeholder="Enter product name">
                 </div>
                 <div class="mb-4">
                     <label for="description" class="block font-semibold text-blue-700  mb-1">Description</label>
                     <textarea id="description" name="description" rows="3" required
-                        class=" bg-white    dark:border-[#4a5568] hover:border-blue-700 rounded px-3 py-2 w-full text-blue-900 focus:ring-2" placeholder="Describe your request"></textarea>
+                        class=" bg-white    dark:border-[#4a5568] hover:border-blue-700 rounded px-3 py-2 w-full text-blue-900 focus:ring-2"
+                        placeholder="Describe your request"></textarea>
                 </div>
                 <div class="mb-4">
                     <label class="block text-blue-700  mb-2 hover:border-blue-700">Category</label>
-                    <select id="Category" class="w-full px-4 py-2.5 hover:border-blue-700 dark:border-gray-600 rounded-md text-blue-600 focus:ring-2  ">
+                    <select id="Category"
+                        class="w-full px-4 py-2.5 hover:border-blue-700 dark:border-gray-600 rounded-md text-blue-600 focus:ring-2  ">
                         <option value="" disabled selected hidden>Select Category</option>
                         <option>Electronics</option>
                         <option>Textile goods</option>
@@ -45,7 +65,8 @@
                 <div class="mb-4">
                     <label for="product_name" class="block font-semibold text-blue-700  mb-1">Quantity</label>
                     <input type="number" id="product_name" name="product_name" required
-                        class=" bg-white  border  dark:border-[#4a5568] rounded px-3 py-2 w-full hover:border-blue-700 text-blue-900  focus:ring-2 " placeholder="Enter quantity (kg)">
+                        class=" bg-white  border  dark:border-[#4a5568] rounded px-3 py-2 w-full hover:border-blue-700 text-blue-900  focus:ring-2 "
+                        placeholder="Enter quantity (kg)">
                 </div>
                 <div class="mb-4">
                     <label for="country" class="block font-semibold text-blue-700 mb-1">Country</label>
@@ -120,10 +141,10 @@
             });
         }
 
-        // Comment Form Submission - PERBAIKI dengan dark detection
+        // Comment Form Submission
         const commentForm = document.getElementById('commentForm');
         if (commentForm) {
-            commentForm.addEventListener('submit', function(e) {
+            commentForm.addEventListener('submit', function (e) {
                 e.preventDefault();
 
                 const comment = document.getElementById('reviewComment').value;
@@ -185,7 +206,7 @@
         }
 
         document.querySelectorAll('nav a[href^="#"], a[href^="#"]').forEach(link => {
-            link.addEventListener('click', function(event) {
+            link.addEventListener('click', function (event) {
                 if (this.getAttribute('href') !== '#') {
                     event.preventDefault();
                     const targetId = this.getAttribute('href').substring(1);
@@ -211,26 +232,24 @@
         const closeSidebarBtn = document.getElementById('closeSidebar');
 
         if (openSidebarBtn && closeSidebarBtn) {
-            openSidebarBtn.addEventListener('click', function() {
+            openSidebarBtn.addEventListener('click', function () {
                 sidebar.classList.remove('hidden');
             });
 
-            closeSidebarBtn.addEventListener('click', function() {
+            closeSidebarBtn.addEventListener('click', function () {
                 sidebar.classList.add('hidden');
             });
 
             // Tutup sidebar jika klik di luar sidebar
-            sidebar.addEventListener('click', function(e) {
+            sidebar.addEventListener('click', function (e) {
                 if (e.target === sidebar) {
                     sidebar.classList.add('hidden');
                 }
             });
         }
 
-        // SweetAlert2 Logout Desktop - PERBAIKI dengan dark detection
-        document.getElementById('logoutBtn')?.addEventListener('click', function(e) {
-            const isDark = document.documentElement.classList.contains('dark');
-
+        // SweetAlert2 Logout Desktop
+        document.getElementById('logoutBtn')?.addEventListener('click', function (e) {
             Swal.fire({
                 title: 'Logout?',
                 text: "Are you sure you want to logout?",
@@ -239,10 +258,12 @@
                 confirmButtonColor: '#d33',
                 cancelButtonColor: '#eea133',
                 confirmButtonText: 'Logout',
-                background: isDark ? '#374151' : '#ffffff',
-                didOpen: () => {
-                    const popup = Swal.getPopup();
-                    if (isDark) popup.classList.add('swal2-dark');
+                customClass: {
+                    popup: 'bg-white dark:bg-red-600',
+                    title: 'text-black dark:text-white',
+                    content: 'text-black dark:text-white',
+                    confirmButton: 'text-white',
+                    cancelButton: 'text-white'
                 }
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -251,10 +272,8 @@
             });
         });
 
-        // SweetAlert2 Logout Mobile - PERBAIKI dengan dark detection
-        document.getElementById('logoutBtnMobile')?.addEventListener('click', function(e) {
-            const isDark = document.documentElement.classList.contains('dark');
-
+        // SweetAlert2 Logout Mobile
+        document.getElementById('logoutBtnMobile')?.addEventListener('click', function (e) {
             Swal.fire({
                 title: 'Logout?',
                 text: "Are you sure you want to logout?",
@@ -263,10 +282,12 @@
                 confirmButtonColor: '#d33',
                 cancelButtonColor: '#eea133',
                 confirmButtonText: 'Logout',
-                background: isDark ? '#374151' : '#ffffff',
-                didOpen: () => {
-                    const popup = Swal.getPopup();
-                    if (isDark) popup.classList.add('swal2-dark');
+                customClass: {
+                    popup: 'bg-white dark:bg-red-600',
+                    title: 'text-black dark:text-white',
+                    content: 'text-black dark:text-white',
+                    confirmButton: 'text-white',
+                    cancelButton: 'text-white'
                 }
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -274,8 +295,9 @@
                 }
             });
         });
+
         // Optional: SweetAlert2 for success feedback
-        document.getElementById('requestForm').addEventListener('submit', function(e) {
+        document.getElementById('requestForm').addEventListener('submit', function (e) {
             // Uncomment below if you want to show alert before submit
             // e.preventDefault();
             // Swal.fire({

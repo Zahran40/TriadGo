@@ -6,7 +6,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Request Expo - TriadGO Exporter</title>
     @vite('resources/css/app.css')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <script type="module">
+        import 'https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4'
+
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2563eb',
+                        accent: '#f97316',
+                    },
+                },
+            },
+        }
+
+        tailwind.scan()
+    </script>
+    
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 
     <style>
@@ -136,21 +155,6 @@
             }
         }
     </style>
-
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#2563eb',
-                        accent: '#f97316',
-                        darkblue: '#1e3a8a',
-                        orange: '#ff6b35',
-                    },
-                },
-            },
-        }
-    </script>
 </head>
 
 <body class="home-bg min-h-screen transition-colors duration-300">
@@ -454,17 +458,65 @@
             });
         }
 
-        function logout() {
-            if (confirm('Apakah Anda yakin ingin logout?')) {
-                window.location.href = 'login.html';
-            }
-        }
+        // function logout() {
+        //     if (confirm('Apakah Anda yakin ingin logout?')) {
+        //         window.location.href = 'login.html';
+        //     }
+        // }
 
         // Close modal when clicking outside
         document.addEventListener('keydown', function (e) {
             if (e.key === 'Escape') {
                 closeModal();
             }
+        });
+
+        // SweetAlert2 Logout Desktop
+        document.getElementById('logoutBtn')?.addEventListener('click', function (e) {
+            Swal.fire({
+                title: 'Logout?',
+                text: "Are you sure you want to logout?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#eea133',
+                confirmButtonText: 'Logout',
+                customClass: {
+                    popup: 'bg-white dark:bg-red-600',
+                    title: 'text-black dark:text-white',
+                    content: 'text-black dark:text-white',
+                    confirmButton: 'text-white',
+                    cancelButton: 'text-white'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('logoutForm').submit();
+                }
+            });
+        });
+
+        // SweetAlert2 Logout Mobile
+        document.getElementById('logoutBtnMobile')?.addEventListener('click', function (e) {
+            Swal.fire({
+                title: 'Logout?',
+                text: "Are you sure you want to logout?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#eea133',
+                confirmButtonText: 'Logout',
+                customClass: {
+                    popup: 'bg-white dark:bg-red-600',
+                    title: 'text-black dark:text-white',
+                    content: 'text-black dark:text-white',
+                    confirmButton: 'text-white',
+                    cancelButton: 'text-white'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('logoutForm').submit();
+                }
+            });
         });
     </script>
 </body>

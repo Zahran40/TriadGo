@@ -574,7 +574,7 @@
             });
         }
 
-        // SweetAlert2 Logout
+        // SweetAlert2 Logout Desktop
         document.getElementById('logoutBtn')?.addEventListener('click', function (e) {
             Swal.fire({
                 title: 'Logout?',
@@ -598,9 +598,9 @@
             });
         });
 
+        // SweetAlert2 Logout Mobile
+        // SweetAlert2 Logout Mobile
         document.getElementById('logoutBtnMobile')?.addEventListener('click', function (e) {
-            const isDark = document.documentElement.classList.contains('dark');
-
             Swal.fire({
                 title: 'Logout?',
                 text: "Are you sure you want to logout?",
@@ -609,10 +609,12 @@
                 confirmButtonColor: '#d33',
                 cancelButtonColor: '#eea133',
                 confirmButtonText: 'Logout',
-                background: isDark ? '#374151' : '#ffffff',
-                didOpen: () => {
-                    const popup = Swal.getPopup();
-                    if (isDark) popup.classList.add('swal2-dark');
+                customClass: {
+                    popup: 'bg-white dark:bg-red-600',
+                    title: 'text-black dark:text-white',
+                    content: 'text-black dark:text-white',
+                    confirmButton: 'text-white',
+                    cancelButton: 'text-white'
                 }
             }).then((result) => {
                 if (result.isConfirmed) {

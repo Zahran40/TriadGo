@@ -31,7 +31,7 @@ Kelompok 3 KOM C 24 — Pemrograman Web Lanjutan
 ### FITUR IMPORTIR
 
 - **Search bar untuk mencari produk**  
-  Memudahkan pencarian produk berdasarkan nama atau kategori.
+  Memudahkan pencarian produk berdasarkan nama.
 
 - **Invoice & Payment Gateway**  
   Menyediakan detail tagihan dan proses pembayaran langsung melalui platform.
@@ -41,9 +41,6 @@ Kelompok 3 KOM C 24 — Pemrograman Web Lanjutan
 
 - **Menampilkan produk berdasarkan negara**  
   Produk dapat difilter sesuai negara asal eksportir.
-
-- **Menampilkan stok/sisa barang**  
-  Informasi ketersediaan barang ditampilkan agar importir tahu jumlah yang tersedia.
 
 - **Melihat Status Pesanan**  
   Importir bisa memantau apakah pesanan sedang diproses, dikirim, atau sudah sampai.
@@ -62,7 +59,7 @@ Kelompok 3 KOM C 24 — Pemrograman Web Lanjutan
   Eksportir dapat melihat ulasan atau komentar dari importir setelah transaksi berlangsung.
 
 - **Menerima Permintaan barang dari Importir**  
-  Permintaan produk dari importir dapat dilihat dan diproses oleh eksportir.
+  Permintaan produk dari importir dapat diterima atau ditolak oleh eksportir.
 
 - **Menampilkan semua komentar importir untuk produk eksportir**  
   Eksportir bisa melihat semua feedback terkait produknya untuk evaluasi dan peningkatan.
@@ -81,6 +78,7 @@ Kelompok 3 KOM C 24 — Pemrograman Web Lanjutan
 - GitHub
 - Visual Studio Code (VSCode)
 - phpMyAdmin
+- midtrans
 
 ## LIBRARY YANG DIGUNAKAN 
 - Tailwind CSS v4.0.7

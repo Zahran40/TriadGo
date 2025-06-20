@@ -127,6 +127,7 @@ class CheckoutOrder extends Model
 
         $this->update([
             'status' => 'paid',
+            'payment_status' => 'paid', // 🔧 PERBAIKAN: Sinkronkan payment_status
             'payment_gateway_transaction_id' => $transactionId,
             'payment_details' => array_merge($this->payment_details ?? [], $paymentDetails),
             'payment_completed_at' => now()
@@ -351,6 +352,7 @@ class CheckoutOrder extends Model
 
         $this->update([
             'status' => 'cancelled',
+            'payment_status' => 'cancelled', // 🔧 PERBAIKAN: Sinkronkan payment_status
             'payment_details' => array_merge($this->payment_details ?? [], [
                 'cancelled_at' => now(),
                 'cancellation_reason' => $reason
@@ -373,6 +375,7 @@ class CheckoutOrder extends Model
 
         $this->update([
             'status' => 'refunded',
+            'payment_status' => 'refunded', // 🔧 PERBAIKAN: Sinkronkan payment_status
             'payment_details' => array_merge($this->payment_details ?? [], [
                 'refunded_at' => now(),
                 'refund_details' => $refundDetails
@@ -555,5 +558,46 @@ class CheckoutOrder extends Model
         ]);
         
         return $this;
+    }
+
+    /**
+     * Boot method for automatic payment_status synchronization
+     */
+    protected static function boot()
+    {
+        parent::boot();
+        
+        // Auto-sync payment_status dengan status setiap kali status berubah
+        static::updating(function ($model) {
+            // Jika status berubah, sync payment_status
+            if ($model->isDirty('status')) {
+                $oldStatus = $model->getOriginal('status');
+                $newStatus = $model->status;
+                
+                // Set payment_status to match status
+                $model->payment_status = $newStatus;
+                
+                Log::info('Auto-syncing payment_status with status', [
+                    'order_id' => $model->order_id,
+                    'old_status' => $oldStatus,
+                    'new_status' => $newStatus,
+                    'payment_status' => $model->payment_status
+                ]);
+            }
+        });
+        
+        // Log when creating new order
+        static::creating(function ($model) {
+            // Ensure payment_status matches status on creation
+            if ($model->status && !$model->payment_status) {
+                $model->payment_status = $model->status;
+                
+                Log::info('Setting initial payment_status to match status', [
+                    'order_id' => $model->order_id ?? 'NEW',
+                    'status' => $model->status,
+                    'payment_status' => $model->payment_status
+                ]);
+            }
+        });
     }
 }

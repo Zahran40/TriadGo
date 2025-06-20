@@ -10,6 +10,23 @@
     @vite('resources/css/app.css')
     <script src="https://cdn.tailwindcss.com"></script>
 
+    <script type="module">
+        import 'https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4'
+
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2563eb',
+                        accent: '#f97316',
+                    },
+                },
+            },
+        }
+
+        tailwind.scan()
+    </script>
+
     <!-- Dark Mode Script - SAMA seperti importir -->
     <script>
         if (localStorage.getItem('darkMode') === 'enabled') {
@@ -428,10 +445,10 @@
                 @endif
             </div>
         </div>
-        
+
     </section>
 
-    
+
     <!-- FIXED: Footer dengan class yang proper -->
     <footer class="catalog-footer text-blue-100 py-6 mt-auto">
         <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
@@ -559,8 +576,6 @@
 
         // SweetAlert2 Logout
         document.getElementById('logoutBtn')?.addEventListener('click', function (e) {
-            const isDark = document.documentElement.classList.contains('dark');
-
             Swal.fire({
                 title: 'Logout?',
                 text: "Are you sure you want to logout?",
@@ -569,10 +584,12 @@
                 confirmButtonColor: '#d33',
                 cancelButtonColor: '#eea133',
                 confirmButtonText: 'Logout',
-                background: isDark ? '#374151' : '#ffffff',
-                didOpen: () => {
-                    const popup = Swal.getPopup();
-                    if (isDark) popup.classList.add('swal2-dark');
+                customClass: {
+                    popup: 'bg-white dark:bg-red-600',
+                    title: 'text-black dark:text-white',
+                    content: 'text-black dark:text-white',
+                    confirmButton: 'text-white',
+                    cancelButton: 'text-white'
                 }
             }).then((result) => {
                 if (result.isConfirmed) {

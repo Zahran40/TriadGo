@@ -15,6 +15,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\TransactionController;
 
 // Register 
 Route::get('/sign-up', [RegisterController::class, 'signup'])->name('signup');
@@ -38,6 +39,16 @@ Route::get('/product-detail-importir/{id}', [ImportirController::class, 'detail'
         ->name('product.detail.importir')->middleware('role.protect:impor');
 Route::get('/detailproductimportir/{id}', [ImportirController::class, 'detail'])
         ->name('detailproductimportir')->middleware('role.protect:impor');
+
+// Transaction Routes - hanya role impor
+Route::get('/transactions', [TransactionController::class, 'index'])
+        ->name('transactions.index')->middleware('role.protect:impor');
+Route::get('/transactions/{orderId}', [TransactionController::class, 'show'])
+        ->name('transactions.show')->middleware('role.protect:impor');
+Route::get('/transactions/{orderId}/tracking', [TransactionController::class, 'tracking'])
+        ->name('transactions.tracking')->middleware('role.protect:impor');
+Route::get('/transactions/{orderId}/invoice', [TransactionController::class, 'downloadInvoice'])
+        ->name('transactions.invoice')->middleware('role.protect:impor');
 
 // // User Profile - hanya user yang login (bukan guest)
 // Route::get('/user-profile', [PageController::class, 'userprofile'])->name('userprofile')->middleware('role.protect:impor,ekspor');

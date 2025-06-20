@@ -606,30 +606,26 @@
                 alert('Checkout failed: ' + error.message);
                 resetCheckoutButton();
             });
-        }
-
-        // Handle payment success
+        }        // Handle payment success
         function handlePaymentSuccess(result, orderId) {
             Swal.fire({
                 icon: 'success',
                 title: 'Payment Successful!',
                 text: `Your order ${orderId} has been processed successfully.`,
-                confirmButtonText: 'View Order'
+                confirmButtonText: 'View Order Details'
             }).then(() => {
-                // Clear cart and redirect
-                clearCartAndRedirect();
+                // Clear cart and redirect to transactions page
+                clearCartAndRedirect(orderId);
             });
-        }
-
-        // Handle payment pending
+        }        // Handle payment pending
         function handlePaymentPending(result, orderId) {
             Swal.fire({
                 icon: 'info',
                 title: 'Payment Pending',
                 text: `Your order ${orderId} is being processed. You will receive a confirmation email shortly.`,
-                confirmButtonText: 'OK'
+                confirmButtonText: 'View Order Status'
             }).then(() => {
-                clearCartAndRedirect();
+                clearCartAndRedirect(orderId);
             });
         }
 
@@ -642,10 +638,10 @@
                 confirmButtonText: 'OK'
             });
             resetCheckoutButton();
-        }
-
-        // Clear cart and redirect
-        function clearCartAndRedirect() {
+        }        // Clear cart and redirect
+        function clearCartAndRedirect(orderId = null) {
+            console.log('Redirecting with order ID:', orderId);
+            
             fetch('/cart', {
                 method: 'DELETE',
                 headers: {
@@ -654,7 +650,31 @@
                 }
             })
             .then(() => {
-                window.location.href = '{{ route("importir") }}';
+                console.log('Cart cleared successfully');
+                if (orderId) {
+                    // Redirect to specific order detail page
+                    const redirectUrl = `/transactions/${orderId}`;
+                    console.log('Redirecting to:', redirectUrl);
+                    window.location.href = redirectUrl;
+                } else {
+                    // Redirect to transactions list page
+                    const redirectUrl = '{{ route("transactions.index") }}';
+                    console.log('Redirecting to transactions list:', redirectUrl);
+                    window.location.href = redirectUrl;
+                }
+            })
+            .catch((error) => {
+                console.error('Error clearing cart:', error);
+                // Even if cart clearing fails, still redirect to show the order
+                if (orderId) {
+                    const redirectUrl = `/transactions/${orderId}`;
+                    console.log('Fallback redirect to order:', redirectUrl);
+                    window.location.href = redirectUrl;
+                } else {
+                    const redirectUrl = '{{ route("transactions.index") }}';
+                    console.log('Fallback redirect to transactions list:', redirectUrl);
+                    window.location.href = redirectUrl;
+                }
             });
         }
 

@@ -5,368 +5,505 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Transaction {{ $transaction->order_id }} | TriadGO</title>
+    <title>Detail Transaksi - {{ $order->order_id }} | TriadGO</title>
     @vite('resources/css/app.css')
     <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- Dark Mode Script -->
-    <script>
-        if (localStorage.getItem('darkMode') === 'enabled') {
-            document.documentElement.classList.add('dark');
-        }
-    </script>
-
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#2563eb',
-                        accent: '#f97316',
-                    },
-                    animation: {
-                        'fade-in': 'fadeIn 0.8s ease-out',
-                        'slide-up': 'slideUp 0.6s ease-out',
-                    },
-                    keyframes: {
-                        fadeIn: {
-                            '0%': { opacity: '0' },
-                            '100%': { opacity: '1' },
-                        },
-                        slideUp: {
-                            '0%': { transform: 'translateY(30px)', opacity: '0' },
-                            '100%': { transform: 'translateY(0)', opacity: '1' },
-                        }
-                    }
-                },
-            },
-        }
-    </script>
-
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-
-        body {
-            font-family: 'Poppins', sans-serif;
-        }
-
-        .detail-card {
-            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .dark .detail-card {
-            background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-    </style>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
-<body class="home-bg min-h-screen dark:bg-slate-900 transition-colors duration-300">
-    <!-- Header/Navbar -->
+<body class="bg-gray-50">
     @include('layouts.navbarimportir')
 
-    <!-- Main Content -->
-    <main class="container mx-auto px-6 py-8 animate-fade-in">
-        <!-- Status Message -->
-        @if(isset($statusMessage))
-            <div class="mb-6 animate-slide-up">
-                <div class="px-4 py-3 rounded-lg border-l-4 
-                    @if($statusType === 'info') bg-blue-50 border-blue-400 text-blue-700 dark:bg-blue-900/20 dark:text-blue-300
-                    @elseif($statusType === 'error') bg-red-50 border-red-400 text-red-700 dark:bg-red-900/20 dark:text-red-300
-                    @elseif($statusType === 'warning') bg-yellow-50 border-yellow-400 text-yellow-700 dark:bg-yellow-900/20 dark:text-yellow-300
-                    @endif">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Breadcrumb -->
+        <nav class="flex mb-8" aria-label="Breadcrumb">
+            <ol class="inline-flex items-center space-x-1 md:space-x-3">
+                <li class="inline-flex items-center">
+                    <a href="{{ route('transactions.index') }}" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors">
+                        <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
+                        </svg>
+                        Daftar Transaksi
+                    </a>
+                </li>
+                <li>
                     <div class="flex items-center">
-                        @if($statusType === 'info')
-                            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
-                            </svg>
-                        @elseif($statusType === 'error')
-                            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
-                            </svg>
-                        @elseif($statusType === 'warning')
-                            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
-                            </svg>
-                        @endif
-                        <span class="font-medium">{{ $statusMessage }}</span>
+                        <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="ml-1 text-sm font-medium text-gray-500">{{ $order->order_id }}</span>
                     </div>
-                </div>
-            </div>
-        @endif
-        <!-- Back Button -->
-        <div class="mb-6 animate-slide-up">
-            <a href="{{ route('transactions.index') }}" class="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 font-medium transition">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                </svg>
-                Back to Transactions
-            </a>
-        </div>
+                </li>
+            </ol>
+        </nav>
 
-        <!-- Transaction Header -->
-        <div class="detail-card bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg mb-8 animate-slide-up">
-            <div class="flex flex-col md:flex-row justify-between items-start gap-6">
-                <div>
-                    <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">{{ $transaction->order_id }}</h1>
-                    <p class="text-gray-600 dark:text-gray-400">Order placed on {{ $transaction->created_at->format('F d, Y \a\t H:i') }}</p>
-                    @if($transaction->payment_completed_at)
-                        <p class="text-green-600 dark:text-green-400">Paid on {{ $transaction->payment_completed_at->format('F d, Y \a\t H:i') }}</p>
-                    @endif
-                </div>
-                
-                <div class="flex items-center gap-4">
-                    <!-- Status Badge -->
-                    <div class="px-4 py-2 rounded-full text-sm font-semibold
-                        @if($transaction->status === 'paid') bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400
-                        @elseif($transaction->status === 'pending') bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400
-                        @elseif($transaction->status === 'failed') bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400
-                        @else bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-400
-                        @endif">
-                        @if($transaction->status === 'paid') ✅ Paid
-                        @elseif($transaction->status === 'pending') ⏳ Pending Payment
-                        @elseif($transaction->status === 'failed') ❌ Payment Failed
-                        @else 📋 {{ ucfirst($transaction->status) }}
-                        @endif
+        <!-- Header -->
+        <div class="flex flex-col lg:flex-row lg:justify-between lg:items-start mb-8">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-800 mb-2">Detail Transaksi</h1>
+                <p class="text-gray-600">Kode Pesanan: <span class="font-semibold text-blue-600">{{ $order->order_id }}</span></p>
+            </div>            <div class="mt-4 lg:mt-0 flex space-x-3">
+                @php
+                    // Get current order status from database to ensure freshness
+                    $currentOrder = \App\Models\CheckoutOrder::find($order->id);
+                    $isPaid = $currentOrder ? $currentOrder->status === 'paid' : $order->status === 'paid';
+                @endphp
+                @if($isPaid)
+                    <a href="{{ route('transactions.tracking', $order->order_id) }}" 
+                       class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors shadow-sm">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                        🚢 Lacak Pengiriman
+                    </a>
+                    <a href="{{ route('transactions.invoice', $order->order_id) }}" 
+                       class="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors shadow-sm">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        Download Invoice
+                    </a>
+                @else
+                    <div class="inline-flex items-center px-4 py-2 bg-gray-100 text-gray-500 rounded-lg">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                        </svg>
+                        Menunggu Pembayaran
                     </div>
-                    
-                    @if($transaction->status === 'paid')
-                        <a href="{{ route('invoice.show', $transaction->order_id) }}" 
-                           class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition">
-                            📄 Download Invoice
-                        </a>
-                    @endif
-                </div>
+                @endif
+                <button onclick="window.print()" 
+                        class="inline-flex items-center px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors shadow-sm no-print">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
+                    </svg>
+                    Print
+                </button>
             </div>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <!-- Order Items -->
-            <div class="lg:col-span-2">
-                <div class="detail-card bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg animate-slide-up">
-                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+            <!-- Order Information -->
+            <div class="lg:col-span-2 space-y-6">
+                <!-- Order Status -->
+                <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-6 flex items-center">
+                        <svg class="w-6 h-6 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
-                        Order Items ({{ count($transaction->cart_items) }})
+                        Status Pesanan
                     </h2>
-                    
+                    <div class="flex items-center justify-between">                        <div>
+                            @php
+                                $statusColors = [
+                                    'pending' => 'bg-yellow-100 text-yellow-800 border-yellow-300',
+                                    'paid' => 'bg-green-100 text-green-800 border-green-300',
+                                    'failed' => 'bg-red-100 text-red-800 border-red-300',
+                                    'cancelled' => 'bg-gray-100 text-gray-800 border-gray-300',
+                                    'expired' => 'bg-purple-100 text-purple-800 border-purple-300',
+                                    'refunded' => 'bg-orange-100 text-orange-800 border-orange-300',
+                                    'processing' => 'bg-blue-100 text-blue-800 border-blue-300'
+                                ];
+                                $statusLabels = [
+                                    'pending' => 'Menunggu Pembayaran',
+                                    'paid' => 'Pembayaran Berhasil',
+                                    'failed' => 'Pembayaran Gagal',
+                                    'cancelled' => 'Pesanan Dibatalkan',
+                                    'expired' => 'Pesanan Kedaluwarsa',
+                                    'refunded' => 'Pembayaran Dikembalikan',
+                                    'processing' => 'Sedang Diproses'
+                                ];
+                                $statusIcons = [
+                                    'pending' => '⏳',
+                                    'paid' => '✅',
+                                    'failed' => '❌',
+                                    'cancelled' => '🚫',
+                                    'expired' => '⏰',
+                                    'refunded' => '💰',
+                                    'processing' => '🔄'
+                                ];
+                                
+                                // Refresh data dari database untuk memastikan status terbaru
+                                $currentOrder = \App\Models\CheckoutOrder::find($order->id);
+                                $currentStatus = $currentOrder ? $currentOrder->status : $order->status;
+                            @endphp
+                            <span class="inline-flex px-4 py-2 text-sm font-semibold rounded-full border {{ $statusColors[$currentStatus] ?? 'bg-gray-100 text-gray-800 border-gray-300' }}">
+                                {{ $statusIcons[$currentStatus] ?? '📄' }} {{ $statusLabels[$currentStatus] ?? ucfirst($currentStatus) }}
+                            </span>
+                            
+                            @if($currentOrder && $currentOrder->shipping_status)
+                                @php
+                                    $shippingStatusColors = [
+                                        'pending' => 'bg-gray-100 text-gray-700 border-gray-300',
+                                        'processing' => 'bg-blue-100 text-blue-700 border-blue-300',
+                                        'shipped' => 'bg-purple-100 text-purple-700 border-purple-300',
+                                        'in_transit' => 'bg-indigo-100 text-indigo-700 border-indigo-300',
+                                        'delivered' => 'bg-green-100 text-green-700 border-green-300',
+                                        'returned' => 'bg-red-100 text-red-700 border-red-300'
+                                    ];
+                                    $shippingStatusLabels = [
+                                        'pending' => 'Belum Diproses',
+                                        'processing' => 'Sedang Diproses',
+                                        'shipped' => 'Telah Dikirim',
+                                        'in_transit' => 'Dalam Perjalanan',
+                                        'delivered' => 'Telah Diterima',
+                                        'returned' => 'Dikembalikan'
+                                    ];
+                                    $shippingStatusIcons = [
+                                        'pending' => '📦',
+                                        'processing' => '🔄',
+                                        'shipped' => '🚚',
+                                        'in_transit' => '🌊',
+                                        'delivered' => '✅',
+                                        'returned' => '↩️'
+                                    ];
+                                @endphp
+                                <span class="inline-flex px-3 py-1 text-xs font-medium rounded-full border ml-2 {{ $shippingStatusColors[$currentOrder->shipping_status] ?? 'bg-gray-100 text-gray-700 border-gray-300' }}">
+                                    {{ $shippingStatusIcons[$currentOrder->shipping_status] ?? '📄' }} {{ $shippingStatusLabels[$currentOrder->shipping_status] ?? ucfirst($currentOrder->shipping_status) }}
+                                </span>
+                            @endif
+                        </div>                        <div class="text-right">
+                            <div class="text-sm text-gray-500">Dibuat pada</div>
+                            <div class="text-sm font-medium text-gray-900">{{ $order->created_at->format('d M Y, H:i') }} WIB</div>
+                            @if($currentOrder && $currentOrder->payment_completed_at)
+                                <div class="text-sm text-gray-500 mt-1">Dibayar pada</div>
+                                <div class="text-sm font-medium text-green-600">{{ $currentOrder->payment_completed_at->format('d M Y, H:i') }} WIB</div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Order Items -->
+                <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-6 flex items-center">
+                        <svg class="w-6 h-6 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4-8-4m16 0v10l-8 4-8-4V7"></path>
+                        </svg>
+                        Item Pesanan ({{ count($order->cart_items) }} item)
+                    </h2>
                     <div class="space-y-4">
-                        @foreach($transaction->cart_items as $item)
-                            <div class="flex items-center gap-4 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
-                                @if(isset($item['image']) && $item['image'])
-                                    <img src="{{ $item['image'] }}" alt="{{ $item['name'] }}" class="w-20 h-20 object-cover rounded-lg">
-                                @else
-                                    <div class="w-20 h-20 bg-gray-200 dark:bg-gray-600 rounded-lg flex items-center justify-center">
-                                        <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
-                                        </svg>
-                                    </div>
-                                @endif
-                                
-                                <div class="flex-1">
-                                    <h3 class="font-semibold text-gray-900 dark:text-white text-lg">{{ $item['name'] }}</h3>
-                                    <div class="flex items-center gap-4 mt-2 text-sm text-gray-600 dark:text-gray-400">
-                                        <span>SKU: {{ $item['sku'] ?? 'N/A' }}</span>
-                                        @if(isset($item['origin']))
-                                            <span>Origin: {{ $item['origin'] }}</span>
-                                        @endif
-                                        @if(isset($item['weight']))
-                                            <span>Weight: {{ $item['weight'] }}kg</span>
-                                        @endif
-                                    </div>
+                        @foreach($order->cart_items as $item)
+                        <div class="flex items-center space-x-4 p-4 border border-gray-200 rounded-lg hover:shadow-sm transition-shadow">
+                            @if(isset($item['product_image']) && $item['product_image'])
+                                <img src="{{ asset('uploads/' . $item['product_image']) }}" 
+                                     alt="{{ $item['product_name'] ?? 'Product' }}" 
+                                     class="w-20 h-20 rounded-lg object-cover shadow-sm">
+                            @else
+                                <div class="w-20 h-20 bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg flex items-center justify-center shadow-sm">
+                                    <svg class="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4-8-4m16 0v10l-8 4-8-4V7"></path>
+                                    </svg>
                                 </div>
-                                
-                                <div class="text-right">
-                                    <p class="text-sm text-gray-600 dark:text-gray-400">Quantity: {{ $item['quantity'] }}</p>
-                                    <p class="text-sm text-gray-600 dark:text-gray-400">Unit Price: ${{ number_format($item['price'], 2) }}</p>
-                                    <p class="font-bold text-lg text-blue-600 dark:text-blue-400">
-                                        ${{ number_format($item['price'] * $item['quantity'], 2) }}
+                            @endif
+                            
+                            <div class="flex-1">
+                                <h3 class="font-semibold text-gray-900 text-lg">{{ $item['product_name'] ?? 'Unknown Product' }}</h3>
+                                <p class="text-sm text-gray-500 mt-1">
+                                    <span class="inline-flex items-center">
+                                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+                                        </svg>
+                                        ID: {{ $item['product_id'] ?? 'N/A' }}
+                                    </span>
+                                </p>
+                                @if(isset($item['weight']))
+                                    <p class="text-sm text-gray-500 mt-1">
+                                        <span class="inline-flex items-center">
+                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16l3-3m-3 3l-3-3"></path>
+                                            </svg>
+                                            Berat: {{ $item['weight'] }} kg
+                                        </span>
+                                    </p>
+                                @endif
+                            </div>
+                            
+                            <div class="text-right">
+                                <div class="text-sm text-gray-500">Harga Satuan</div>
+                                <div class="font-semibold text-gray-900 text-lg">${{ number_format($item['price'] ?? 0, 2) }}</div>
+                            </div>
+                            
+                            <div class="text-right">
+                                <div class="text-sm text-gray-500">Jumlah</div>
+                                <div class="font-semibold text-gray-900 text-lg">{{ $item['quantity'] ?? 0 }}</div>
+                            </div>
+                            
+                            <div class="text-right">
+                                <div class="text-sm text-gray-500">Subtotal</div>
+                                <div class="font-bold text-blue-600 text-lg">${{ number_format(($item['price'] ?? 0) * ($item['quantity'] ?? 0), 2) }}</div>
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+
+                <!-- Payment Information -->
+                @if($order->payment_details && count($order->payment_details) > 0)
+                <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-6 flex items-center">
+                        <svg class="w-6 h-6 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+                        </svg>
+                        Informasi Pembayaran
+                    </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-4">
+                            <div>
+                                <label class="text-sm text-gray-500 font-medium">Metode Pembayaran</label>
+                                <div class="font-semibold text-gray-900 mt-1">{{ ucfirst($order->payment_method) }}</div>
+                            </div>
+                            @if(isset($order->payment_details['payment_type']))
+                            <div>
+                                <label class="text-sm text-gray-500 font-medium">Tipe Pembayaran</label>
+                                <div class="font-semibold text-gray-900 mt-1">{{ $order->payment_details['payment_type'] }}</div>
+                            </div>
+                            @endif
+                        </div>
+                        <div class="space-y-4">
+                            @if($order->payment_gateway_transaction_id)
+                            <div>
+                                <label class="text-sm text-gray-500 font-medium">ID Transaksi</label>
+                                <div class="font-mono text-sm text-gray-900 mt-1 p-2 bg-gray-50 rounded border">{{ $order->payment_gateway_transaction_id }}</div>
+                            </div>
+                            @endif
+                            @if(isset($order->payment_details['bank']))
+                            <div>
+                                <label class="text-sm text-gray-500 font-medium">Bank</label>
+                                <div class="font-semibold text-gray-900 mt-1">{{ strtoupper($order->payment_details['bank']) }}</div>
+                            </div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+                @endif
+            </div>
+
+            <!-- Order Summary -->
+            <div class="space-y-6">
+                <!-- Customer Information -->
+                <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-6 flex items-center">
+                        <svg class="w-6 h-6 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                        </svg>
+                        Informasi Pelanggan
+                    </h2>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="text-sm text-gray-500 font-medium">Nama Lengkap</label>
+                            <div class="font-semibold text-gray-900 mt-1">{{ $order->name }}</div>
+                        </div>
+                        <div>
+                            <label class="text-sm text-gray-500 font-medium">Email</label>
+                            <div class="font-medium text-gray-900 mt-1">{{ $order->email }}</div>
+                        </div>
+                        <div>
+                            <label class="text-sm text-gray-500 font-medium">Telepon</label>
+                            <div class="font-medium text-gray-900 mt-1">{{ $order->phone }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Shipping Address -->
+                <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-6 flex items-center">
+                        <svg class="w-6 h-6 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                        Alamat Pengiriman
+                    </h2>
+                    <div class="text-gray-900 space-y-1">
+                        <div class="font-medium">{{ $order->address }}</div>
+                        <div>{{ $order->city }}, {{ $order->state }}</div>
+                        <div>{{ $order->zip_code }}</div>
+                        <div class="font-medium">{{ $order->country }}</div>
+                    </div>
+                </div>
+
+                <!-- Order Total -->
+                <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-6 flex items-center">
+                        <svg class="w-6 h-6 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                        </svg>
+                        Ringkasan Pembayaran
+                    </h2>
+                    <div class="space-y-3">
+                        <div class="flex justify-between py-2">
+                            <span class="text-gray-600">Subtotal</span>
+                            <span class="font-medium text-gray-900">${{ number_format($order->subtotal, 2) }}</span>
+                        </div>
+                        <div class="flex justify-between py-2">
+                            <span class="text-gray-600">Ongkos Kirim</span>
+                            <span class="font-medium text-gray-900">${{ number_format($order->shipping_cost, 2) }}</span>
+                        </div>
+                        @if($order->tax_amount > 0)
+                        <div class="flex justify-between py-2">
+                            <span class="text-gray-600">Pajak</span>
+                            <span class="font-medium text-gray-900">${{ number_format($order->tax_amount, 2) }}</span>
+                        </div>
+                        @endif
+                        @if($order->discount_amount > 0)
+                        <div class="flex justify-between py-2">
+                            <span class="text-gray-600">Diskon</span>
+                            <span class="font-medium text-red-600">-${{ number_format($order->discount_amount, 2) }}</span>
+                        </div>
+                        @endif
+                        @if($order->coupon_code)
+                        <div class="flex justify-between py-2">
+                            <span class="text-gray-600">Kode Kupon</span>
+                            <span class="font-medium text-gray-900 bg-green-50 px-2 py-1 rounded text-sm">{{ $order->coupon_code }}</span>
+                        </div>
+                        @endif
+                        <hr class="my-4">
+                        <div class="flex justify-between text-xl font-bold bg-blue-50 p-4 rounded-lg">
+                            <span class="text-gray-900">Total Pembayaran</span>
+                            <span class="text-blue-600">{{ $order->formatted_total }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                @if(isset($order->payment_details['status_changes']) && count($order->payment_details['status_changes']) > 0)
+                <!-- Status Change History -->
+                <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-6 flex items-center">
+                        <svg class="w-6 h-6 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        Riwayat Perubahan Status
+                    </h2>
+                    <div class="space-y-4">
+                        @foreach($order->payment_details['status_changes'] as $change)
+                            <div class="flex items-start space-x-4 p-4 bg-gray-50 rounded-lg border-l-4 border-blue-500">
+                                <div class="flex-shrink-0">
+                                    @php
+                                        $changeIcon = [
+                                            'pending' => '⏳',
+                                            'paid' => '✅',
+                                            'failed' => '❌',
+                                            'cancelled' => '🚫',
+                                            'expired' => '⏰',
+                                            'refunded' => '💰',
+                                            'processing' => '🔄'
+                                        ];
+                                    @endphp
+                                    <span class="text-2xl">{{ $changeIcon[$change['new_status']] ?? '📄' }}</span>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-center justify-between">
+                                        <h4 class="font-semibold text-gray-900">
+                                            Status berubah dari 
+                                            <span class="text-orange-600">{{ ucfirst($change['old_status']) }}</span> 
+                                            menjadi 
+                                            <span class="text-green-600">{{ ucfirst($change['new_status']) }}</span>
+                                        </h4>
+                                        <span class="text-sm text-gray-500">
+                                            {{ \Carbon\Carbon::parse($change['status_changed_at'])->format('d M Y, H:i') }} WIB
+                                        </span>
+                                    </div>
+                                    @if(!empty($change['reason']))
+                                        <p class="text-sm text-gray-600 mt-1">
+                                            <strong>Alasan:</strong> {{ $change['reason'] }}
+                                        </p>
+                                    @endif
+                                    <p class="text-xs text-gray-500 mt-1">
+                                        Diubah oleh: {{ $change['changed_by'] ?? 'System' }}
                                     </p>
                                 </div>
                             </div>
                         @endforeach
                     </div>
                 </div>
-            </div>
+                @endif
 
-            <!-- Order Summary & Customer Info -->
-            <div class="space-y-8">
-                <!-- Customer Information -->
-                <div class="detail-card bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg animate-slide-up">
-                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                @if(isset($order->payment_details['shipping_changes']) && count($order->payment_details['shipping_changes']) > 0)
+                <!-- Shipping Status Change History -->
+                <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-6 flex items-center">
+                        <svg class="w-6 h-6 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
-                        Customer Information
-                    </h3>
-                    
-                    <div class="space-y-3 text-sm">
-                        <div>
-                            <span class="text-gray-600 dark:text-gray-400">Name:</span>
-                            <span class="ml-2 font-medium text-gray-900 dark:text-white">{{ $transaction->full_name }}</span>
-                        </div>
-                        <div>
-                            <span class="text-gray-600 dark:text-gray-400">Email:</span>
-                            <span class="ml-2 font-medium text-gray-900 dark:text-white">{{ $transaction->email }}</span>
-                        </div>
-                        <div>
-                            <span class="text-gray-600 dark:text-gray-400">Phone:</span>
-                            <span class="ml-2 font-medium text-gray-900 dark:text-white">{{ $transaction->phone }}</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Shipping Address -->
-                <div class="detail-card bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg animate-slide-up">
-                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                        </svg>
-                        Shipping Address
-                    </h3>
-                    
-                    <div class="text-sm text-gray-700 dark:text-gray-300">
-                        <p>{{ $transaction->address }}</p>
-                        <p>{{ $transaction->city }}, {{ $transaction->state }} {{ $transaction->zip_code }}</p>
-                        <p>{{ $transaction->country }}</p>
-                    </div>
-                </div>
-
-                <!-- Order Summary -->
-                <div class="detail-card bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg animate-slide-up">
-                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
-                        </svg>
-                        Order Summary
-                    </h3>
-                    
-                    <div class="space-y-3 text-sm">
-                        <div class="flex justify-between">
-                            <span class="text-gray-600 dark:text-gray-400">Subtotal:</span>
-                            <span class="font-medium text-gray-900 dark:text-white">${{ number_format($transaction->subtotal, 2) }}</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-600 dark:text-gray-400">Shipping:</span>
-                            <span class="font-medium text-gray-900 dark:text-white">${{ number_format($transaction->shipping_cost, 2) }}</span>
-                        </div>
-                        @if($transaction->tax_amount > 0)
-                            <div class="flex justify-between">
-                                <span class="text-gray-600 dark:text-gray-400">Tax:</span>
-                                <span class="font-medium text-gray-900 dark:text-white">${{ number_format($transaction->tax_amount, 2) }}</span>
+                        Riwayat Status Pengiriman
+                    </h2>
+                    <div class="space-y-4">
+                        @foreach($order->payment_details['shipping_changes'] as $change)
+                            <div class="flex items-start space-x-4 p-4 bg-blue-50 rounded-lg border-l-4 border-blue-500">
+                                <div class="flex-shrink-0">
+                                    @php
+                                        $shippingIcon = [
+                                            'pending' => '📦',
+                                            'processing' => '🔄',
+                                            'shipped' => '🚚',
+                                            'in_transit' => '🌊',
+                                            'delivered' => '✅',
+                                            'returned' => '↩️'
+                                        ];
+                                    @endphp
+                                    <span class="text-2xl">{{ $shippingIcon[$change['new_shipping_status']] ?? '📄' }}</span>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-center justify-between">
+                                        <h4 class="font-semibold text-gray-900">
+                                            Status pengiriman berubah dari 
+                                            <span class="text-orange-600">{{ ucfirst($change['old_shipping_status']) }}</span> 
+                                            menjadi 
+                                            <span class="text-blue-600">{{ ucfirst($change['new_shipping_status']) }}</span>
+                                        </h4>
+                                        <span class="text-sm text-gray-500">
+                                            {{ \Carbon\Carbon::parse($change['shipping_status_changed_at'])->format('d M Y, H:i') }} WIB
+                                        </span>
+                                    </div>
+                                    @if(!empty($change['reason']))
+                                        <p class="text-sm text-gray-600 mt-1">
+                                            <strong>Alasan:</strong> {{ $change['reason'] }}
+                                        </p>
+                                    @endif
+                                    <p class="text-xs text-gray-500 mt-1">
+                                        Diubah oleh: {{ $change['changed_by'] ?? 'System' }}
+                                    </p>
+                                </div>
                             </div>
-                        @endif
-                        @if($transaction->discount_amount > 0)
-                            <div class="flex justify-between text-green-600 dark:text-green-400">
-                                <span>Discount:</span>
-                                <span>-${{ number_format($transaction->discount_amount, 2) }}</span>
-                            </div>
-                        @endif
-                        <hr class="border-gray-300 dark:border-gray-600">
-                        <div class="flex justify-between font-bold text-lg">
-                            <span class="text-gray-900 dark:text-white">Total:</span>
-                            <span class="text-blue-600 dark:text-blue-400">${{ number_format($transaction->total_amount, 2) }}</span>
-                        </div>
+                        @endforeach
                     </div>
                 </div>
+                @endif
 
-                @if($transaction->payment_details)
-                    <!-- Payment Details -->
-                    <div class="detail-card bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg animate-slide-up">
-                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
-                            </svg>
-                            Payment Details
-                        </h3>
-                        
-                        <div class="space-y-2 text-sm">
-                            @if(isset($transaction->payment_details['transaction_id']))
-                                <div class="flex justify-between">
-                                    <span class="text-gray-600 dark:text-gray-400">Transaction ID:</span>
-                                    <span class="font-medium text-gray-900 dark:text-white font-mono">{{ $transaction->payment_details['transaction_id'] }}</span>
-                                </div>
-                            @endif
-                            @if(isset($transaction->payment_details['payment_type']))
-                                <div class="flex justify-between">
-                                    <span class="text-gray-600 dark:text-gray-400">Payment Method:</span>
-                                    <span class="font-medium text-gray-900 dark:text-white">{{ ucfirst($transaction->payment_details['payment_type']) }}</span>
-                                </div>
-                            @endif
-                            @if(isset($transaction->payment_details['transaction_time']))
-                                <div class="flex justify-between">
-                                    <span class="text-gray-600 dark:text-gray-400">Payment Time:</span>
-                                    <span class="font-medium text-gray-900 dark:text-white">{{ $transaction->payment_details['transaction_time'] }}</span>
-                                </div>
-                            @endif
-                        </div>
-                    </div>
+                @if($order->notes)
+                <!-- Order Notes -->
+                <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                        <svg class="w-6 h-6 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                        </svg>
+                        Catatan Pesanan
+                    </h2>
+                    <div class="text-gray-900 bg-gray-50 p-4 rounded-lg border-l-4 border-blue-500">{{ $order->notes }}</div>
+                </div>
                 @endif
             </div>
         </div>
-    </main>
+    </div>
 
-    <!-- Footer -->
-    <footer class="bg-blue-800 dark:bg-slate-900 text-blue-100 py-12 mt-20">
-        <div class="container mx-auto px-6">
-            <div class="text-center">
-                <div class="flex items-center justify-center mb-4">
-                    <img src="{{ asset('tglogo.png') }}" alt="Logo" class="h-12 w-12 mr-3" />
-                    <h2 class="text-2xl font-bold">
-                        <span class="text-blue-100">Triad</span><span class="text-amber-400">GO</span>
-                    </h2>
-                </div>
-                <p class="text-blue-200 mb-6">Your trusted partner for international trade</p>
-                <p class="text-blue-300 text-sm">© 2025 TriadGO. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Dark Mode Toggle Script -->
-    <script>
-        // Dark Mode Toggle
-        const darkModeToggle = document.getElementById('darkModeToggle');
-        const darkModeThumb = document.getElementById('darkModeThumb');
-        const htmlElement = document.documentElement;
-
-        function updateDarkModeSwitch() {
-            if (htmlElement.classList.contains('dark')) {
-                if (darkModeToggle) darkModeToggle.checked = true;
-                if (darkModeThumb) {
-                    darkModeThumb.style.transform = 'translateX(1.25rem)';
-                    darkModeThumb.style.backgroundColor = '#003355';
-                    darkModeThumb.style.borderColor = '#003355';
-                }
-            } else {
-                if (darkModeToggle) darkModeToggle.checked = false;
-                if (darkModeThumb) {
-                    darkModeThumb.style.transform = 'translateX(0)';
-                    darkModeThumb.style.backgroundColor = '#fff';
-                    darkModeThumb.style.borderColor = '#ccc';
-                }
-            }
+    <style>
+    @media print {
+        body * {
+            visibility: hidden;
         }
-
-        // Initialize dark mode
-        updateDarkModeSwitch();
-
-        if (darkModeToggle) {
-            darkModeToggle.addEventListener('change', () => {
-                htmlElement.classList.toggle('dark');
-                if (htmlElement.classList.contains('dark')) {
-                    localStorage.setItem('darkMode', 'enabled');
-                } else {
-                    localStorage.setItem('darkMode', 'disabled');
-                }
-                updateDarkModeSwitch();
-            });
+        .container, .container * {
+            visibility: visible;
         }
-    </script>
+        .no-print {
+            display: none !important;
+        }
+        .bg-gray-50 {
+            background-color: white !important;
+        }
+        .shadow-sm {
+            box-shadow: none !important;
+        }
+    }
+    </style>
+
 </body>
-
 </html>

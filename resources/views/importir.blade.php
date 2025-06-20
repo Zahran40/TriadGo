@@ -354,17 +354,28 @@ html.dark .product-card .text-blue-700 {
             <div class="text-center py-12">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <!-- Sample Product 1 -->
-                    <div class="product-card bg-white shadow-lg rounded-xl p-6 max-w-md mx-auto">
+                    <div class="product-card bg-white dark:bg-gray-800 shadow-lg rounded-xl p-6 max-w-md mx-auto">
                         <h5 class="text-xl font-bold text-amber-500 mb-3">No Products Available</h5>
                         <img src="https://png.pngtree.com/png-vector/20231023/ourmid/pngtree-mystery-box-with-question-mark-3d-illustration-png-image_10313605.png"
                             alt="" class="w-32 h-32 mx-auto rounded-lg shadow-md mb-4" />
-                        <p class="text-sm text-blue-700 mb-4">
-                            Currently no approved products are available. Please check back later.
+                        <p class="text-sm text-blue-700 dark:text-blue-300 mb-4">
+                            Currently no approved products are available. You can request specific products from exporters.
                         </p>
-                        <a href="{{ route('catalog') }}"
-                            class="w-full inline-block text-center bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg text-sm transition">
-                            Browse Catalog
-                        </a>
+                        <div class="space-y-2">
+                            <a href="{{ route('catalog') }}"
+                                class="w-full inline-block text-center bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg text-sm transition">
+                                Browse Catalog
+                            </a>
+                            <a href="{{ route('importir.request.form') }}"
+                                class="w-full inline-block text-center bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg text-sm transition">
+                                <span class="flex items-center justify-center gap-2">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                                    </svg>
+                                    Request Product
+                                </span>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>

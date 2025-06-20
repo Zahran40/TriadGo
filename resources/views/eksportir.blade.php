@@ -61,6 +61,10 @@
                     class="inline-block bg-blue-700 hover:bg-blue-600 text-white font-bold py-3 px-8 rounded-md shadow-md transition pulse-on-hover">
                     My Product
                 </a>
+                <a href="{{ route('eksportir.transactions.index') }}"
+                    class="inline-block bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-md shadow-md transition pulse-on-hover">
+                    Manage Orders
+                </a>
             </div>
         </div>
         <div class="md:w-1/2 mt-10 md:mt-0">

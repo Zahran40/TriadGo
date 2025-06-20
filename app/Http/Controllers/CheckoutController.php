@@ -10,6 +10,7 @@ use App\Services\MidtransHttpService;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+
 use Exception;
 
 /**
@@ -221,13 +222,27 @@ class CheckoutController extends Controller
             
             $result = $this->midtransService->handleNotification($request->all());
             
-            if ($result) {            return response()->json(['status' => 'success']);
-        } else {
-            return response()->json(['status' => 'failed'], 400);
-        }
-    } catch (Exception $e) {
-        Log::error('Midtrans notification error: ' . $e->getMessage());
-            return response()->json(['status' => 'error'], 500);
+            if ($result) {
+                // Return proper response for Midtrans dashboard sync
+                return response()->json([
+                    'status_code' => '200',
+                    'status_message' => 'Success, notification processed'
+                ], 200);
+            } else {
+                // Return 200 but with failed status to prevent retry
+                return response()->json([
+                    'status_code' => '400', 
+                    'status_message' => 'Failed to process notification'
+                ], 200);
+            }
+        } catch (Exception $e) {
+            Log::error('Midtrans notification error: ' . $e->getMessage());
+            
+            // Still return 200 to prevent Midtrans retry loop
+            return response()->json([
+                'status_code' => '500',
+                'status_message' => 'Internal server error: ' . $e->getMessage()
+            ], 200);
         }
     }
 

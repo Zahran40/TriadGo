@@ -1,122 +1,324 @@
 <!DOCTYPE html>
-<html lang="id">
-
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Request Expo - TriadGO Exporter</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>Kelola Request - TriadGo</title>
     @vite('resources/css/app.css')
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900">
+    <div class="min-h-screen">
+        @include('layouts.navbarekspor')
 
-    <script type="module">
-        import 'https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4'
+        <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+            <!-- Pending Requests -->
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-6">
+                <div class="p-6 border-b border-gray-200 dark:border-gray-700">
+                    <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Request Produk Baru</h2>
+                    <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                        Review dan tanggapi request dari importir.
+                    </p>
+                </div>
+                <div class="p-6">
+                    @if(isset($pendingRequests) && $pendingRequests->count() > 0)
+                        <div class="space-y-4">
+                            @foreach($pendingRequests as $request)
+                                <div class="border border-gray-200 dark:border-gray-600 rounded-lg p-4">
+                                    <div class="flex justify-between items-start mb-4">
+                                        <div class="flex-1">
+                                            <div class="flex items-center mb-2">
+                                                <div class="w-8 h-8 rounded-full bg-blue-500 dark:bg-blue-600 flex items-center justify-center text-white font-bold mr-3">
+                                                    {{ $request->importir ? strtoupper(substr($request->importir->name, 0, 1)) : 'U' }}
+                                                </div>
+                                                <div>
+                                                    <h4 class="font-medium text-gray-900 dark:text-white">{{ $request->importir->name ?? 'Unknown User' }}</h4>
+                                                    <p class="text-xs text-gray-500 dark:text-gray-400">{{ $request->importir->email ?? 'No email' }}</p>
+                                                </div>
+                                            </div>
+                                            <div class="bg-gray-50 dark:bg-gray-700 rounded-md p-3 mb-3">
+                                                <p class="text-gray-900 dark:text-white">{{ $request->request_text }}</p>
+                                            </div>
+                                            <p class="text-sm text-gray-500 dark:text-gray-400">
+                                                Dikirim: {{ $request->created_at->format('d M Y H:i') }}
+                                            </p>
+                                        </div>
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300 ml-4">
+                                            Pending
+                                        </span>
+                                    </div>
+                                    
+                                    <!-- Action Buttons -->
+                                    <div class="flex space-x-2">
+                                        <button 
+                                            onclick="approveRequest({{ $request->id }})"
+                                            class="inline-flex items-center px-3 py-2 border border-transparent text-xs font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                                        >
+                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                            </svg>
+                                            Setujui
+                                        </button>
+                                        <button 
+                                            onclick="rejectRequest({{ $request->id }})"
+                                            class="inline-flex items-center px-3 py-2 border border-transparent text-xs font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                                        >
+                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                            </svg>
+                                            Tolak
+                                        </button>
+                                        <button 
+                                            onclick="deleteRequest({{ $request->id }})"
+                                            class="inline-flex items-center px-3 py-2 border border-gray-300 dark:border-gray-600 text-xs font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                                        >
+                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                            </svg>
+                                            Hapus
+                                        </button>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @else
+                        <div class="text-center py-8">
+                            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path>
+                            </svg>
+                            <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">Tidak ada request pending</h3>
+                            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Belum ada permintaan produk baru dari importir.</p>
+                        </div>
+                    @endif
+                </div>
+            </div>
 
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#2563eb',
-                        accent: '#f97316',
-                    },
-                },
-            },
+            <!-- My Handled Requests -->
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 border-b border-gray-200 dark:border-gray-700">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Request yang Saya Tangani</h3>
+                </div>
+                <div class="p-6">
+                    @if(isset($myRequests) && $myRequests->count() > 0)
+                        <div class="space-y-4">
+                            @foreach($myRequests as $request)
+                                <div class="border border-gray-200 dark:border-gray-600 rounded-lg p-4 
+                                    {{ $request->status === 'approved' ? 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-600' : 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-600' }}">
+                                    <div class="flex justify-between items-start">
+                                        <div class="flex-1">
+                                            <div class="flex items-center mb-2">
+                                                <div class="w-8 h-8 rounded-full bg-blue-500 dark:bg-blue-600 flex items-center justify-center text-white font-bold mr-3">
+                                                    {{ $request->importir ? strtoupper(substr($request->importir->name, 0, 1)) : 'U' }}
+                                                </div>
+                                                <div>
+                                                    <h4 class="font-medium text-gray-900 dark:text-white">{{ $request->importir->name ?? 'Unknown User' }}</h4>
+                                                    <p class="text-xs text-gray-500 dark:text-gray-400">{{ $request->importir->email ?? 'No email' }}</p>
+                                                </div>
+                                            </div>
+                                            <div class="bg-white dark:bg-gray-700 rounded-md p-3 mb-3">
+                                                <p class="text-gray-900 dark:text-white">{{ $request->request_text }}</p>
+                                            </div>
+                                            <div class="text-sm text-gray-600 dark:text-gray-300">
+                                                @if($request->status === 'approved')
+                                                    <p>✅ Disetujui pada: {{ $request->approved_at->format('d M Y H:i') }}</p>
+                                                    @if($request->product)
+                                                        <p class="text-blue-600 dark:text-blue-400">
+                                                            Produk terkait: {{ $request->product->product_name }}
+                                                        </p>
+                                                    @endif
+                                                @else
+                                                    <p>❌ Ditolak pada: {{ $request->rejected_at->format('d M Y H:i') }}</p>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="flex flex-col items-end space-y-2">
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
+                                                {{ $request->status === 'approved' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300' : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300' }}">
+                                                {{ $request->status === 'approved' ? 'Disetujui' : 'Ditolak' }}
+                                            </span>
+                                            <button 
+                                                onclick="deleteRequest({{ $request->id }})"
+                                                class="text-xs text-gray-500 hover:text-red-600 dark:text-gray-400 dark:hover:text-red-400"
+                                            >
+                                                Hapus
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @else
+                        <p class="text-gray-500 dark:text-gray-400">Belum ada request yang Anda tangani.</p>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // CSRF Token setup
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+        function approveRequest(requestId) {
+            Swal.fire({
+                title: 'Setujui Request?',
+                text: 'Anda akan menyetujui request produk ini.',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#10b981',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'Ya, Setujui',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(`/eksportir/requests/${requestId}/approve`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': csrfToken
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            Swal.fire({
+                                title: 'Berhasil!',
+                                text: data.message,
+                                icon: 'success',
+                                confirmButtonText: 'OK'
+                            }).then(() => {
+                                location.reload();
+                            });
+                        } else {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: data.error || 'Terjadi kesalahan',
+                                icon: 'error',
+                                confirmButtonText: 'OK'
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        Swal.fire({
+                            title: 'Error!',
+                            text: 'Terjadi kesalahan. Silakan coba lagi.',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                    });
+                }
+            });
         }
 
-        tailwind.scan()
+        function rejectRequest(requestId) {
+            Swal.fire({
+                title: 'Tolak Request?',
+                text: 'Anda akan menolak request produk ini.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#ef4444',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'Ya, Tolak',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(`/eksportir/requests/${requestId}/reject`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': csrfToken
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            Swal.fire({
+                                title: 'Berhasil!',
+                                text: data.message,
+                                icon: 'success',
+                                confirmButtonText: 'OK'
+                            }).then(() => {
+                                location.reload();
+                            });
+                        } else {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: data.error || 'Terjadi kesalahan',
+                                icon: 'error',
+                                confirmButtonText: 'OK'
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        Swal.fire({
+                            title: 'Error!',
+                            text: 'Terjadi kesalahan. Silakan coba lagi.',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                    });
+                }
+            });
+        }
+
+        function deleteRequest(requestId) {
+            Swal.fire({
+                title: 'Hapus Request?',
+                text: 'Request akan dihapus secara permanen.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#ef4444',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'Ya, Hapus',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(`/requests/${requestId}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': csrfToken
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            Swal.fire({
+                                title: 'Berhasil!',
+                                text: data.message,
+                                icon: 'success',
+                                confirmButtonText: 'OK'
+                            }).then(() => {
+                                location.reload();
+                            });
+                        } else {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: data.error || 'Terjadi kesalahan',
+                                icon: 'error',
+                                confirmButtonText: 'OK'
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        Swal.fire({
+                            title: 'Error!',
+                            text: 'Terjadi kesalahan. Silakan coba lagi.',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                    });
+                }
+            });
+        }
     </script>
-    
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-
-    <style>
-        /* Custom Tailwind Configuration */
-        @layer utilities {
-            .animate-float {
-                animation: float 6s ease-in-out infinite;
-            }
-
-            .animate-pulse-slow {
-                animation: pulse 3s ease-in-out infinite;
-            }
-        }
-
-        @keyframes float {
-
-            0%,
-            100% {
-                transform: translateY(0);
-            }
-
-            50% {
-                transform: translateY(-10px);
-            }
-        }
-
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #f1f5f9;
-            border-radius: 10px;
-        }
-
-        .dark ::-webkit-scrollbar-track {
-            background: #374151;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 10px;
-        }
-
-        .dark ::-webkit-scrollbar-thumb {
-            background: #6b7280;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
-        }
-
-        .dark ::-webkit-scrollbar-thumb:hover {
-            background: #9ca3af;
-        }
-
-        /* Modal backdrop */
-        .modal-backdrop {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 40;
-        }
-
-        .dark .modal-backdrop {
-            background: rgba(0, 0, 0, 0.7);
-        }
-
-        .modal {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 50;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
-        /* Custom badge styles */
-        .badge-warning {
-            background-color: #f59e0b;
-            color: white;
-        }
-
-        .badge-success {
-            background-color: #10b981;
-            color: white;
+</body>
+</html>
         }
 
         .badge-danger {
@@ -155,6 +357,21 @@
             }
         }
     </style>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2563eb',
+                        accent: '#f97316',
+                        darkblue: '#1e3a8a',
+                        orange: '#ff6b35',
+                    },
+                },
+            },
+        }
+    </script>
 </head>
 
 <body class="home-bg min-h-screen transition-colors duration-300">
@@ -458,65 +675,17 @@
             });
         }
 
-        // function logout() {
-        //     if (confirm('Apakah Anda yakin ingin logout?')) {
-        //         window.location.href = 'login.html';
-        //     }
-        // }
+        function logout() {
+            if (confirm('Apakah Anda yakin ingin logout?')) {
+                window.location.href = 'login.html';
+            }
+        }
 
         // Close modal when clicking outside
         document.addEventListener('keydown', function (e) {
             if (e.key === 'Escape') {
                 closeModal();
             }
-        });
-
-        // SweetAlert2 Logout Desktop
-        document.getElementById('logoutBtn')?.addEventListener('click', function (e) {
-            Swal.fire({
-                title: 'Logout?',
-                text: "Are you sure you want to logout?",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#eea133',
-                confirmButtonText: 'Logout',
-                customClass: {
-                    popup: 'bg-white dark:bg-red-600',
-                    title: 'text-black dark:text-white',
-                    content: 'text-black dark:text-white',
-                    confirmButton: 'text-white',
-                    cancelButton: 'text-white'
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    document.getElementById('logoutForm').submit();
-                }
-            });
-        });
-
-        // SweetAlert2 Logout Mobile
-        document.getElementById('logoutBtnMobile')?.addEventListener('click', function (e) {
-            Swal.fire({
-                title: 'Logout?',
-                text: "Are you sure you want to logout?",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#eea133',
-                confirmButtonText: 'Logout',
-                customClass: {
-                    popup: 'bg-white dark:bg-red-600',
-                    title: 'text-black dark:text-white',
-                    content: 'text-black dark:text-white',
-                    confirmButton: 'text-white',
-                    cancelButton: 'text-white'
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    document.getElementById('logoutForm').submit();
-                }
-            });
         });
     </script>
 </body>

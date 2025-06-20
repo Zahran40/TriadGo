@@ -56,8 +56,6 @@ class Admin1PanelProvider extends PanelProvider
                 TriadGoInfoWidget::class,
                 ProductsByCategoryChart::class,
                 ProductStockChart::class,
-                ProductWeightChart::class,
-                ProductsByCountryChart::class,
                 UserRoleDistributionChart::class,
                 DailySalesChart::class,
             ])

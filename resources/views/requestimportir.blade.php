@@ -1,101 +1,167 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Request Product</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>Request Produk - TriadGo</title>
     @vite('resources/css/app.css')
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-
-    <script type="module">
-        import 'https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4'
-
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#2563eb',
-                        accent: '#f97316',
-                    },
-                },
-            },
-        }
-
-        tailwind.scan()
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
+<body class="bg-gray-50 dark:bg-gray-900">
+    <div class="min-h-screen">
+        @include('layouts.navbarimportir')
 
-<body class="home-bg min-h-screen flex flex-col">
-    @include('layouts.navbarimportir')
+        <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+            <!-- Request Form -->
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-6">
+                <div class="p-6 border-b border-gray-200 dark:border-gray-700">
+                    <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Request Produk Baru</h2>
+                    <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                        Tidak menemukan produk yang Anda cari? Kirim request kepada eksportir.
+                    </p>
+                </div>
+                <div class="p-6">
+                    <form id="requestForm" action="{{ route('importir.request.store') }}" method="POST">
+                        @csrf
+                        <div class="mb-4">
+                            <label for="request_text" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Deskripsi Produk yang Diminta
+                            </label>
+                            <textarea 
+                                id="request_text" 
+                                name="request_text" 
+                                rows="4" 
+                                class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+                                placeholder="Contoh: Saya mencari kopi arabika kualitas premium dari Indonesia dengan volume minimum 500kg..."
+                                required
+                            ></textarea>
+                        </div>
+                        <button 
+                            type="submit" 
+                            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                        >
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                            </svg>
+                            Kirim Request
+                        </button>
+                    </form>
+                </div>
+            </div>
 
-    <div class="flex flex-1 items-center justify-center py-12 px-4">
-        <div class="product rounded-lg shadow-lg p-8 w-full max-w-lg">
-            <h2 class="text-3xl font-bold text-blue-900 mb-6 text-center">Request Product</h2>
-            <form id="product requestForm" method="" action="">
-                @csrf
-                <div class="mb-4">
-                    <label for="product_name" class="block font-semibold text-blue-700  mb-1">Product Name</label>
-                    <input type="text" id="product_name" name="product_name" required
-                        class=" bg-white   dark:border-[#4a5568] hover:border-blue-700  rounded px-3 py-2 w-full text-blue-900 focus:ring-2 "
-                        placeholder="Enter product name">
+            <!-- Pending Requests -->
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-6">
+                <div class="p-6 border-b border-gray-200 dark:border-gray-700">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Request Pending</h3>
                 </div>
-                <div class="mb-4">
-                    <label for="description" class="block font-semibold text-blue-700  mb-1">Description</label>
-                    <textarea id="description" name="description" rows="3" required
-                        class=" bg-white    dark:border-[#4a5568] hover:border-blue-700 rounded px-3 py-2 w-full text-blue-900 focus:ring-2"
-                        placeholder="Describe your request"></textarea>
+                <div class="p-6">
+                    @if(isset($pendingRequests) && $pendingRequests->count() > 0)
+                        <div class="space-y-4">
+                            @foreach($pendingRequests as $request)
+                                <div class="border border-gray-200 dark:border-gray-600 rounded-lg p-4">
+                                    <div class="flex justify-between items-start">
+                                        <div class="flex-1">
+                                            <p class="text-gray-900 dark:text-white">{{ $request->request_text }}</p>
+                                            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                                                Dikirim: {{ $request->created_at->format('d M Y H:i') }}
+                                            </p>
+                                        </div>
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300">
+                                            Pending
+                                        </span>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @else
+                        <p class="text-gray-500 dark:text-gray-400">Tidak ada request pending.</p>
+                    @endif
                 </div>
-                <div class="mb-4">
-                    <label class="block text-blue-700  mb-2 hover:border-blue-700">Category</label>
-                    <select id="Category"
-                        class="w-full px-4 py-2.5 hover:border-blue-700 dark:border-gray-600 rounded-md text-blue-600 focus:ring-2  ">
-                        <option value="" disabled selected hidden>Select Category</option>
-                        <option>Electronics</option>
-                        <option>Textile goods</option>
-                        <option>Raw materials</option>
-                        <option>Furniture items</option>
-                        <option>Sports equipment</option>
-                        <option>Medical/health supplies</option>
-                        <option>Others</option>
-                    </select>
-                    <p id="categoryWarning" class="text-red-500 text-sm mt-1 hidden">This field is required.</p>
-                </div>
-                <div class="mb-4">
-                    <label for="product_name" class="block font-semibold text-blue-700  mb-1">Quantity</label>
-                    <input type="number" id="product_name" name="product_name" required
-                        class=" bg-white  border  dark:border-[#4a5568] rounded px-3 py-2 w-full hover:border-blue-700 text-blue-900  focus:ring-2 "
-                        placeholder="Enter quantity (kg)">
-                </div>
-                <div class="mb-4">
-                    <label for="country" class="block font-semibold text-blue-700 mb-1">Country</label>
-                    <select id="country" name="country"
-                        class="bg-white border focus:ring-2 hover:border-blue-700 text-blue-600 dark:border-[#4a5568] rounded px-3 py-2 w-full">
-                        <option value="Any" selected hidden>Select Country</option>
-                        <option value="Indonesia">Indonesia</option>
-                        <option value="Malaysia">Malaysia</option>
-                        <option value="Singapore">Singapore</option>
-                        <option value="Thailand">Thailand</option>
-                        <option value="Vietnam">Vietnam</option>
-                        <option value="Brunei">Brunei</option>
-                        <option value="Philippines">Philippines</option>
-                        <option value="Cambodia">Cambodia</option>
-                        <option value="Laos">Laos</option>
-                        <option value="Myanmar">Myanmar</option>
-                    </select>
-                    <p id="categoryWarning" class="text-red-500 text-sm mt-1 hidden">This field is required.</p>
-                </div>
+            </div>
 
-                <div class="flex justify-center mt-8">
-                    <button type="submit"
-                        class="inline-block bg-blue-700 hover:bg-amber-600 text-white font-bold py-2 px-3 rounded-md text-lg transition pulse-on-hover">
-                        Submit Request
-                    </button>
+            <!-- Approved Requests -->
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 border-b border-gray-200 dark:border-gray-700">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Request Disetujui</h3>
                 </div>
-            </form>
+                <div class="p-6">
+                    @if(isset($approvedRequests) && $approvedRequests->count() > 0)
+                        <div class="space-y-4">
+                            @foreach($approvedRequests as $request)
+                                <div class="border border-green-200 dark:border-green-600 rounded-lg p-4 bg-green-50 dark:bg-green-900/20">
+                                    <div class="flex justify-between items-start">
+                                        <div class="flex-1">
+                                            <p class="text-gray-900 dark:text-white">{{ $request->request_text }}</p>
+                                            <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">
+                                                Disetujui oleh: <span class="font-medium">{{ $request->eksportir->name ?? 'Eksportir' }}</span>
+                                            </p>
+                                            <p class="text-sm text-gray-500 dark:text-gray-400">
+                                                Disetujui: {{ $request->approved_at->format('d M Y H:i') }}
+                                            </p>
+                                            @if($request->product)
+                                                <p class="text-sm text-blue-600 dark:text-blue-400 mt-1">
+                                                    Produk terkait: {{ $request->product->product_name }}
+                                                </p>
+                                            @endif
+                                        </div>
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300">
+                                            Disetujui
+                                        </span>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @else
+                        <p class="text-gray-500 dark:text-gray-400">Belum ada request yang disetujui.</p>
+                    @endif
+                </div>
+            </div>
         </div>
     </div>
+
+    <script>
+        // CSRF Token setup
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+        // Form submission
+        document.getElementById('requestForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            
+            fetch(this.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken
+                }
+            })
+            .then(response => response.text())
+            .then(data => {
+                Swal.fire({
+                    title: 'Berhasil!',
+                    text: 'Request berhasil dikirim!',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                }).then(() => {
+                    location.reload();
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Terjadi kesalahan. Silakan coba lagi.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
 
     <script>
         // Dark Mode Toggle - SAMA seperti importir
@@ -141,10 +207,10 @@
             });
         }
 
-        // Comment Form Submission
+        // Comment Form Submission - PERBAIKI dengan dark detection
         const commentForm = document.getElementById('commentForm');
         if (commentForm) {
-            commentForm.addEventListener('submit', function (e) {
+            commentForm.addEventListener('submit', function(e) {
                 e.preventDefault();
 
                 const comment = document.getElementById('reviewComment').value;
@@ -206,7 +272,7 @@
         }
 
         document.querySelectorAll('nav a[href^="#"], a[href^="#"]').forEach(link => {
-            link.addEventListener('click', function (event) {
+            link.addEventListener('click', function(event) {
                 if (this.getAttribute('href') !== '#') {
                     event.preventDefault();
                     const targetId = this.getAttribute('href').substring(1);
@@ -232,24 +298,26 @@
         const closeSidebarBtn = document.getElementById('closeSidebar');
 
         if (openSidebarBtn && closeSidebarBtn) {
-            openSidebarBtn.addEventListener('click', function () {
+            openSidebarBtn.addEventListener('click', function() {
                 sidebar.classList.remove('hidden');
             });
 
-            closeSidebarBtn.addEventListener('click', function () {
+            closeSidebarBtn.addEventListener('click', function() {
                 sidebar.classList.add('hidden');
             });
 
             // Tutup sidebar jika klik di luar sidebar
-            sidebar.addEventListener('click', function (e) {
+            sidebar.addEventListener('click', function(e) {
                 if (e.target === sidebar) {
                     sidebar.classList.add('hidden');
                 }
             });
         }
 
-        // SweetAlert2 Logout Desktop
-        document.getElementById('logoutBtn')?.addEventListener('click', function (e) {
+        // SweetAlert2 Logout Desktop - PERBAIKI dengan dark detection
+        document.getElementById('logoutBtn')?.addEventListener('click', function(e) {
+            const isDark = document.documentElement.classList.contains('dark');
+
             Swal.fire({
                 title: 'Logout?',
                 text: "Are you sure you want to logout?",
@@ -258,12 +326,10 @@
                 confirmButtonColor: '#d33',
                 cancelButtonColor: '#eea133',
                 confirmButtonText: 'Logout',
-                customClass: {
-                    popup: 'bg-white dark:bg-red-600',
-                    title: 'text-black dark:text-white',
-                    content: 'text-black dark:text-white',
-                    confirmButton: 'text-white',
-                    cancelButton: 'text-white'
+                background: isDark ? '#374151' : '#ffffff',
+                didOpen: () => {
+                    const popup = Swal.getPopup();
+                    if (isDark) popup.classList.add('swal2-dark');
                 }
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -272,8 +338,10 @@
             });
         });
 
-        // SweetAlert2 Logout Mobile
-        document.getElementById('logoutBtnMobile')?.addEventListener('click', function (e) {
+        // SweetAlert2 Logout Mobile - PERBAIKI dengan dark detection
+        document.getElementById('logoutBtnMobile')?.addEventListener('click', function(e) {
+            const isDark = document.documentElement.classList.contains('dark');
+
             Swal.fire({
                 title: 'Logout?',
                 text: "Are you sure you want to logout?",
@@ -282,12 +350,10 @@
                 confirmButtonColor: '#d33',
                 cancelButtonColor: '#eea133',
                 confirmButtonText: 'Logout',
-                customClass: {
-                    popup: 'bg-white dark:bg-red-600',
-                    title: 'text-black dark:text-white',
-                    content: 'text-black dark:text-white',
-                    confirmButton: 'text-white',
-                    cancelButton: 'text-white'
+                background: isDark ? '#374151' : '#ffffff',
+                didOpen: () => {
+                    const popup = Swal.getPopup();
+                    if (isDark) popup.classList.add('swal2-dark');
                 }
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -295,9 +361,8 @@
                 }
             });
         });
-
         // Optional: SweetAlert2 for success feedback
-        document.getElementById('requestForm').addEventListener('submit', function (e) {
+        document.getElementById('requestForm').addEventListener('submit', function(e) {
             // Uncomment below if you want to show alert before submit
             // e.preventDefault();
             // Swal.fire({

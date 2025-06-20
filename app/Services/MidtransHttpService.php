@@ -28,7 +28,7 @@ class MidtransHttpService
     {
         try {
             // Convert USD to IDR for Midtrans (Midtrans only accepts IDR)
-            $amountInIDR = $this->convertToIDR($order->total_amount, $order->currency);            // Prepare transaction parameters
+            $amountInIDR = $this->convertToIDR($order->total_amount, $order->currency);            // Prepare transaction parameters with enhanced payment methods
             $params = [
                 'transaction_details' => [
                     'order_id' => $order->order_id,
@@ -49,6 +49,101 @@ class MidtransHttpService
                     ]
                 ],
                 'item_details' => $this->buildItemDetails($order),
+                // ✅ COMPREHENSIVE PAYMENT METHODS - Optimized for Payment Simulator
+                'enabled_payments' => [
+                    // E-Wallet Methods (Simulator Compatible Order)
+                    'gopay',           // GoPay - Priority 1 (simplest for simulator)
+                    'qris',            // QRIS Universal - Priority 2
+                    'shopeepay',       // ShopeePay - Priority 3
+                    
+                    // Credit/Debit Cards  
+                    'credit_card',     // Credit Card
+                    
+                    // Bank Transfer & Virtual Account
+                    'bca_va',          // BCA Virtual Account
+                    'bni_va',          // BNI Virtual Account  
+                    'bri_va',          // BRI Virtual Account
+                    'permata_va',      // Permata Virtual Account
+                    'bank_transfer',   // Manual bank transfer
+                    'echannel',        // Mandiri ClickPay
+                    
+                    // Convenience Store
+                    'cstore',          // Indomaret, Alfamart
+                    
+                    // Cardless Credit
+                    'akulaku'          // Akulaku PayLater
+                ],
+                
+                // ✅ CREDIT CARD CONFIGURATION
+                'credit_card' => [
+                    'secure' => true,
+                    'channel' => 'migs',
+                    'bank' => 'bca',
+                    'save_card' => false,
+                    'save_token_id' => false
+                ],
+                
+                // ✅ QRIS CONFIGURATION - Simplified for Payment Simulator
+                'qris' => [
+                    'acquirer' => 'gopay'  // Use gopay acquirer for better simulator compatibility
+                ],
+                
+                // ✅ GOPAY CONFIGURATION - Simplified for Payment Simulator
+                'gopay' => [
+                    'enable_callback' => true,
+                    'callback_url' => url('/midtrans/callback')
+                    // Remove complex payment_options and account_id for simulator compatibility
+                ],
+                
+                // ✅ SHOPEEPAY CONFIGURATION  
+                'shopeepay' => [
+                    'callback_url' => url('/midtrans/callback')
+                ],
+                
+                // ✅ BANK TRANSFER CONFIGURATION
+                'bank_transfer' => [
+                    'bank' => ['bca', 'bni', 'bri', 'permata', 'mandiri'],
+                    'va_numbers' => [
+                        'bca' => ['va_number' => '12345678901'],
+                        'bni' => ['va_number' => '12345678902']
+                    ]
+                ],
+                
+                // ✅ CONVENIENCE STORE CONFIGURATION
+                'cstore' => [
+                    'store' => 'indomaret',
+                    'message' => 'Payment for TriadGO Order'
+                ],
+                
+                // ✅ SANDBOX SPECIFIC CONFIGURATION
+                'custom_expiry' => [
+                    'order_time' => date('Y-m-d H:i:s O'),
+                    'expiry_duration' => 60,
+                    'unit' => 'minute'
+                ],
+                
+                // ✅ ADVANCED PAYMENT PREFERENCES - Simplified for Payment Simulator
+                'payment_options' => [
+                    'enabled_payments' => [
+                        // E-Wallet Priority (most compatible in sandbox simulator)
+                        'gopay',           // ✅ GoPay - Primary e-wallet
+                        'qris',            // ✅ QRIS - Universal QR
+                        'shopeepay',       // ✅ ShopeePay
+                        
+                        // Traditional Methods
+                        'credit_card',     // ✅ Credit card
+                        'bca_va',
+                        'bni_va', 
+                        'bri_va',
+                        'bank_transfer',
+                        'echannel',
+                        'cstore'
+                    ]
+                ],
+                
+                // ✅ SANDBOX ENVIRONMENT OPTIMIZATION
+                'custom_field_1' => 'SANDBOX_SIMULATOR',  // Flag for Midtrans to optimize for simulator
+                
                 'callbacks' => [
                     'finish' => url("/checkout/success?order=" . $order->order_id),
                     'unfinish' => url("/checkout/pending?order=" . $order->order_id),
@@ -162,9 +257,27 @@ class MidtransHttpService
     public function handleNotification($notificationData)
     {
         try {
-            $orderId = $notificationData['order_id'];
-            $transactionStatus = $notificationData['transaction_status'];
+            // Extract notification data
+            $orderId = $notificationData['order_id'] ?? null;
+            $transactionStatus = $notificationData['transaction_status'] ?? null;
             $fraudStatus = $notificationData['fraud_status'] ?? null;
+            $transactionId = $notificationData['transaction_id'] ?? null;
+            $paymentType = $notificationData['payment_type'] ?? null;
+            
+            // Enhanced logging for better debugging
+            Log::info('Processing Midtrans notification', [
+                'order_id' => $orderId,
+                'transaction_status' => $transactionStatus,
+                'fraud_status' => $fraudStatus,
+                'payment_type' => $paymentType,
+                'transaction_id' => $transactionId
+            ]);
+
+            // Validate required data
+            if (!$orderId || !$transactionStatus) {
+                Log::error('Missing required notification data', $notificationData);
+                return false;
+            }
 
             $order = CheckoutOrder::where('order_id', $orderId)->first();
             
@@ -173,24 +286,65 @@ class MidtransHttpService
                 return false;
             }
 
+            // Handle different transaction statuses
             if ($transactionStatus == 'capture') {
                 if ($fraudStatus == 'accept') {
-                    $order->markAsPaid($notificationData['transaction_id'], $notificationData);
+                    $order->markAsPaid($transactionId, $notificationData);
+                    Log::info('Order marked as PAID via capture', [
+                        'order_id' => $orderId,
+                        'transaction_id' => $transactionId
+                    ]);
+                } else {
+                    $order->update(['status' => 'failed']);
+                    Log::warning('Order marked as FAILED due to fraud capture', [
+                        'order_id' => $orderId,
+                        'fraud_status' => $fraudStatus
+                    ]);
                 }
             } elseif ($transactionStatus == 'settlement') {
-                $order->markAsPaid($notificationData['transaction_id'], $notificationData);
+                // Settlement always means payment successful (no fraud check needed)
+                $order->markAsPaid($transactionId, $notificationData);
+                Log::info('Order marked as PAID via settlement', [
+                    'order_id' => $orderId,
+                    'transaction_id' => $transactionId,
+                    'payment_type' => $paymentType
+                ]);
             } elseif ($transactionStatus == 'pending') {
-                // Payment pending
+                // Payment pending - keep current status
                 $order->update(['status' => 'pending']);
-            } elseif ($transactionStatus == 'deny' || $transactionStatus == 'expire' || $transactionStatus == 'cancel') {
-                // Mark as cancelled (this will restore stock if order was previously paid)
-                $order->markAsCancelled("Payment {$transactionStatus} by Midtrans");
+                Log::info('Order status updated to pending', ['order_id' => $orderId]);
+            } elseif (in_array($transactionStatus, ['deny', 'expire', 'cancel', 'failure'])) {
+                // Payment failed
+                $order->update(['status' => 'failed']);
+                Log::info('Order marked as FAILED', [
+                    'order_id' => $orderId,
+                    'reason' => $transactionStatus
+                ]);
+            } else {
+                Log::warning('Unknown transaction status received', [
+                    'order_id' => $orderId,
+                    'transaction_status' => $transactionStatus,
+                    'full_data' => $notificationData
+                ]);
             }
+
+            // Log successful processing for dashboard sync
+            Log::info('Notification processed successfully for dashboard sync', [
+                'order_id' => $orderId,
+                'transaction_status' => $transactionStatus,
+                'payment_type' => $paymentType,
+                'processed_at' => now()->toISOString(),
+                'merchant_id' => config('midtrans.merchant_id')
+            ]);
 
             return true;
 
         } catch (\Exception $e) {
-            Log::error('Midtrans notification handling error: ' . $e->getMessage());
+            Log::error('Midtrans notification handling error', [
+                'error' => $e->getMessage(),
+                'data' => $notificationData,
+                'trace' => $e->getTraceAsString()
+            ]);
             return false;
         }
     }

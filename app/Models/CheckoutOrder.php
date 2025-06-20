@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 /**
  * @property string $order_id
@@ -132,12 +133,71 @@ class CheckoutOrder extends Model
             'payment_details' => array_merge($this->payment_details ?? [], $paymentDetails),
             'payment_completed_at' => now()
         ]);
-
+        
+        // Send email notification
+        $this->sendPaymentSuccessEmail();
+        
         // Reduce product stock after successful payment
         $this->reduceProductStock();
 
         // Clear user cart after successful payment
         $this->clearUserCart();
+        
+        Log::info('Order marked as paid with email notification', [
+            'order_id' => $this->order_id,
+            'customer_email' => $this->email,
+            'amount' => $this->getFormattedTotalAttribute()
+        ]);
+    }
+    
+    /**
+     * Send payment success email notification
+     */
+    private function sendPaymentSuccessEmail()
+    {
+        try {
+            // Skip if email is dummy/test
+            if (str_contains($this->email, 'example.com') || str_contains($this->email, 'test.com')) {
+                Log::info('Skipping email for test/dummy address', ['email' => $this->email]);
+                return;
+            }
+            
+            $subject = "Payment Confirmation - TriadGO Order #{$this->order_id}";
+            $message = "
+Dear {$this->name},
+
+Your payment has been successfully processed!
+
+Order Details:
+- Order ID: {$this->order_id}
+- Amount: {$this->getFormattedTotalAttribute()}
+- Payment Method: Midtrans
+- Paid At: {$this->payment_completed_at->format('d M Y H:i:s')}
+
+Thank you for your business!
+
+Best regards,
+TriadGO Team
+            ";
+            
+            // Send email using Laravel Mail
+            Mail::raw($message, function ($mail) use ($subject) {
+                $mail->to($this->email, $this->name)
+                     ->subject($subject);
+            });
+            
+            Log::info('Payment success email sent', [
+                'order_id' => $this->order_id,
+                'email' => $this->email
+            ]);
+            
+        } catch (\Exception $e) {
+            Log::error('Failed to send payment success email', [
+                'order_id' => $this->order_id,
+                'email' => $this->email,
+                'error' => $e->getMessage()
+            ]);
+        }
     }
 
     /**
@@ -261,11 +321,84 @@ class CheckoutOrder extends Model
                 'fully_successful' => $success
             ]);
 
+            // Send stock update notifications to eksportir
+            $this->sendStockUpdateNotifications();
+
         } catch (\Exception $e) {
             Log::error('Error reducing product stock', [
                 'order_id' => $this->order_id,
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()
+            ]);
+        }
+    }
+
+    /**
+     * Send stock update notifications to eksportir
+     */
+    private function sendStockUpdateNotifications()
+    {
+        try {
+            // Get cart items from the order
+            $cartItems = $this->cart_items;
+            
+            if (!$cartItems || !is_array($cartItems)) {
+                return;
+            }
+
+            // Group products by eksportir
+            $produktByEksportir = [];
+            
+            foreach ($cartItems as $item) {
+                $productId = $item['product_id'] ?? null;
+                
+                if (!$productId) continue;
+                
+                $product = \App\Models\Product::where('product_id', $productId)->first();
+                
+                if (!$product) continue;
+                
+                $eksportirUserId = $product->user_id;
+                
+                if (!isset($produktByEksportir[$eksportirUserId])) {
+                    $produktByEksportir[$eksportirUserId] = [];
+                }
+                
+                $produktByEksportir[$eksportirUserId][] = [
+                    'product_name' => $product->product_name,
+                    'quantity_sold' => $item['quantity'],
+                    'new_stock' => $product->stock_quantity
+                ];
+            }
+
+            // Send notification to each eksportir
+            foreach ($produktByEksportir as $eksportirUserId => $products) {
+                $productNames = array_map(function($p) {
+                    return $p['product_name'] . ' (terjual: ' . $p['quantity_sold'] . ', sisa: ' . $p['new_stock'] . ')';
+                }, $products);
+                
+                $message = 'Produk Anda telah dibeli oleh importir ' . $this->name . '. ' . 
+                          'Produk: ' . implode(', ', $productNames);
+
+                \App\Models\Notification::createNotification(
+                    $eksportirUserId,
+                    'Produk Terjual',
+                    $message,
+                    \App\Models\Notification::TYPE_STOCK_UPDATE,
+                    $this->order_id,
+                    'checkout_order'
+                );
+            }
+
+            Log::info('Stock update notifications sent', [
+                'order_id' => $this->order_id,
+                'eksportir_count' => count($produktByEksportir)
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('Error sending stock update notifications', [
+                'order_id' => $this->order_id,
+                'error' => $e->getMessage()
             ]);
         }
     }

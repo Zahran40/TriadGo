@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Comment;
 use App\Models\Product;
+use App\Models\Transaction;
+use App\Models\Tracking;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
@@ -106,5 +108,58 @@ class EksportirController extends Controller
     {
         return view('requesteksportir');
     }
+ 
+   public function transactions()
+    {
+        $transactions = Transaction::where('user_id', Auth::id())->get();
+        return view('transactions', compact('transactions'));
+    }
+
+//     public function store(Request $request)
+//     {
+//     // Validasi data $request di sini
+
+//     Transaction::create([
+//         'nomor_resi' => $request->nomor_resi,
+//         'negara_tujuan' => $request->negara_tujuan,
+//         'status' => $request->status,
+//         'estimasi_sampai' => $request->estimasi_sampai,
+//         'user_id' => Auth::id(), // <-- ini penting
+//     ]);
+
+//     // Redirect atau response setelah simpan
+//     return redirect()->route('transactions')->with('success', 'Transaksi berhasil ditambahkan!');
+//     }
+
+        public function trackingDetail($id)
+        {
+            $transaction = Transaction::findOrFail($id);
+            return view('trackingekspor', compact('transaction'));
+        }
+
+        public function updateTracking(Request $request, $id)
+        {
+            $transaction = Transaction::findOrFail($id);
+            $transaction->update($request->only(['status', 'estimasi_sampai']));
+            return redirect()->route('trackingekspor.detail', $id)->with('success', 'Data berhasil diupdate!');
+        }
+
+
+       public function showTracking($id)
+        {
+            $transaction = Transaction::findOrFail($id);
+            $trackings = Tracking::where('transaction_id', $id)->orderBy('created_at')->get();
+            return view('trackingekspor', compact('transaction', 'trackings'));
+        }
+
+        public function addTracking(Request $request, $transaction_id)
+        {
+            $request->validate(['status' => 'required|string|max:255']);
+            Tracking::create([
+                'transaction_id' => $transaction_id,
+                'status' => $request->status,
+            ]);
+            return redirect()->route('trackingekspor.detail', $transaction_id)->with('success', 'Tracking berhasil ditambahkan!');
+        }
 
 }

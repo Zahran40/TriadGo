@@ -61,6 +61,15 @@ Route::post('/contact-us', [ContactusController::class, 'storeContactUs'])->name
 Route::get('/ekspor', [EksportirController::class, 'homeeksportir'])->name('ekspor')->middleware('role.protect:ekspor');
 Route::get('formeksportir', [EksportirController::class, 'formeksportir'])->name('formeksportir')->middleware('role.protect:ekspor');
 Route::get('/requesteksportir', [EksportirController::class, 'requesteksportir'])->name('requesteksportir')->middleware('role.protect:ekspor');
+Route::get('/trackingekspor/{id}', [EksportirController::class, 'trackingDetail'])->name('trackingekspor.detail');
+Route::post('/trackingekspor/{id}/update', [EksportirController::class, 'updateTracking'])->name('trackingekspor.update');
+Route::get('/transactions', [EksportirController::class, 'transactions'])->name('transactions');
+Route::middleware('role.protect:ekspor')->group(function () {
+    Route::get('/trackingekspor/{id}', [EksportirController::class, 'showTracking'])->name('trackingekspor.detail');
+    Route::post('/trackingekspor/{id}/add', [EksportirController::class, 'addTracking'])->name('trackingekspor.add');
+});
+
+
 
 // ✅ RESPONSE ROUTE - MUST BE DEFINED BEFORE COMMENT ROUTES
 Route::get('/response', [CommentController::class, 'response'])

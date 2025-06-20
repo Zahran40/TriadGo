@@ -91,4 +91,9 @@ class PageController extends Controller
 
         return redirect()->route('homepage')->with('success', 'You have been successfully logged out');
     }
+
+    public function transactions()
+    {
+        return view('transactions');
+    }
 }

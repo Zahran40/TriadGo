@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Payment Pending - TriadGo</title>
     @vite('resources/css/app.css')
     <script src="https://cdn.tailwindcss.com"></script>
@@ -123,6 +124,92 @@
             }
             updateDarkModeSwitch();
         });
+
+        // Check Payment Status Function
+        function checkPaymentStatus() {
+            const checkBtn = document.getElementById('checkStatusBtn');
+            const orderId = '{{ $order->order_id }}';
+            
+            // Disable button and show loading
+            checkBtn.disabled = true;
+            checkBtn.innerHTML = 'Checking...';
+            checkBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            
+            // Get CSRF token
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || 
+                             document.querySelector('input[name="_token"]')?.value;
+            
+            // Make AJAX request to check status
+            fetch(`/checkout/status/${orderId}`, {
+                method: 'GET',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken || ''
+                },
+                credentials: 'same-origin' // Include cookies for session
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else if (response.status === 404) {
+                    throw new Error('Order not found');
+                } else if (response.status === 401 || response.status === 403) {
+                    throw new Error('Authentication required');
+                } else {
+                    throw new Error('Server error');
+                }
+            })
+            .then(data => {
+                if (data.status === 'success') {
+                    const paymentStatus = data.payment_status.toLowerCase();
+                    
+                    // Redirect based on payment status
+                    if (paymentStatus === 'capture' || paymentStatus === 'settlement' || paymentStatus === 'paid' || paymentStatus === 'success') {
+                        // Payment successful - redirect to success page
+                        alert('Payment completed successfully! Redirecting to success page...');
+                        window.location.href = `/checkout/success/${orderId}`;
+                    } else if (paymentStatus === 'cancel' || paymentStatus === 'expire' || paymentStatus === 'failure' || paymentStatus === 'failed') {
+                        // Payment failed - redirect to error page
+                        alert('Payment failed. Redirecting to error page...');
+                        window.location.href = `/checkout/error/${orderId}`;
+                    } else {
+                        // Still pending, show message
+                        alert(`Current payment status: ${data.payment_status}. Please complete your payment.`);
+                        
+                        // Update status display if different
+                        const statusElement = document.querySelector('.bg-yellow-100 span');
+                        if (statusElement) {
+                            statusElement.textContent = data.payment_status.charAt(0).toUpperCase() + data.payment_status.slice(1);
+                        }
+                    }
+                } else {
+                    alert('Error checking payment status: ' + (data.message || 'Unknown error'));
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                if (error.message === 'Order not found') {
+                    alert('Order not found. Please check your order ID.');
+                } else if (error.message === 'Authentication required') {
+                    alert('Please login to check payment status.');
+                    // Optionally redirect to login
+                    // window.location.href = '/login';
+                } else {
+                    alert('Network error. Please check your connection and try again.');
+                }
+            })
+            .finally(() => {
+                // Re-enable button
+                checkBtn.disabled = false;
+                checkBtn.innerHTML = 'Check Payment Status';
+                checkBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            });
+        }
+
+        // Auto-check status every 30 seconds
+        setInterval(checkPaymentStatus, 30000);
 
     </script>
 </body>

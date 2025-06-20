@@ -17,6 +17,16 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use App\Filament\Widgets\StatsOverview;
+use App\Filament\Widgets\ProductsByCategoryChart;
+use App\Filament\Widgets\ProductStockChart;
+use App\Filament\Widgets\ProductWeightChart;
+use App\Filament\Widgets\ProductsByCountryChart;
+use App\Filament\Widgets\UserRoleDistributionChart;
+use App\Filament\Widgets\DailySalesChart;
+use Illuminate\Support\HtmlString;
+use App\Filament\Widgets\TriadGoInfoWidget;
+use App\Filament\Widgets\CustomAccountWidget;
 
 class Admin1PanelProvider extends PanelProvider
 {
@@ -28,6 +38,9 @@ class Admin1PanelProvider extends PanelProvider
             ->path('admin1')
             ->login() // Enable login Filament
             ->authGuard('web') // Use web guard
+            ->brandName('TriadGO Admin Panel')
+            ->brandLogo(new HtmlString('<div class="flex items-center space-x-2"><img src="' . asset('tglogo.png') . '" alt="TriadGO" class="h-8 w-8"><span class="text-lg font-semibold">TriadGO</span></div>'))
+            ->favicon(asset('favicon.ico'))
             ->colors([
                 'primary' => Color::Blue,
             ])
@@ -38,8 +51,15 @@ class Admin1PanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
-                Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
+                StatsOverview::class,
+                CustomAccountWidget::class,
+                TriadGoInfoWidget::class,
+                ProductsByCategoryChart::class,
+                ProductStockChart::class,
+                ProductWeightChart::class,
+                ProductsByCountryChart::class,
+                UserRoleDistributionChart::class,
+                DailySalesChart::class,
             ])
             ->middleware([
                 EncryptCookies::class,

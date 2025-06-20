@@ -288,29 +288,37 @@ class CheckoutController extends Controller
     public function getOrderStatus($orderId)
     {
         try {
+            Log::info('Checking order status for: ' . $orderId);
+            
             $order = CheckoutOrder::where('order_id', $orderId)->first();
             
             if (!$order) {
+                Log::warning('Order not found: ' . $orderId);
                 return response()->json([
-                    'success' => false,
+                    'status' => 'error',
                     'message' => 'Order not found'
                 ], 404);
             }
 
+            Log::info('Order found: ' . $orderId . ' - Status: ' . $order->status);
+
             return response()->json([
-                'success' => true,
+                'status' => 'success',
+                'payment_status' => $order->status,
                 'order' => [
                     'id' => $order->order_id,
                     'status' => $order->status,
                     'total_amount' => $order->formatted_total,
                     'payment_method' => $order->payment_method,
-                    'created_at' => $order->created_at->format('Y-m-d H:i:s'),                'payment_completed_at' => $order->payment_completed_at ? $order->payment_completed_at->format('Y-m-d H:i:s') : null
-            ]
-        ]);
-    } catch (Exception $e) {
-        return response()->json([
-                'success' => false,
-                'message' => 'Failed to get order status'
+                    'created_at' => $order->created_at->format('Y-m-d H:i:s'),
+                    'payment_completed_at' => $order->payment_completed_at ? $order->payment_completed_at->format('Y-m-d H:i:s') : null
+                ]
+            ]);
+        } catch (Exception $e) {
+            Log::error('Error checking order status: ' . $e->getMessage());
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Failed to get order status: ' . $e->getMessage()
             ], 500);
         }
     }

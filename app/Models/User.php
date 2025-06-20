@@ -84,12 +84,20 @@ class User extends Authenticatable implements FilamentUser
         return true; // Middleware AdminAccess sudah handle filtering
     }
 
-     /**
+    /**
      * Relasi ke Comments yang dibuat user ini
      */
     public function comments()
     {
         return $this->hasMany(Comment::class, 'user_id', 'user_id');
+    }
+
+    /**
+     * Relasi ke CheckoutOrders yang dibuat user ini (untuk importir)
+     */
+    public function checkoutOrders()
+    {
+        return $this->hasMany(CheckoutOrder::class, 'user_id', 'user_id');
     }
 
     /**

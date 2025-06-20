@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 /**
  * @property string $order_id
@@ -115,6 +117,65 @@ class CheckoutOrder extends Model
             'payment_details' => array_merge($this->payment_details ?? [], $paymentDetails),
             'payment_completed_at' => now()
         ]);
+        
+        // Send email notification
+        $this->sendPaymentSuccessEmail();
+        
+        Log::info('Order marked as paid with email notification', [
+            'order_id' => $this->order_id,
+            'customer_email' => $this->email,
+            'amount' => $this->getFormattedTotalAttribute()
+        ]);
+    }
+    
+    /**
+     * Send payment success email notification
+     */
+    private function sendPaymentSuccessEmail()
+    {
+        try {
+            // Skip if email is dummy/test
+            if (str_contains($this->email, 'example.com') || str_contains($this->email, 'test.com')) {
+                Log::info('Skipping email for test/dummy address', ['email' => $this->email]);
+                return;
+            }
+            
+            $subject = "Payment Confirmation - TriadGO Order #{$this->order_id}";
+            $message = "
+Dear {$this->first_name} {$this->last_name},
+
+Your payment has been successfully processed!
+
+Order Details:
+- Order ID: {$this->order_id}
+- Amount: {$this->getFormattedTotalAttribute()}
+- Payment Method: Midtrans
+- Paid At: {$this->payment_completed_at->format('d M Y H:i:s')}
+
+Thank you for your business!
+
+Best regards,
+TriadGO Team
+            ";
+            
+            // Send email using Laravel Mail
+            Mail::raw($message, function ($mail) use ($subject) {
+                $mail->to($this->email, $this->first_name . ' ' . $this->last_name)
+                     ->subject($subject);
+            });
+            
+            Log::info('Payment success email sent', [
+                'order_id' => $this->order_id,
+                'email' => $this->email
+            ]);
+            
+        } catch (\Exception $e) {
+            Log::error('Failed to send payment success email', [
+                'order_id' => $this->order_id,
+                'email' => $this->email,
+                'error' => $e->getMessage()
+            ]);
+        }
     }
 
     // Get formatted total amount

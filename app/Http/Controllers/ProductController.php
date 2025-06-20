@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use App\Models\Product;
+use App\Models\ProductRequest;
+use App\Models\Notification;
 
 class ProductController extends Controller
 {
@@ -71,6 +74,9 @@ class ProductController extends Controller
 
             // SKU akan auto-generate di Model boot method
             $product = Product::create($productData);
+
+            // Check if this product is related to a request and send notification
+            $this->checkAndNotifyForProductRequests($product);
 
             return response()->json([
                 'success' => true,
@@ -171,6 +177,69 @@ class ProductController extends Controller
                 'success' => false,
                 'message' => 'Failed to update: ' . $e->getMessage()
             ], 500);
+        }
+    }
+
+    /**
+     * Check if product matches any approved requests and send notifications
+     */
+    private function checkAndNotifyForProductRequests($product)
+    {
+        try {
+            // Find approved requests from current eksportir that might match this product
+            $approvedRequests = ProductRequest::where('eksportir_user_id', Auth::id())
+                                            ->where('status', ProductRequest::STATUS_APPROVED)
+                                            ->whereNull('product_id')
+                                            ->get();
+
+            foreach ($approvedRequests as $request) {
+                // Simple keyword matching - check if product name or description contains request keywords
+                $requestText = strtolower($request->request_text);
+                $productName = strtolower($product->product_name);
+                $productDesc = strtolower($product->product_description);
+                $category = strtolower($product->category);
+
+                // Extract keywords from request (simple approach)
+                $keywords = array_filter(explode(' ', $requestText), function($word) {
+                    return strlen($word) > 3 && !in_array($word, ['yang', 'dengan', 'untuk', 'dari', 'adalah', 'akan', 'dapat', 'atau', 'dan', 'ini', 'itu', 'saya', 'kami', 'mereka']);
+                });
+
+                $matched = false;
+                foreach ($keywords as $keyword) {
+                    if (strpos($productName, $keyword) !== false || 
+                        strpos($productDesc, $keyword) !== false || 
+                        strpos($category, $keyword) !== false) {
+                        $matched = true;
+                        break;
+                    }
+                }
+
+                if ($matched) {
+                    // Link the product to the request
+                    $request->update(['product_id' => $product->product_id]);
+                    
+                    // Send notification to importir
+                    Notification::createNotification(
+                        $request->importir_user_id,
+                        'Produk Tersedia!',
+                        'Eksportir ' . Auth::user()->name . ' telah menambahkan produk "' . $product->product_name . '" yang mungkin sesuai dengan permintaan Anda: "' . $request->request_text . '"',
+                        Notification::TYPE_PRODUCT_ADDED,
+                        $product->product_id,
+                        'product'
+                    );
+
+                    Log::info('Product matched with request and notification sent', [
+                        'product_id' => $product->product_id,
+                        'request_id' => $request->id,
+                        'importir_user_id' => $request->importir_user_id
+                    ]);
+                }
+            }
+        } catch (\Exception $e) {
+            Log::error('Error checking product requests', [
+                'product_id' => $product->product_id,
+                'error' => $e->getMessage()
+            ]);
         }
     }
 }

@@ -1,4 +1,8 @@
 <header class="bg-white shadow-md sticky top-0 z-50">
+        <!-- Meta tag for user ID (used by cart system) -->
+        @auth
+        <meta name="user-id" content="{{ auth()->user()->user_id }}">
+        @endauth
         <div class="container mx-auto px-6 py-4 flex justify-between items-center">
             <div class="flex items-center">
                 <img src="{{ asset('tglogo.png') }}" alt="Logo" class="h-12 w-12 mr-2 " style="width: 65px;  height: 65px" />
@@ -8,8 +12,8 @@
             <nav class="hidden md:flex items-center space-x-6 text-blue-700 font-semibold">
                 <a href="{{ route('importir') }}" class="hover:text-orange-500 transition nav-gradient-move">Home</a>
                 <a href="{{ route('catalog') }}" class="hover:text-orange-500 transition nav-gradient-move">Catalog</a>
-                <a href="{{ route('requestimportir') }}" class="hover:text-orange-500 transition nav-gradient-move">Request</a>
-                <a href="#about" class="hover:text-orange-500 transition nav-gradient-move">Transaction</a>
+                <a href="{{ route('importir.request.form') }}" class="hover:text-orange-500 transition nav-gradient-move">Request</a>
+                <a href="{{ route('transactions.index') }}" class="hover:text-orange-500 transition nav-gradient-move">Transaksi</a>
                 <a href="{{ route('user.profile') }}" class="hover:text-orange-500 transition nav-gradient-move flex items-center">
                 Account
                 <img src="{{ Auth::user()->profile_picture ? asset(Auth::user()->profile_picture) : 'https://randomuser.me/api/portraits/men/' . (Auth::user()->user_id % 100) . '.jpg' }}" 
@@ -70,7 +74,7 @@
             <!-- Menu Items -->
             <a href="{{ route('importir') }}" class="mb-4 text-blue-700 font-semibold hover:text-orange-500 transition nav-gradient-move">Home</a>
             <a href="{{ route('catalog') }}" class="mb-4 text-blue-700 font-semibold hover:text-orange-500 transition nav-gradient-move">Catalog</a>
-            <a href="{{ route('requestimportir') }}" class="mb-4 text-blue-700 font-semibold hover:text-orange-500 transition nav-gradient-move">Request</a>
+            <a href="{{ route('importir.request.form') }}" class="mb-4 text-blue-700 font-semibold hover:text-orange-500 transition nav-gradient-move">Request</a>
             <a href="#" class="mb-4 text-blue-700 font-semibold hover:text-orange-500 transition nav-gradient-move">Transactions</a>
             <a href="{{ route('user.profile') }}" class="mb-4 text-blue-700 font-semibold hover:text-orange-500 transition nav-gradient-move">Account</a>
 
@@ -87,38 +91,3 @@
 
     <!-- Cart Navbar Integration Script -->
     <script src="{{ asset('js/cart-navbar.js') }}"></script>
-
-    <!-- Cart Count Update Script -->
-    <script>
-        function updateNavCartCount() {
-            const cart = JSON.parse(localStorage.getItem('importCart')) || [];
-            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-            
-            const cartCountElement = document.querySelector('.cart-count');
-            if (cartCountElement) {
-                cartCountElement.textContent = totalItems;
-                if (totalItems > 0) {
-                    cartCountElement.classList.remove('hidden');
-                } else {
-                    cartCountElement.classList.add('hidden');
-                }
-            }
-        }
-
-        // Update cart count on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            updateNavCartCount();
-        });
-
-        // Listen for storage changes (when cart is updated from other pages)
-        window.addEventListener('storage', function(e) {
-            if (e.key === 'importCart') {
-                updateNavCartCount();
-            }
-        });
-
-        // Listen for custom cart update events
-        window.addEventListener('cartUpdated', function() {
-            updateNavCartCount();
-        });
-    </script>

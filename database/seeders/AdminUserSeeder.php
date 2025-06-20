@@ -28,34 +28,8 @@ class AdminUserSeeder extends Seeder
             echo "Password: admin123\n";
         } else {
             echo "Admin user already exists!\n";
-        }
         
-        // Create test eksportir
-        $eksportirExists = User::where('email', 'eksportir@test.com')->first();
-        if (!$eksportirExists) {
-            User::create([
-                'name' => 'Test Eksportir',
-                'email' => 'eksportir@test.com',
-                'country' => 'Indonesia',
-                'phone' => '+62812345679',
-                'password' => Hash::make('test123'),
-                'role' => 'ekspor',
-            ]);
-            echo "Test eksportir created!\n";
-        }
-        
-        // Create test importir
-        $importirExists = User::where('email', 'importir@test.com')->first();
-        if (!$importirExists) {
-            User::create([
-                'name' => 'Test Importir',
-                'email' => 'importir@test.com',
-                'country' => 'Malaysia',
-                'phone' => '+60123456789',
-                'password' => Hash::make('test123'),
-                'role' => 'impor',
-            ]);
-            echo "Test importir created!\n";
-        }
     }
+}
+
 }

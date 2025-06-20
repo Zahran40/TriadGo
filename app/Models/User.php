@@ -9,9 +9,8 @@ use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 
 /**
- * @property int $id
- * @property string $first_name
- * @property string $last_name
+ * @property int $user_id
+ * @property string $name
  * @property string $email
  * @property string $phone
  * @property string $role
@@ -22,11 +21,16 @@ use Filament\Panel;
  * @property string $postal_code
  * @property string $country
  * @property string|null $profile_picture
- * @property \Carbon\Carbon|null $email_verified_at
  * @property string $password
  * @property string|null $remember_token
+ * @property \Carbon\Carbon|null $email_verified_at
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
+ * 
+ * @method \Illuminate\Database\Eloquent\Collection getCartWithProducts()
+ * @method float getCartTotal()
+ * @method int getCartCount()
+ * @method \Illuminate\Database\Eloquent\Relations\HasMany cartItems()
  */
 class User extends Authenticatable implements FilamentUser
 {
@@ -93,11 +97,43 @@ class User extends Authenticatable implements FilamentUser
     }
 
     /**
-     * Relasi ke CheckoutOrders yang dibuat user ini (untuk importir)
+     * Relationship with checkout orders
      */
     public function checkoutOrders()
     {
-        return $this->hasMany(CheckoutOrder::class, 'user_id', 'user_id');
+        return $this->hasMany(CheckoutOrder::class);
+    }
+
+    /**
+     * Relationship with cart
+     */
+    public function cartItems()
+    {
+        return $this->hasMany(Cart::class, 'user_id', 'user_id');
+    }
+
+    /**
+     * Get cart items with product details
+     */
+    public function getCartWithProducts()
+    {
+        return $this->cartItems()->with('product')->get();
+    }
+
+    /**
+     * Get cart total
+     */
+    public function getCartTotal()
+    {
+        return $this->cartItems()->with('product')->get()->sum('total');
+    }
+
+    /**
+     * Get cart count
+     */
+    public function getCartCount()
+    {
+        return $this->cartItems()->sum('quantity');
     }
 
     /**

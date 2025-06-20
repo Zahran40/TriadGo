@@ -4,10 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\CheckoutOrder;
+use App\Models\Cart;
+use App\Models\User;
 use App\Services\MidtransHttpService;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
+
 use Exception;
+
+/**
+ * @method User getCurrentUser()
+ */
 
 class CheckoutController extends Controller
 {
@@ -23,6 +31,11 @@ class CheckoutController extends Controller
      */
     public function index()
     {
+        // Require authentication for checkout
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('message', 'Please login to proceed with checkout');
+        }
+        
         return view('formImportir');
     }
 
@@ -35,29 +48,39 @@ class CheckoutController extends Controller
         $request->headers->set('Accept', 'application/json');
         
         try {
+            // Get user
+            $user = $this->getCurrentUser();
+            if (!$user) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'User not authenticated'
+                ], 401);
+            }
+            
             // Log data request untuk debugging
             Log::info('Checkout createSnapToken request', [
-                'all_data' => $request->all(),
-                'headers' => $request->headers->all()
+                'user_id' => $user->user_id,
+                'request_data' => $request->all()
             ]);
+            
+            // Get cart items from database
+            $cartItems = $user->getCartWithProducts();
+            
+            if ($cartItems->isEmpty()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Cart is empty'
+                ], 400);
+            }
             
             // Validate request
             $validator = Validator::make($request->all(), [
-                'first_name' => 'required|string|max:255',
-                'last_name' => 'required|string|max:255',
-                'email' => 'required|email|max:255',
-                'phone' => 'required|string|max:20',
                 'address' => 'required|string',
                 'city' => 'required|string|max:255',
                 'state' => 'required|string|max:255',
                 'zip_code' => 'required|string|max:10',
                 'country' => 'required|string|max:2',
-                'cart_items' => 'required|array|min:1',
-                'subtotal' => 'required|numeric|min:0',
-                'shipping_cost' => 'required|numeric|min:0',
-                'tax_amount' => 'required|numeric|min:0',
-                'total_amount' => 'required|numeric|min:0',
-                'currency' => 'required|string|max:3'
+                'currency' => 'string|max:3'
             ]);
 
             if ($validator->fails()) {
@@ -69,42 +92,57 @@ class CheckoutController extends Controller
                 ], 422);
             }
 
-            // Log validated data
-            $validatedData = $validator->validated();
-            Log::info('Validated data', $validatedData);
-
-            // Calculate total amount
-            $subtotal = (float) $request->subtotal;
-            $shipping = (float) $request->shipping_cost;
-            $tax = (float) $request->tax_amount;
-            $discount = (float) ($request->discount_amount ?? 0);
+            // Calculate amounts from cart items
+            $subtotal = $cartItems->sum('total');
+            $shipping = 25.00; // Fixed shipping cost
+            $taxRate = 0.10;
+            $tax = $subtotal * $taxRate;
+            $discount = 0; // Can be implemented later
             $totalAmount = $subtotal + $shipping + $tax - $discount;
             
-            Log::info('Calculated amounts', [
+            Log::info('Calculated amounts from cart', [
+                'cart_items_count' => $cartItems->count(),
                 'subtotal' => $subtotal,
                 'shipping' => $shipping,
                 'tax' => $tax,
-                'discount' => $discount,
                 'total' => $totalAmount
             ]);
 
+            // Get authenticated user data (already retrieved above)
+            // $user is already available from getCurrentUser()
+            
+            // Prepare cart items data for storage
+            $cartItemsData = $cartItems->map(function ($item) {
+                return [
+                    'product_id' => $item->product_id,
+                    'name' => $item->product->product_name,
+                    'price' => $item->price,
+                    'quantity' => $item->quantity,
+                    'total' => $item->total,
+                    'sku' => $item->product->product_sku,
+                    'image' => $item->product->product_image,
+                    'origin' => $item->product->country_of_origin,
+                    'weight' => $item->product->weight
+                ];
+            })->toArray();
+            
             // Create order
             $orderData = [
+                'user_id' => $user->user_id,
                 'order_id' => CheckoutOrder::generateOrderId(),
                 'total_amount' => $totalAmount,
-                'currency' => $request->currency,
+                'currency' => $request->currency ?? 'USD',
                 'status' => 'pending',
-                'first_name' => $request->first_name,
-                'last_name' => $request->last_name,
-                'email' => $request->email,
-                'phone' => $request->phone,
+                'name' => $user->name,
+                'email' => $user->email,
+                'phone' => $user->phone,
                 'address' => $request->address,
                 'city' => $request->city,
                 'state' => $request->state,
                 'zip_code' => $request->zip_code,
                 'country' => $request->country,
                 'payment_method' => 'midtrans',
-                'cart_items' => $request->cart_items,
+                'cart_items' => json_encode($cartItemsData),
                 'subtotal' => $subtotal,
                 'shipping_cost' => $shipping,
                 'tax_amount' => $tax,
@@ -121,7 +159,7 @@ class CheckoutController extends Controller
                 'amount' => $order->total_amount,
                 'currency' => $order->currency,
                 'status' => $order->status,
-                'customer' => $order->first_name . ' ' . $order->last_name,
+                'customer' => $order->name,
                 'email' => $order->email
             ]);
 
@@ -238,6 +276,11 @@ class CheckoutController extends Controller
                             'transaction_time' => $status['transaction_time'] ?? null,
                             'verified_at' => now()
                         ]);
+                        
+                        // Clear cart after successful payment
+                        if ($order->user_id) {
+                            Cart::where('user_id', $order->user_id)->delete();
+                        }
                     }
                 } elseif (is_object($status) && isset($status->transaction_status)) {
                     if (in_array($status->transaction_status, ['capture', 'settlement'])) {
@@ -247,6 +290,11 @@ class CheckoutController extends Controller
                             'transaction_time' => $status->transaction_time ?? null,
                             'verified_at' => now()
                         ]);
+                        
+                        // Clear cart after successful payment
+                        if ($order->user_id) {
+                            Cart::where('user_id', $order->user_id)->delete();
+                        }
                     }
                 }        } catch (Exception $e) {
             Log::warning('Failed to verify payment status: ' . $e->getMessage());
@@ -338,151 +386,151 @@ class CheckoutController extends Controller
     }
 
     /**
-     * Test payment page (tanpa middleware)
+     * Process complete checkout (new unified method)
      */
-    public function testPaymentPage($orderId)
+    public function process(Request $request)
     {
         try {
-            $order = CheckoutOrder::where('order_id', $orderId)->first();
-            
-            if (!$order) {
-                return response()->json(['error' => 'Order not found'], 404);        }
-        
-        return view('test.payment', compact('order'));
-        
-    } catch (Exception $e) {
-        return response()->json(['error' => $e->getMessage()], 500);
-        }
-    }
+            // Get user
+            $user = $this->getCurrentUser();
+            if (!$user) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'User not authenticated'
+                ], 401);
+            }
 
-    /**
-     * Simulate payment (tanpa middleware)
-     */
-    public function simulatePayment(Request $request, $orderId)
-    {
-        try {
-            $order = CheckoutOrder::where('order_id', $orderId)->first();
-            
-            if (!$order) {
-                return response()->json(['success' => false, 'message' => 'Order not found'], 404);
-            }
-            
-            if ($order->status !== 'pending') {
-                return response()->json(['success' => false, 'message' => 'Order is not pending'], 400);
-            }
-            
-            // Simulate successful payment
-            $transactionId = 'TEST-SIM-' . time();
-            
-            $order->update([
-                'status' => 'paid',
-                'payment_gateway_transaction_id' => $transactionId,
-                'payment_details' => [
-                    'transaction_id' => $transactionId,
-                    'payment_type' => 'test_simulation',
-                    'transaction_status' => 'capture',
-                    'gross_amount' => $order->total_amount,
-                    'currency' => $order->currency,
-                    'simulated_at' => now()->toISOString(),
-                    'simulation_method' => 'manual_test'
-                ],
-                'payment_completed_at' => now()
+            // Log checkout request
+            Log::info('Checkout process request', [
+                'user_id' => $user->user_id,
+                'request_data' => $request->all()
             ]);
-            
-            Log::info('Payment simulated successfully', [
+
+            // Get cart items
+            $cartItems = $user->getCartWithProducts();
+            if ($cartItems->isEmpty()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Cart is empty'
+                ], 400);
+            }
+
+            // Validate request
+            $validator = Validator::make($request->all(), [
+                'name' => 'required|string|max:255',
+                'email' => 'required|email',
+                'phone' => 'required|string',
+                'address' => 'required|string',
+                'city' => 'required|string|max:255',
+                'state' => 'required|string|max:255',
+                'zip_code' => 'required|string|max:10',
+                'country' => 'required|string|max:255',
+                'payment_method' => 'required|string',
+                'subtotal' => 'required|numeric',
+                'shipping_cost' => 'required|numeric',
+                'tax_amount' => 'required|numeric',
+                'total_amount' => 'required|numeric',
+                'currency' => 'required|string|max:3'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Validation failed',
+                    'errors' => $validator->errors()
+                ], 422);
+            }
+
+            // Generate order ID
+            $orderId = CheckoutOrder::generateOrderId();
+
+            // Prepare cart items data
+            $cartItemsData = $cartItems->map(function ($item) {
+                return [
+                    'product_id' => $item->product_id,
+                    'product_name' => $item->product->product_name,
+                    'product_sku' => $item->product->product_sku,
+                    'quantity' => $item->quantity,
+                    'price' => $item->price,
+                    'total' => $item->total,
+                    'weight' => $item->product->weight,
+                    'country_of_origin' => $item->product->country_of_origin
+                ];
+            });
+
+            // Create checkout order
+            $order = CheckoutOrder::create([
+                'user_id' => $user->user_id,
                 'order_id' => $orderId,
-                'transaction_id' => $transactionId,
-                'amount' => $order->total_amount
+                'total_amount' => $request->total_amount,
+                'currency' => $request->currency,
+                'status' => 'pending',
+                'name' => $request->name,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'address' => $request->address,
+                'city' => $request->city,
+                'state' => $request->state,
+                'zip_code' => $request->zip_code,
+                'country' => $request->country,
+                'payment_method' => $request->payment_method,
+                'cart_items' => $cartItemsData->toArray(),
+                'subtotal' => $request->subtotal,
+                'shipping_cost' => $request->shipping_cost,
+                'tax_amount' => $request->tax_amount,
+                'notes' => $request->notes
             ]);
-            
+
+            Log::info('Creating Midtrans snap token', [
+                'order_id' => $orderId,
+                'total_amount' => $request->total_amount
+            ]);
+
+            $snapToken = $this->midtransService->createSnapToken($order);
+
+            if (!$snapToken) {
+                throw new Exception('Failed to create payment token');
+            }
+
+            // Update order with Midtrans details
+            $order->update([
+                'payment_gateway_order_id' => $orderId,
+                'payment_details' => [
+                    'snap_token' => $snapToken,
+                    'created_at' => now()
+                ]
+            ]);
+
             return response()->json([
                 'success' => true,
-                'message' => 'Payment simulated successfully',
+                'message' => 'Order created successfully',
                 'order_id' => $orderId,
-                'transaction_id' => $transactionId,
-                'order_status' => 'paid',
-                'amount' => $order->total_amount        ]);
-        
-    } catch (Exception $e) {
-        Log::error('Payment simulation failed', [
-                'order_id' => $orderId,
-                'error' => $e->getMessage()
+                'snap_token' => $snapToken,
+                'total_amount' => $request->total_amount
             ]);
-            
+
+        } catch (Exception $e) {
+            Log::error('Checkout process error: ' . $e->getMessage(), [
+                'user_id' => $user->user_id ?? null,
+                'trace' => $e->getTraceAsString()
+            ]);
+
             return response()->json([
                 'success' => false,
-                'message' => 'Payment simulation failed: ' . $e->getMessage()
+                'message' => 'Checkout failed: ' . $e->getMessage()
             ], 500);
         }
     }
 
     /**
-     * Force simulate payment (tanpa middleware)
+     * Helper method to get current authenticated user
      */
-    public function forceSimulatePayment(Request $request, $orderId)
+    private function getCurrentUser()
     {
-        try {
-            $order = CheckoutOrder::where('order_id', $orderId)->first();
-            
-            if (!$order) {
-                return response()->json(['success' => false, 'message' => 'Order not found'], 404);
-            }
-            
-            // Force simulate payment regardless of current status
-            $action = $request->input('action', 'success');
-            $transactionId = 'FORCE-SIM-' . time() . '-' . $orderId;
-            
-            if ($action === 'success') {
-                $order->update([
-                    'status' => 'paid',
-                    'payment_gateway_transaction_id' => $transactionId,
-                    'payment_details' => [
-                        'transaction_id' => $transactionId,
-                        'payment_type' => 'simulation',
-                        'gross_amount' => $order->total_amount,
-                        'currency' => $order->currency ?? 'USD',
-                        'status_code' => '200',
-                        'transaction_status' => 'settlement',
-                        'fraud_status' => 'accept',
-                        'simulated_at' => now(),
-                        'original_status' => $order->getOriginal('status')                ],
-                'payment_completed_at' => now(),
-            ]);
-            
-            Log::info("Force payment simulation completed for order: {$orderId}");
-                
-                return response()->json([
-                    'success' => true, 
-                    'message' => 'Payment simulation completed successfully',
-                    'transaction_id' => $transactionId,
-                    'status' => 'paid'
-                ]);
-            } else {
-                $order->update([
-                    'status' => 'failed',
-                    'payment_gateway_transaction_id' => $transactionId,
-                    'payment_details' => [
-                        'transaction_id' => $transactionId,
-                        'payment_type' => 'simulation',
-                        'error_message' => 'Simulated payment failure',
-                        'status_code' => '400',
-                        'transaction_status' => 'deny',
-                        'simulated_at' => now(),
-                        'original_status' => $order->getOriginal('status')
-                    ],
-                ]);
-                
-                return response()->json([
-                    'success' => true, 
-                    'message' => 'Payment failure simulation completed',
-                    'transaction_id' => $transactionId,
-                    'status' => 'failed'
-                ]);
-            }
-            
-        } catch (Exception $e) {
-            Log::error("Force payment simulation error: " . $e->getMessage());
-            return response()->json(['success' => false, 'message' => 'Simulation failed: ' . $e->getMessage()], 500);
+        if (!Auth::check()) {
+            return null;
         }
+        
+        return Auth::user();
     }
 }

@@ -85,6 +85,8 @@ Route::middleware('role.protect:ekspor')->group(function () {
           ->name('eksportir.transactions.show');
     Route::post('/eksportir/transactions/{orderId}/update-status', [App\Http\Controllers\EksportirTransactionController::class, 'updateShippingStatus'])
           ->name('eksportir.transactions.update-status');
+    Route::post('/eksportir/transactions/{orderId}/update-payment-status', [App\Http\Controllers\EksportirTransactionController::class, 'updatePaymentStatus'])
+          ->name('eksportir.transactions.update-payment-status');
 });
 
 // ✅ RESPONSE ROUTE - MUST BE DEFINED BEFORE COMMENT ROUTES

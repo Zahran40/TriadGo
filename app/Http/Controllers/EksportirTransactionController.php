@@ -21,9 +21,8 @@ class EksportirTransactionController extends Controller
         $productIds = Product::where('user_id', $eksportir->user_id)
                             ->pluck('product_id')
                             ->toArray();
-          // Get orders that contain products from this eksportir
-        $query = CheckoutOrder::where('status', 'paid') // Only show paid orders
-                              ->orderBy('created_at', 'desc');
+          // Get orders that contain products from this eksportir (all statuses)
+        $query = CheckoutOrder::orderBy('created_at', 'desc');
         
         // Filter orders to only show those that contain eksportir's products
         $allOrders = $query->get();
@@ -48,6 +47,11 @@ class EksportirTransactionController extends Controller
         if ($request->has('shipping_status') && $request->shipping_status !== 'all') {
             $query->where('shipping_status', $request->shipping_status);
         }
+
+        // Filter by payment status if provided
+        if ($request->has('payment_status') && $request->payment_status !== 'all') {
+            $query->where('status', $request->payment_status);
+        }
         
         // Search by order ID or customer name
         if ($request->has('search') && !empty($request->search)) {
@@ -60,10 +64,11 @@ class EksportirTransactionController extends Controller
         
         $orders = $query->paginate(10);
         
-        // Calculate shipping status counts
+        // Calculate shipping status counts and payment status counts
         $shippingStatusCounts = $this->getShippingStatusCounts($productIds);
+        $paymentStatusCounts = $this->getPaymentStatusCounts($productIds);
         
-        return view('eksportir.transactions.index', compact('orders', 'shippingStatusCounts'));
+        return view('eksportir.transactions.index', compact('orders', 'shippingStatusCounts', 'paymentStatusCounts'));
     }
     
     /**
@@ -78,9 +83,7 @@ class EksportirTransactionController extends Controller
                             ->pluck('product_id')
                             ->toArray();
         
-        $order = CheckoutOrder::where('order_id', $orderId)
-                              ->where('status', 'paid')
-                              ->firstOrFail();
+        $order = CheckoutOrder::where('order_id', $orderId)->firstOrFail();
         
         // Verify this order contains eksportir's products
         $hasEksportirProducts = false;
@@ -119,9 +122,7 @@ class EksportirTransactionController extends Controller
                             ->pluck('product_id')
                             ->toArray();
         
-        $order = CheckoutOrder::where('order_id', $orderId)
-                              ->where('status', 'paid')
-                              ->firstOrFail();
+        $order = CheckoutOrder::where('order_id', $orderId)->firstOrFail();
         
         // Verify order contains eksportir's products
         $hasEksportirProducts = false;
@@ -175,6 +176,86 @@ class EksportirTransactionController extends Controller
     }
     
     /**
+     * Update payment status from pending to paid
+     */
+    public function updatePaymentStatus(Request $request, $orderId)
+    {
+        $request->validate([
+            'payment_status' => 'required|string|in:paid,failed,cancelled',
+            'reason' => 'nullable|string|max:255'
+        ]);
+
+        $eksportir = Auth::user();
+        
+        // Verify eksportir has products in this order
+        $productIds = Product::where('user_id', $eksportir->user_id)
+                            ->pluck('product_id')
+                            ->toArray();
+        
+        $order = CheckoutOrder::where('order_id', $orderId)->firstOrFail();
+        
+        // Verify order contains eksportir's products
+        $hasEksportirProducts = false;
+        if ($order->cart_items && is_array($order->cart_items)) {
+            foreach ($order->cart_items as $item) {
+                if (isset($item['product_id']) && in_array($item['product_id'], $productIds)) {
+                    $hasEksportirProducts = true;
+                    break;
+                }
+            }
+        }
+        
+        if (!$hasEksportirProducts) {
+            return response()->json([
+                'success' => false,
+                'message' => 'You do not have products in this order.'
+            ], 403);
+        }
+        
+        try {
+            $reason = $request->reason ?: "Payment status updated by eksportir {$eksportir->name}";
+            
+            if ($request->payment_status === 'paid') {
+                $order->markAsPaid(null, [
+                    'updated_by_eksportir' => $eksportir->user_id,
+                    'eksportir_name' => $eksportir->name,
+                    'reason' => $reason,
+                    'updated_at' => now()
+                ]);
+            } else {
+                $order->updateStatus($request->payment_status, $reason);
+            }
+            
+            Log::info('Payment status updated by eksportir', [
+                'order_id' => $orderId,
+                'eksportir_id' => $eksportir->user_id,
+                'eksportir_name' => $eksportir->name,
+                'old_status' => $order->getOriginal('status'),
+                'new_status' => $request->payment_status,
+                'reason' => $reason
+            ]);
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Status pembayaran berhasil diperbarui.',
+                'new_status' => $request->payment_status
+            ]);
+            
+        } catch (\Exception $e) {
+            Log::error('Error updating payment status', [
+                'order_id' => $orderId,
+                'eksportir_id' => $eksportir->user_id,
+                'error' => $e->getMessage()
+            ]);
+            
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan saat memperbarui status pembayaran.'
+            ], 500);
+        }
+    }
+
+    /**
      * Get shipping status counts for dashboard
      */
     private function getShippingStatusCounts($productIds)
@@ -182,9 +263,37 @@ class EksportirTransactionController extends Controller
         $statuses = ['processing', 'shipped', 'in_transit', 'delivered'];
         $counts = ['all' => 0];
           foreach ($statuses as $status) {
-            $allOrders = CheckoutOrder::where('status', 'paid')
-                                      ->where('shipping_status', $status)
-                                      ->get();
+            $allOrders = CheckoutOrder::where('shipping_status', $status)->get();
+            
+            $count = 0;
+            foreach ($allOrders as $order) {
+                if ($order->cart_items && is_array($order->cart_items)) {
+                    foreach ($order->cart_items as $item) {
+                        if (isset($item['product_id']) && in_array($item['product_id'], $productIds)) {
+                            $count++;
+                            break;
+                        }
+                    }
+                }
+            }
+            
+            $counts[$status] = $count;
+            $counts['all'] += $count;
+        }
+        
+        return $counts;
+    }
+
+    /**
+     * Get payment status counts for dashboard
+     */
+    private function getPaymentStatusCounts($productIds)
+    {
+        $statuses = ['pending', 'paid', 'failed', 'cancelled'];
+        $counts = ['all' => 0];
+        
+        foreach ($statuses as $status) {
+            $allOrders = CheckoutOrder::where('status', $status)->get();
             
             $count = 0;
             foreach ($allOrders as $order) {

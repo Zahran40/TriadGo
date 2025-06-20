@@ -1,4 +1,8 @@
 <header class="bg-white shadow-md sticky top-0 z-50">
+        <!-- Meta tag for user ID (used by cart system) -->
+        @auth
+        <meta name="user-id" content="{{ auth()->user()->user_id }}">
+        @endauth
         <div class="container mx-auto px-6 py-4 flex justify-between items-center">
             <div class="flex items-center">
                 <img src="{{ asset('tglogo.png') }}" alt="Logo" class="h-12 w-12 mr-2 " style="width: 65px;  height: 65px" />
@@ -87,38 +91,3 @@
 
     <!-- Cart Navbar Integration Script -->
     <script src="{{ asset('js/cart-navbar.js') }}"></script>
-
-    <!-- Cart Count Update Script -->
-    <script>
-        function updateNavCartCount() {
-            const cart = JSON.parse(localStorage.getItem('importCart')) || [];
-            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-            
-            const cartCountElement = document.querySelector('.cart-count');
-            if (cartCountElement) {
-                cartCountElement.textContent = totalItems;
-                if (totalItems > 0) {
-                    cartCountElement.classList.remove('hidden');
-                } else {
-                    cartCountElement.classList.add('hidden');
-                }
-            }
-        }
-
-        // Update cart count on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            updateNavCartCount();
-        });
-
-        // Listen for storage changes (when cart is updated from other pages)
-        window.addEventListener('storage', function(e) {
-            if (e.key === 'importCart') {
-                updateNavCartCount();
-            }
-        });
-
-        // Listen for custom cart update events
-        window.addEventListener('cartUpdated', function() {
-            updateNavCartCount();
-        });
-    </script>

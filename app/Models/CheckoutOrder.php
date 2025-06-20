@@ -10,8 +10,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property float $total_amount
  * @property string $currency
  * @property string $status
- * @property string $first_name
- * @property string $last_name
+ * @property string $name
  * @property string $email
  * @property string $phone
  * @property string $address
@@ -46,8 +45,7 @@ class CheckoutOrder extends Model
         'total_amount',
         'currency',
         'status',
-        'first_name',
-        'last_name',
+        'name',
         'email',
         'phone',
         'address',
@@ -88,6 +86,11 @@ class CheckoutOrder extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id', 'user_id');
+    }
+
+    public function cartItems()
+    {
+        return $this->hasMany(Cart::class, 'user_id', 'user_id');
     }
 
     // Generate unique order ID
@@ -141,6 +144,6 @@ class CheckoutOrder extends Model
     // Get customer full name
     public function getFullNameAttribute()
     {
-        return $this->first_name . ' ' . $this->last_name;
+        return $this->name;
     }
 }

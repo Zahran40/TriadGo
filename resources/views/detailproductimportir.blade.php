@@ -528,43 +528,62 @@
                 }
             }).then((result) => {
                 if (result.isConfirmed) {
-                    const product = {
-                        id: {{ $product->product_id }},
-                        name: "{{ $product->product_name }}",
-                        price: {{ $product->price }},
-                        image: "{{ $product->product_image ? asset($product->product_image) : 'https://png.pngtree.com/png-vector/20231023/ourmid/pngtree-mystery-box-with-question-mark-3d-illustration-png-image_10313605.png' }}",
-                        origin: "{{ $product->country_of_origin }}",
-                        weight: {{ $product->weight }},
-                        quantity: quantity,
-                        sku: "{{ $product->product_sku }}"
-                    };
+                    // Send request to add item to database cart
+                    fetch('/cart/add', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        },
+                        body: JSON.stringify({
+                            product_id: {{ $product->product_id }},
+                            quantity: quantity
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            updateCartCount();
+                            
+                            Swal.fire({
+                                title: 'Added to Cart!',
+                                text: 'Product has been added to your import cart.',
+                                icon: 'success',
+                                background: isDark ? '#374151' : '#ffffff',
+                                didOpen: () => {
+                                    const popup = Swal.getPopup();
+                                    if (isDark) popup.classList.add('swal2-dark');
+                                }
+                            });
 
-                    let cart = JSON.parse(localStorage.getItem('importCart')) || [];
-                    
-                    const existingProductIndex = cart.findIndex(item => item.id === product.id);
-                    
-                    if (existingProductIndex > -1) {
-                        cart[existingProductIndex].quantity += quantity;
-                    } else {
-                        cart.push(product);
-                    }
-                    
-                    localStorage.setItem('importCart', JSON.stringify(cart));
-                    updateCartCount();
-
-                    Swal.fire({
-                        title: 'Added to Cart!',
-                        text: 'Product has been added to your import cart.',
-                        icon: 'success',
-                        background: isDark ? '#374151' : '#ffffff',
-                        didOpen: () => {
-                            const popup = Swal.getPopup();
-                            if (isDark) popup.classList.add('swal2-dark');
+                            document.getElementById('quantity').value = 1;
+                            updateWeightCalculation();
+                        } else {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: data.message || 'Failed to add item to cart',
+                                icon: 'error',
+                                background: isDark ? '#374151' : '#ffffff',
+                                didOpen: () => {
+                                    const popup = Swal.getPopup();
+                                    if (isDark) popup.classList.add('swal2-dark');
+                                }
+                            });
                         }
+                    })
+                    .catch(error => {
+                        console.error('Error adding to cart:', error);
+                        Swal.fire({
+                            title: 'Error!',
+                            text: 'Failed to add item to cart',
+                            icon: 'error',
+                            background: isDark ? '#374151' : '#ffffff',
+                            didOpen: () => {
+                                const popup = Swal.getPopup();
+                                if (isDark) popup.classList.add('swal2-dark');
+                            }
+                        });
                     });
-
-                    document.getElementById('quantity').value = 1;
-                    updateWeightCalculation();
                 }
             });
         }
@@ -574,18 +593,31 @@
         }
 
         function updateCartCount() {
-            const cart = JSON.parse(localStorage.getItem('importCart')) || [];
-            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-            
-            const cartCountElement = document.querySelector('.cart-count');
-            if (cartCountElement) {
-                cartCountElement.textContent = totalItems;
-                if (totalItems > 0) {
-                    cartCountElement.classList.remove('hidden');
-                } else {
-                    cartCountElement.classList.add('hidden');
+            // Get cart count from database
+            fetch('/cart/count', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                 }
-            }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const cartCountElement = document.querySelector('.cart-count');
+                    if (cartCountElement) {
+                        cartCountElement.textContent = data.count;
+                        if (data.count > 0) {
+                            cartCountElement.classList.remove('hidden');
+                        } else {
+                            cartCountElement.classList.add('hidden');
+                        }
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error getting cart count:', error);
+            });
 
             window.dispatchEvent(new CustomEvent('cartUpdated'));
         }

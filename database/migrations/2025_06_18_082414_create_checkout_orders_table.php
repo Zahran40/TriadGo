@@ -14,6 +14,9 @@ return new class extends Migration
         Schema::create('checkout_orders', function (Blueprint $table) {
             $table->id();
             
+            // User Information
+            $table->foreignId('user_id')->constrained('users', 'user_id')->onDelete('cascade');
+            
             // Order Information
             $table->string('order_id')->unique();
             $table->decimal('total_amount', 10, 2);
@@ -21,8 +24,7 @@ return new class extends Migration
             $table->enum('status', ['pending', 'paid', 'failed', 'cancelled', 'expired'])->default('pending');
             
             // Customer Information
-            $table->string('first_name');
-            $table->string('last_name');
+            $table->string('name');
             $table->string('email');
             $table->string('phone');
             $table->text('address');
@@ -32,7 +34,7 @@ return new class extends Migration
             $table->string('country');
             
             // Payment Information
-            $table->enum('payment_method', ['midtrans', 'paypal', 'bank_transfer']);
+            $table->string('payment_method')->default('midtrans');
             $table->string('payment_gateway_order_id')->nullable();
             $table->string('payment_gateway_transaction_id')->nullable();
             $table->json('payment_details')->nullable();
@@ -40,7 +42,7 @@ return new class extends Migration
             // Cart Items
             $table->json('cart_items');
             $table->decimal('subtotal', 10, 2);
-            $table->decimal('shipping_cost', 10, 2)->default(0.10);
+            $table->decimal('shipping_cost', 10, 2)->default(25.00);
             $table->decimal('tax_amount', 10, 2);
             $table->string('coupon_code')->nullable();
             $table->decimal('discount_amount', 10, 2)->default(0);

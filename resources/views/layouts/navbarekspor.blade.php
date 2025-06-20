@@ -7,8 +7,8 @@
         </div>
         <nav class="hidden md:flex items-center space-x-6 text-blue-700 font-semibold">
             <a href="{{ route('ekspor') }}" class="hover:text-orange-500 font-semibold nav-gradient-move transition">Home</a>
-            <a href="{{ route('eksportir.request.list') }}" class="hover:text-orange-500 transition nav-gradient-move">Request</a>
-            <a href="#" class="hover:text-orange-500 transition nav-gradient-move">Transactions</a>
+            <a href="{{ route('requesteksportir') }}" class="hover:text-orange-500 transition nav-gradient-move">Request</a>
+            <a href="{{ route('eksportir.transactions.index') }}" class="hover:text-orange-500 transition nav-gradient-move">Transactions</a>
             <a href="{{ route('user.profile') }}" class="hover:text-orange-500 transition nav-gradient-move flex items-center">
                 Account
                 <img src="{{ Auth::user()->profile_picture ? asset(Auth::user()->profile_picture) : 'https://randomuser.me/api/portraits/men/' . (Auth::user()->user_id % 100) . '.jpg' }}" 
@@ -55,10 +55,10 @@
         <button id="closeSidebar" class="self-end mb-8 text-2xl text-blue-700">&times;</button>
 
         <!-- Menu Items -->
-        <a href="#" class="mb-4 text-blue-700 font-semibold hover:text-orange-500 transition nav-gradient-move">Home</a>
-        <a href="{{ route('eksportir.request.list') }}"
+        <a href="{{ route('ekspor') }}" class="mb-4 text-blue-700 font-semibold hover:text-orange-500 transition nav-gradient-move">Home</a>
+        <a href="{{ route('requesteksportir') }}"
             class="mb-4 text-blue-700 font-semibold hover:text-orange-500 transition nav-gradient-move">Request</a>
-        <a href="#"
+        <a href="{{ route('eksportir.transactions.index') }}"
             class="mb-4 text-blue-700 font-semibold hover:text-orange-500 transition nav-gradient-move">Transactions</a>
         <a href="{{ route('user.profile') }}"
             class="mb-4 text-blue-700 font-semibold hover:text-orange-500 transition nav-gradient-move">Account</a>

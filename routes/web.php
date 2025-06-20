@@ -77,6 +77,16 @@ Route::get('/ekspor', [EksportirController::class, 'homeeksportir'])->name('eksp
 Route::get('formeksportir', [EksportirController::class, 'formeksportir'])->name('formeksportir')->middleware('role.protect:ekspor');
 Route::get('/requesteksportir', [RequestController::class, 'eksportirRequestList'])->name('requesteksportir')->middleware('role.protect:ekspor');
 
+// Eksportir Transaction Management - hanya role ekspor
+Route::middleware('role.protect:ekspor')->group(function () {
+    Route::get('/eksportir/transactions', [App\Http\Controllers\EksportirTransactionController::class, 'index'])
+          ->name('eksportir.transactions.index');
+    Route::get('/eksportir/transactions/{orderId}', [App\Http\Controllers\EksportirTransactionController::class, 'show'])
+          ->name('eksportir.transactions.show');
+    Route::post('/eksportir/transactions/{orderId}/update-status', [App\Http\Controllers\EksportirTransactionController::class, 'updateShippingStatus'])
+          ->name('eksportir.transactions.update-status');
+});
+
 // ✅ RESPONSE ROUTE - MUST BE DEFINED BEFORE COMMENT ROUTES
 Route::get('/response', [CommentController::class, 'response'])
     ->name('response')

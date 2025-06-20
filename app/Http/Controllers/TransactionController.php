@@ -75,7 +75,29 @@ class TransactionController extends Controller
                            ->with('error', 'Tracking hanya tersedia untuk pesanan yang sudah dibayar.');
         }
         
-        return view('transactions.tracking', compact('order'));
+        // Determine current step based on shipping status
+        $currentStep = 0;
+        switch ($order->shipping_status) {
+            case 'warehouse':
+                $currentStep = 0;
+                break;
+            case 'packing':
+                $currentStep = 1;
+                break;
+            case 'customs':
+                $currentStep = 2;
+                break;
+            case 'shipping':
+                $currentStep = 3;
+                break;
+            case 'delivered':
+                $currentStep = 4;
+                break;
+            default:
+                $currentStep = 0;
+        }
+        
+        return view('transactions.tracking', compact('order', 'currentStep'));
     }
     
     /**

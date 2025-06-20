@@ -303,6 +303,53 @@
             .order-details {
                 grid-template-columns: 1fr;
             }
+            
+            .ship-container {
+                left: -60px !important;
+                width: 60px !important;
+            }
+            
+            .cruise-ship-moving svg {
+                width: 45px !important;
+                height: 45px !important;
+            }
+        }
+        
+        /* Enhanced Ship Animations */
+        .cruise-ship-moving {
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+        }
+        
+        .ship-svg {
+            animation: shipFloat 4s ease-in-out infinite;
+        }
+        
+        @keyframes shipFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            25% { transform: translateY(-2px) rotate(1deg); }
+            50% { transform: translateY(0px) rotate(0deg); }
+            75% { transform: translateY(-1px) rotate(-1deg); }
+        }
+        
+        /* Ship Trail Animation */
+        .ship-trail {
+            animation: trailShimmer 3s ease-in-out infinite;
+        }
+        
+        @keyframes trailShimmer {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 0.8; }
+        }
+        
+        /* Status Update Animation */
+        .status-step.completed {
+            animation: completedPulse 2s ease-in-out;
+        }
+        
+        @keyframes completedPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); box-shadow: 0 0 20px rgba(34, 197, 94, 0.4); }
+            100% { transform: scale(1); }
         }
     </style>
 </head>
@@ -451,33 +498,95 @@
                         </polygon>
                     </svg>
                 </div>
-                  @php
-                    // Definisikan tahapan pengiriman berdasarkan status order
-                    // Default ke step 1 (proses) jika pesanan sudah dibayar
-                    $currentStep = 1; // Mulai dari step 1 karena pesanan sudah paid
-                    $shippingStatus = $order->shipping_status ?? 'processing';
+                
+                <!-- Moving Ship Animation Based on Status -->
+                <div class="ship-container" style="position: absolute; left: -80px; width: 80px; height: 100%; z-index: 10;">
+                    @php
+                        // Definisikan tahapan pengiriman berdasarkan status order
+                        // Default ke step 1 (proses) jika pesanan sudah dibayar
+                        $currentStep = 1; // Mulai dari step 1 karena pesanan sudah paid
+                        $shippingStatus = $order->shipping_status ?? 'processing';
+                        
+                        switch($shippingStatus) {
+                            case 'pending':
+                                $currentStep = 0;
+                                $shipPosition = 0;
+                                break;
+                            case 'processing':
+                                $currentStep = 1;
+                                $shipPosition = 20;
+                                break;
+                            case 'shipped':
+                                $currentStep = 2;
+                                $shipPosition = 40;
+                                break;
+                            case 'in_transit':
+                                $currentStep = 3;
+                                $shipPosition = 70;
+                                break;
+                            case 'delivered':
+                                $currentStep = 4;
+                                $shipPosition = 95;
+                                break;
+                            default:
+                                $currentStep = 1; // Default untuk paid orders
+                                $shipPosition = 20;
+                                break;
+                        }
+                    @endphp
                     
-                    switch($shippingStatus) {
-                        case 'pending':
-                            $currentStep = 0;
-                            break;
-                        case 'processing':
-                            $currentStep = 1;
-                            break;
-                        case 'shipped':
-                            $currentStep = 2;
-                            break;
-                        case 'in_transit':
-                            $currentStep = 3;
-                            break;
-                        case 'delivered':
-                            $currentStep = 4;
-                            break;
-                        default:
-                            $currentStep = 1; // Default untuk paid orders
-                            break;
-                    }
+                    <div class="cruise-ship-moving" style="
+                        position: absolute;
+                        top: {{ $shipPosition }}%;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        transition: top 2s ease-in-out;
+                        z-index: 15;
+                    ">
+                        <svg width="60" height="60" viewBox="0 0 100 100" class="ship-svg">
+                            <!-- Ship Body -->
+                            <ellipse cx="50" cy="70" rx="35" ry="12" fill="#1e40af" opacity="0.9"/>
+                            <!-- Ship Hull -->
+                            <rect x="20" y="60" width="60" height="20" rx="8" fill="#2563eb"/>
+                            <!-- Ship Deck -->
+                            <rect x="25" y="55" width="50" height="8" rx="4" fill="#3b82f6"/>
+                            <!-- Mast -->
+                            <rect x="48" y="30" width="4" height="30" fill="#6b7280"/>
+                            <!-- Sail -->
+                            <path d="M30 35 Q 35 25, 45 35 L 45 50 L 30 50 Z" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+                            <!-- Flag -->
+                            <rect x="52" y="30" width="12" height="8" fill="#dc2626"/>
+                            <!-- Wake/Water Effect -->
+                            <ellipse cx="50" cy="80" rx="40" ry="8" fill="#60a5fa" opacity="0.4">
+                                <animate attributeName="rx" values="40;45;40" dur="3s" repeatCount="indefinite"/>
+                                <animate attributeName="opacity" values="0.4;0.6;0.4" dur="3s" repeatCount="indefinite"/>
+                            </ellipse>
+                            
+                            <!-- Floating Animation -->
+                            <animateTransform 
+                                attributeName="transform" 
+                                type="translate" 
+                                values="0,0; 2,-1; 0,0; -2,1; 0,0" 
+                                dur="4s" 
+                                repeatCount="indefinite"/>
+                        </svg>
+                    </div>
                     
+                    <!-- Ship Trail/Wake -->
+                    <div class="ship-trail" style="
+                        position: absolute;
+                        top: 0;
+                        left: 50%;
+                        width: 2px;
+                        height: {{ $shipPosition }}%;
+                        background: linear-gradient(to bottom, transparent, #60a5fa, #3b82f6);
+                        transform: translateX(-50%);
+                        opacity: 0.6;
+                        transition: height 2s ease-in-out;
+                    "></div>
+                </div>
+                
+                @php
                     $steps = [
                         [
                             'title' => '🏭 Order Diterima di Gudang',

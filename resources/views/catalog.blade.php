@@ -9,7 +9,35 @@
     <title>Catalog | TriadGO</title>
     @vite('resources/css/app.css')
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2563eb',
+                        accent: '#f97316',
+                        darkblue: '#1e3a8a',
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 3s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': {
+                                transform: 'translateY(0)'
+                            },
+                            '50%': {
+                                transform: 'translateY(-10px)'
+                            },
+                        }
+                    }
+                },
+            },
+        }
 
+        tailwind.scan()
+    </script>
     <!-- Dark Mode Script - SAMA seperti importir -->
     <script>
         if (localStorage.getItem('darkMode') === 'enabled') {

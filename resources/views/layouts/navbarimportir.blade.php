@@ -13,7 +13,7 @@
                 <a href="{{ route('importir') }}" class="hover:text-orange-500 transition nav-gradient-move">Home</a>
                 <a href="{{ route('catalog') }}" class="hover:text-orange-500 transition nav-gradient-move">Catalog</a>
                 <a href="{{ route('requestimportir') }}" class="hover:text-orange-500 transition nav-gradient-move">Request</a>
-                <a href="{{ route('transactions.index') }}" class="hover:text-orange-500 transition nav-gradient-move">Transaksi</a>
+                <a href="{{ route('transactions.index') }}" class="hover:text-orange-500 transition nav-gradient-move">Transactions</a>
                 <a href="{{ route('user.profile') }}" class="hover:text-orange-500 transition nav-gradient-move flex items-center">
                 Account
                 <img src="{{ Auth::user()->profile_picture ? asset(Auth::user()->profile_picture) : 'https://randomuser.me/api/portraits/men/' . (Auth::user()->user_id % 100) . '.jpg' }}" 

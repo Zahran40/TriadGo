@@ -8,17 +8,66 @@
     @vite('resources/css/app.css')
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2563eb',
+                        accent: '#f97316',
+                        darkblue: '#1e3a8a',
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 3s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': {
+                                transform: 'translateY(0)'
+                            },
+                            '50%': {
+                                transform: 'translateY(-10px)'
+                            },
+                        }
+                    }
+                },
+            },
+        }
+
+        tailwind.scan()
+    </script>
+
+    <style>
+        /* SweetAlert2 Dark Mode Fix*/
+        .swal2-popup .swal2-title {
+            color: #1f2937 !important;
+        }
+
+        .swal2-popup .swal2-html-container {
+            color: #374151 !important;
+        }
+
+        .swal2-popup.swal2-dark .swal2-title {
+            color: #ffffff !important;
+        }
+
+        .swal2-popup.swal2-dark .swal2-html-container {
+            color: #d1d5db !important;
+        }
+    </style>
 </head>
-<body class="bg-gray-50 dark:bg-gray-900">
+<body class="bg-gray-50">
     <div class="min-h-screen">
         @include('layouts.navbarimportir')
 
         <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
             <!-- Request Form -->
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-6">
-                <div class="p-6 border-b border-gray-200 dark:border-gray-700">
-                    <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Request Produk Baru</h2>
-                    <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+            <div class="bg-whiteoverflow-hidden shadow-sm sm:rounded-lg mb-6">
+                <div class="p-6 border-b border-gray-200">
+                    <h2 class="text-lg font-semibold text-blue-600">Request Produk Baru</h2>
+                    <p class="text-sm text-blue-600 mt-1">
                         Tidak menemukan produk yang Anda cari? Kirim request kepada eksportir.
                     </p>
                 </div>
@@ -26,14 +75,14 @@
                     <form id="requestForm" action="{{ route('importir.request.store') }}" method="POST">
                         @csrf
                         <div class="mb-4">
-                            <label for="request_text" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            <label for="request_text" class="block text-sm font-medium text-blue-700 mb-2">
                                 Deskripsi Produk yang Diminta
                             </label>
                             <textarea 
                                 id="request_text" 
                                 name="request_text" 
                                 rows="4" 
-                                class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+                                class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="Contoh: Saya mencari kopi arabika kualitas premium dari Indonesia dengan volume minimum 500kg..."
                                 required
                             ></textarea>
@@ -52,23 +101,23 @@
             </div>
 
             <!-- Pending Requests -->
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-6">
-                <div class="p-6 border-b border-gray-200 dark:border-gray-700">
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Request Pending</h3>
+            <div class="product overflow-hidden shadow-sm sm:rounded-lg mb-6">
+                <div class="p-6 border-b border-gray-200">
+                    <h3 class="text-lg font-semibold text-blue-600">Request Pending</h3>
                 </div>
                 <div class="p-6">
                     @if(isset($pendingRequests) && $pendingRequests->count() > 0)
                         <div class="space-y-4">
                             @foreach($pendingRequests as $request)
-                                <div class="border border-gray-200 dark:border-gray-600 rounded-lg p-4">
+                                <div class="border border-gray-200 rounded-lg p-4">
                                     <div class="flex justify-between items-start">
                                         <div class="flex-1">
-                                            <p class="text-gray-900 dark:text-white">{{ $request->request_text }}</p>
-                                            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                                            <p class="text-blue-600">{{ $request->request_text }}</p>
+                                            <p class="text-sm text-blue-500 mt-1">
                                                 Dikirim: {{ $request->created_at->format('d M Y H:i') }}
                                             </p>
                                         </div>
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
                                             Pending
                                         </span>
                                     </div>
@@ -76,37 +125,37 @@
                             @endforeach
                         </div>
                     @else
-                        <p class="text-gray-500 dark:text-gray-400">Tidak ada request pending.</p>
+                        <p class="text-blue-500">Tidak ada request pending.</p>
                     @endif
                 </div>
             </div>
 
             <!-- Approved Requests -->
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 border-b border-gray-200 dark:border-gray-700">
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Request Disetujui</h3>
+            <div class="product overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 border-b border-gray-200">
+                    <h3 class="text-lg font-semibold text-blue-600">Request Disetujui</h3>
                 </div>
                 <div class="p-6">
                     @if(isset($approvedRequests) && $approvedRequests->count() > 0)
                         <div class="space-y-4">
                             @foreach($approvedRequests as $request)
-                                <div class="border border-green-200 dark:border-green-600 rounded-lg p-4 bg-green-50 dark:bg-green-900/20">
+                                <div class="border border-green-200 rounded-lg p-4 bg-green-50"> 
                                     <div class="flex justify-between items-start">
                                         <div class="flex-1">
-                                            <p class="text-gray-900 dark:text-white">{{ $request->request_text }}</p>
-                                            <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">
+                                            <p class="text-blue-90">{{ $request->request_text }}</p>
+                                            <p class="text-sm text-blue-600 mt-1">
                                                 Disetujui oleh: <span class="font-medium">{{ $request->eksportir->name ?? 'Eksportir' }}</span>
                                             </p>
-                                            <p class="text-sm text-gray-500 dark:text-gray-400">
+                                            <p class="text-sm text-blue-500">
                                                 Disetujui: {{ $request->approved_at->format('d M Y H:i') }}
                                             </p>
                                             @if($request->product)
-                                                <p class="text-sm text-blue-600 dark:text-blue-400 mt-1">
+                                                <p class="text-sm text-blue-600 mt-1">
                                                     Produk terkait: {{ $request->product->product_name }}
                                                 </p>
                                             @endif
                                         </div>
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
                                             Disetujui
                                         </span>
                                     </div>
@@ -114,7 +163,7 @@
                             @endforeach
                         </div>
                     @else
-                        <p class="text-gray-500 dark:text-gray-400">Belum ada request yang disetujui.</p>
+                        <p class="text-blue-500">Belum ada request yang disetujui.</p>
                     @endif
                 </div>
             </div>
@@ -314,8 +363,8 @@
             });
         }
 
-        // SweetAlert2 Logout Desktop - PERBAIKI dengan dark detection
-        document.getElementById('logoutBtn')?.addEventListener('click', function(e) {
+        // SweetAlert2 Logout Desktop
+        document.getElementById('logoutBtn')?.addEventListener('click', function (e) {
             const isDark = document.documentElement.classList.contains('dark');
 
             Swal.fire({
@@ -338,8 +387,8 @@
             });
         });
 
-        // SweetAlert2 Logout Mobile - PERBAIKI dengan dark detection
-        document.getElementById('logoutBtnMobile')?.addEventListener('click', function(e) {
+        // SweetAlert2 Logout Mobile
+        document.getElementById('logoutBtnMobile')?.addEventListener('click', function (e) {
             const isDark = document.documentElement.classList.contains('dark');
 
             Swal.fire({
@@ -361,6 +410,7 @@
                 }
             });
         });
+
         // Optional: SweetAlert2 for success feedback
         document.getElementById('requestForm').addEventListener('submit', function(e) {
             // Uncomment below if you want to show alert before submit

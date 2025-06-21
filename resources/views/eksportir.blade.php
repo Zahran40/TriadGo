@@ -37,14 +37,34 @@
 
         tailwind.scan()
     </script>
+
+    <style>
+        /* SweetAlert2 Dark Mode Fix */
+        .swal2-popup .swal2-title {
+            color: #1f2937 !important;
+        }
+
+        .swal2-popup .swal2-html-container {
+            color: #374151 !important;
+        }
+
+        .swal2-popup.swal2-dark .swal2-title {
+            color: #ffffff !important;
+        }
+
+        .swal2-popup.swal2-dark .swal2-html-container {
+            color: #d1d5db !important;
+        }
+    </style>
 </head>
 
 <body class="home-bg min-h-screen flex flex-col" id="home">
     @include('layouts.navbarekspor')
 
     <section class="flex-grow container mx-auto px-6 md:px-12 py-16 flex flex-col md:flex-row items-center">
-        <div class="md:w-1/2 text-center md:text-left">
-            <h2 class="text-4xl font-extrabold text-blue-900 mb-6 leading-tight">
+        <div class="md:w-1/2 text-center md:text-left ml-12">
+            <h2 class="text-4xl font-extrabold text-blue-900 mb-6 leading-tight fade-in-up"
+                style="animation-delay:0.4s">
                 <span class="text-amber-500">Hello Exporter!</span> <br>Welcome to TriadGO Export Hub
             </h2>
 
@@ -52,7 +72,7 @@
                 Expand your business globally with our comprehensive export solutions. We provide the platform and tools
                 you need to connect with international buyers and streamline your export operations.
             </p>
-            <div class="flex flex-col sm:flex-row gap-4">
+            <div class="flex flex-col sm:flex-row gap-4 fade-in-up" style="animation-delay:0.4s;">
                 <a href="{{ route('formeksportir') }}"
                     class="inline-block bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-8 rounded-md shadow-md transition pulse-on-hover glow-on-hover">
                     Upload Your Products
@@ -61,14 +81,11 @@
                     class="inline-block bg-blue-700 hover:bg-blue-600 text-white font-bold py-3 px-8 rounded-md shadow-md transition pulse-on-hover">
                     My Product
                 </a>
-                <a href="{{ route('eksportir.transactions.index') }}"
-                    class="inline-block bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-md shadow-md transition pulse-on-hover">
-                    Manage Orders
-                </a>
             </div>
         </div>
         <div class="md:w-1/2 mt-10 md:mt-0">
-            <img src="eksportir.png" alt="Export Illustration" class="floating-img w-full max-w-lg" />
+            <img src="https://acetforafrica.org/wp-content/uploads/2023/03/DEPTH-world_letter-E.png"
+                alt="Export Illustration" class="floating-img w-full max-w-lg" />
         </div>
     </section>
 
@@ -85,14 +102,16 @@
                                 d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
                         </svg>
                     </div>
-                    <h4 class="text-2xl font-semibold text-blue-800 mb-2 text-center md:text-left">Global Market Access
+                    <h4 class="text-2xl font-semibold text-blue-800 mb-2 text-center md:text-left">Importer Requests
                     </h4>
                     <p class="text-blue-700 text-center md:text-left">
-                        Connect with buyers from all SEA countries through our extensive
-                        international network.
+                        Connect with international buyers looking for your products. Our platform helps you find the
+                        right
+                        import requests to grow your business.
                     </p>
-                    <a href="#" class="text-blue-800 font-semibold inline-flex items-center mt-4">
-                        Learn more
+                    <a href="{{ route('requesteksportir') }}"
+                        class="text-blue-800 font-semibold inline-flex items-center mt-4">
+                        Go
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
@@ -113,8 +132,9 @@
                     <p class="text-blue-700 text-center md:text-left">
                         Our escrow system ensures safe and reliable international payments for your exports.
                     </p>
-                    <a href="#" class="text-blue-800 font-semibold inline-flex items-center mt-4">
-                        Learn more
+                    <a href="{{ route('eksportir.transactions.index') }}"
+                        class="text-blue-800 font-semibold inline-flex items-center mt-4">
+                        Go
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
@@ -132,13 +152,16 @@
                                 d="M12 12h3l3 9m-3-9v-7a7 7 0 00-14 0v7" />
                         </svg>
                     </div>
-                    <h4 class="text-2xl font-semibold text-blue-800 mb-2 text-center md:text-left">Logistics Support
+                    <h4 class="text-2xl font-semibold text-blue-800 mb-2 text-center md:text-left">Product Organize
                     </h4>
                     <p class="text-blue-700 text-center md:text-left">
-                        End-to-end logistics solutions including shipping, customs clearance, and documentation.
+                        Easily manage and organize your export products. Our platform provides tools to help you keep
+                        track
+                        of your inventory and product details.
                     </p>
-                    <a href="#" class="text-blue-800 font-semibold inline-flex items-center mt-4">
-                        Learn more
+                    <a href="{{ route('myproduct') }}"
+                        class="text-blue-800 font-semibold inline-flex items-center mt-4">
+                        Go
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
@@ -148,7 +171,7 @@
             </div>
         </div>
     </section>
-    
+
     <!-- Comment dari Database -->
     <section id="find-buyers" class="container mx-auto px-6 py-16 slide-in">
         <h2 class="text-3xl font-bold text-blue-900 mb-6 text-center">Find Buyers Response</h2>
@@ -157,7 +180,7 @@
             @if(isset($recentComments) && $recentComments->count() > 0)
                 <div class="comment grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     @foreach($recentComments as $comment)
-                        <div class="buyer-card shadow-md rounded-lg overflow-hidden hover:shadow-lg transition">
+                        <div class="p shadow-md rounded-lg overflow-hidden hover:shadow-lg transition">
                             <div class="p-4">
                                 <div class="flex items-center mb-4">
                                     @if($comment->user->profile_picture)
@@ -396,6 +419,8 @@
 
         // SweetAlert2 Logout Desktop
         document.getElementById('logoutBtn')?.addEventListener('click', function (e) {
+            const isDark = document.documentElement.classList.contains('dark');
+
             Swal.fire({
                 title: 'Logout?',
                 text: "Are you sure you want to logout?",
@@ -404,12 +429,10 @@
                 confirmButtonColor: '#d33',
                 cancelButtonColor: '#eea133',
                 confirmButtonText: 'Logout',
-                customClass: {
-                    popup: 'bg-white dark:bg-red-600',
-                    title: 'text-black dark:text-white',
-                    content: 'text-black dark:text-white',
-                    confirmButton: 'text-white',
-                    cancelButton: 'text-white'
+                background: isDark ? '#374151' : '#ffffff',
+                didOpen: () => {
+                    const popup = Swal.getPopup();
+                    if (isDark) popup.classList.add('swal2-dark');
                 }
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -420,6 +443,8 @@
 
         // SweetAlert2 Logout Mobile
         document.getElementById('logoutBtnMobile')?.addEventListener('click', function (e) {
+            const isDark = document.documentElement.classList.contains('dark');
+
             Swal.fire({
                 title: 'Logout?',
                 text: "Are you sure you want to logout?",
@@ -428,12 +453,10 @@
                 confirmButtonColor: '#d33',
                 cancelButtonColor: '#eea133',
                 confirmButtonText: 'Logout',
-                customClass: {
-                    popup: 'bg-white dark:bg-red-600',
-                    title: 'text-black dark:text-white',
-                    content: 'text-black dark:text-white',
-                    confirmButton: 'text-white',
-                    cancelButton: 'text-white'
+                background: isDark ? '#374151' : '#ffffff',
+                didOpen: () => {
+                    const popup = Swal.getPopup();
+                    if (isDark) popup.classList.add('swal2-dark');
                 }
             }).then((result) => {
                 if (result.isConfirmed) {

@@ -556,6 +556,41 @@
 
     <!-- JavaScript Code -->
     <script>
+        const isDarkMode = document.documentElement.classList.contains('dark');
+
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const darkModeThumb = document.getElementById('darkModeThumb');
+        const htmlElement = document.documentElement;
+
+        function updateDarkModeSwitch() {
+            if (htmlElement.classList.contains('dark')) {
+                darkModeToggle.checked = true;
+                darkModeThumb.style.transform = 'translateX(1.25rem)';
+                darkModeThumb.style.backgroundColor = '#003355';
+                darkModeThumb.style.borderColor = '#003355';
+            } else {
+                darkModeToggle.checked = false;
+                darkModeThumb.style.transform = 'translateX(0)';
+                darkModeThumb.style.backgroundColor = '#fff';
+                darkModeThumb.style.borderColor = '#ccc';
+            }
+        }
+
+        if (localStorage.getItem('darkMode') === 'enabled') {
+            htmlElement.classList.add('dark');
+        }
+
+        updateDarkModeSwitch();
+
+        darkModeToggle.addEventListener('change', () => {
+            htmlElement.classList.toggle('dark');
+            if (htmlElement.classList.contains('dark')) {
+                localStorage.setItem('darkMode', 'enabled');
+            } else {
+                localStorage.setItem('darkMode', 'disabled');
+            }
+            updateDarkModeSwitch();
+        });
         // Check if user is authenticated before showing checkout options
         document.addEventListener('DOMContentLoaded', function() {
             console.log('DOM Content Loaded');

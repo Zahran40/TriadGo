@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Daftar Transaksi')
+@section('title', 'Daftar TransAction')
 
 @section('content')
 <script>
@@ -55,11 +55,11 @@
     <!-- Header -->
     <div class="flex justify-between items-center mb-8">
         <div>
-            <h1 class="text-3xl font-bold text-blue-800">Daftar Transaksi</h1>
-            <p class="text-blue-600 mt-2">Kelola dan pantau semua pesanan Anda</p>
+            <h1 class="text-3xl font-bold text-blue-800">Transaction List</h1>
+            <p class="text-blue-600 mt-2">Manage and monitor all your orders</p>
         </div>
         <div class="flex items-center space-x-4">
-            <span class="text-sm text-blue-500">Total: {{ $statusCounts['all'] }} pesanan</span>
+            <span class="text-sm text-blue-500">Total: {{ $statusCounts['all'] }} order</span>
         </div>
     </div>
 
@@ -69,7 +69,7 @@
            class="product p-4 rounded-lg shadow-sm border-2 {{ request('status') == 'all' || !request('status') ? 'border-blue-500' : 'border-gray-200' }} hover:border-blue-300 transition-colors">
             <div class="text-center">
                 <div class="text-2xl font-bold text-blue-800">{{ $statusCounts['all'] }}</div>
-                <div class="text-sm text-blue-600">Semua</div>
+                <div class="text-sm text-blue-600">All</div>
             </div>
         </a>
         
@@ -77,7 +77,7 @@
            class="product p-4 rounded-lg shadow-sm border-2 {{ request('status') == 'pending' ? 'border-orange-500' : 'border-gray-200' }} hover:border-orange-300 transition-colors">
             <div class="text-center">
                 <div class="text-2xl font-bold text-orange-600">{{ $statusCounts['pending'] }}</div>
-                <div class="text-sm text-blue-600">Menunggu</div>
+                <div class="text-sm text-blue-600">Pending</div>
             </div>
         </a>
         
@@ -85,7 +85,7 @@
            class="product p-4 rounded-lg shadow-sm border-2 {{ request('status') == 'paid' ? 'border-green-500' : 'border-gray-200' }} hover:border-green-300 transition-colors">
             <div class="text-center">
                 <div class="text-2xl font-bold text-green-600">{{ $statusCounts['paid'] }}</div>
-                <div class="text-sm text-blue-600">Dibayar</div>
+                <div class="text-sm text-blue-600">Paid</div>
             </div>
         </a>
         
@@ -93,7 +93,7 @@
            class="product p-4 rounded-lg shadow-sm border-2 {{ request('status') == 'failed' ? 'border-red-500' : 'border-gray-200' }} hover:border-red-300 transition-colors">
             <div class="text-center">
                 <div class="text-2xl font-bold text-red-600">{{ $statusCounts['failed'] }}</div>
-                <div class="text-sm text-blue-600">Gagal</div>
+                <div class="text-sm text-blue-600">Failed</div>
             </div>
         </a>
         
@@ -101,7 +101,7 @@
            class="product p-4 rounded-lg shadow-sm border-2 {{ request('status') == 'cancelled' ? 'border-gray-500' : 'border-gray-200' }} hover:border-gray-300 transition-colors">
             <div class="text-center">
                 <div class="text-2xl font-bold text-blue-600">{{ $statusCounts['cancelled'] }}</div>
-                <div class="text-sm text-blue-600">Dibatalkan</div>
+                <div class="text-sm text-blue-600">Canceled</div>
             </div>
         </a>
         
@@ -109,7 +109,7 @@
            class="product p-4 rounded-lg shadow-sm border-2 {{ request('status') == 'expired' ? 'border-purple-500' : 'border-gray-200' }} hover:border-purple-300 transition-colors">
             <div class="text-center">
                 <div class="text-2xl font-bold text-purple-600">{{ $statusCounts['expired'] }}</div>
-                <div class="text-sm text-blue-600">Kedaluwarsa</div>
+                <div class="text-sm text-blue-600">Expired</div>
             </div>
         </a>
     </div>
@@ -122,7 +122,7 @@
                 <input type="text" 
                        name="search" 
                        value="{{ request('search') }}"
-                       placeholder="Cari berdasarkan kode pesanan atau nama..."
+                       placeholder="Search by Order ID or Customer Name..."
                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
             </div>
             <div class="flex gap-2">
@@ -146,10 +146,10 @@
                     <thead class="product">
                         <tr>
                             <th class="px-6 py-4 text-left text-xs font-medium text-blue-500 uppercase tracking-wider">
-                                Kode Pesanan
+                                Order Code
                             </th>
                             <th class="px-6 py-4 text-left text-xs font-medium text-blue-500 uppercase tracking-wider">
-                                Tanggal
+                                Date
                             </th>
                             <th class="px-6 py-4 text-left text-xs font-medium text-blue-500 uppercase tracking-wider">
                                 Total
@@ -158,10 +158,10 @@
                                 Status
                             </th>
                             <th class="px-6 py-4 text-left text-xs font-medium text-blue-500 uppercase tracking-wider">
-                                Pembayaran
+                                Payment
                             </th>
                             <th class="px-6 py-4 text-left text-xs font-medium text-blue-500 uppercase tracking-wider">
-                                Aksi
+                                Action
                             </th>
                         </tr>
                     </thead>
@@ -190,11 +190,11 @@
                                         'expired' => 'bg-purple-100 text-purple-800'
                                     ];
                                     $statusLabels = [
-                                        'pending' => 'Menunggu',
-                                        'paid' => 'Dibayar',
-                                        'failed' => 'Gagal',
-                                        'cancelled' => 'Dibatalkan',
-                                        'expired' => 'Kedaluwarsa'
+                                        'pending' => 'Pending',
+                                        'paid' => 'Paid',
+                                        'failed' => 'Failed',
+                                        'cancelled' => 'Canceled',
+                                        'expired' => 'Expired'
                                     ];
                                 @endphp
                                 <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full {{ $statusColors[$order->status] ?? 'bg-gray-100 text-blue-800' }}">
@@ -206,7 +206,7 @@
                                 @if($order->payment_completed_at)
                                     <div class="text-sm text-blue-500">{{ $order->payment_completed_at->format('d M Y H:i') }}</div>
                                 @else
-                                    <div class="text-sm text-blue-500">Belum dibayar</div>
+                                    <div class="text-sm text-blue-500">Pending</div>
                                 @endif
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">

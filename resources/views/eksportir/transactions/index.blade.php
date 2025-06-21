@@ -66,20 +66,20 @@
         <!-- Header -->
         <div class="flex flex-col lg:flex-row lg:justify-between lg:items-start mb-8">
             <div>
-                <h1 class="text-3xl font-bold text-blue-800 mb-2">Kelola Transaksi</h1>
-                <p class="text-blue-600">Kelola status pembayaran dan pengiriman produk yang dipesan importir</p>
+                <h1 class="text-3xl font-bold text-blue-800 mb-2">Manage Transactions</h1>
+                <p class="text-blue-600">Manage payment and delivery status of products ordered by importers</p>
             </div>
         </div>
 
         <!-- Payment Status Filter Cards -->
         <div class="mb-6">
-            <h3 class="text-lg font-semibold text-blue-700 mb-4">Filter Status Pembayaran</h3>
+            <h3 class="text-lg font-semibold text-blue-700 mb-4">Filter Payment Status</h3>
             <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
                 <a href="{{ route('eksportir.transactions.index') }}"
                     class="product rounded-lg shadow-sm p-4 border-l-4 border-blue-500 hover:shadow-md transition-shadow {{ !request('payment_status') || request('payment_status') === 'all' ? 'ring-2 ring-blue-200' : '' }}">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-sm font-medium text-blue-600">Semua</p>
+                            <p class="text-sm font-medium text-blue-600">All</p>
                             <p class="text-2xl font-bold text-blue-600">{{ $paymentStatusCounts['all'] ?? 0 }}</p>
                         </div>
                         <div class="p-2 bg-blue-100 rounded-lg">
@@ -144,13 +144,13 @@
 
         <!-- Shipping Status Filter Cards -->
         <div class="mb-6">
-            <h3 class="text-lg font-semibold text-blue-700 mb-4">Filter Status Pengiriman</h3>
+            <h3 class="text-lg font-semibold text-blue-700 mb-4">Filter Shipping Status</h3>
             <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
                 <a href="{{ route('eksportir.transactions.index') }}"
                     class="product rounded-lg shadow-sm p-4 border-l-4 border-blue-500 hover:shadow-md transition-shadow {{ !request('shipping_status') || request('shipping_status') === 'all' ? 'ring-2 ring-blue-200' : '' }}">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-sm font-medium text-blue-600">Semua</p>
+                            <p class="text-sm font-medium text-blue-600">All</p>
                             <p class="text-2xl font-bold text-blue-600">{{ $shippingStatusCounts['all'] ?? 0 }}</p>
                         </div>
                         <div class="p-2 bg-blue-100 rounded-lg">
@@ -163,7 +163,7 @@
                     class="product rounded-lg shadow-sm p-4 border-l-4 border-yellow-500 hover:shadow-md transition-shadow {{ request('shipping_status') === 'processing' ? 'ring-2 ring-yellow-200' : '' }}">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-sm font-medium text-blue-600">Diproses</p>
+                            <p class="text-sm font-medium text-blue-600">Pending</p>
                             <p class="text-2xl font-bold text-blue-600">{{ $shippingStatusCounts['processing'] ?? 0 }}
                             </p>
                         </div>
@@ -177,7 +177,7 @@
                     class="product rounded-lg shadow-sm p-4 border-l-4 border-purple-500 hover:shadow-md transition-shadow {{ request('shipping_status') === 'shipped' ? 'ring-2 ring-purple-200' : '' }}">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-sm font-medium text-blue-600">Dikirim</p>
+                            <p class="text-sm font-medium text-blue-600">Sent</p>
                             <p class="text-2xl font-bold text-blue-600">{{ $shippingStatusCounts['shipped'] ?? 0 }}</p>
                         </div>
                         <div class="p-2 bg-purple-100 rounded-lg">
@@ -190,7 +190,7 @@
                     class="product rounded-lg shadow-sm p-4 border-l-4 border-indigo-500 hover:shadow-md transition-shadow {{ request('shipping_status') === 'in_transit' ? 'ring-2 ring-indigo-200' : '' }}">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-sm font-medium text-blue-600">Dalam Perjalanan</p>
+                            <p class="text-sm font-medium text-blue-600">On The Way</p>
                             <p class="text-2xl font-bold text-blue-600">{{ $shippingStatusCounts['in_transit'] ?? 0 }}
                             </p>
                         </div>
@@ -204,7 +204,7 @@
                     class="product rounded-lg shadow-sm p-4 border-l-4 border-green-500 hover:shadow-md transition-shadow {{ request('shipping_status') === 'delivered' ? 'ring-2 ring-green-200' : '' }}">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-sm font-medium text-blue-600">Terkirim</p>
+                            <p class="text-sm font-medium text-blue-600">Sent</p>
                             <p class="text-2xl font-bold text-blue-600">{{ $shippingStatusCounts['delivered'] ?? 0 }}
                             </p>
                         </div>
@@ -221,7 +221,7 @@
             <form method="GET" class="flex flex-col md:flex-row gap-4">
                 <div class="flex-1">
                     <input type="text" name="search" value="{{ request('search') }}"
-                        placeholder="Cari berdasarkan Order ID atau nama customer..."
+                        placeholder="Search by Order ID or Customer Name..."
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                 </div>
                 <div class="flex gap-2">
@@ -252,10 +252,10 @@
 
         <!-- Orders Table -->
         @if($orders->count() > 0)
-            <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+            <div class="product rounded-lg shadow-sm overflow-hidden">
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-50">
+                        <thead class="">
                             <tr>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-blue-500 uppercase tracking-wider">
                                     Order</th>
@@ -264,16 +264,16 @@
                                 <th class="px-6 py-3 text-left text-xs font-medium text-blue-500 uppercase tracking-wider">
                                     Total</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-blue-500 uppercase tracking-wider">
-                                    Status Pembayaran</th>
+                                    Payment Status</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-blue-500 uppercase tracking-wider">
-                                    Status Pengiriman</th>
+                                    Shipping Status</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-blue-500 uppercase tracking-wider">
-                                    Tanggal</th>
+                                    Date</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-blue-500 uppercase tracking-wider">
-                                    Aksi</th>
+                                    Action</th>
                             </tr>
                         </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
+                        <body class="product divide-y divide-gray-200">
                             @foreach($orders as $order)
                                 @php
                                     // Only show if this order contains eksportir's products
@@ -344,10 +344,10 @@
                                                     'delivered' => 'bg-green-100 text-green-800 border-green-300',
                                                 ];
                                                 $shippingStatusLabels = [
-                                                    'processing' => 'Diproses',
-                                                    'shipped' => 'Dikirim',
-                                                    'in_transit' => 'Dalam Perjalanan',
-                                                    'delivered' => 'Terkirim',
+                                                    'processing' => 'Pending',
+                                                    'shipped' => 'Sent',
+                                                    'in_transit' => 'On The Way',
+                                                    'delivered' => 'Sent',
                                                 ];
                                                 $shippingStatusIcons = [
                                                     'processing' => '🔄',
@@ -389,7 +389,7 @@
                 </div>
 
                 <!-- Pagination -->
-                <div class="bg-white px-4 py-3 border-t border-gray-200 sm:px-6">
+                <div class="product px-4 py-3 border-t border-gray-200 sm:px-6">
                     {{ $orders->appends(request()->query())->links() }}
                 </div>
             </div>

@@ -202,6 +202,23 @@
             background-color: #2d3748 !important;
             border: 1px solid #4a5568 !important;
         }
+
+        /* SweetAlert2 Dark Mode Fix */
+        .swal2-popup .swal2-title {
+            color: #1f2937 !important;
+        }
+
+        .swal2-popup .swal2-html-container {
+            color: #374151 !important;
+        }
+
+        .swal2-popup.swal2-dark .swal2-title {
+            color: #ffffff !important;
+        }
+
+        .swal2-popup.swal2-dark .swal2-html-container {
+            color: #d1d5db !important;
+        }
     </style>
 </head>
 
@@ -615,6 +632,54 @@
                     content: 'text-black dark:text-white',
                     confirmButton: 'text-white',
                     cancelButton: 'text-white'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('logoutForm').submit();
+                }
+            });
+        });
+
+        // SweetAlert2 Logout Desktop
+        document.getElementById('logoutBtn')?.addEventListener('click', function (e) {
+            const isDark = document.documentElement.classList.contains('dark');
+
+            Swal.fire({
+                title: 'Logout?',
+                text: "Are you sure you want to logout?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#eea133',
+                confirmButtonText: 'Logout',
+                background: isDark ? '#374151' : '#ffffff',
+                didOpen: () => {
+                    const popup = Swal.getPopup();
+                    if (isDark) popup.classList.add('swal2-dark');
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('logoutForm').submit();
+                }
+            });
+        });
+
+        // SweetAlert2 Logout Mobile
+        document.getElementById('logoutBtnMobile')?.addEventListener('click', function (e) {
+            const isDark = document.documentElement.classList.contains('dark');
+
+            Swal.fire({
+                title: 'Logout?',
+                text: "Are you sure you want to logout?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#eea133',
+                confirmButtonText: 'Logout',
+                background: isDark ? '#374151' : '#ffffff',
+                didOpen: () => {
+                    const popup = Swal.getPopup();
+                    if (isDark) popup.classList.add('swal2-dark');
                 }
             }).then((result) => {
                 if (result.isConfirmed) {

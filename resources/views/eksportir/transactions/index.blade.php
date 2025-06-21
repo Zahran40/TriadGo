@@ -231,7 +231,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                         </svg>
-                        Cari
+                        Search
                     </button>
                     @if(request()->hasAny(['search', 'shipping_status']))
                         <a href="{{ route('eksportir.transactions.index') }}"
@@ -397,14 +397,14 @@
             <div class="text-center py-12">
                 <div class="text-blue-500 text-lg mb-4">
                     @if(request('search'))
-                        Tidak ada transaksi yang ditemukan untuk pencarian "{{ request('search') }}".
+                        No Transaction Found "{{ request('search') }}".
                     @elseif(request('shipping_status'))
-                        Tidak ada transaksi dengan status "{{ request('shipping_status') }}".
+                        No Transaction With Status "{{ request('shipping_status') }}".
                     @else
-                         untuk produk Anda.
+                         Your Product
                     @endif
                 </div>
-                <p class="text-blue-400">Transaksi akan muncul di sini setelah importir membeli produk Anda.</p>
+                <p class="text-blue-400">Transactions will appear here after the importer purchases your product.</p>
             </div>
         @endif
     </div>

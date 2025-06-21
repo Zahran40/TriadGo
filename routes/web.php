@@ -37,7 +37,8 @@ Route::get('/catalog', [ImportirController::class, 'catalog'])->name('catalog')-
 Route::get('/formimportir', [ImportirController::class, 'formimportir'])->name('formimportir')->middleware('role.protect:impor');
 Route::get('/my-orders', [ImportirController::class, 'myOrders'])->name('my.orders')->middleware('role.protect:impor');
 Route::get('/detail', [ImportirController::class, 'detail'])->name('detail')->middleware('role.protect:impor');
-Route::get('/requestimportir', [ImportirController::class, 'requestimportir'])->name('requestimportir')->middleware('role.protect:impor');
+Route::get('/requestimportir', [RequestController::class, 'importirRequestForm'])->name('requestimportir')->middleware('role.protect:impor');
+Route::post('/importir/request', [RequestController::class, 'storeImportirRequest'])->name('importir.request.store')->middleware('role.protect:impor');
 Route::get('/product-detail-importir/{id}', [ImportirController::class, 'detail'])
         ->name('product.detail.importir')->middleware('role.protect:impor');
 Route::get('/detailproductimportir/{id}', [ImportirController::class, 'detail'])
@@ -75,7 +76,9 @@ Route::post('/contact-us', [ContactusController::class, 'storeContactUs'])->name
 // Halaman Ekspor - hanya role ekspor
 Route::get('/ekspor', [EksportirController::class, 'homeeksportir'])->name('ekspor')->middleware('role.protect:ekspor');
 Route::get('formeksportir', [EksportirController::class, 'formeksportir'])->name('formeksportir')->middleware('role.protect:ekspor');
-Route::get('/requesteksportir', [EksportirController::class, 'requesteksportir'])->name('requesteksportir')->middleware('role.protect:ekspor');
+Route::get('/requesteksportir', [RequestController::class, 'eksportirRequestList'])->name('requesteksportir')->middleware('role.protect:ekspor');
+Route::post('/eksportir/requests/{id}/approve', [RequestController::class, 'approveRequest'])->name('eksportir.request.approve')->middleware('role.protect:ekspor');
+Route::post('/eksportir/requests/{id}/reject', [RequestController::class, 'rejectRequest'])->name('eksportir.request.reject')->middleware('role.protect:ekspor');
 
 // Eksportir Transaction Management - hanya role ekspor
 Route::middleware('role.protect:ekspor')->group(function () {
@@ -148,24 +151,7 @@ Route::post('/midtrans/notification', [CheckoutController::class, 'handleNotific
 Route::post('/midtrans/callback', [CheckoutController::class, 'handleNotification'])->name('midtrans.callback');
 
 
-// Request System Routes
-Route::middleware('auth')->group(function () {
-    // Importir Request Routes
-    Route::middleware('role.protect:impor')->group(function () {
-        Route::get('/importir/request', [RequestController::class, 'importirRequestForm'])->name('importir.request.form');
-        Route::post('/importir/request', [RequestController::class, 'storeImportirRequest'])->name('importir.request.store');
-    });
-    
-    // Eksportir Request Routes  
-    Route::middleware('role.protect:ekspor')->group(function () {
-        Route::get('/eksportir/requests', [RequestController::class, 'eksportirRequestList'])->name('eksportir.request.list');
-        Route::post('/eksportir/requests/{id}/approve', [RequestController::class, 'approveRequest'])->name('eksportir.request.approve');
-        Route::post('/eksportir/requests/{id}/reject', [RequestController::class, 'rejectRequest'])->name('eksportir.request.reject');
-    });
-    
-    // Common Request Routes
-    Route::delete('/requests/{id}', [RequestController::class, 'deleteRequest'])->name('request.delete');
-});
+// Request System Routes - sudah digabung dengan route utama di atas
 
 // Notification Routes
 Route::middleware('auth')->group(function () {

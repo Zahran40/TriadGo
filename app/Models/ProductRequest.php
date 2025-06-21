@@ -84,4 +84,25 @@ class ProductRequest extends Model
             'status' => self::STATUS_FULFILLED
         ]);
     }
+
+    // Helper methods for status checking
+    public function isPending()
+    {
+        return $this->status === self::STATUS_PENDING;
+    }
+
+    public function isApproved()
+    {
+        return $this->status === self::STATUS_APPROVED;
+    }
+
+    public function isRejected()
+    {
+        return $this->status === self::STATUS_REJECTED;
+    }
+
+    public function isFulfilled()
+    {
+        return $this->status === self::STATUS_FULFILLED;
+    }
 }

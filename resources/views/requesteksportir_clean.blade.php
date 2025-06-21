@@ -145,8 +145,8 @@
                         <div class="space-y-4">
                             @foreach($myRequests as $request)
                             <div class="border border-gray-200 rounded-lg p-4 
-                                @if($request->status === 'approved') bg-green-50 border-green-200 
-                                @elseif($request->status === 'rejected') bg-red-50 border-red-200 
+                                @if($request->status === 'approved')
+                                @elseif($request->status === 'rejected')
                                 @endif">
                                 <div class="flex justify-between items-start">
                                     <div class="flex-1">
@@ -170,9 +170,9 @@
                                     </div>
                                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
                                         @if($request->status === 'approved') bg-green-100 text-green-800
-                                        @elseif($request->status === 'rejected') bg-red-100 text-red-800
-                                        @else bg-yellow-100 text-yellow-800
-                                        @endif">
+                                        @elseif($request->status === 'rejected')
+                                        @else
+                                        @endif
                                         @if($request->status === 'approved') Disetujui
                                         @elseif($request->status === 'rejected') Ditolak
                                         @else {{ ucfirst($request->status) }}
@@ -183,7 +183,7 @@
                             @endforeach
                         </div>
                     @else
-                        <p class="text-blue-500">Belum ada request yang Anda proses.</p>
+                        <p class="text-blue-500">No Request</p>
                     @endif
                 </div>
             </div>

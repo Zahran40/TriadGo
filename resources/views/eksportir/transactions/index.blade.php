@@ -401,7 +401,7 @@
                     @elseif(request('shipping_status'))
                         Tidak ada transaksi dengan status "{{ request('shipping_status') }}".
                     @else
-                        Belum ada transaksi untuk produk Anda.
+                         untuk produk Anda.
                     @endif
                 </div>
                 <p class="text-blue-400">Transaksi akan muncul di sini setelah importir membeli produk Anda.</p>

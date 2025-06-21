@@ -19,85 +19,12 @@
         <div class="flex flex-col lg:flex-row lg:justify-between lg:items-start mb-8">
             <div>
                 <h1 class="text-3xl font-bold text-gray-800 mb-2">Kelola Transaksi</h1>
-                <p class="text-gray-600">Kelola status pembayaran dan pengiriman produk yang dipesan importir</p>
+                <p class="text-gray-600">Kelola status pengiriman produk yang telah dibeli importir</p>
             </div>
         </div>
 
-        <!-- Payment Status Filter Cards -->
-        <div class="mb-6">
-            <h3 class="text-lg font-semibold text-gray-700 mb-4">Filter Status Pembayaran</h3>
-            <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
-                <a href="{{ route('eksportir.transactions.index') }}" 
-                   class="bg-white rounded-lg shadow-sm p-4 border-l-4 border-blue-500 hover:shadow-md transition-shadow {{ !request('payment_status') || request('payment_status') === 'all' ? 'ring-2 ring-blue-200' : '' }}">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-sm font-medium text-gray-600">Semua</p>
-                            <p class="text-2xl font-bold text-gray-900">{{ $paymentStatusCounts['all'] ?? 0 }}</p>
-                        </div>
-                        <div class="p-2 bg-blue-100 rounded-lg">
-                            <span class="text-2xl">📋</span>
-                        </div>
-                    </div>
-                </a>
-
-                <a href="{{ route('eksportir.transactions.index', ['payment_status' => 'pending']) }}" 
-                   class="bg-white rounded-lg shadow-sm p-4 border-l-4 border-orange-500 hover:shadow-md transition-shadow {{ request('payment_status') === 'pending' ? 'ring-2 ring-orange-200' : '' }}">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-sm font-medium text-gray-600">Pending</p>
-                            <p class="text-2xl font-bold text-gray-900">{{ $paymentStatusCounts['pending'] ?? 0 }}</p>
-                        </div>
-                        <div class="p-2 bg-orange-100 rounded-lg">
-                            <span class="text-2xl">⏳</span>
-                        </div>
-                    </div>
-                </a>
-
-                <a href="{{ route('eksportir.transactions.index', ['payment_status' => 'paid']) }}" 
-                   class="bg-white rounded-lg shadow-sm p-4 border-l-4 border-green-500 hover:shadow-md transition-shadow {{ request('payment_status') === 'paid' ? 'ring-2 ring-green-200' : '' }}">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-sm font-medium text-gray-600">Paid</p>
-                            <p class="text-2xl font-bold text-gray-900">{{ $paymentStatusCounts['paid'] ?? 0 }}</p>
-                        </div>
-                        <div class="p-2 bg-green-100 rounded-lg">
-                            <span class="text-2xl">💰</span>
-                        </div>
-                    </div>
-                </a>
-
-                <a href="{{ route('eksportir.transactions.index', ['payment_status' => 'failed']) }}" 
-                   class="bg-white rounded-lg shadow-sm p-4 border-l-4 border-red-500 hover:shadow-md transition-shadow {{ request('payment_status') === 'failed' ? 'ring-2 ring-red-200' : '' }}">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-sm font-medium text-gray-600">Failed</p>
-                            <p class="text-2xl font-bold text-gray-900">{{ $paymentStatusCounts['failed'] ?? 0 }}</p>
-                        </div>
-                        <div class="p-2 bg-red-100 rounded-lg">
-                            <span class="text-2xl">❌</span>
-                        </div>
-                    </div>
-                </a>
-
-                <a href="{{ route('eksportir.transactions.index', ['payment_status' => 'cancelled']) }}" 
-                   class="bg-white rounded-lg shadow-sm p-4 border-l-4 border-gray-500 hover:shadow-md transition-shadow {{ request('payment_status') === 'cancelled' ? 'ring-2 ring-gray-200' : '' }}">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-sm font-medium text-gray-600">Cancelled</p>
-                            <p class="text-2xl font-bold text-gray-900">{{ $paymentStatusCounts['cancelled'] ?? 0 }}</p>
-                        </div>
-                        <div class="p-2 bg-gray-100 rounded-lg">
-                            <span class="text-2xl">🚫</span>
-                        </div>
-                    </div>
-                </a>
-            </div>
-        </div>
-
-        <!-- Shipping Status Filter Cards -->
-        <div class="mb-6">
-            <h3 class="text-lg font-semibold text-gray-700 mb-4">Filter Status Pengiriman</h3>
-            <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+        <!-- Status Filter Cards -->
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
             <a href="{{ route('eksportir.transactions.index') }}" 
                class="bg-white rounded-lg shadow-sm p-4 border-l-4 border-blue-500 hover:shadow-md transition-shadow {{ !request('shipping_status') || request('shipping_status') === 'all' ? 'ring-2 ring-blue-200' : '' }}">
                 <div class="flex items-center justify-between">
@@ -106,7 +33,9 @@
                         <p class="text-2xl font-bold text-gray-900">{{ $shippingStatusCounts['all'] ?? 0 }}</p>
                     </div>
                     <div class="p-2 bg-blue-100 rounded-lg">
-                        <span class="text-2xl">📦</span>
+                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                        </svg>
                     </div>
                 </div>
             </a>
@@ -163,7 +92,6 @@
                 </div>
             </a>
         </div>
-        </div>
 
         <!-- Search and Filter -->
         <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
@@ -190,12 +118,9 @@
                         </a>
                     @endif
                 </div>
-                <!-- Keep shipping_status and payment_status filter -->
+                <!-- Keep shipping_status filter -->
                 @if(request('shipping_status'))
                     <input type="hidden" name="shipping_status" value="{{ request('shipping_status') }}">
-                @endif
-                @if(request('payment_status'))
-                    <input type="hidden" name="payment_status" value="{{ request('payment_status') }}">
                 @endif
             </form>
         </div>
@@ -210,7 +135,6 @@
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status Pembayaran</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status Pengiriman</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
@@ -250,31 +174,6 @@
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             @php
-                                                $paymentStatusColors = [
-                                                    'pending' => 'bg-orange-100 text-orange-800 border-orange-300',
-                                                    'paid' => 'bg-green-100 text-green-800 border-green-300',
-                                                    'failed' => 'bg-red-100 text-red-800 border-red-300',
-                                                    'cancelled' => 'bg-gray-100 text-gray-800 border-gray-300',
-                                                ];
-                                                $paymentStatusLabels = [
-                                                    'pending' => 'Pending',
-                                                    'paid' => 'Paid',
-                                                    'failed' => 'Failed',
-                                                    'cancelled' => 'Cancelled',
-                                                ];
-                                                $paymentStatusIcons = [
-                                                    'pending' => '⏳',
-                                                    'paid' => '💰',
-                                                    'failed' => '❌',
-                                                    'cancelled' => '🚫',
-                                                ];
-                                            @endphp
-                                            <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full {{ $paymentStatusColors[$order->status] ?? 'bg-gray-100 text-gray-800' }}">
-                                                {{ $paymentStatusIcons[$order->status] ?? '❓' }} {{ $paymentStatusLabels[$order->status] ?? ucfirst($order->status) }}
-                                            </span>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            @php
                                                 $shippingStatusColors = [
                                                     'processing' => 'bg-yellow-100 text-yellow-800 border-yellow-300',
                                                     'shipped' => 'bg-purple-100 text-purple-800 border-purple-300',
@@ -302,19 +201,15 @@
                                             {{ $order->created_at->format('d M Y') }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                            <div class="flex flex-col space-y-2">
-                                                <div class="flex space-x-2">
-                                                    <a href="{{ route('eksportir.transactions.show', $order->order_id) }}" 
-                                                       class="text-blue-600 hover:text-blue-900 transition-colors">
-                                                        Detail
-                                                    </a>
-                                                </div>
-                                                @if($order->status === 'pending')
-                                                    <button onclick="updatePaymentStatus('{{ $order->order_id }}', 'paid')" 
-                                                            class="text-xs bg-green-600 text-white px-2 py-1 rounded hover:bg-green-700 transition-colors">
-                                                        Mark as Paid
-                                                    </button>
-                                                @endif
+                                            <div class="flex space-x-2">
+                                                <a href="{{ route('eksportir.transactions.show', $order->order_id) }}" 
+                                                   class="text-blue-600 hover:text-blue-900 transition-colors">
+                                                    Detail
+                                                </a>
+                                                <a href="{{ route('transactions.tracking', $order->order_id) }}" 
+                                                   class="text-green-600 hover:text-green-900 transition-colors">
+                                                    Tracking
+                                                </a>
                                             </div>
                                         </td>
                                     </tr>
@@ -344,73 +239,5 @@
             </div>
         @endif
     </div>
-
-    <script>
-        function updatePaymentStatus(orderId, status) {
-            const statusLabels = {
-                'paid': 'Paid (Lunas)',
-                'failed': 'Failed (Gagal)',
-                'cancelled': 'Cancelled (Dibatalkan)'
-            };
-            
-            Swal.fire({
-                title: 'Konfirmasi Update Status Pembayaran',
-                text: `Apakah Anda yakin ingin mengubah status pembayaran menjadi "${statusLabels[status]}"?`,
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonColor: '#3B82F6',
-                cancelButtonColor: '#6B7280',
-                confirmButtonText: 'Ya, Update',
-                cancelButtonText: 'Batal'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    executePaymentStatusUpdate(orderId, status);
-                }
-            });
-        }
-        
-        function executePaymentStatusUpdate(orderId, status) {
-            fetch(`/eksportir/transactions/${orderId}/update-payment-status`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                },
-                body: JSON.stringify({
-                    payment_status: status,
-                    reason: `Status updated by eksportir from transaction management page`
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Berhasil!',
-                        text: data.message,
-                        showConfirmButton: false,
-                        timer: 1500
-                    }).then(() => {
-                        // Reload page to show updated status
-                        window.location.reload();
-                    });
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Gagal!',
-                        text: data.message || 'Terjadi kesalahan saat memperbarui status pembayaran.'
-                    });
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error!',
-                    text: 'Terjadi kesalahan pada sistem.'
-                });
-            });
-        }
-    </script>
 </body>
 </html>

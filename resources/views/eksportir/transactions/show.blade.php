@@ -43,6 +43,16 @@
                 <h1 class="text-3xl font-bold text-gray-800 mb-2">Detail Transaksi</h1>
                 <p class="text-gray-600">Kode Pesanan: <span class="font-semibold text-blue-600">{{ $order->order_id }}</span></p>
             </div>
+            <div class="mt-4 lg:mt-0 flex space-x-3">
+                <a href="{{ route('transactions.tracking', $order->order_id) }}" 
+                   class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors shadow-sm">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    </svg>
+                    🚢 Lacak Pengiriman
+                </a>
+            </div>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -112,72 +122,6 @@
                         </button>
                     </form>
                 </div>
-
-                <!-- Update Payment Status -->
-                @if($order->status === 'pending')
-                <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-6">
-                    <h2 class="text-xl font-semibold text-gray-800 mb-6 flex items-center">
-                        <svg class="w-6 h-6 mr-2 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
-                        </svg>
-                        Update Status Pembayaran
-                    </h2>
-                    
-                    <div class="mb-4">
-                        <div class="flex items-center space-x-2 mb-4">
-                            <span class="text-sm font-medium text-gray-600">Status Saat Ini:</span>
-                            @php
-                                $paymentStatusColors = [
-                                    'pending' => 'bg-orange-100 text-orange-800 border-orange-300',
-                                    'paid' => 'bg-green-100 text-green-800 border-green-300',
-                                    'failed' => 'bg-red-100 text-red-800 border-red-300',
-                                    'cancelled' => 'bg-gray-100 text-gray-800 border-gray-300',
-                                ];
-                                $paymentStatusLabels = [
-                                    'pending' => 'Menunggu Pembayaran',
-                                    'paid' => 'Sudah Dibayar',
-                                    'failed' => 'Gagal',
-                                    'cancelled' => 'Dibatalkan',
-                                ];
-                                $paymentStatusIcons = [
-                                    'pending' => '⏳',
-                                    'paid' => '💰',
-                                    'failed' => '❌',
-                                    'cancelled' => '🚫',
-                                ];
-                            @endphp
-                            <span class="inline-flex px-3 py-1 text-sm font-semibold rounded-full border {{ $paymentStatusColors[$order->status] ?? 'bg-gray-100 text-gray-800 border-gray-300' }}">
-                                {{ $paymentStatusIcons[$order->status] ?? '❓' }} {{ $paymentStatusLabels[$order->status] ?? ucfirst($order->status) }}
-                            </span>
-                        </div>
-                    </div>
-
-                    <form id="updatePaymentStatusForm" class="space-y-4">
-                        @csrf
-                        <div>
-                            <label for="payment_status" class="block text-sm font-medium text-gray-700 mb-2">Status Baru</label>
-                            <select id="payment_status" name="payment_status" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500">
-                                <option value="">Pilih Status</option>
-                                <option value="paid">💰 Paid - Sudah Dibayar</option>
-                                <option value="failed">❌ Failed - Gagal</option>
-                                <option value="cancelled">🚫 Cancelled - Dibatalkan</option>
-                            </select>
-                        </div>
-                        
-                        <div>
-                            <label for="payment_reason" class="block text-sm font-medium text-gray-700 mb-2">Keterangan (Opsional)</label>
-                            <textarea id="payment_reason" name="reason" rows="3" 
-                                      placeholder="Berikan keterangan alasan perubahan status..."
-                                      class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"></textarea>
-                        </div>
-                        
-                        <button type="submit" 
-                                class="w-full bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-colors font-medium">
-                            Update Status Pembayaran
-                        </button>
-                    </form>
-                </div>
-                @endif
 
                 <!-- Your Products in this Order -->
                 <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
@@ -285,23 +229,7 @@
                         </div>
                         <div class="flex justify-between">
                             <span class="text-sm text-gray-600">Status Pembayaran</span>
-                            @php
-                                $paymentStatusClasses = [
-                                    'pending' => 'text-orange-600',
-                                    'paid' => 'text-green-600',
-                                    'failed' => 'text-red-600',
-                                    'cancelled' => 'text-gray-600',
-                                ];
-                                $paymentStatusLabels = [
-                                    'pending' => 'Pending',
-                                    'paid' => 'Lunas',
-                                    'failed' => 'Gagal',
-                                    'cancelled' => 'Dibatalkan',
-                                ];
-                            @endphp
-                            <span class="text-sm font-medium {{ $paymentStatusClasses[$order->status] ?? 'text-gray-600' }}">
-                                {{ $paymentStatusLabels[$order->status] ?? ucfirst($order->status) }}
-                            </span>
+                            <span class="text-sm font-medium text-green-600">Lunas</span>
                         </div>
                         <div class="flex justify-between">
                             <span class="text-sm text-gray-600">Tanggal Order</span>
@@ -398,93 +326,6 @@
                 });
             });
         }
-
-        // Payment Status Update Form Handler
-        @if($order->status === 'pending')
-        document.getElementById('updatePaymentStatusForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const formData = new FormData(this);
-            const status = formData.get('payment_status');
-            const reason = formData.get('reason');
-            
-            if (!status) {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Pilih Status',
-                    text: 'Silakan pilih status pembayaran baru.'
-                });
-                return;
-            }
-            
-            // Show confirmation
-            const statusLabels = {
-                'paid': 'Paid - Sudah Dibayar 💰',
-                'failed': 'Failed - Gagal ❌',
-                'cancelled': 'Cancelled - Dibatalkan 🚫'
-            };
-            
-            Swal.fire({
-                title: 'Konfirmasi Update Status Pembayaran',
-                text: `Apakah Anda yakin ingin mengubah status pembayaran menjadi "${statusLabels[status]}"?`,
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonColor: '#059669',
-                cancelButtonColor: '#6B7280',
-                confirmButtonText: 'Ya, Update',
-                cancelButtonText: 'Batal'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    updatePaymentStatus(status, reason);
-                }
-            });
-        });
-        
-        function updatePaymentStatus(status, reason) {
-            const orderId = '{{ $order->order_id }}';
-            
-            fetch(`/eksportir/transactions/${orderId}/update-payment-status`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                },
-                body: JSON.stringify({
-                    payment_status: status,
-                    reason: reason
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Berhasil!',
-                        text: data.message,
-                        showConfirmButton: false,
-                        timer: 1500
-                    }).then(() => {
-                        // Reload page to show updated status
-                        window.location.reload();
-                    });
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Gagal!',
-                        text: data.message || 'Terjadi kesalahan saat memperbarui status pembayaran.'
-                    });
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error!',
-                    text: 'Terjadi kesalahan pada sistem.'
-                });
-            });
-        }
-        @endif
     </script>
 </body>
 </html>

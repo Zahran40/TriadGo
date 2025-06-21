@@ -238,7 +238,7 @@
                     <p class="text-blue-700 text-center md:text-left">
                         If you can't find what you're looking for, submit a request and exporter will help you find it.
                     </p>
-                    <a href="#"
+                    <a href="{{ route('requestimportir') }}"
                         class="text-blue-800 font-semibold inline-flex items-center mt-4 hover:text-amber-500">
                         Go
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24"
@@ -263,7 +263,7 @@
                         Manage your transactions efficiently with our tracking status features, share provide real-time
                         updates .
                     </p>
-                    <a href="#"
+                    <a href="{{ route('transactions.index') }}"
                         class="text-blue-800 font-semibold inline-flex items-center mt-4 hover:text-amber-500">
                         Go
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24"

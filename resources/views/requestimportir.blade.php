@@ -133,13 +133,13 @@
             <!-- Approved Requests -->
             <div class="product overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 border-b border-gray-200">
-                    <h3 class="text-lg font-semibold text-blue-600">Request Accepted</h3>
+                    <h3 class="text-lg font-semibold text-blue-600">Request Approved</h3>
                 </div>
                 <div class="p-6">
                     @if(isset($approvedRequests) && $approvedRequests->count() > 0)
                         <div class="space-y-4">
                             @foreach($approvedRequests as $request)
-                                <div class="border border-green-200 rounded-lg p-4 bg-green-50"> 
+                                <div class="product border border-green-200 rounded-lg p-4"> 
                                     <div class="flex justify-between items-start">
                                         <div class="flex-1">
                                             <p class="text-blue-90">{{ $request->request_text }}</p>

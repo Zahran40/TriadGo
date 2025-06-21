@@ -8,11 +8,12 @@
     <title>TriadGo - Checkout</title>
     @vite('resources/css/app.css')
     <script src="https://cdn.tailwindcss.com"></script>
-    
+
     <!-- Payment Gateway Scripts -->
-    <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ config('services.midtrans.client_key') }}"></script>
+    <script src="https://app.sandbox.midtrans.com/snap/snap.js"
+        data-client-key="{{ config('services.midtrans.client_key') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    
+
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -45,14 +46,17 @@
             transition: border-color 0.2s;
             box-shadow: none;
         }
+
         .dark .custom-radio input[type="radio"] {
             background-color: #1e293b;
             border-color: #334155;
         }
+
         .custom-radio input[type="radio"]:checked {
             border-color: #2563eb;
             background-color: #2563eb;
         }
+
         .custom-radio input[type="radio"]:checked::before {
             content: '';
             display: block;
@@ -62,27 +66,45 @@
             background: white;
             margin: auto;
         }
+
+        /* SweetAlert2 Dark Mode Fix*/
+        .swal2-popup .swal2-title {
+            color: #1f2937 !important;
+        }
+
+        .swal2-popup .swal2-html-container {
+            color: #374151 !important;
+        }
+
+        .swal2-popup.swal2-dark .swal2-title {
+            color: #ffffff !important;
+        }
+
+        .swal2-popup.swal2-dark .swal2-html-container {
+            color: #d1d5db !important;
+        }
     </style>
 </head>
 
 <body class="min-h-screen flex flex-col bg-gray-50 dark:bg-slate-900">
-    
+
     @include('layouts.navbarimportir')
 
     <main class="flex-grow container mx-auto px-4 py-6">
         <div class="max-w-7xl mx-auto">
             <div class="flex justify-between items-center mb-8">
                 <h1 class="text-3xl font-bold text-blue-900 dark:text-blue-100">Checkout</h1>
-                <a href="{{ route('catalog') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-all">
+                <a href="{{ route('catalog') }}"
+                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-all">
                     Continue Shopping
                 </a>
             </div>
-            
+
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <!-- Order Summary Section -->
                 <div class="bg-white dark:bg-slate-800 rounded-lg shadow-lg p-6">
                     <h2 class="text-xl font-semibold text-blue-900 dark:text-blue-100 mb-6">Order Summary</h2>
-                    
+
                     <!-- Cart Items Container -->
                     <div id="cartItemsContainer" class="space-y-4 mb-6">
                         <!-- Cart items will be loaded here -->
@@ -91,26 +113,30 @@
                             <div class="h-4 bg-gray-300 dark:bg-gray-600 rounded w-3/4"></div>
                         </div>
                     </div>
-                    
+
                     <!-- Empty Cart Message -->
                     <div id="emptyCartMessage" class="text-center py-8 hidden">
                         <div class="text-6xl mb-4">🛒</div>
                         <h3 class="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2">Your cart is empty</h3>
-                        <p class="text-gray-500 dark:text-gray-400 mb-4">Add some products to your cart to continue with checkout</p>
-                        <a href="{{ route('catalog') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-all">
+                        <p class="text-gray-500 dark:text-gray-400 mb-4">Add some products to your cart to continue with
+                            checkout</p>
+                        <a href="{{ route('catalog') }}"
+                            class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-all">
                             Browse Products
                         </a>
                     </div>
-                    
+
                     <!-- Pricing Breakdown -->
                     <div id="pricingBreakdown" class="border-t border-gray-200 dark:border-gray-600 pt-4 hidden">
                         <div class="flex justify-between items-center mb-2">
                             <span class="text-gray-600 dark:text-gray-300">Subtotal:</span>
-                            <span id="subtotalAmount" class="font-semibold text-blue-900 dark:text-blue-100">$0.00</span>
+                            <span id="subtotalAmount"
+                                class="font-semibold text-blue-900 dark:text-blue-100">$0.00</span>
                         </div>
                         <div class="flex justify-between items-center mb-2">
                             <span class="text-gray-600 dark:text-gray-300">Shipping:</span>
-                            <span id="shippingAmount" class="font-semibold text-blue-900 dark:text-blue-100">$25.00</span>
+                            <span id="shippingAmount"
+                                class="font-semibold text-blue-900 dark:text-blue-100">$25.00</span>
                         </div>
                         <div class="flex justify-between items-center mb-2">
                             <span class="text-gray-600 dark:text-gray-300">Tax (10%):</span>
@@ -119,7 +145,8 @@
                         <div class="border-t border-gray-200 dark:border-gray-600 pt-2 mt-2">
                             <div class="flex justify-between items-center">
                                 <span class="text-lg font-bold text-blue-900 dark:text-blue-100">Total:</span>
-                                <span id="totalAmount" class="text-lg font-bold text-blue-600 dark:text-blue-400">$25.00</span>
+                                <span id="totalAmount"
+                                    class="text-lg font-bold text-blue-600 dark:text-blue-400">$25.00</span>
                             </div>
                         </div>
                     </div>
@@ -128,60 +155,70 @@
                 <!-- Billing Information Section -->
                 <div class="bg-white dark:bg-slate-800 rounded-lg shadow-lg p-6">
                     <h2 class="text-xl font-semibold text-blue-900 dark:text-blue-100 mb-6">Billing Information</h2>
-                    
+
                     <form id="checkoutForm" class="space-y-4">
                         <!-- Personal Information -->
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Full Name *</label>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Full Name
+                                    *</label>
                                 <input type="text" id="fullName" name="fullName" required
-                                       class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg px-3 py-2"
-                                       value="{{ Auth::user()->name ?? '' }}">
+                                    class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg px-3 py-2"
+                                    value="{{ Auth::user()->name ?? '' }}">
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Email *</label>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Email
+                                    *</label>
                                 <input type="email" id="email" name="email" required
-                                       class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg px-3 py-2"
-                                       value="{{ Auth::user()->email ?? '' }}">
+                                    class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg px-3 py-2"
+                                    value="{{ Auth::user()->email ?? '' }}">
                             </div>
                         </div>
-                        
+
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Phone Number *</label>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Phone Number
+                                *</label>
                             <input type="tel" id="phone" name="phone" required
-                                   class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg px-3 py-2"
-                                   value="{{ Auth::user()->phone ?? '' }}">
+                                class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg px-3 py-2"
+                                value="{{ Auth::user()->phone ?? '' }}">
                         </div>
 
                         <!-- Shipping Address -->
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Address *</label>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Address
+                                *</label>
                             <textarea id="address" name="address" required rows="3"
-                                      class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg px-3 py-2"></textarea>
+                                class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg px-3 py-2"></textarea>
                         </div>
-                        
+
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">City *</label>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">City
+                                    *</label>
                                 <input type="text" id="city" name="city" required
-                                       class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg px-3 py-2">
+                                    class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg px-3 py-2">
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">State/Province *</label>
+                                <label
+                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">State/Province
+                                    *</label>
                                 <input type="text" id="state" name="state" required
-                                       class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg px-3 py-2">
+                                    class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg px-3 py-2">
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">ZIP/Postal Code *</label>
+                                <label
+                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">ZIP/Postal
+                                    Code *</label>
                                 <input type="text" id="zipCode" name="zipCode" required
-                                       class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg px-3 py-2">
+                                    class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg px-3 py-2">
                             </div>
                         </div>
-                        
+
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Country *</label>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Country
+                                *</label>
                             <select id="country" name="country" required
-                                    class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg px-3 py-2">
+                                class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg px-3 py-2">
                                 <option value="">Select Country</option>
                                 <option value="Indonesia">Indonesia</option>
                                 <option value="Malaysia">Malaysia</option>
@@ -191,79 +228,107 @@
                                 <option value="Vietnam">Vietnam</option>
                                 <option value="Other">Other</option>
                             </select>
-                        </div>                        <!-- Payment Method -->
+                        </div> <!-- Payment Method -->
                         <div class="border-t border-gray-200 dark:border-gray-600 pt-6 mt-6">
                             <h3 class="text-lg font-semibold text-blue-900 dark:text-blue-100 mb-4">Payment Method</h3>
-                            
+
                             <!-- Midtrans Payment Only -->
                             <div class="payment-method-container">
-                                <label class="payment-option custom-radio flex flex-col items-center justify-center min-h-[160px] p-6 border-2 border-blue-500 rounded-xl cursor-pointer bg-blue-50 dark:bg-blue-900/30 transition-all w-full text-center">
-                                    <input type="radio" name="paymentMethod" value="midtrans" class="mb-3" id="midtransRadio" checked />
+                                <label
+                                    class="payment-option custom-radio flex flex-col items-center justify-center min-h-[160px] p-6 border-2 border-blue-500 rounded-xl cursor-pointer bg-blue-50 dark:bg-blue-900/30 transition-all w-full text-center">
+                                    <input type="radio" name="paymentMethod" value="midtrans" class="mb-3"
+                                        id="midtransRadio" checked />
                                     <div class="flex flex-col items-center w-full">
-                                        <div class="w-20 h-12 mb-3 bg-white rounded-lg border flex items-center justify-center shadow-sm">
+                                        <div
+                                            class="w-20 h-12 mb-3 bg-white rounded-lg border flex items-center justify-center shadow-sm">
                                             <svg width="60" height="24" viewBox="0 0 120 48" fill="none">
-                                                <rect width="120" height="48" rx="8" fill="#00AEEF"/>
-                                                <text x="60" y="30" font-family="Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="white">MIDTRANS</text>
+                                                <rect width="120" height="48" rx="8" fill="#00AEEF" />
+                                                <text x="60" y="30" font-family="Arial, sans-serif" font-size="12"
+                                                    font-weight="bold" text-anchor="middle" fill="white">MIDTRANS</text>
                                             </svg>
                                         </div>
-                                        <div class="font-semibold text-blue-900 dark:text-blue-100 text-lg">Midtrans Payment Gateway</div>
-                                        <div class="text-sm text-gray-600 dark:text-gray-300 mb-3">Credit Card, Debit, E-Wallet, Bank Transfer, QRIS</div>
+                                        <div class="font-semibold text-blue-900 dark:text-blue-100 text-lg">Midtrans
+                                            Payment Gateway</div>
+                                        <div class="text-sm text-gray-600 dark:text-gray-300 mb-3">Credit Card, Debit,
+                                            E-Wallet, Bank Transfer, QRIS</div>
                                         <div class="grid grid-cols-4 gap-2 mt-2 w-full max-w-xs">
-                                            <div class="text-xs bg-gray-100 dark:bg-gray-700 p-1 rounded text-center">Visa</div>
-                                            <div class="text-xs bg-gray-100 dark:bg-gray-700 p-1 rounded text-center">Mastercard</div>
-                                            <div class="text-xs bg-gray-100 dark:bg-gray-700 p-1 rounded text-center">GoPay</div>
-                                            <div class="text-xs bg-gray-100 dark:bg-gray-700 p-1 rounded text-center">OVO</div>
-                                            <div class="text-xs bg-gray-100 dark:bg-gray-700 p-1 rounded text-center">DANA</div>
-                                            <div class="text-xs bg-gray-100 dark:bg-gray-700 p-1 rounded text-center">ShopeePay</div>
-                                            <div class="text-xs bg-gray-100 dark:bg-gray-700 p-1 rounded text-center">QRIS</div>
-                                            <div class="text-xs bg-gray-100 dark:bg-gray-700 p-1 rounded text-center">Bank</div>
+                                            <div class="text-xs bg-gray-100 dark:bg-gray-700 p-1 rounded text-center">
+                                                Visa</div>
+                                            <div class="text-xs bg-gray-100 dark:bg-gray-700 p-1 rounded text-center">
+                                                Mastercard</div>
+                                            <div class="text-xs bg-gray-100 dark:bg-gray-700 p-1 rounded text-center">
+                                                GoPay</div>
+                                            <div class="text-xs bg-gray-100 dark:bg-gray-700 p-1 rounded text-center">
+                                                OVO</div>
+                                            <div class="text-xs bg-gray-100 dark:bg-gray-700 p-1 rounded text-center">
+                                                DANA</div>
+                                            <div class="text-xs bg-gray-100 dark:bg-gray-700 p-1 rounded text-center">
+                                                ShopeePay</div>
+                                            <div class="text-xs bg-gray-100 dark:bg-gray-700 p-1 rounded text-center">
+                                                QRIS</div>
+                                            <div class="text-xs bg-gray-100 dark:bg-gray-700 p-1 rounded text-center">
+                                                Bank</div>
                                         </div>
                                     </div>
                                 </label>
                             </div>
-                            
+
                             <!-- Payment Info -->
                             <div class="mt-4 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
                                 <div class="flex items-start">
-                                    <svg class="w-5 h-5 text-blue-600 mt-0.5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                                    <svg class="w-5 h-5 text-blue-600 mt-0.5 mr-2" fill="currentColor"
+                                        viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                                            clip-rule="evenodd"></path>
                                     </svg>
                                     <div class="text-sm text-blue-800 dark:text-blue-200">
                                         <p class="font-medium">Secure Payment Processing</p>
-                                        <p>Your payment is processed securely through Midtrans. You'll be redirected to complete your payment after clicking "Proceed to Payment".</p>
+                                        <p>Your payment is processed securely through Midtrans. You'll be redirected to
+                                            complete your payment after clicking "Proceed to Payment".</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Security Features -->
-                        <div class="mt-6 p-4 bg-green-50 dark:bg-green-900 rounded-lg border border-green-200 dark:border-green-700">
+                        <div
+                            class="mt-6 p-4 bg-green-50 dark:bg-green-900 rounded-lg border border-green-200 dark:border-green-700">
                             <div class="flex items-center">
-                                <svg class="w-5 h-5 text-green-600 dark:text-green-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/>
+                                <svg class="w-5 h-5 text-green-600 dark:text-green-400 mr-2" fill="currentColor"
+                                    viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                                        clip-rule="evenodd" />
                                 </svg>
-                                <span class="text-sm text-green-800 dark:text-green-200">Your payment information is encrypted and secure</span>
+                                <span class="text-sm text-green-800 dark:text-green-200">Your payment information is
+                                    encrypted and secure</span>
                             </div>
                             <div class="flex items-center mt-2">
-                                <svg class="w-5 h-5 text-green-600 dark:text-green-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                <svg class="w-5 h-5 text-green-600 dark:text-green-400 mr-2" fill="currentColor"
+                                    viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                        clip-rule="evenodd" />
                                 </svg>
-                                <span class="text-sm text-green-800 dark:text-green-200">SSL Certificate • PCI Compliant • 256-bit Encryption</span>
+                                <span class="text-sm text-green-800 dark:text-green-200">SSL Certificate • PCI Compliant
+                                    • 256-bit Encryption</span>
                             </div>
                         </div>
 
                         <!-- Order Notes -->
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Order Notes (Optional)</label>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Order Notes
+                                (Optional)</label>
                             <textarea id="orderNotes" name="orderNotes" rows="3"
-                                      class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg px-3 py-2"
-                                      placeholder="Any special instructions for your order..."></textarea>
+                                class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg px-3 py-2"
+                                placeholder="Any special instructions for your order..."></textarea>
                         </div>
 
                         <!-- Submit Button -->
                         <div class="pt-6">
-                            <button type="submit" id="proceedToPaymentBtn" 
-                                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+                            <button type="submit" id="proceedToPaymentBtn"
+                                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed">
                                 <span id="proceedBtnText">Proceed to Payment</span>
                                 <span id="proceedBtnLoader" class="hidden">Processing...</span>
                             </button>
@@ -283,6 +348,42 @@
 
     <!-- JavaScript -->
     <script>
+        const isDarkMode = document.documentElement.classList.contains('dark');
+
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const darkModeThumb = document.getElementById('darkModeThumb');
+        const htmlElement = document.documentElement;
+
+        function updateDarkModeSwitch() {
+            if (htmlElement.classList.contains('dark')) {
+                darkModeToggle.checked = true;
+                darkModeThumb.style.transform = 'translateX(1.25rem)';
+                darkModeThumb.style.backgroundColor = '#003355';
+                darkModeThumb.style.borderColor = '#003355';
+            } else {
+                darkModeToggle.checked = false;
+                darkModeThumb.style.transform = 'translateX(0)';
+                darkModeThumb.style.backgroundColor = '#fff';
+                darkModeThumb.style.borderColor = '#ccc';
+            }
+        }
+
+        if (localStorage.getItem('darkMode') === 'enabled') {
+            htmlElement.classList.add('dark');
+        }
+
+        updateDarkModeSwitch();
+
+        darkModeToggle.addEventListener('change', () => {
+            htmlElement.classList.toggle('dark');
+            if (htmlElement.classList.contains('dark')) {
+                localStorage.setItem('darkMode', 'enabled');
+            } else {
+                localStorage.setItem('darkMode', 'disabled');
+            }
+            updateDarkModeSwitch();
+        });
+
         // Global variables
         let cartItems = [];
         let cartTotal = 0;
@@ -293,28 +394,28 @@
             if (!imagePath) {
                 return 'https://png.pngtree.com/png-vector/20231023/ourmid/pngtree-mystery-box-with-question-mark-3d-illustration-png-image_10313605.png';
             }
-            
+
             // If it's already a full URL (starts with http/https)
             if (imagePath.startsWith('http')) {
                 return imagePath;
             }
-            
+
             // If it already starts with uploads/, don't add it again
             if (imagePath.startsWith('uploads/')) {
                 return '/' + imagePath;
             }
-            
+
             // If it already starts with /uploads/, use as is
             if (imagePath.startsWith('/uploads/')) {
                 return imagePath;
             }
-            
+
             // Otherwise, assume it's just the filename and add the uploads/products/ path
             return '/uploads/products/' + imagePath;
         }
 
         // Initialize page
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             console.log('Checkout page initialized');
             loadCartItems();
             setupEventHandlers();
@@ -323,7 +424,7 @@
         // Load cart items from database
         function loadCartItems() {
             console.log('Loading cart items...');
-            
+
             fetch('/cart', {
                 method: 'GET',
                 headers: {
@@ -331,29 +432,29 @@
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                 }
             })
-            .then(response => {
-                console.log('Cart response status:', response.status);
-                if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log('Cart data received:', data);
-                if (data.success && data.cart_items) {
-                    cartItems = data.cart_items;
-                    cartTotal = parseFloat(data.cart_total) || 0;
-                    displayCartItems();
-                    updatePricing();
-                } else {
-                    console.log('No cart items found');
+                .then(response => {
+                    console.log('Cart response status:', response.status);
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Cart data received:', data);
+                    if (data.success && data.cart_items) {
+                        cartItems = data.cart_items;
+                        cartTotal = parseFloat(data.cart_total) || 0;
+                        displayCartItems();
+                        updatePricing();
+                    } else {
+                        console.log('No cart items found');
+                        displayEmptyCart();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading cart:', error);
                     displayEmptyCart();
-                }
-            })
-            .catch(error => {
-                console.error('Error loading cart:', error);
-                displayEmptyCart();
-            });
+                });
         }
 
         // Display cart items
@@ -361,7 +462,7 @@
             const container = document.getElementById('cartItemsContainer');
             const emptyMessage = document.getElementById('emptyCartMessage');
             const pricingBreakdown = document.getElementById('pricingBreakdown');
-            
+
             if (!cartItems || cartItems.length === 0) {
                 displayEmptyCart();
                 return;
@@ -433,21 +534,21 @@
                 },
                 body: JSON.stringify({ quantity: parseInt(newQuantity) })
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    loadCartItems(); // Reload to refresh display
-                    // Trigger navbar update
-                    window.dispatchEvent(new CustomEvent('cartUpdated'));
-                } else {
-                    alert(data.message || 'Failed to update cart');
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        loadCartItems(); // Reload to refresh display
+                        // Trigger navbar update
+                        window.dispatchEvent(new CustomEvent('cartUpdated'));
+                    } else {
+                        alert(data.message || 'Failed to update cart');
+                        loadCartItems();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error updating cart:', error);
                     loadCartItems();
-                }
-            })
-            .catch(error => {
-                console.error('Error updating cart:', error);
-                loadCartItems();
-            });
+                });
         }
 
         // Remove cart item
@@ -460,19 +561,19 @@
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                     }
                 })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        loadCartItems(); // Reload to refresh display
-                        // Trigger navbar update
-                        window.dispatchEvent(new CustomEvent('cartUpdated'));
-                    } else {
-                        alert(data.message || 'Failed to remove item');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error removing item:', error);
-                });
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            loadCartItems(); // Reload to refresh display
+                            // Trigger navbar update
+                            window.dispatchEvent(new CustomEvent('cartUpdated'));
+                        } else {
+                            alert(data.message || 'Failed to remove item');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error removing item:', error);
+                    });
             }
         }
 
@@ -487,7 +588,7 @@
             document.getElementById('shippingAmount').textContent = `$${shipping.toFixed(2)}`;
             document.getElementById('taxAmount').textContent = `$${tax.toFixed(2)}`;
             document.getElementById('totalAmount').textContent = `$${total.toFixed(2)}`;
-            
+
             // Enable/disable checkout button
             document.getElementById('proceedToPaymentBtn').disabled = subtotal <= 0;
         }
@@ -500,7 +601,7 @@
         // Handle checkout form submission
         function handleCheckoutSubmit(e) {
             e.preventDefault();
-            
+
             if (cartItems.length === 0) {
                 alert('Your cart is empty');
                 return;
@@ -539,7 +640,7 @@
             const btn = document.getElementById('proceedToPaymentBtn');
             const btnText = document.getElementById('proceedBtnText');
             const btnLoader = document.getElementById('proceedBtnLoader');
-            
+
             // Show loading state
             btn.disabled = true;
             btnText.classList.add('hidden');
@@ -573,39 +674,39 @@
                 },
                 body: JSON.stringify(orderData)
             })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Checkout response:', data);
-                
-                if (data.success && data.snap_token) {
-                    // Use Midtrans Snap
-                    window.snap.pay(data.snap_token, {
-                        onSuccess: function(result) {
-                            console.log('Payment success:', result);
-                            handlePaymentSuccess(result, data.order_id);
-                        },
-                        onPending: function(result) {
-                            console.log('Payment pending:', result);
-                            handlePaymentPending(result, data.order_id);
-                        },
-                        onError: function(result) {
-                            console.log('Payment error:', result);
-                            handlePaymentError(result);
-                        },
-                        onClose: function() {
-                            console.log('Payment popup closed');
-                            resetCheckoutButton();
-                        }
-                    });
-                } else {
-                    throw new Error(data.message || 'Failed to create payment');
-                }
-            })
-            .catch(error => {
-                console.error('Checkout error:', error);
-                alert('Checkout failed: ' + error.message);
-                resetCheckoutButton();
-            });
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Checkout response:', data);
+
+                    if (data.success && data.snap_token) {
+                        // Use Midtrans Snap
+                        window.snap.pay(data.snap_token, {
+                            onSuccess: function (result) {
+                                console.log('Payment success:', result);
+                                handlePaymentSuccess(result, data.order_id);
+                            },
+                            onPending: function (result) {
+                                console.log('Payment pending:', result);
+                                handlePaymentPending(result, data.order_id);
+                            },
+                            onError: function (result) {
+                                console.log('Payment error:', result);
+                                handlePaymentError(result);
+                            },
+                            onClose: function () {
+                                console.log('Payment popup closed');
+                                resetCheckoutButton();
+                            }
+                        });
+                    } else {
+                        throw new Error(data.message || 'Failed to create payment');
+                    }
+                })
+                .catch(error => {
+                    console.error('Checkout error:', error);
+                    alert('Checkout failed: ' + error.message);
+                    resetCheckoutButton();
+                });
         }        // Handle payment success
         function handlePaymentSuccess(result, orderId) {
             Swal.fire({
@@ -641,7 +742,7 @@
         }        // Clear cart and redirect
         function clearCartAndRedirect(orderId = null) {
             console.log('Redirecting with order ID:', orderId);
-            
+
             fetch('/cart', {
                 method: 'DELETE',
                 headers: {
@@ -649,33 +750,33 @@
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                 }
             })
-            .then(() => {
-                console.log('Cart cleared successfully');
-                if (orderId) {
-                    // Redirect to specific order detail page
-                    const redirectUrl = `/transactions/${orderId}`;
-                    console.log('Redirecting to:', redirectUrl);
-                    window.location.href = redirectUrl;
-                } else {
-                    // Redirect to transactions list page
-                    const redirectUrl = '{{ route("transactions.index") }}';
-                    console.log('Redirecting to transactions list:', redirectUrl);
-                    window.location.href = redirectUrl;
-                }
-            })
-            .catch((error) => {
-                console.error('Error clearing cart:', error);
-                // Even if cart clearing fails, still redirect to show the order
-                if (orderId) {
-                    const redirectUrl = `/transactions/${orderId}`;
-                    console.log('Fallback redirect to order:', redirectUrl);
-                    window.location.href = redirectUrl;
-                } else {
-                    const redirectUrl = '{{ route("transactions.index") }}';
-                    console.log('Fallback redirect to transactions list:', redirectUrl);
-                    window.location.href = redirectUrl;
-                }
-            });
+                .then(() => {
+                    console.log('Cart cleared successfully');
+                    if (orderId) {
+                        // Redirect to specific order detail page
+                        const redirectUrl = `/transactions/${orderId}`;
+                        console.log('Redirecting to:', redirectUrl);
+                        window.location.href = redirectUrl;
+                    } else {
+                        // Redirect to transactions list page
+                        const redirectUrl = '{{ route("transactions.index") }}';
+                        console.log('Redirecting to transactions list:', redirectUrl);
+                        window.location.href = redirectUrl;
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error clearing cart:', error);
+                    // Even if cart clearing fails, still redirect to show the order
+                    if (orderId) {
+                        const redirectUrl = `/transactions/${orderId}`;
+                        console.log('Fallback redirect to order:', redirectUrl);
+                        window.location.href = redirectUrl;
+                    } else {
+                        const redirectUrl = '{{ route("transactions.index") }}';
+                        console.log('Fallback redirect to transactions list:', redirectUrl);
+                        window.location.href = redirectUrl;
+                    }
+                });
         }
 
         // Reset checkout button
@@ -683,7 +784,7 @@
             const btn = document.getElementById('proceedToPaymentBtn');
             const btnText = document.getElementById('proceedBtnText');
             const btnLoader = document.getElementById('proceedBtnLoader');
-            
+
             btn.disabled = false;
             btnText.classList.remove('hidden');
             btnLoader.classList.add('hidden');
@@ -695,6 +796,55 @@
             console.log('Cart Total:', cartTotal);
             console.log('Order Data:', orderData);
         }
+
+        // SweetAlert2 Logout Desktop
+        document.getElementById('logoutBtn')?.addEventListener('click', function (e) {
+            const isDark = document.documentElement.classList.contains('dark');
+
+            Swal.fire({
+                title: 'Logout?',
+                text: "Are you sure you want to logout?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#eea133',
+                confirmButtonText: 'Logout',
+                background: isDark ? '#374151' : '#ffffff',
+                didOpen: () => {
+                    const popup = Swal.getPopup();
+                    if (isDark) popup.classList.add('swal2-dark');
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('logoutForm').submit();
+                }
+            });
+        });
+
+        // SweetAlert2 Logout Mobile
+        document.getElementById('logoutBtnMobile')?.addEventListener('click', function (e) {
+            const isDark = document.documentElement.classList.contains('dark');
+
+            Swal.fire({
+                title: 'Logout?',
+                text: "Are you sure you want to logout?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#eea133',
+                confirmButtonText: 'Logout',
+                background: isDark ? '#374151' : '#ffffff',
+                didOpen: () => {
+                    const popup = Swal.getPopup();
+                    if (isDark) popup.classList.add('swal2-dark');
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('logoutForm').submit();
+                }
+            });
+        });
     </script>
 </body>
+
 </html>

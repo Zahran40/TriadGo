@@ -80,7 +80,9 @@
                 Our Best Solution for your Export & Import activities
             </h2>
             <p class="text-lg text-blue-700 mb-8 max-w-xl fade-in-up" style="animation-delay:0.4s">
-                Memudahkan koneksi bisnis Anda dengan pasar global, layanan ekspor-impor yang andal dan cepat.
+                TriadGO is your trusted partner for seamless export and import services across SEA. We provide
+                comprehensive logistics management, customs consulting, and marketing strategies to help you expand your
+                business globally.
             </p>
             <a href="#contact"
                 class="inline-block bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-8 rounded-md shadow-md transition pulse-on-hover">
@@ -104,11 +106,10 @@
                             <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h4l3 9 4-18 3 9h4" />
                         </svg>
                     </div>
-                    <h4 class="text-2xl font-semibold text-blue-800 mb-2 text-center md:text-left">Manajemen Logistik
+                    <h4 class="text-2xl font-semibold text-blue-800 mb-2 text-center md:text-left">Logistic Management
                     </h4>
                     <p class="text-blue-700 text-center md:text-left">
-                        Mengatur pengiriman barang secara efisien dari pintu ke pintu dengan solusi logistik
-                        terintegrasi.
+                        Manage efficient door-to-door delivery with integrated logistics solutions.
                     </p>
                 </div>
                 <div
@@ -122,10 +123,10 @@
                                 d="M12 12v7m0-7a7 7 0 017-7h0a7 7 0 014 12" />
                         </svg>
                     </div>
-                    <h4 class="text-2xl font-semibold text-blue-800 mb-2 text-center md:text-left">Konsultasi Bea Cukai
+                    <h4 class="text-2xl font-semibold text-blue-800 mb-2 text-center md:text-left">Payment Gateway
                     </h4>
                     <p class="text-blue-700 text-center md:text-left">
-                        Membantu proses bea cukai Anda agar berjalan lancar dan sesuai dengan regulasi internasional.
+                        Secure and easy payment solutions for your import-export transactions.
                     </p>
                 </div>
                 <div
@@ -139,10 +140,10 @@
                                 d="M12 12h3l3 9m-3-9v-7a7 7 0 00-14 0v7" />
                         </svg>
                     </div>
-                    <h4 class="text-2xl font-semibold text-blue-800 mb-2 text-center md:text-left">Pemasaran Se - ASEAN
+                    <h4 class="text-2xl font-semibold text-blue-800 mb-2 text-center md:text-left">SEA Market Access
                     </h4>
                     <p class="text-blue-700 text-center md:text-left">
-                        Membuka akses pasar internasional untuk produk Anda dengan strategi pemasaran yang efektif.
+                        Access to Southeast Asian markets with comprehensive trade information and support.
                     </p>
                 </div>
             </div>
@@ -153,37 +154,41 @@
         <div class="max-w-4xl mx-auto text-center">
             <h3 class="text-3xl font-bold mb-6 text-blue-900">About Us</h3>
             <p class="text-blue-700 text-lg leading-relaxed">
-                TriadGO merupakan website tubes kelompok 3 KOM C TI '24 yang terdiri dari Andre (ketua), Abbil, Vincent,
-                Reagan, dan Dan Dan Dan Dandragnel.
+                TriadGo is a web application that focuses on import-export services, designed to make it easier for
+                business people to reach the global market. This platform helps users manage logistics procedures and
+                market information, as well as expand trade networks to promote local products to the international
+                scene.
             </p>
         </div>
     </section>
 
-       <!-- ✅ FIXED: Add isset check for testimonials -->
+    <!-- ✅ FIXED: Add isset check for testimonials -->
     <section id="testimoni" class="bg-white py-16 slide-in">
         <div class="container mx-auto px-6 md:px-12">
             <h3 class="text-3xl font-bold text-blue-900 mb-12 text-center">Customer Testimonials</h3>
-            
+
             @if(isset($testimonials) && $testimonials->count() > 0)
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
                     @foreach($testimonials->take(3) as $testimonial)
                         <div class="bg-blue-50 p-8 rounded-lg shadow hover:shadow-lg transition text-center card-animate">
                             <!-- Anonymous Profile Picture -->
-                            <div class="w-16 h-16 rounded-full mx-auto mb-4 bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center">
+                            <div
+                                class="w-16 h-16 rounded-full mx-auto mb-4 bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center">
                                 <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
+                                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                                        clip-rule="evenodd"></path>
                                 </svg>
                             </div>
-                            
+
                             <!-- Message from Contact Us -->
                             <p class="text-blue-700 mb-4 line-clamp-3">
                                 "{{ Str::limit($testimonial->message, 120) }}"
                             </p>
-                            
+
                             <!-- Name and Email -->
                             <h4 class="font-semibold text-blue-800">{{ $testimonial->name }}</h4>
                             <span class="text-sm text-blue-600">{{ $testimonial->email }}</span>
-                            
+
                             <!-- Date -->
                             <div class="mt-2">
                                 <span class="text-xs text-gray-500">{{ $testimonial->created_at->format('M d, Y') }}</span>
@@ -191,7 +196,7 @@
                         </div>
                     @endforeach
                 </div>
-                
+
                 <!-- Show More Testimonials if available -->
                 @if($testimonials->count() > 3)
                     <div class="mt-12">
@@ -199,9 +204,11 @@
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
                             @foreach($testimonials->skip(3)->take(3) as $testimonial)
                                 <div class="bg-gray-50 p-6 rounded-lg shadow hover:shadow-lg transition text-center card-animate">
-                                    <div class="w-12 h-12 rounded-full mx-auto mb-3 bg-gradient-to-r from-gray-400 to-gray-500 flex items-center justify-center">
+                                    <div
+                                        class="w-12 h-12 rounded-full mx-auto mb-3 bg-gradient-to-r from-gray-400 to-gray-500 flex items-center justify-center">
                                         <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
+                                            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                                                clip-rule="evenodd"></path>
                                         </svg>
                                     </div>
                                     <p class="text-gray-700 mb-3 text-sm line-clamp-2">
@@ -218,32 +225,41 @@
                 <!-- ✅ Default Testimonials when no contact data available -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
                     <div class="bg-blue-50 p-8 rounded-lg shadow hover:shadow-lg transition text-center card-animate">
-                        <div class="w-16 h-16 rounded-full mx-auto mb-4 bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center">
+                        <div
+                            class="w-16 h-16 rounded-full mx-auto mb-4 bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center">
                             <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
+                                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                                    clip-rule="evenodd"></path>
                             </svg>
                         </div>
-                        <p class="text-blue-700 mb-4">"Kece abis. Beli perlengkapan duduk duduk dari negara ASEAN mana aja jadi simple"</p>
+                        <p class="text-blue-700 mb-4">"Kece abis. Beli perlengkapan duduk duduk dari negara SEA mana aja
+                            jadi simple"</p>
                         <h4 class="font-semibold text-blue-800">Andre Sebayang</h4>
                         <span class="text-sm text-blue-600">Pengusaha Teteng</span>
                     </div>
                     <div class="bg-blue-50 p-8 rounded-lg shadow hover:shadow-lg transition text-center card-animate">
-                        <div class="w-16 h-16 rounded-full mx-auto mb-4 bg-gradient-to-r from-green-500 to-green-600 flex items-center justify-center">
+                        <div
+                            class="w-16 h-16 rounded-full mx-auto mb-4 bg-gradient-to-r from-green-500 to-green-600 flex items-center justify-center">
                             <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
+                                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                                    clip-rule="evenodd"></path>
                             </svg>
                         </div>
-                        <p class="text-blue-700 mb-4">"Kece parah sih. Mau top up Football Manager jadi gampang. Makasih TriadGO. Sukses!"</p>
+                        <p class="text-blue-700 mb-4">"Kece parah sih. Mau top up Football Manager jadi gampang. Makasih
+                            TriadGO. Sukses!"</p>
                         <h4 class="font-semibold text-blue-800">Daniele Siahaan</h4>
                         <span class="text-sm text-blue-600">Appara Reagan</span>
                     </div>
                     <div class="bg-blue-50 p-8 rounded-lg shadow hover:shadow-lg transition text-center card-animate">
-                        <div class="w-16 h-16 rounded-full mx-auto mb-4 bg-gradient-to-r from-purple-500 to-purple-600 flex items-center justify-center">
+                        <div
+                            class="w-16 h-16 rounded-full mx-auto mb-4 bg-gradient-to-r from-purple-500 to-purple-600 flex items-center justify-center">
                             <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
+                                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                                    clip-rule="evenodd"></path>
                             </svg>
                         </div>
-                        <p class="text-blue-700 mb-4">"Bener kata appara gw. Bukan cuma top up, tapi ekspor impor WDP pun bisa. Mudah + aman"</p>
+                        <p class="text-blue-700 mb-4">"Bener kata appara gw. Bukan cuma top up, tapi ekspor impor WDP pun
+                            bisa. Mudah + aman"</p>
                         <h4 class="font-semibold text-blue-800">Reagan Siahaan</h4>
                         <span class="text-sm text-blue-600">Appara Daniele</span>
                     </div>

@@ -66,9 +66,9 @@
             <!-- Request Form -->
             <div class="bg-whiteoverflow-hidden shadow-sm sm:rounded-lg mb-6">
                 <div class="p-6 border-b border-gray-200">
-                    <h2 class="text-lg font-semibold text-blue-600">Request Produk Baru</h2>
+                    <h2 class="text-lg font-semibold text-blue-600">Request New Product</h2>
                     <p class="text-sm text-blue-600 mt-1">
-                        Tidak menemukan produk yang Anda cari? Kirim request kepada eksportir.
+                        Can't find the product you are looking for? Send a request to the exporter.
                     </p>
                 </div>
                 <div class="p-6">
@@ -76,14 +76,14 @@
                         @csrf
                         <div class="mb-4">
                             <label for="request_text" class="block text-sm font-medium text-blue-700 mb-2">
-                                Deskripsi Produk yang Diminta
+                                Requested Product Description
                             </label>
                             <textarea 
                                 id="request_text" 
                                 name="request_text" 
                                 rows="4" 
                                 class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                                placeholder="Contoh: Saya mencari kopi arabika kualitas premium dari Indonesia dengan volume minimum 500kg..."
+                                placeholder="Example: I am looking for premium quality Arabica coffee from Indonesia with a minimum volume of 500kg..."
                                 required
                             ></textarea>
                         </div>
@@ -94,7 +94,7 @@
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
                             </svg>
-                            Kirim Request
+                            Send Request
                         </button>
                     </form>
                 </div>
@@ -125,7 +125,7 @@
                             @endforeach
                         </div>
                     @else
-                        <p class="text-blue-500">Tidak ada request pending.</p>
+                        <p class="text-blue-500">No Pending Request</p>
                     @endif
                 </div>
             </div>
@@ -133,13 +133,13 @@
             <!-- Approved Requests -->
             <div class="product overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 border-b border-gray-200">
-                    <h3 class="text-lg font-semibold text-blue-600">Request Disetujui</h3>
+                    <h3 class="text-lg font-semibold text-blue-600">Request Approved</h3>
                 </div>
                 <div class="p-6">
                     @if(isset($approvedRequests) && $approvedRequests->count() > 0)
                         <div class="space-y-4">
                             @foreach($approvedRequests as $request)
-                                <div class="border border-green-200 rounded-lg p-4 bg-green-50"> 
+                                <div class="product border border-green-200 rounded-lg p-4"> 
                                     <div class="flex justify-between items-start">
                                         <div class="flex-1">
                                             <p class="text-blue-90">{{ $request->request_text }}</p>
@@ -163,7 +163,7 @@
                             @endforeach
                         </div>
                     @else
-                        <p class="text-blue-500">Belum ada request yang disetujui.</p>
+                        <p class="text-blue-500">No Accepted Request</p>
                     @endif
                 </div>
             </div>

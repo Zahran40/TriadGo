@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request as HttpRequest;
-use App\Models\Request;
+use App\Models\ProductRequest;
 use App\Models\Notification;
 use App\Models\Product;
 use App\Models\User;
@@ -17,19 +17,19 @@ class RequestController extends Controller
      */
     public function importirRequestForm()
     {
-        if (!Auth::check() || Auth::user()->role !== 'importir') {
+        if (!Auth::check() || Auth::user()->role !== 'impor') {
             return redirect()->route('login')->with('error', 'Access denied. Importir only.');
         }
 
         $user = Auth::user();
-        $pendingRequests = Request::where('importir_user_id', $user->user_id)
-                                ->where('status', Request::STATUS_PENDING)
+        $pendingRequests = ProductRequest::where('importir_user_id', $user->user_id)
+                                ->where('status', ProductRequest::STATUS_PENDING)
                                 ->with('eksportir')
                                 ->orderBy('created_at', 'desc')
                                 ->get();
 
-        $approvedRequests = Request::where('importir_user_id', $user->user_id)
-                                ->where('status', Request::STATUS_APPROVED)
+        $approvedRequests = ProductRequest::where('importir_user_id', $user->user_id)
+                                ->where('status', ProductRequest::STATUS_APPROVED)
                                 ->with(['eksportir', 'product'])
                                 ->orderBy('approved_at', 'desc')
                                 ->get();
@@ -46,14 +46,14 @@ class RequestController extends Controller
             'request_text' => 'required|string|max:1000'
         ]);
 
-        if (!Auth::check() || Auth::user()->role !== 'importir') {
+        if (!Auth::check() || Auth::user()->role !== 'impor') {
             return redirect()->route('login')->with('error', 'Access denied. Importir only.');
         }
 
-        $productRequest = Request::create([
+        $productRequest = ProductRequest::create([
             'importir_user_id' => Auth::user()->user_id,
             'request_text' => $request->request_text,
-            'status' => Request::STATUS_PENDING
+            'status' => ProductRequest::STATUS_PENDING
         ]);
 
         Log::info('New product request created', [
@@ -70,16 +70,16 @@ class RequestController extends Controller
      */
     public function eksportirRequestList()
     {
-        if (!Auth::check() || Auth::user()->role !== 'eksportir') {
+        if (!Auth::check() || Auth::user()->role !== 'ekspor') {
             return redirect()->route('login')->with('error', 'Access denied. Eksportir only.');
         }
 
-        $pendingRequests = Request::where('status', Request::STATUS_PENDING)
+        $pendingRequests = ProductRequest::where('status', ProductRequest::STATUS_PENDING)
                                 ->with('importir')
                                 ->orderBy('created_at', 'desc')
                                 ->get();
 
-        $myRequests = Request::where('eksportir_user_id', Auth::user()->user_id)
+        $myRequests = ProductRequest::where('eksportir_user_id', Auth::user()->user_id)
                             ->with(['importir', 'product'])
                             ->orderBy('updated_at', 'desc')
                             ->get();
@@ -92,13 +92,13 @@ class RequestController extends Controller
      */
     public function approveRequest(HttpRequest $request, $requestId)
     {
-        if (!Auth::check() || Auth::user()->role !== 'eksportir') {
+        if (!Auth::check() || Auth::user()->role !== 'ekspor') {
             return response()->json(['error' => 'Access denied'], 403);
         }
 
-        $productRequest = Request::findOrFail($requestId);
+        $productRequest = ProductRequest::findOrFail($requestId);
         
-        if ($productRequest->status !== Request::STATUS_PENDING) {
+        if ($productRequest->status !== ProductRequest::STATUS_PENDING) {
             return response()->json(['error' => 'Request already processed'], 400);
         }
 
@@ -130,13 +130,13 @@ class RequestController extends Controller
      */
     public function rejectRequest($requestId)
     {
-        if (!Auth::check() || Auth::user()->role !== 'eksportir') {
+        if (!Auth::check() || Auth::user()->role !== 'ekspor') {
             return response()->json(['error' => 'Access denied'], 403);
         }
 
-        $productRequest = Request::findOrFail($requestId);
+        $productRequest = ProductRequest::findOrFail($requestId);
         
-        if ($productRequest->status !== Request::STATUS_PENDING) {
+        if ($productRequest->status !== ProductRequest::STATUS_PENDING) {
             return response()->json(['error' => 'Request already processed'], 400);
         }
 
@@ -170,7 +170,7 @@ class RequestController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        $productRequest = Request::findOrFail($requestId);
+        $productRequest = ProductRequest::findOrFail($requestId);
         
         // Check if user owns the request or is eksportir who handled it
         $user = Auth::user();

@@ -26,7 +26,7 @@ class ProductStockChart extends ChartWidget
         return [
             'datasets' => [
                 [
-                    'label' => 'Jumlah Produk',
+                    'label' => 'Products Count',
                     'data' => array_values($stockRanges),
                     'backgroundColor' => [
                         '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FECA57'

@@ -64,14 +64,14 @@
                                 
                 <div class="p-6">
                     <!-- PERBAIKI INI - form tag salah posisi -->
-                    <form id="requestForm" action="{{ route('importir.request.store') }}" method="POST">
+                    <form id="requestForm" action="{{ route('requestimportir') }}" method="POST">
                         @csrf
                         <div class="mb-4">
                             <label for="request_text" class="block text-sm font-medium text-blue-700 dark:text-blue-300 mb-2">
                                 Requested Product Description
                             </label>
                             <textarea 
-                            < id="request_text" 
+                             id="request_text" 
                                 name="request_text" 
                                 rows="4" 
                                 class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
@@ -81,8 +81,7 @@
                         </div>
                         <button 
                             type="submit" 
-                            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                        >
+                            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
                             </svg>
@@ -258,7 +257,7 @@
                 console.error('Error:', error);
                 Swal.fire({
                     title: 'Error!',
-                    text: 'Terjadi kesalahan. Silakan coba lagi.',
+                    text: 'An error occured.',
                     icon: 'error',
                     confirmButtonText: 'OK',
                     background: isDark ? '#374151' : '#ffffff',

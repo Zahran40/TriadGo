@@ -36,7 +36,7 @@ class ProductsByCountryChart extends ChartWidget
         return [
             'datasets' => [
                 [
-                    'label' => 'Jumlah Produk',
+                    'label' => 'Products Count',
                     'data' => $data,
                     'backgroundColor' => $colors,
                     'borderWidth' => 2,

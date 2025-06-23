@@ -12,8 +12,8 @@ class UsersList extends Page implements Tables\Contracts\HasTable
     use Tables\Concerns\InteractsWithTable;
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
-    protected static ?string $navigationLabel = 'Daftar User';
-    protected static ?string $title = 'Daftar User';
+    protected static ?string $navigationLabel = 'User List';
+    protected static ?string $title = 'User List';
     protected static string $view = 'filament.pages.users-list';
 
     protected function getTableQuery()
@@ -25,7 +25,7 @@ class UsersList extends Page implements Tables\Contracts\HasTable
     {
         return [
             TextColumn::make('user_id')->label('ID')->sortable(),
-            TextColumn::make('name')->label('Nama')->searchable()->sortable(),
+            TextColumn::make('name')->label('Name')->searchable()->sortable(),
             TextColumn::make('email')->label('Email')->searchable(),
             TextColumn::make('country')->label('Negara')->searchable(),
             TextColumn::make('phone')->label('Telepon')->searchable(),

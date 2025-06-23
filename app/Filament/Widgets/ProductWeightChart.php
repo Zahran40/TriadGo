@@ -6,7 +6,7 @@ use Filament\Widgets\ChartWidget;
 use App\Models\Product;
 
 class ProductWeightChart extends ChartWidget
-{    protected static ?string $heading = 'Distribusi Produk Berdasarkan Berat (kg)';
+{    protected static ?string $heading = 'Product Distribution by Weight (kg)';
     
     protected static ?int $sort = 12;
 

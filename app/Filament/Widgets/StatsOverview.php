@@ -38,23 +38,23 @@ class StatsOverview extends BaseWidget
         $pendingProducts = Product::where('status', 'pending')->count();
 
         return [
-            Stat::make('Total Produk Aktif', $totalProducts)
-                ->description('Produk yang sudah disetujui')
+            Stat::make('Total Active Products', $totalProducts)
+                ->description('Approved Products')
                 ->descriptionIcon('heroicon-m-check-circle')
                 ->color('success'),
                 
-            Stat::make('Total Importir', $totalImportir)
-                ->description('Pengguna pembeli')
+            Stat::make('Total Importer', $totalImportir)
+                ->description('Buyer')
                 ->descriptionIcon('heroicon-m-shopping-cart')
                 ->color('info'),
                 
-            Stat::make('Total Eksportir', $totalEksportir)
-                ->description('Pengguna penjual')
+            Stat::make('Total Eksporter', $totalEksportir)
+                ->description('Seller')
                 ->descriptionIcon('heroicon-m-building-storefront')
                 ->color('warning'),
                 
-            Stat::make('Order Bulan Ini', $totalOrders)
-                ->description('Transaksi berhasil')
+            Stat::make('Order This Month', $totalOrders)
+                ->description('Success Transactions')
                 ->descriptionIcon('heroicon-m-banknotes')
                 ->color('primary'),
                 

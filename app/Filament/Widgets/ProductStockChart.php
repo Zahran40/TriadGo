@@ -6,7 +6,7 @@ use Filament\Widgets\ChartWidget;
 use App\Models\Product;
 
 class ProductStockChart extends ChartWidget
-{    protected static ?string $heading = 'Jumlah Produk Berdasarkan Stok';
+{    protected static ?string $heading = 'Numbers of Products by Stock Ranges';
     
     protected static ?int $sort = 11;
 

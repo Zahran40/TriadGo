@@ -6,7 +6,7 @@ use Filament\Widgets\ChartWidget;
 use App\Models\User;
 
 class UserRoleDistributionChart extends ChartWidget
-{    protected static ?string $heading = 'Distribusi Pengguna: Importir vs Eksportir';
+{    protected static ?string $heading = 'User Distribution : Importer vs Exporter';
     
     protected static ?int $sort = 14;
 

@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 class DailySalesChart extends ChartWidget
 {
-    protected static ?string $heading = 'Pembelian Importir Harian (30 Hari Terakhir)';
+    protected static ?string $heading = 'Daily Importer Purchases (Last 30 Days)';
     
     protected static ?int $sort = 15;
 

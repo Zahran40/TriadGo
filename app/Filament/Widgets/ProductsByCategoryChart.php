@@ -7,7 +7,7 @@ use App\Models\CheckoutOrder;
 use Illuminate\Support\Facades\DB;
 
 class ProductsByCategoryChart extends ChartWidget
-{    protected static ?string $heading = 'Produk Sering Dibeli Berdasarkan Kategori';
+{    protected static ?string $heading = 'Most Purchased Products by Category';
     
     protected static ?int $sort = 10;
     protected int | string | array $columnSpan = 12;

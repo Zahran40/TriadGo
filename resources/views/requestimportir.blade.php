@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Request Produk - TriadGo</title>
+    <title>Product Requests - TriadGo</title>
     @vite('resources/css/app.css')
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -56,9 +56,9 @@
             <!-- Request Form -->
             <div class="bg-white dark:bg-slate-800 overflow-hidden shadow-sm sm:rounded-lg mb-6">
                 <div class="p-6 border-b border-gray-200 dark:border-gray-600">
-                    <h2 class="text-lg font-semibold text-blue-600 dark:text-blue-400">Request Produk Baru</h2>
+                    <h2 class="text-lg font-semibold text-blue-600 dark:text-blue-400">Request New Product</h2>
                     <p class="text-sm text-blue-600 dark:text-blue-400 mt-1">
-                        Tidak menemukan produk yang Anda cari? Kirim request kepada eksportir.
+                        Can't find the product you are looking for? Send a request to the exporter.
                     </p>
                 </div>
                                 
@@ -68,14 +68,14 @@
                         @csrf
                         <div class="mb-4">
                             <label for="request_text" class="block text-sm font-medium text-blue-700 dark:text-blue-300 mb-2">
-                                Deskripsi Produk yang Diminta
+                                Requested Product Description
                             </label>
                             <textarea 
-                                id="request_text" 
+                            < id="request_text" 
                                 name="request_text" 
                                 rows="4" 
                                 class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
-                                placeholder="Contoh: Saya mencari kopi arabika kualitas premium dari Indonesia dengan volume minimum 500kg..."
+                                placeholder="Example: Saya mencari kopi arabika kualitas premium dari Indonesia dengan volume minimum 500kg..."
                                 required
                             ></textarea>
                         </div>
@@ -86,7 +86,7 @@
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
                             </svg>
-                            Kirim Request
+                            Send Request
                         </button>
                     </form>
                 </div>
@@ -95,7 +95,7 @@
             <!-- Pending Requests -->
             <div class="bg-white dark:bg-slate-800 overflow-hidden shadow-sm sm:rounded-lg mb-6">
                 <div class="p-6 border-b border-gray-200 dark:border-gray-600">
-                    <h3 class="text-lg font-semibold text-blue-600 dark:text-blue-400">Request Pending</h3>
+                    <h3 class="text-lg font-semibold text-blue-600 dark:text-blue-400">Pending Requests</h3>
                 </div>
                 <div class="p-6">
                     @if(isset($pendingRequests) && $pendingRequests->count() > 0)
@@ -106,7 +106,7 @@
                                         <div class="flex-1">
                                             <p class="text-blue-600 dark:text-blue-400">{{ $request->request_text }}</p>
                                             <p class="text-sm text-blue-500 dark:text-blue-500 mt-1">
-                                                Dikirim: {{ $request->created_at->format('d M Y H:i') }}
+                                                Sent: {{ $request->created_at->format('d M Y H:i') }}
                                             </p>
                                         </div>
                                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">
@@ -117,7 +117,7 @@
                             @endforeach
                         </div>
                     @else
-                        <p class="text-blue-500 dark:text-blue-400">Tidak ada request pending.</p>
+                        <p class="text-blue-500 dark:text-blue-400">No pending requests.</p>
                     @endif
                 </div>
             </div>
@@ -125,7 +125,7 @@
             <!-- Approved Requests -->
             <div class="bg-white dark:bg-slate-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 border-b border-gray-200 dark:border-gray-600">
-                    <h3 class="text-lg font-semibold text-blue-600 dark:text-blue-400">Request Disetujui</h3>
+                    <h3 class="text-lg font-semibold text-blue-600 dark:text-blue-400">Request Approved</h3>
                 </div>
                 <div class="p-6">
                     @if(isset($approvedRequests) && $approvedRequests->count() > 0)
@@ -136,26 +136,26 @@
                                         <div class="flex-1">
                                             <p class="text-blue-600 dark:text-blue-400">{{ $request->request_text }}</p>
                                             <p class="text-sm text-blue-600 dark:text-blue-400 mt-1">
-                                                Disetujui oleh: <span class="font-medium">{{ $request->eksportir->name ?? 'Eksportir' }}</span>
+                                                Approved by: <span class="font-medium">{{ $request->eksportir->name ?? 'Eksportir' }}</span>
                                             </p>
                                             <p class="text-sm text-blue-500 dark:text-blue-500">
-                                                Disetujui: {{ $request->approved_at ? $request->approved_at->format('d M Y H:i') : '' }}
+                                                Approved: {{ $request->approved_at ? $request->approved_at->format('d M Y H:i') : '' }}
                                             </p>
                                             @if($request->product)
                                                 <p class="text-sm text-blue-600 dark:text-blue-400 mt-1">
-                                                    Produk terkait: {{ $request->product->product_name }}
+                                                    Related product: {{ $request->product->product_name }}
                                                 </p>
                                             @endif
                                         </div>
                                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
-                                            Disetujui
+                                            Approved
                                         </span>
                                     </div>
                                 </div>
                             @endforeach
                         </div>
                     @else
-                        <p class="text-blue-500 dark:text-blue-400">Belum ada request yang disetujui.</p>
+                        <p class="text-blue-500 dark:text-blue-400">No approved requests.</p>
                     @endif
                 </div>
             </div>
@@ -208,20 +208,13 @@
         document.getElementById('requestForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            console.log('=== FORM SUBMIT DEBUG ===');
-            console.log('Form action:', this.action);
-            console.log('Form method:', this.method);
-            
             const formData = new FormData(this);
-            console.log('Form data:', Object.fromEntries(formData));
-            console.log('CSRF Token:', document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
-            
             const isDark = document.documentElement.classList.contains('dark');
             
             // Show loading
             Swal.fire({
-                title: 'Mengirim...',
-                text: 'Mohon tunggu sebentar',
+                title: 'Sending...',
+                text: 'Please wait',
                 icon: 'info',
                 allowOutsideClick: false,
                 showConfirmButton: false,
@@ -241,22 +234,15 @@
                 }
             })
             .then(response => {
-                console.log('Response status:', response.status);
-                console.log('Response headers:', response.headers);
-                
                 if (!response.ok) {
-                    return response.text().then(text => {
-                        console.error('Response text:', text);
-                        throw new Error(`HTTP ${response.status}: ${text}`);
-                    });
+                    throw new Error('Network response was not ok');
                 }
                 return response.json();
             })
             .then(data => {
-                console.log('Success response:', data);
                 Swal.fire({
-                    title: 'Berhasil!',
-                    text: 'Request berhasil dikirim!',
+                    title: 'Success!',
+                    text: 'Request sent!',
                     icon: 'success',
                     confirmButtonText: 'OK',
                     background: isDark ? '#374151' : '#ffffff',
@@ -269,13 +255,10 @@
                 });
             })
             .catch(error => {
-                console.error('=== ERROR DETAILS ===');
                 console.error('Error:', error);
-                console.error('Error message:', error.message);
-                
                 Swal.fire({
                     title: 'Error!',
-                    text: 'Terjadi kesalahan: ' + error.message,
+                    text: 'Terjadi kesalahan. Silakan coba lagi.',
                     icon: 'error',
                     confirmButtonText: 'OK',
                     background: isDark ? '#374151' : '#ffffff',

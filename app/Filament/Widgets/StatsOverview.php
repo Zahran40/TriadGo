@@ -58,13 +58,13 @@ class StatsOverview extends BaseWidget
                 ->descriptionIcon('heroicon-m-banknotes')
                 ->color('primary'),
                 
-            Stat::make('Revenue Bulan Ini', 'Rp ' . number_format($totalRevenue, 0, ',', '.'))
-                ->description('Total pendapatan')
+            Stat::make('Revenue This Month', 'Rp ' . number_format($totalRevenue, 0, ',', '.'))
+                ->description('Total Income')
                 ->descriptionIcon('heroicon-m-currency-dollar')
                 ->color('success'),
                 
-            Stat::make('Produk Pending', $pendingProducts)
-                ->description('Menunggu persetujuan')
+            Stat::make('Pending Products', $pendingProducts)
+                ->description('Waiting For Approval')
                 ->descriptionIcon('heroicon-m-clock')
                 ->color($pendingProducts > 0 ? 'danger' : 'gray'),
         ];

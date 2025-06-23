@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Daftar TransAction')
+@section('title', 'Transactions List')
 
 @section('content')
 <script>
@@ -237,16 +237,16 @@
             <div class="text-center py-12">
                 <div class="text-blue-500 text-lg mb-4">
                     @if(request('search'))
-                        Tidak ada pesanan yang sesuai dengan pencarian "{{ request('search') }}"
+                        No matching order "{{ request('search') }}"
                     @elseif(request('status') && request('status') !== 'all')
-                        Tidak ada pesanan dengan status "{{ request('status') }}"
+                        No order with status "{{ request('status') }}"
                     @else
-                        Anda belum memiliki pesanan
+                        You have no orders yet.
                     @endif
                 </div>
                 <a href="{{ route('catalog') }}" 
                    class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-                    Mulai Berbelanja
+                    Start Shopping
                 </a>
             </div>
         @endif

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Kelola Request - TriadGo</title>
+    <title>Manage Requests - TriadGo</title>
     @vite('resources/css/app.css')
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -52,14 +52,14 @@
 
             function approveRequest(requestId) {
                 Swal.fire({
-                    title: 'Setujui Request?',
-                    text: 'Anda akan menyetujui request produk ini.',
+                    title: 'Approve Request?',
+                    text: 'You are about to approve this request.',
                     icon: 'question',
                     showCancelButton: true,
                     confirmButtonColor: '#10b981',
                     cancelButtonColor: '#6b7280',
-                    confirmButtonText: 'Ya, Setujui',
-                    cancelButtonText: 'Batal'
+                    confirmButtonText: 'Approve',
+                    cancelButtonText: 'Cancel'
                 }).then((result) => {
                     if (result.isConfirmed) {
                         fetch(`/eksportir/requests/${requestId}/approve`, {
@@ -73,7 +73,7 @@
                             .then(data => {
                                 if (data.success) {
                                     Swal.fire({
-                                        title: 'Berhasil!',
+                                        title: 'Success!',
                                         text: data.message,
                                         icon: 'success',
                                         confirmButtonText: 'OK'
@@ -83,7 +83,7 @@
                                 } else {
                                     Swal.fire({
                                         title: 'Error!',
-                                        text: data.error || 'Terjadi kesalahan',
+                                        text: data.error || 'An Error Occured',
                                         icon: 'error',
                                         confirmButtonText: 'OK'
                                     });
@@ -93,7 +93,7 @@
                                 console.error('Error:', error);
                                 Swal.fire({
                                     title: 'Error!',
-                                    text: 'Terjadi kesalahan. Silakan coba lagi.',
+                                    text: 'An Error Occured. Please Try Again.',
                                     icon: 'error',
                                     confirmButtonText: 'OK'
                                 });
@@ -104,14 +104,14 @@
 
             function rejectRequest(requestId) {
                 Swal.fire({
-                    title: 'Tolak Request?',
-                    text: 'Anda akan menolak request produk ini.',
+                    title: 'Reject Request?',
+                    text: 'You are about to reject this request.',
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#ef4444',
                     cancelButtonColor: '#6b7280',
-                    confirmButtonText: 'Ya, Tolak',
-                    cancelButtonText: 'Batal'
+                    confirmButtonText: 'Reject',
+                    cancelButtonText: 'Cancel'
                 }).then((result) => {
                     if (result.isConfirmed) {
                         fetch(`/eksportir/requests/${requestId}/reject`, {
@@ -125,7 +125,7 @@
                             .then(data => {
                                 if (data.success) {
                                     Swal.fire({
-                                        title: 'Berhasil!',
+                                        title: 'Success!',
                                         text: data.message,
                                         icon: 'success',
                                         confirmButtonText: 'OK'
@@ -135,7 +135,7 @@
                                 } else {
                                     Swal.fire({
                                         title: 'Error!',
-                                        text: data.error || 'Terjadi kesalahan',
+                                        text: data.error || 'An Error Occured',
                                         icon: 'error',
                                         confirmButtonText: 'OK'
                                     });
@@ -145,7 +145,7 @@
                                 console.error('Error:', error);
                                 Swal.fire({
                                     title: 'Error!',
-                                    text: 'Terjadi kesalahan. Silakan coba lagi.',
+                                    text: 'An Error Occured. Please Try Again.',
                                     icon: 'error',
                                     confirmButtonText: 'OK'
                                 });
@@ -156,14 +156,14 @@
 
             function deleteRequest(requestId) {
                 Swal.fire({
-                    title: 'Hapus Request?',
-                    text: 'Request akan dihapus secara permanen.',
+                    title: 'Delete Request?',
+                    text: 'This request will be deleted permanently.',
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#ef4444',
                     cancelButtonColor: '#6b7280',
-                    confirmButtonText: 'Ya, Hapus',
-                    cancelButtonText: 'Batal'
+                    confirmButtonText: 'Delete',
+                    cancelButtonText: 'Cancel'
                 }).then((result) => {
                     if (result.isConfirmed) {
                         fetch(`/requests/${requestId}`, {
@@ -177,7 +177,7 @@
                             .then(data => {
                                 if (data.success) {
                                     Swal.fire({
-                                        title: 'Berhasil!',
+                                        title: 'Success!',
                                         text: data.message,
                                         icon: 'success',
                                         confirmButtonText: 'OK'
@@ -187,7 +187,7 @@
                                 } else {
                                     Swal.fire({
                                         title: 'Error!',
-                                        text: data.error || 'Terjadi kesalahan',
+                                        text: data.error || 'An Error Occured',
                                         icon: 'error',
                                         confirmButtonText: 'OK'
                                     });
@@ -197,7 +197,7 @@
                                 console.error('Error:', error);
                                 Swal.fire({
                                     title: 'Error!',
-                                    text: 'Terjadi kesalahan. Silakan coba lagi.',
+                                    text: 'An Error Occured. Please Try Again.',
                                     icon: 'error',
                                     confirmButtonText: 'OK'
                                 });
@@ -290,7 +290,7 @@
                 <i class="fas fa-inbox mr-3 text-orange-500"></i>Importer Request
             </h2>
             <div class="bg-blue-500 text-white px-4 py-2 rounded-lg font-semibold">
-                <span id="totalRequests">{{ $pendingRequests->count() }}</span> Request Pending
+                <span id="totalRequests">3</span> Request Pending
             </div>
         </div>
 
@@ -467,7 +467,7 @@
             </div>
             <div class="border-t border-gray-200 px-6 py-4 flex justify-end space-x-3">
                 <button onclick="closeModal()"
-                    class="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-700 rounded-lg transition duration-200">Batal</button>
+                    class="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-700 rounded-lg transition duration-200">Cancel</button>
                 <button id="confirmButton"
                     class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition duration-200">Konfirmasi</button>
             </div>
@@ -526,14 +526,14 @@
         function approveRequest(requestId) {
             document.getElementById('modalTitle').textContent = 'Terima Request';
             document.getElementById('modalBody').innerHTML = `
-                <p class="mb-4 text-blue-700 dark:text-gray-300">Apakah Anda yakin ingin menerima request <strong>${requestId}</strong>?</p>
+                <p class="mb-4 text-blue-700 dark:text-gray-300">Are you sure you want to approve <strong>${requestId}</strong>?</p>
                 <div class="mb-3">
-                    <label class="block text-sm font-medium text-blue-700 dark:text-gray-300 mb-2">Catatan (Opsional):</label>
-                    <textarea class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-300" id="approveNote" rows="3" placeholder="Tambahkan catatan untuk importer..."></textarea>
+                    <label class="block text-sm font-medium text-blue-700 dark:text-gray-300 mb-2">Note (Optional):</label>
+                    <textarea class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-300" id="approveNote" rows="3" placeholder="Add a note for importer..."></textarea>
                 </div>
             `;
             document.getElementById('confirmButton').onclick = () => {
-                alert(`Request ${requestId} berhasil disetujui!`);
+                alert(`Request ${requestId} has been successfully approved!`);
                 closeModal();
                 updateRequestStatus(requestId, 'approved');
             };
@@ -541,21 +541,21 @@
         }
 
         function rejectRequest(requestId) {
-            document.getElementById('modalTitle').textContent = 'Tolak Request';
+            document.getElementById('modalTitle').textContent = 'Reject Request';
             document.getElementById('modalBody').innerHTML = `
-                <p class="mb-4 text-blue-700 dark:text-gray-300">Apakah Anda yakin ingin menolak request <strong>${requestId}</strong>?</p>
+                <p class="mb-4 text-blue-700 dark:text-gray-300">Are you sure you want to reject <strong>${requestId}</strong>?</p>
                 <div class="mb-3">
-                    <label class="block text-sm font-medium text-blue-700 dark:text-gray-300 mb-2">Alasan Penolakan:</label>
-                    <textarea class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-300" id="rejectReason" rows="3" placeholder="Berikan alasan penolakan..." required></textarea>
+                    <label class="block text-sm font-medium text-blue-700 dark:text-gray-300 mb-2">Reason:</label>
+                    <textarea class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-300" id="rejectReason" rows="3" placeholder="Give a reason..." required></textarea>
                 </div>
             `;
             document.getElementById('confirmButton').onclick = () => {
                 const reason = document.getElementById('rejectReason').value;
                 if (!reason.trim()) {
-                    alert('Harap berikan alasan penolakan');
+                    alert('Please provide a reason for rejection.');
                     return;
                 }
-                alert(`Request ${requestId} berhasil ditolak!`);
+                alert(`Request ${requestId} has been rejected!`);
                 closeModal();
                 updateRequestStatus(requestId, 'rejected');
             };
@@ -578,7 +578,7 @@
         }
 
         function logout() {
-            if (confirm('Apakah Anda yakin ingin logout?')) {
+            if (confirm('Are you sure you want to logout?')) {
                 window.location.href = 'login.html';
             }
         }

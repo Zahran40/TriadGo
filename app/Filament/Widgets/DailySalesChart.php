@@ -56,14 +56,14 @@ class DailySalesChart extends ChartWidget
         return [
             'datasets' => [
                 [
-                    'label' => 'Jumlah Order',
+                    'label' => 'Number of Orders',
                     'data' => $orderCounts,
                     'borderColor' => '#3B82F6',
                     'backgroundColor' => 'rgba(59, 130, 246, 0.1)',
                     'yAxisID' => 'y',
                 ],
                 [
-                    'label' => 'Total Penjualan (IDR)',
+                    'label' => 'Total Sales (IDR)',
                     'data' => $amounts,
                     'borderColor' => '#EF4444',
                     'backgroundColor' => 'rgba(239, 68, 68, 0.1)',
@@ -92,7 +92,7 @@ class DailySalesChart extends ChartWidget
                     'position' => 'left',
                     'title' => [
                         'display' => true,
-                        'text' => 'Jumlah Order',
+                        'text' => 'Number of Orders',
                     ],
                 ],
                 'y1' => [
@@ -101,7 +101,7 @@ class DailySalesChart extends ChartWidget
                     'position' => 'right',
                     'title' => [
                         'display' => true,
-                        'text' => 'Total Penjualan (IDR)',
+                        'text' => 'Total Sales (IDR)',
                     ],
                     'grid' => [
                         'drawOnChartArea' => false,

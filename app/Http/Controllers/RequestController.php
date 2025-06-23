@@ -17,18 +17,17 @@ class RequestController extends Controller
      */
     public function importirRequestForm()
     {
-        if (!Auth::check() || Auth::user()->role !== 'impor') {
+        if (!Auth::check() || Auth::user()->role !== 'importir') {
             return redirect()->route('login')->with('error', 'Access denied. Importir only.');
         }
 
         $user = Auth::user();
-        $pendingRequests = ProductRequest::where('importir_user_id', $user->user_id)
+        $pendingRequests = ProductRequest::where('importir_user_id', $user->id)
                                 ->where('status', ProductRequest::STATUS_PENDING)
-                                ->with('eksportir')
                                 ->orderBy('created_at', 'desc')
                                 ->get();
 
-        $approvedRequests = ProductRequest::where('importir_user_id', $user->user_id)
+        $approvedRequests = ProductRequest::where('importir_user_id', $user->id)
                                 ->where('status', ProductRequest::STATUS_APPROVED)
                                 ->with(['eksportir', 'product'])
                                 ->orderBy('approved_at', 'desc')
@@ -36,33 +35,84 @@ class RequestController extends Controller
 
         return view('requestimportir', compact('pendingRequests', 'approvedRequests'));
     }
-
+    
     /**
-     * Store new request from importir
+     * Store new request from importir - PERBAIKI METHOD INI
      */
     public function storeImportirRequest(HttpRequest $request)
     {
-        $request->validate([
-            'request_text' => 'required|string|max:1000'
-        ]);
+        \Log::info('=== STORE IMPORTIR REQUEST DEBUG ===');
+        \Log::info('Auth check:', ['is_authenticated' => Auth::check()]);
+        \Log::info('Current user:', Auth::user() ? Auth::user()->toArray() : 'No user');
+        \Log::info('User role:', ['role' => Auth::user()->role ?? 'No role']);
+        \Log::info('Request data:', $request->all());
+        
+        try {
+            // PERBAIKI: Debug authentication
+            if (!Auth::check()) {
+                \Log::error('User not authenticated');
+                return response()->json(['error' => 'Not authenticated', 'debug' => 'User not logged in'], 401);
+            }
 
-        if (!Auth::check() || Auth::user()->role !== 'impor') {
-            return redirect()->route('login')->with('error', 'Access denied. Importir only.');
+            $user = Auth::user();
+            \Log::info('User details:', [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'role' => $user->role ?? 'No role field'
+            ]);
+            
+            // PERBAIKI: Role check yang lebih fleksibel
+            if (!isset($user->role) || $user->role !== 'importir') {
+                \Log::error('Role check failed', [
+                    'expected' => 'importir',
+                    'actual' => $user->role ?? 'undefined',
+                    'user_id' => $user->id
+                ]);
+                
+                return response()->json([
+                    'error' => 'Access denied', 
+                    'debug' => 'Expected role: importir, Got: ' . ($user->role ?? 'undefined'),
+                    'user_id' => $user->id
+                ], 403);
+            }
+
+            // PERBAIKI: Validasi input request
+            $request->validate([
+                'request_text' => 'required|string|max:1000'
+            ]);
+
+            \Log::info('Creating ProductRequest...');
+            
+            // PERBAIKI: Create new ProductRequest
+            $productRequest = ProductRequest::create([
+                'importir_user_id' => $user->id,
+                'request_text' => $request->request_text,
+                'status' => 'pending' // Gunakan string langsung
+            ]);
+
+            \Log::info('ProductRequest created successfully:', ['id' => $productRequest->id]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Request berhasil dikirim!',
+                'request_id' => $productRequest->id
+            ]);
+
+        } catch (\Exception $e) {
+            \Log::error('Error in storeImportirRequest:', [
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage(),
+                'debug' => $e->getFile() . ':' . $e->getLine()
+            ], 500);
         }
-
-        $productRequest = ProductRequest::create([
-            'importir_user_id' => Auth::user()->user_id,
-            'request_text' => $request->request_text,
-            'status' => ProductRequest::STATUS_PENDING
-        ]);
-
-        Log::info('New product request created', [
-            'request_id' => $productRequest->id,
-            'importir_user_id' => Auth::user()->user_id,
-            'request_text' => $request->request_text
-        ]);
-
-        return redirect()->back()->with('success', 'Request berhasil dikirim! Eksportir akan meninjau permintaan Anda.');
     }
 
     /**
@@ -70,41 +120,47 @@ class RequestController extends Controller
      */
     public function eksportirRequestList()
     {
-        if (!Auth::check() || Auth::user()->role !== 'ekspor') {
+        if (!Auth::check() || Auth::user()->role !== 'eksportir') {
             return redirect()->route('login')->with('error', 'Access denied. Eksportir only.');
         }
 
-        $pendingRequests = ProductRequest::where('status', ProductRequest::STATUS_PENDING)
+        // Semua request yang pending (belum diproses)
+        $pendingRequests = ProductRequest::where('status', 'pending')
                                 ->with('importir')
                                 ->orderBy('created_at', 'desc')
                                 ->get();
 
-        $myRequests = ProductRequest::where('eksportir_user_id', Auth::user()->user_id)
+        // Request yang sudah diproses oleh eksportir ini
+        $processedRequests = ProductRequest::where('eksportir_user_id', Auth::id())
+                            ->whereIn('status', ['approved', 'rejected'])
                             ->with(['importir', 'product'])
                             ->orderBy('updated_at', 'desc')
                             ->get();
 
-        return view('requesteksportir', compact('pendingRequests', 'myRequests'));
+        return view('requesteksportir', compact('pendingRequests', 'processedRequests'));
     }
-
+    
     /**
-     * Approve request by eksportir
+     * Approve request by eksportir - PERBAIKI METHOD INI
      */
     public function approveRequest(HttpRequest $request, $requestId)
     {
-        if (!Auth::check() || Auth::user()->role !== 'ekspor') {
+        if (!Auth::check() || Auth::user()->role !== 'eksportir') {
             return response()->json(['error' => 'Access denied'], 403);
         }
 
+        // PERBAIKI: Gunakan ProductRequest, bukan Request
         $productRequest = ProductRequest::findOrFail($requestId);
         
+        // PERBAIKI: Gunakan ProductRequest constants
         if ($productRequest->status !== ProductRequest::STATUS_PENDING) {
             return response()->json(['error' => 'Request already processed'], 400);
         }
 
-        $productId = $request->input('product_id'); // Optional: if eksportir wants to link existing product
+        $productId = $request->input('product_id');
 
-        $productRequest->approve(Auth::user()->user_id, $productId);
+        // PERBAIKI: Gunakan Auth::id(), bukan Auth::user()->user_id
+        $productRequest->approve(Auth::id(), $productId);
 
         // Create notification for importir
         Notification::createNotification(
@@ -118,7 +174,7 @@ class RequestController extends Controller
 
         Log::info('Product request approved', [
             'request_id' => $requestId,
-            'eksportir_user_id' => Auth::user()->user_id,
+            'eksportir_user_id' => Auth::id(), // PERBAIKI
             'importir_user_id' => $productRequest->importir_user_id
         ]);
 
@@ -126,21 +182,24 @@ class RequestController extends Controller
     }
 
     /**
-     * Reject request by eksportir
+     * Reject request by eksportir - PERBAIKI METHOD INI
      */
     public function rejectRequest($requestId)
     {
-        if (!Auth::check() || Auth::user()->role !== 'ekspor') {
+        if (!Auth::check() || Auth::user()->role !== 'eksportir') {
             return response()->json(['error' => 'Access denied'], 403);
         }
 
+        // PERBAIKI: Gunakan ProductRequest, bukan Request
         $productRequest = ProductRequest::findOrFail($requestId);
         
+        // PERBAIKI: Gunakan ProductRequest constants
         if ($productRequest->status !== ProductRequest::STATUS_PENDING) {
             return response()->json(['error' => 'Request already processed'], 400);
         }
 
-        $productRequest->reject(Auth::user()->user_id);
+        // PERBAIKI: Gunakan Auth::id(), bukan Auth::user()->user_id
+        $productRequest->reject(Auth::id());
 
         // Create notification for importir
         Notification::createNotification(
@@ -154,7 +213,7 @@ class RequestController extends Controller
 
         Log::info('Product request rejected', [
             'request_id' => $requestId,
-            'eksportir_user_id' => Auth::user()->user_id,
+            'eksportir_user_id' => Auth::id(), // PERBAIKI
             'importir_user_id' => $productRequest->importir_user_id
         ]);
 
@@ -162,7 +221,7 @@ class RequestController extends Controller
     }
 
     /**
-     * Delete request
+     * Delete request - PERBAIKI METHOD INI
      */
     public function deleteRequest($requestId)
     {
@@ -170,12 +229,14 @@ class RequestController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
+        // PERBAIKI: Gunakan ProductRequest, bukan Request
         $productRequest = ProductRequest::findOrFail($requestId);
         
         // Check if user owns the request or is eksportir who handled it
         $user = Auth::user();
-        if ($productRequest->importir_user_id !== $user->user_id && 
-            $productRequest->eksportir_user_id !== $user->user_id &&
+        // PERBAIKI: Gunakan Auth::id(), bukan $user->user_id
+        if ($productRequest->importir_user_id !== Auth::id() && 
+            $productRequest->eksportir_user_id !== Auth::id() &&
             $user->role !== 'eksportir') {
             return response()->json(['error' => 'Access denied'], 403);
         }
@@ -184,7 +245,7 @@ class RequestController extends Controller
 
         Log::info('Product request deleted', [
             'request_id' => $requestId,
-            'deleted_by' => $user->user_id
+            'deleted_by' => Auth::id() // PERBAIKI
         ]);
 
         return response()->json(['success' => true, 'message' => 'Request berhasil dihapus']);

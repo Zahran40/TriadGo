@@ -240,12 +240,9 @@
                         </a>
                     @endif
                 </div>
-                <!-- Keep shipping_status and payment_status filter -->
+                <!-- Keep shipping_status filter -->
                 @if(request('shipping_status'))
                     <input type="hidden" name="shipping_status" value="{{ request('shipping_status') }}">
-                @endif
-                @if(request('payment_status'))
-                    <input type="hidden" name="payment_status" value="{{ request('payment_status') }}">
                 @endif
             </form>
         </div>
@@ -373,10 +370,39 @@
                                                         Detail
                                                     </a>
                                                 </div>
+                                                
+                                                <!-- Payment Status Button -->
                                                 @if($order->status === 'pending')
                                                     <button onclick="updatePaymentStatus('{{ $order->order_id }}', 'paid')"
                                                         class="text-xs bg-green-600 text-white px-2 py-1 rounded hover:bg-green-700 transition-colors">
                                                         Mark as Paid
+                                                    </button>
+                                                @endif
+
+                                                <!-- Shipping Status Next Button -->
+                                                @php
+                                                    $nextShippingStatus = [
+                                                        'processing' => 'shipped',
+                                                        'shipped' => 'in_transit', 
+                                                        'in_transit' => 'delivered'
+                                                    ];
+                                                    $nextShippingLabels = [
+                                                        'shipped' => 'Mark Shipped',
+                                                        'in_transit' => 'Mark Transit',
+                                                        'delivered' => 'Mark Delivered'
+                                                    ];
+                                                    $nextShippingColors = [
+                                                        'shipped' => 'bg-purple-600 hover:bg-purple-700',
+                                                        'in_transit' => 'bg-indigo-600 hover:bg-indigo-700',
+                                                        'delivered' => 'bg-green-600 hover:bg-green-700'
+                                                    ];
+                                                @endphp
+
+                                                @if(isset($nextShippingStatus[$order->shipping_status]))
+                                                    @php $nextStatus = $nextShippingStatus[$order->shipping_status]; @endphp
+                                                    <button onclick="updateShippingStatusIndex('{{ $order->order_id }}', '{{ $nextStatus }}')"
+                                                        class="text-xs {{ $nextShippingColors[$nextStatus] }} text-white px-2 py-1 rounded transition-colors">
+                                                        {{ $nextShippingLabels[$nextStatus] }}
                                                     </button>
                                                 @endif
                                             </div>
@@ -510,6 +536,73 @@
                         text: 'An Error Occured.'
                     });
                 });
+        }
+
+        // Shipping Status Update Function for Index Page
+        function updateShippingStatusIndex(orderId, status) {
+            const statusLabels = {
+                'shipped': 'Telah Dikirim 🚚',
+                'in_transit': 'Dalam Perjalanan 🌊',
+                'delivered': 'Telah Diterima ✅'
+            };
+
+            Swal.fire({
+                title: 'Konfirmasi Update Status Pengiriman',
+                text: `Apakah Anda yakin ingin mengubah status menjadi "${statusLabels[status]}"?`,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3B82F6',
+                cancelButtonColor: '#6B7280',
+                confirmButtonText: 'Ya, Update',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    executeShippingStatusUpdate(orderId, status);
+                }
+            });
+        }
+
+        function executeShippingStatusUpdate(orderId, status) {
+            fetch(`/eksportir/transactions/${orderId}/update-status`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({
+                    shipping_status: status,
+                    reason: `Status updated by eksportir from transaction index page`
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil!',
+                        text: data.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(() => {
+                        // Reload page to show updated status
+                        window.location.reload();
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal!',
+                        text: data.message || 'Terjadi kesalahan saat memperbarui status pengiriman.'
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'Terjadi kesalahan pada sistem.'
+                });
+            });
         }
 
         // SweetAlert2 Logout Desktop

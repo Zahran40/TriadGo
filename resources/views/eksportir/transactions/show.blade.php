@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Detail Transaksi - {{ $order->order_id }} | TriadGO</title>
+    <title>Transaction Details - {{ $order->order_id }} | TriadGO</title>
     @vite('resources/css/app.css')
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -238,12 +238,12 @@
                                     d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1">
                                 </path>
                             </svg>
-                            Update Status Pembayaran
+                            Update Payment Status
                         </h2>
 
                         <div class="mb-4">
                             <div class="flex items-center space-x-2 mb-4">
-                                <span class="text-sm font-medium text-blue-600">Status Saat Ini:</span>
+                                <span class="text-sm font-medium text-blue-600">Current Status:</span>
                                 @php
                                     $paymentStatusColors = [
                                         'pending' => 'bg-orange-100 text-orange-800 border-orange-300',
@@ -252,10 +252,10 @@
                                         'cancelled' => 'bg-gray-100 text-blue-800 border-gray-300',
                                     ];
                                     $paymentStatusLabels = [
-                                        'pending' => 'Menunggu Pembayaran',
-                                        'paid' => 'Sudah Dibayar',
-                                        'failed' => 'Gagal',
-                                        'cancelled' => 'Dibatalkan',
+                                        'pending' => 'Pending Payment',
+                                        'paid' => 'Paid',
+                                        'failed' => 'Failed',
+                                        'cancelled' => 'Canceled',
                                     ];
                                     $paymentStatusIcons = [
                                         'pending' => '⏳',
@@ -276,26 +276,26 @@
                             @csrf
                             <div>
                                 <label for="payment_status" class="block text-sm font-medium text-blue-700 mb-2">Status
-                                    Baru</label>
+                                    New</label>
                                 <select id="payment_status" name="payment_status"
                                     class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500">
-                                    <option value="">Pilih Status</option>
-                                    <option value="paid">💰 Paid - Sudah Dibayar</option>
-                                    <option value="failed">❌ Failed - Gagal</option>
-                                    <option value="cancelled">🚫 Cancelled - Dibatalkan</option>
+                                    <option value="">Choose Status</option>
+                                    <option value="paid">💰 Paid</option>
+                                    <option value="failed">❌ Failed</option>
+                                    <option value="cancelled">🚫 Cancelled</option>
                                 </select>
                             </div>
 
                             <div>
                                 <label for="payment_reason"
-                                    class="block text-sm font-medium text-blue-700 mb-2">Keterangan (Opsional)</label>
-                                <textarea id="payment_reason" name="reason" rows="3" placeholder="Berikan keterangan alasan perubahan status..."
+                                    class="block text-sm font-medium text-blue-700 mb-2">Description (Optional)</label>
+                                <textarea id="payment_reason" name="reason" rows="3" placeholder="Provide a reason for the change in status..."
                                     class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"></textarea>
                             </div>
 
                             <button type="submit"
                                 class="w-full bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-colors font-medium">
-                                Update Status Pembayaran
+                                Update Payment Status
                             </button>
                         </form>
                     </div>
@@ -538,10 +538,12 @@
             });
         });
 
+
         // Direct Shipping Status Update Function
         function updateShippingStatusDirect(status) {
             const note = document.getElementById('shipping_note').value;
             
+
             const statusLabels = {
                 'shipped': 'Telah Dikirim 🚚',
                 'in_transit': 'Dalam Perjalanan 🌊',
@@ -549,14 +551,14 @@
             };
 
             Swal.fire({
-                title: 'Konfirmasi Update Status',
+                title: 'Confirm Status Update',
                 text: `Apakah Anda yakin ingin mengubah status menjadi "${statusLabels[status]}"?`,
                 icon: 'question',
                 showCancelButton: true,
                 confirmButtonColor: '#3B82F6',
                 cancelButtonColor: '#6B7280',
                 confirmButtonText: 'Ya, Update',
-                cancelButtonText: 'Batal'
+                cancelButtonText: 'Cancel'
             }).then((result) => {
                 if (result.isConfirmed) {
                     executeShippingStatusUpdate(status, note);
@@ -583,7 +585,7 @@
                     if (data.success) {
                         Swal.fire({
                             icon: 'success',
-                            title: 'Berhasil!',
+                            title: 'Success!',
                             text: data.message,
                             showConfirmButton: false,
                             timer: 1500
@@ -594,8 +596,8 @@
                     } else {
                         Swal.fire({
                             icon: 'error',
-                            title: 'Gagal!',
-                            text: data.message || 'Terjadi kesalahan saat memperbarui status.'
+                            title: 'Failed!',
+                            text: data.message || 'An error occured.'
                         });
                     }
                 })
@@ -604,7 +606,7 @@
                     Swal.fire({
                         icon: 'error',
                         title: 'Error!',
-                        text: 'Terjadi kesalahan pada sistem.'
+                        text: 'An error occured.'
                     });
                 });
         }
@@ -621,28 +623,28 @@
                 if (!status) {
                     Swal.fire({
                         icon: 'warning',
-                        title: 'Pilih Status',
-                        text: 'Silakan pilih status pembayaran baru.'
+                        title: 'Choose Status',
+                        text: 'Please choose new payment status.'
                     });
                     return;
                 }
 
                 // Show confirmation
                 const statusLabels = {
-                    'paid': 'Paid - Sudah Dibayar 💰',
-                    'failed': 'Failed - Gagal ❌',
-                    'cancelled': 'Cancelled - Dibatalkan 🚫'
+                    'paid': 'Paid 💰',
+                    'failed': 'Failed ❌',
+                    'cancelled': 'Cancelled 🚫'
                 };
 
                 Swal.fire({
-                    title: 'Konfirmasi Update Status Pembayaran',
-                    text: `Apakah Anda yakin ingin mengubah status pembayaran menjadi "${statusLabels[status]}"?`,
+                    title: 'Confirm Payment Status Update',
+                    text: `Are you sure want to change payment status to "${statusLabels[status]}"?`,
                     icon: 'question',
                     showCancelButton: true,
                     confirmButtonColor: '#059669',
                     cancelButtonColor: '#6B7280',
-                    confirmButtonText: 'Ya, Update',
-                    cancelButtonText: 'Batal'
+                    confirmButtonText: 'Update',
+                    cancelButtonText: 'Cancel'
                 }).then((result) => {
                     if (result.isConfirmed) {
                         updatePaymentStatus(status, reason);
@@ -669,7 +671,7 @@
                         if (data.success) {
                             Swal.fire({
                                 icon: 'success',
-                                title: 'Berhasil!',
+                                title: 'Success!',
                                 text: data.message,
                                 showConfirmButton: false,
                                 timer: 1500
@@ -680,8 +682,8 @@
                         } else {
                             Swal.fire({
                                 icon: 'error',
-                                title: 'Gagal!',
-                                text: data.message || 'Terjadi kesalahan saat memperbarui status pembayaran.'
+                                title: 'Failed!',
+                                text: data.message || 'An error occured.'
                             });
                         }
                     })
@@ -690,7 +692,7 @@
                         Swal.fire({
                             icon: 'error',
                             title: 'Error!',
-                            text: 'Terjadi kesalahan pada sistem.'
+                            text: 'An error occured.'
                         });
                     });
             }

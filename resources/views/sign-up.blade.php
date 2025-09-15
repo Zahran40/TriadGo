@@ -4,7 +4,7 @@
 <head>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        (function() {
+        (function () {
             const darkMode = localStorage.getItem('darkMode');
             if (darkMode === 'enabled') {
                 document.documentElement.classList.add('dark');
@@ -60,34 +60,34 @@
     <div class="circle circle3"></div>
 
     @if ($errors->any())
-    <div style="color:red; margin-bottom:10px;">
-        <ul>
-            @foreach ($errors->all() as $error)
-            <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
+        <div style="color:red; margin-bottom:10px;">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
     @endif
 
     <form class="signup-container z-10" id="signupForm" action="{{ route('signup.store') }}" method='POST'>
         @csrf
         <div class="signup-title">Sign Up</div>
-        <div class="signup-subtitle">Bergabunglah dengan TriadGO untuk ekspor & impor lebih mudah!</div>
-        
+        <div class="signup-subtitle">Join TriadGO for easier export & import</div>
+
         <div class="form-group">
-            <label for="name" style="color: var(--dark);">Nama</label>
-            <input type="text" id="name" name="name" required autocomplete="off" placeholder="Nama lengkap">
+            <label for="name" style="color: var(--dark);">Name</label>
+            <input type="text" id="name" name="name" required autocomplete="off" placeholder="Full name">
         </div>
-        
+
         <div class="form-group">
             <label for="email" style="color: var(--dark);">Email</label>
-            <input type="email" id="email" name="email" required autocomplete="off" placeholder="Alamat email">
+            <input type="email" id="email" name="email" required autocomplete="off" placeholder="Email address">
         </div>
-        
+
         <div class="form-group">
-            <label for="country" style="color: var(--dark);">Negara</label>
+            <label for="country" style="color: var(--dark);">Country</label>
             <select id="country" name="country" required style="color: var(--dark);">
-                <option value="">Pilih negara</option>
+                <option value="">Choose Country</option>
                 <option value="Indonesia" data-code="id" data-dial="+62">Indonesia</option>
                 <option value="Malaysia" data-code="my" data-dial="+60">Malaysia</option>
                 <option value="Singapore" data-code="sg" data-dial="+65">Singapore</option>
@@ -100,13 +100,14 @@
                 <option value="Myanmar" data-code="mm" data-dial="+95">Myanmar</option>
             </select>
         </div>
-        
+
         <div class="form-group">
-            <label for="phone" style="color: var(--dark);">No. HP</label>
-            <input id="phone" name="phone" type="tel" required autocomplete="off" placeholder="Nomor HP">
+            <label for="phone" style="color: var(--dark);">Phone Number</label>
+            <input id="phone" name="phone" type="tel" required autocomplete="off" placeholder="Phone number"
+                style="padding-right:40px;">
             <div id="phone-error" style="color: red; font-size: 0.85em; margin-top: 5px; display: none;"></div>
         </div>
-        
+
         <div class="form-group">
             <label for="password" style="color: var(--dark);">Password</label>
             <div style="position:relative;">
@@ -129,9 +130,10 @@
                     </svg>
                 </span>
             </div>
-            <span id="password-length-error" style="color:#EEA133; font-size:0.95em; display:none;">Password minimal 8 karakter</span>
+            <span id="password-length-error" style="color:#EEA133; font-size:0.95em; display:none;">Password minimal 8
+                karakter</span>
         </div>
-        
+
         <div class="form-group">
             <label for="password_confirmation" style="color: var(--dark);">Confirm Password</label>
             <div style="position:relative;">
@@ -154,32 +156,33 @@
                     </svg>
                 </span>
             </div>
-            <span id="password-error" style="color:#EEA133; font-size:0.95em; display:none;">Password tidak sama</span>
+            <span id="password-error" style="color:#EEA133; font-size:0.95em; display:none;">Password doesn't
+                match</span>
         </div>
-        
+
         <div class="form-group">
             <label style="color: var(--dark);">Role</label>
             <div class="role-group" style="display:flex; gap:20px;">
                 <label class="custom-checkbox" style="color: var(--dark);">
                     <input type="radio" name="role" value="ekspor" required>
                     <span class="checkmark"></span>
-                    Ekspor
+                    Exporter
                 </label>
                 <label class="custom-checkbox" style="color: var(--dark);">
                     <input type="radio" name="role" value="impor" required>
                     <span class="checkmark"></span>
-                    Impor
+                    Importer
                 </label>
             </div>
         </div>
-        
+
         <button type="submit" class="signup-btn" id="signupBtn" disabled>Daftar</button>
-        <a href="{{ route('login') }}" class="login-link" style="color: var(--dark);">Sudah punya akun? Login</a>
+        <a href="{{ route('login') }}" class="login-link" style="color: var(--dark);">Already have an account? Login</a>
     </form>
 
     <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/intlTelInput.min.js"></script>
     <script>
-        // Konfigurasi negara ASEAN dengan validasi yang tepat
+        // Konfigurasi negara SEA dengan validasi yang tepat
         const countryConfig = {
             'Indonesia': { code: 'id', dial: '+62', minLength: 9, maxLength: 13, pattern: /^[0-9]{9,13}$/ },
             'Malaysia': { code: 'my', dial: '+60', minLength: 9, maxLength: 11, pattern: /^[0-9]{9,11}$/ },
@@ -196,7 +199,7 @@
         const phoneInput = document.querySelector("#phone");
         const countrySelect = document.getElementById('country');
         const phoneError = document.getElementById('phone-error');
-        
+
         // Initialize intl-tel-input
         const iti = window.intlTelInput(phoneInput, {
             initialCountry: "id",
@@ -206,7 +209,7 @@
         });
 
         // Sinkronisasi dropdown negara dengan intl-tel-input
-        countrySelect.addEventListener('change', function() {
+        countrySelect.addEventListener('change', function () {
             const selectedCountry = this.value;
             if (selectedCountry && countryConfig[selectedCountry]) {
                 const config = countryConfig[selectedCountry];
@@ -217,7 +220,7 @@
         });
 
         // Update dropdown negara ketika flag berubah
-        phoneInput.addEventListener('countrychange', function() {
+        phoneInput.addEventListener('countrychange', function () {
             const countryData = iti.getSelectedCountryData();
             const countryName = getCountryNameByCode(countryData.iso2);
             if (countryName) {
@@ -256,7 +259,7 @@
         function validatePhone() {
             const selectedCountry = countrySelect.value;
             const phoneNumber = phoneInput.value.replace(/\D/g, ''); // Hapus semua non-digit
-            
+
             if (!selectedCountry || !phoneNumber) {
                 phoneError.style.display = 'none';
                 return true;
@@ -328,7 +331,7 @@
         const eyeOpen = document.getElementById('eyeOpen');
         const eyeClosed = document.getElementById('eyeClosed');
 
-        togglePassword.addEventListener('click', function() {
+        togglePassword.addEventListener('click', function () {
             const isHidden = password.type === 'password';
             password.type = isHidden ? 'text' : 'password';
             eyeOpen.style.display = isHidden ? 'block' : 'none';
@@ -340,7 +343,7 @@
         const eyeOpenConfirm = document.getElementById('eyeOpenConfirm');
         const eyeClosedConfirm = document.getElementById('eyeClosedConfirm');
 
-        toggleConfirmPassword.addEventListener('click', function() {
+        toggleConfirmPassword.addEventListener('click', function () {
             const isHidden = confirmPasswordInput.type === 'password';
             confirmPasswordInput.type = isHidden ? 'text' : 'password';
             eyeOpenConfirm.style.display = isHidden ? 'block' : 'none';
@@ -348,9 +351,9 @@
         });
 
         // Form submission
-        document.getElementById('signupForm').addEventListener('submit', function(e) {
+        document.getElementById('signupForm').addEventListener('submit', function (e) {
             const phoneValid = validatePhone();
-            
+
             if (!phoneValid) {
                 e.preventDefault();
                 Swal.fire({
@@ -370,7 +373,7 @@
         });
 
         // Initialize
-        window.addEventListener('DOMContentLoaded', function() {
+        window.addEventListener('DOMContentLoaded', function () {
             validatePassword();
             validatePhone();
         });

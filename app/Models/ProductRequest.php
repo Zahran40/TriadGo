@@ -21,6 +21,7 @@ class ProductRequest extends Model
 {
     use HasFactory;
 
+    protected $table = 'product_request'; 
     protected $fillable = [
         'importir_user_id',
         'request_text',
@@ -45,17 +46,17 @@ class ProductRequest extends Model
     // Relationships
     public function importir()
     {
-        return $this->belongsTo(User::class, 'importir_user_id', 'user_id');
+        return $this->belongsTo(User::class, 'importir_user_id');
     }
 
     public function eksportir()
     {
-        return $this->belongsTo(User::class, 'eksportir_user_id', 'user_id');
+         return $this->belongsTo(User::class, 'eksportir_user_id');
     }
 
     public function product()
     {
-        return $this->belongsTo(Product::class, 'product_id', 'product_id');
+       return $this->belongsTo(Product::class);
     }
 
     // Methods
@@ -83,26 +84,5 @@ class ProductRequest extends Model
         $this->update([
             'status' => self::STATUS_FULFILLED
         ]);
-    }
-
-    // Helper methods for status checking
-    public function isPending()
-    {
-        return $this->status === self::STATUS_PENDING;
-    }
-
-    public function isApproved()
-    {
-        return $this->status === self::STATUS_APPROVED;
-    }
-
-    public function isRejected()
-    {
-        return $this->status === self::STATUS_REJECTED;
-    }
-
-    public function isFulfilled()
-    {
-        return $this->status === self::STATUS_FULFILLED;
     }
 }

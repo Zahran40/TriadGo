@@ -62,7 +62,7 @@ class ProductRequestController extends Controller
             'request_text' => $request->request_text
         ]);
 
-        return redirect()->back()->with('success', 'Request berhasil dikirim! Eksportir akan meninjau permintaan Anda.');
+        return redirect()->back()->with('success', 'Request sent! Eksporter will review your requests.');
     }
 
     /**
@@ -71,7 +71,7 @@ class ProductRequestController extends Controller
     public function eksportirRequestList()
     {
         if (!Auth::check() || Auth::user()->role !== 'eksportir') {
-            return redirect()->route('login')->with('error', 'Access denied. Eksportir only.');
+            return redirect()->route('login')->with('error', 'Access denied. Eksporter only.');
         }
 
         $pendingRequests = ProductRequest::where('status', ProductRequest::STATUS_PENDING)

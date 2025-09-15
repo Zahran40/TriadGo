@@ -7,7 +7,7 @@ use App\Models\Product;
 use Illuminate\Support\Facades\DB;
 
 class ProductsByCountryChart extends ChartWidget
-{    protected static ?string $heading = 'Produk Berdasarkan Negara Asal';
+{    protected static ?string $heading = 'Products by Country of Origin';
     
     protected static ?int $sort = 13;
 

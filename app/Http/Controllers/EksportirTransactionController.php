@@ -126,7 +126,6 @@ class EksportirTransactionController extends Controller
                             ->toArray();
         
         $order = CheckoutOrder::where('order_id', $orderId)
-                              ->where('status', 'paid')
                               ->firstOrFail();
         
         // Verify order contains eksportir's products
@@ -145,6 +144,18 @@ class EksportirTransactionController extends Controller
                 'success' => false,
                 'message' => 'You do not have products in this order.'
             ], 403);
+        }
+
+        // Validate forward-only status progression
+        $statusOrder = ['processing', 'shipped', 'in_transit', 'delivered'];
+        $currentStatusIndex = array_search($order->shipping_status, $statusOrder);
+        $newStatusIndex = array_search($request->shipping_status, $statusOrder);
+        
+        if ($newStatusIndex <= $currentStatusIndex) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Status pengiriman hanya dapat diubah maju, tidak dapat mundur ke status sebelumnya.'
+            ], 400);
         }
         
         try {

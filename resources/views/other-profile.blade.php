@@ -39,7 +39,6 @@
                 },
             },
         }
-        tailwind.scan()
     </script>
 
     <style>
@@ -234,8 +233,8 @@
                     @if($products->count() > 0)
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             @foreach($products as $product)
-                                <div class="product-card shadow-md rounded-lg p-4 hover:shadow-lg transition">
-                                    <a href="{{ route('product.detail.importir', $product->product_id) }}">
+                                <div class="product-card shadow-md rounded-lg p-4 hover:shadow-lg transition flex flex-col justify-between h-full">
+                                    <a href="{{ route('product.detail.importir', $product->product_id) }}" class="flex flex-col flex-grow">
                                         <h5 class="text-xl font-bold mb-2">{{ $product->product_name }}</h5>
                                         <h4 class="text-lg font-semibold mb-3">{{ $product->category }}</h4>
                                         
@@ -247,7 +246,7 @@
                                                  alt="No Image" class="w-full h-48 mx-auto object-cover rounded-md mb-3" />
                                         @endif
                                         
-                                        <p class="product-description text-md mt-2 mb-4">
+                                        <p class="product-description text-md mt-2 mb-4 flex-grow">
                                             {{ Str::limit($product->product_description, 100) }}
                                         </p>
                                         
@@ -269,7 +268,7 @@
                                     
                                     <!-- Action Button -->
                                     <a href="{{ route('product.detail.importir', $product->product_id) }}"
-                                        class="w-full inline-block text-center bg-blue-700 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-md text-sm transition">
+                                        class="w-full inline-block text-center bg-blue-700 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-md text-sm transition mt-auto">
                                         View Details
                                     </a>
                                 </div>

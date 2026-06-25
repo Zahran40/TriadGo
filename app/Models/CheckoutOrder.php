@@ -151,6 +151,63 @@ class CheckoutOrder extends Model
     }
     
     /**
+     * Sync payment status with Midtrans API if order is pending
+     */
+    public function syncPaymentWithMidtrans()
+    {
+        if ($this->status !== 'pending') {
+            return;
+        }
+
+        try {
+            $midtransService = app(\App\Services\MidtransHttpService::class);
+            $status = $midtransService->getTransactionStatus($this->order_id);
+            
+            if ($status) {
+                $transactionStatus = null;
+                $transactionId = null;
+                $paymentType = null;
+                $transactionTime = null;
+                
+                if (is_array($status)) {
+                    $transactionStatus = $status['transaction_status'] ?? null;
+                    $transactionId = $status['transaction_id'] ?? null;
+                    $paymentType = $status['payment_type'] ?? null;
+                    $transactionTime = $status['transaction_time'] ?? null;
+                } elseif (is_object($status)) {
+                    $transactionStatus = $status->transaction_status ?? null;
+                    $transactionId = $status->transaction_id ?? null;
+                    $paymentType = $status->payment_type ?? null;
+                    $transactionTime = $status->transaction_time ?? null;
+                }
+                
+                Log::info('Syncing order status with Midtrans API', [
+                    'order_id' => $this->order_id,
+                    'transaction_status' => $transactionStatus,
+                    'transaction_id' => $transactionId
+                ]);
+
+                if (in_array($transactionStatus, ['capture', 'settlement'])) {
+                    $this->markAsPaid($transactionId, [
+                        'midtrans_transaction_id' => $transactionId,
+                        'payment_type' => $paymentType,
+                        'transaction_time' => $transactionTime,
+                        'verified_at' => now(),
+                        'synced_via' => 'transactions_view'
+                    ]);
+                } elseif (in_array($transactionStatus, ['deny', 'expire', 'cancel', 'failure'])) {
+                    $this->update([
+                        'status' => 'failed',
+                        'payment_status' => 'failed'
+                    ]);
+                }
+            }
+        } catch (\Exception $e) {
+            Log::warning('Failed to sync payment with Midtrans: ' . $e->getMessage());
+        }
+    }
+    
+    /**
      * Send payment success email notification
      */
     private function sendPaymentSuccessEmail()

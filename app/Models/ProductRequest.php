@@ -21,7 +21,7 @@ class ProductRequest extends Model
 {
     use HasFactory;
 
-    protected $table = 'product_request'; 
+    protected $table = 'product_requests'; 
     protected $fillable = [
         'importir_user_id',
         'request_text',
@@ -46,12 +46,12 @@ class ProductRequest extends Model
     // Relationships
     public function importir()
     {
-        return $this->belongsTo(User::class, 'importir_user_id');
+        return $this->belongsTo(User::class, 'importir_user_id', 'user_id');
     }
 
     public function eksportir()
     {
-         return $this->belongsTo(User::class, 'eksportir_user_id');
+         return $this->belongsTo(User::class, 'eksportir_user_id', 'user_id');
     }
 
     public function product()

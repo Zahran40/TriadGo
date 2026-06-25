@@ -36,6 +36,10 @@
     /* background: linear-gradient(120deg, #003355 0%, #186094 100%); */
 }
 
+html.dark .home-bg {
+    background: #1a202c;
+}
+
 /* Light Mode */
 body {
     margin: 0;
@@ -823,14 +827,23 @@ body {
     }
 }
 
-.swal2-title,
-.swal2-html-container {
+/* SweetAlert text colors - dark mode only */
+html.dark .swal2-popup .swal2-title,
+html.dark .swal2-popup .swal2-html-container {
     color: #fff !important;
 }
 
+.swal2-popup .swal2-title {
+    color: #1f2937 !important;
+}
+
+.swal2-popup .swal2-html-container {
+    color: #374151 !important;
+}
+
 .swal2-confirm {
-    background: #fff !important;
-    color: #ff3b3b !important;
+    background: #2563eb !important;
+    color: #fff !important;
 }
 
 /* Dark mode untuk intl-tel-input */

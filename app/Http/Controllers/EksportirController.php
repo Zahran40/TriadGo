@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Comment;
 use App\Models\Product;
+use App\Models\ProductRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
@@ -104,7 +105,25 @@ class EksportirController extends Controller
 
     public function requesteksportir()
     {
-        return view('requesteksportir');
+        $user = Auth::user();
+        
+        $pendingRequests = ProductRequest::where('status', ProductRequest::STATUS_PENDING)
+                                ->with('importir')
+                                ->orderBy('created_at', 'desc')
+                                ->get();
+
+        $myRequests = ProductRequest::where('eksportir_user_id', $user->user_id)
+                            ->with(['importir', 'product'])
+                            ->orderBy('updated_at', 'desc')
+                            ->get();
+
+        Log::info('EksportirController::requesteksportir', [
+            'user_id' => $user->user_id,
+            'pending_count' => $pendingRequests->count(),
+            'my_requests_count' => $myRequests->count()
+        ]);
+
+        return view('requesteksportir', compact('pendingRequests', 'myRequests'));
     }
 
 }

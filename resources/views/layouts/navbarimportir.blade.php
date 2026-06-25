@@ -12,7 +12,7 @@
             <nav class="hidden md:flex items-center space-x-6 text-blue-700 font-semibold">
                 <a href="{{ route('importir') }}" class="hover:text-orange-500 transition nav-gradient-move">Home</a>
                 <a href="{{ route('catalog') }}" class="hover:text-orange-500 transition nav-gradient-move">Catalog</a>
-                <a href="{{ route('requestimportir') }}" class="hover:text-orange-500 transition nav-gradient-move">Request</a>
+                <a href="{{ route('importir.request.form') }}" class="hover:text-orange-500 transition nav-gradient-move">Request</a>
                 <a href="{{ route('transactions.index') }}" class="hover:text-orange-500 transition nav-gradient-move">Transactions</a>
                 <a href="{{ route('user.profile') }}" class="hover:text-orange-500 transition nav-gradient-move flex items-center">
                 Account
@@ -28,7 +28,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-1.8 1.8M7 13v6a2 2 0 002 2h7.5"></path>
                     </svg>
                     Cart
-                    <span class="cart-count absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 items-center justify-center hidden">0</span>
+                    <span class="cart-count absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center hidden">0</span>
                 </a>
 
 
@@ -74,7 +74,7 @@
             <!-- Menu Items -->
             <a href="{{ route('importir') }}" class="mb-4 text-blue-700 font-semibold hover:text-orange-500 transition nav-gradient-move">Home</a>
             <a href="{{ route('catalog') }}" class="mb-4 text-blue-700 font-semibold hover:text-orange-500 transition nav-gradient-move">Catalog</a>
-            <a href="{{ route('requestimportir') }}" class="mb-4 text-blue-700 font-semibold hover:text-orange-500 transition nav-gradient-move">Request</a>
+            <a href="{{ route('importir.request.form') }}" class="mb-4 text-blue-700 font-semibold hover:text-orange-500 transition nav-gradient-move">Request</a>
             <a href="{{ route('transactions.index') }}" class="mb-4 text-blue-700 font-semibold hover:text-orange-500 transition nav-gradient-move">Transactions</a>
             <a href="{{ route('user.profile') }}" class="mb-4 text-blue-700 font-semibold hover:text-orange-500 transition nav-gradient-move">Account</a>
 

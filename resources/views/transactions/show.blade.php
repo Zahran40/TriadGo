@@ -36,8 +36,6 @@
                 },
             },
         }
-
-        tailwind.scan()
     </script>
 </head>
 
@@ -115,6 +113,16 @@
                         </svg>
                         Pending Payment
                     </div>
+                    @if(isset($order->payment_details['snap_token']) && $order->payment_details['snap_token'])
+                        <button id="pay-button" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-600 hover:to-amber-600 text-white rounded-lg transition-all duration-200 shadow-md font-semibold transform hover:-translate-y-0.5 no-print">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z">
+                                </path>
+                            </svg>
+                            💳 Pay Now (Bayar Sekarang)
+                        </button>
+                    @endif
                 @endif
                 <button onclick="window.print()"
                     class="inline-flex items-center px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors shadow-sm no-print">
@@ -723,6 +731,56 @@
             });
         });
     </script>
+
+    @if($order->status === 'pending' && isset($order->payment_details['snap_token']) && $order->payment_details['snap_token'])
+        @if(config('services.midtrans.is_production'))
+            <script src="https://app.midtrans.com/snap/snap.js" data-client-key="{{ config('services.midtrans.client_key') }}"></script>
+        @else
+            <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ config('services.midtrans.client_key') }}"></script>
+        @endif
+        
+        <script>
+            document.getElementById('pay-button')?.addEventListener('click', function() {
+                const snapToken = "{{ $order->payment_details['snap_token'] }}";
+                window.snap.pay(snapToken, {
+                    onSuccess: function (result) {
+                        console.log('Payment success:', result);
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Payment Successful!',
+                            text: 'Your payment has been processed successfully.',
+                            confirmButtonText: 'OK'
+                        }).then(() => {
+                            window.location.reload();
+                        });
+                    },
+                    onPending: function (result) {
+                        console.log('Payment pending:', result);
+                        Swal.fire({
+                            icon: 'info',
+                            title: 'Payment Pending',
+                            text: 'Please complete your payment.',
+                            confirmButtonText: 'OK'
+                        }).then(() => {
+                            window.location.reload();
+                        });
+                    },
+                    onError: function (result) {
+                        console.log('Payment error:', result);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Payment Failed',
+                            text: 'Something went wrong during payment.',
+                            confirmButtonText: 'OK'
+                        });
+                    },
+                    onClose: function () {
+                        console.log('Payment popup closed');
+                    }
+                });
+            });
+        </script>
+    @endif
 
 </body>
 

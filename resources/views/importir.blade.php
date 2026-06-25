@@ -164,8 +164,6 @@
                 },
             },
         }
-
-        tailwind.scan()
     </script>
 </head>
 

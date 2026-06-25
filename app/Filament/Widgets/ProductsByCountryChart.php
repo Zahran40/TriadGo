@@ -5,49 +5,65 @@ namespace App\Filament\Widgets;
 use Filament\Widgets\ChartWidget;
 use App\Models\Product;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 
 class ProductsByCountryChart extends ChartWidget
-{    protected static ?string $heading = 'Products by Country of Origin';
+{
+    protected static ?string $heading = 'Products by Country';
     
-    protected static ?int $sort = 13;
+    protected static ?int $sort = 6;
 
-    protected int | string | array $columnSpan = 12;
+    // Half width
+    protected int | string | array $columnSpan = 1;
+
+    protected static bool $isLazy = true;
+    protected static ?string $pollingInterval = '120s';
+    protected static ?string $maxHeight = '300px';
 
     protected function getData(): array
     {
-        // Get products grouped by country
-        $countryData = Product::select('country_of_origin', DB::raw('count(*) as total'))
-            ->where('status', 'approved')
-            ->groupBy('country_of_origin')
-            ->orderByDesc('total')
-            ->take(15)
-            ->get();
+        return Cache::remember('admin_products_by_country', 300, function () {
+            $countryData = Product::select('country_of_origin', DB::raw('count(*) as total'))
+                ->where('status', 'approved')
+                ->groupBy('country_of_origin')
+                ->orderByDesc('total')
+                ->take(10)
+                ->get();
 
-        $labels = $countryData->pluck('country_of_origin')->toArray();
-        $data = $countryData->pluck('total')->toArray();
+            $colors = ['#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6', '#EC4899', '#06B6D4', '#84CC16', '#F97316', '#6366F1'];
 
-        // Generate colors based on number of countries
-        $colors = [];
-        $baseColors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40'];
-        for ($i = 0; $i < count($labels); $i++) {
-            $colors[] = $baseColors[$i % count($baseColors)];
-        }
-
-        return [
-            'datasets' => [
-                [
-                    'label' => 'Jumlah Produk',
-                    'data' => $data,
-                    'backgroundColor' => $colors,
-                    'borderWidth' => 2,
+            return [
+                'datasets' => [
+                    [
+                        'label' => 'Products',
+                        'data' => $countryData->pluck('total')->toArray(),
+                        'backgroundColor' => array_slice($colors, 0, $countryData->count()),
+                        'borderWidth' => 0,
+                    ],
                 ],
-            ],
-            'labels' => $labels,
-        ];
+                'labels' => $countryData->pluck('country_of_origin')->toArray(),
+            ];
+        });
     }
 
     protected function getType(): string
     {
         return 'doughnut';
+    }
+
+    protected function getOptions(): array
+    {
+        return [
+            'plugins' => [
+                'legend' => [
+                    'position' => 'bottom',
+                    'labels' => [
+                        'padding' => 15,
+                        'usePointStyle' => true,
+                    ],
+                ],
+            ],
+            'cutout' => '55%',
+        ];
     }
 }

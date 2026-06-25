@@ -85,8 +85,14 @@ class EksportirTransactionController extends Controller
                             ->toArray();
         
         $order = CheckoutOrder::where('order_id', $orderId)
-                              ->where('status', 'paid')
                               ->firstOrFail();
+                              
+        // Sync status with Midtrans API if it is pending
+        $order->syncPaymentWithMidtrans();
+        
+        if ($order->status !== 'paid') {
+            abort(403, 'Order ini belum dibayar (status: ' . $order->status . ').');
+        }
         
         // Verify this order contains eksportir's products
         $hasEksportirProducts = false;

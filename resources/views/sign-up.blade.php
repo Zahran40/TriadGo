@@ -37,8 +37,6 @@
                 },
             },
         }
-
-        tailwind.scan()
     </script>
 
     <meta charset="UTF-8" />
@@ -58,16 +56,6 @@
     <div class="circle circle1"></div>
     <div class="circle circle2"></div>
     <div class="circle circle3"></div>
-
-    @if ($errors->any())
-        <div style="color:red; margin-bottom:10px;">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
 
     <form class="signup-container z-10" id="signupForm" action="{{ route('signup.store') }}" method='POST'>
         @csrf
@@ -352,16 +340,16 @@
 
         // Form submission
         document.getElementById('signupForm').addEventListener('submit', function (e) {
+            e.preventDefault(); // Always prevent default
+            
             const phoneValid = validatePhone();
 
             if (!phoneValid) {
-                e.preventDefault();
                 Swal.fire({
                     icon: 'error',
                     title: 'Nomor HP tidak valid!',
                     text: 'Silakan periksa nomor HP Anda.',
-                    background: '#e3342f',
-                    color: '#ffffff'
+                    confirmButtonColor: '#2563eb'
                 });
                 phoneInput.focus();
                 return false;
@@ -370,6 +358,73 @@
             // Set nomor telepon dengan format internasional
             const fullNumber = iti.getNumber();
             phoneInput.value = fullNumber;
+
+            // Show loading
+            Swal.fire({
+                title: 'Mendaftar...',
+                text: 'Mohon tunggu',
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            // Submit via AJAX
+            const formData = new FormData(this);
+            
+            fetch(this.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json',
+                },
+                credentials: 'same-origin'
+            })
+            .then(async response => {
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    // Handle validation errors
+                    if (response.status === 422 && data.errors) {
+                        const errorMessages = Object.values(data.errors).flat();
+                        const errorText = errorMessages.join('<br>');
+                        return { success: false, errorText: errorText };
+                    }
+                    return { success: false, errorText: data.message || 'Terjadi kesalahan saat mendaftar' };
+                }
+                return { success: true, data: data };
+            })
+            .then(result => {
+                if (result.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil!',
+                        html: result.data.message,
+                        confirmButtonColor: '#2563eb',
+                        confirmButtonText: 'Login'
+                    }).then(() => {
+                        window.location.href = result.data.redirect;
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Pendaftaran Gagal!',
+                        html: result.errorText || 'Terjadi kesalahan. Silakan coba lagi.',
+                        confirmButtonColor: '#2563eb'
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Fetch Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    html: 'Terjadi kesalahan jaringan. Silakan periksa koneksi Anda dan coba lagi.',
+                    confirmButtonColor: '#2563eb'
+                });
+            });
         });
 
         // Initialize

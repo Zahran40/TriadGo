@@ -114,7 +114,7 @@ class ProductSeeder extends Seeder
                 'price' => 32.50,
                 'stock_quantity' => 450,
                 'weight' => 1.8,
-                'image_url' => 'https://images.unsplash.com/photo-1553279755-2ddd933c8d1d?w=800&h=600&fit=crop&crop=center',
+                'image_url' => 'https://images.unsplash.com/photo-1600189020840-e9918c25269d?w=800&h=600&fit=crop&crop=center',
             ],
 
             // 🇵🇭 PHILIPPINES PRODUCTS (15 products)
@@ -125,7 +125,7 @@ class ProductSeeder extends Seeder
                 'price' => 15.75,
                 'stock_quantity' => 400,
                 'weight' => 0.8,
-                'image_url' => 'https://images.unsplash.com/photo-1553279755-2ddd933c8d1d?w=800&h=600&fit=crop&crop=center',
+                'image_url' => 'https://images.unsplash.com/photo-1601004890684-d8cbf643f5f2?w=800&h=600&fit=crop&crop=center',
             ],
             [
                 'product_name' => 'Handmade Rattan Furniture',
@@ -170,7 +170,7 @@ class ProductSeeder extends Seeder
                 'price' => 14.25,
                 'stock_quantity' => 450,
                 'weight' => 0.9,
-                'image_url' => 'https://images.unsplash.com/photo-1553279755-2ddd933c8d1d?w=800&h=600&fit=crop&crop=center',
+                'image_url' => 'https://images.unsplash.com/photo-1566393028639-d108a42c46a7?w=800&h=600&fit=crop&crop=center',
             ],
             [
                 'product_name' => 'Cebu Furniture Sets',
@@ -289,7 +289,7 @@ class ProductSeeder extends Seeder
                 'price' => 22.75,
                 'stock_quantity' => 380,
                 'weight' => 1.2,
-                'image_url' => 'https://images.unsplash.com/photo-1553279755-2ddd933c8d1d?w=800&h=600&fit=crop&crop=center',
+                'image_url' => 'https://images.unsplash.com/photo-1595228702420-b3740f7f9761?w=800&h=600&fit=crop&crop=center',
             ],
             [
                 'product_name' => 'Thai Tapioca Starch',
@@ -327,7 +327,7 @@ class ProductSeeder extends Seeder
                 'price' => 35.75,
                 'stock_quantity' => 380,
                 'weight' => 1.5,
-                'image_url' => 'https://images.unsplash.com/photo-1553279755-2ddd933c8d1d?w=800&h=600&fit=crop&crop=center',
+                'image_url' => 'https://images.unsplash.com/photo-1508061253366-f7da158b6d96?w=800&h=600&fit=crop&crop=center',
             ],
             [
                 'product_name' => 'Vietnamese Electronics',
@@ -374,7 +374,7 @@ class ProductSeeder extends Seeder
                 'price' => 28.75,
                 'stock_quantity' => 250,
                 'weight' => 2.0,
-                'image_url' => 'https://images.unsplash.com/photo-1553279755-2ddd933c8d1d?w=800&h=600&fit=crop&crop=center',
+                'image_url' => 'https://images.unsplash.com/photo-1528825871115-3581a5387919?w=800&h=600&fit=crop&crop=center',
             ],
             [
                 'product_name' => 'Malaysian Rubber Gloves',

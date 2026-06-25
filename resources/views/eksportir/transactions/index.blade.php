@@ -35,8 +35,6 @@
                 },
             },
         }
-
-        tailwind.scan()
     </script>
 
     <style>

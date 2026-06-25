@@ -4,42 +4,61 @@ namespace App\Filament\Widgets;
 
 use Filament\Widgets\ChartWidget;
 use App\Models\User;
+use Illuminate\Support\Facades\Cache;
 
 class UserRoleDistributionChart extends ChartWidget
-{    protected static ?string $heading = 'User Distribution : Importer vs Exporter';
+{
+    protected static ?string $heading = 'User Distribution';
     
-    protected static ?int $sort = 14;
+    protected static ?int $sort = 4;
 
-    protected int | string | array $columnSpan = 12;
+    // Half width — sits side by side with ProductsByCategory
+    protected int | string | array $columnSpan = 1;
+
+    protected static bool $isLazy = true;
+    protected static ?string $pollingInterval = '120s';
+    protected static ?string $maxHeight = '300px';
 
     protected function getData(): array
     {
-        // Get user count by role (only importir and eksportir)
-        $importirCount = User::where('role', 'impor')->count();
-        $eksportirCount = User::where('role', 'ekspor')->count();
+        return Cache::remember('admin_user_role_chart', 300, function () {
+            $importirCount = User::where('role', 'impor')->count();
+            $eksportirCount = User::where('role', 'ekspor')->count();
 
-        return [
-            'datasets' => [
-                [
-                    'label' => 'Jumlah Pengguna',
-                    'data' => [$importirCount, $eksportirCount],
-                    'backgroundColor' => [
-                        '#3B82F6', // Blue for importir
-                        '#EF4444', // Red for eksportir
+            return [
+                'datasets' => [
+                    [
+                        'label' => 'Users',
+                        'data' => [$importirCount, $eksportirCount],
+                        'backgroundColor' => [
+                            '#3B82F6',
+                            '#F59E0B',
+                        ],
+                        'borderWidth' => 0,
                     ],
-                    'borderColor' => [
-                        '#1D4ED8',
-                        '#DC2626',
-                    ],
-                    'borderWidth' => 3,
                 ],
-            ],
-            'labels' => ['Importir', 'Eksportir'],
-        ];
+                'labels' => ['Importir', 'Eksportir'],
+            ];
+        });
     }
 
     protected function getType(): string
     {
         return 'pie';
+    }
+
+    protected function getOptions(): array
+    {
+        return [
+            'plugins' => [
+                'legend' => [
+                    'position' => 'bottom',
+                    'labels' => [
+                        'padding' => 15,
+                        'usePointStyle' => true,
+                    ],
+                ],
+            ],
+        ];
     }
 }

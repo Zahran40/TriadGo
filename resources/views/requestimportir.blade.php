@@ -19,6 +19,7 @@
 
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
@@ -26,13 +27,10 @@
                         accent: '#f97316',
                         darkblue: '#1e3a8a',
                     }
-                },
             },
-        }
-        tailwind.scan()
-    </script>
-
-    <style>
+        },
+    }
+</script>    <style>
         /* SweetAlert2 Dark Mode Fix */
         .swal2-popup .swal2-title {
             color: #1f2937 !important;
@@ -71,7 +69,7 @@
                                 Requested Product Description
                             </label>
                             <textarea 
-                            < id="request_text" 
+                                id="request_text" 
                                 name="request_text" 
                                 rows="4" 
                                 class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
@@ -98,6 +96,15 @@
                     <h3 class="text-lg font-semibold text-blue-600 dark:text-blue-400">Pending Requests</h3>
                 </div>
                 <div class="p-6">
+                    {{-- Debug info --}}
+                    @php
+                        Log::info('View Debug', [
+                            'pendingRequests_isset' => isset($pendingRequests),
+                            'pendingRequests_count' => isset($pendingRequests) ? $pendingRequests->count() : 'N/A',
+                            'pendingRequests_data' => isset($pendingRequests) ? $pendingRequests->toArray() : []
+                        ]);
+                    @endphp
+                    
                     @if(isset($pendingRequests) && $pendingRequests->count() > 0)
                         <div class="space-y-4">
                             @foreach($pendingRequests as $request)
@@ -230,19 +237,36 @@
                 method: 'POST',
                 body: formData,
                 headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                }
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json'
+                },
+                credentials: 'same-origin'
             })
-            .then(response => {
+            .then(async response => {
+                const data = await response.json();
+                console.log('Response status:', response.status, 'Data:', data);
+                
                 if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                    // Handle specific error messages
+                    let errorMsg = 'An error occurred';
+                    if (response.status === 403) {
+                        errorMsg = data.error || data.message || 'Access denied. Please make sure you are logged in as an Importir.';
+                    } else if (response.status === 401) {
+                        errorMsg = 'Please login to continue.';
+                    } else if (response.status === 422) {
+                        errorMsg = data.errors ? Object.values(data.errors).flat().join('<br>') : (data.message || 'Validation error');
+                    } else {
+                        errorMsg = data.message || data.error || 'Network response was not ok';
+                    }
+                    throw new Error(errorMsg);
                 }
-                return response.json();
+                return data;
             })
             .then(data => {
                 Swal.fire({
                     title: 'Success!',
-                    text: 'Request sent!',
+                    text: data.message || 'Request sent successfully!',
                     icon: 'success',
                     confirmButtonText: 'OK',
                     background: isDark ? '#374151' : '#ffffff',
@@ -258,7 +282,7 @@
                 console.error('Error:', error);
                 Swal.fire({
                     title: 'Error!',
-                    text: 'Terjadi kesalahan. Silakan coba lagi.',
+                    html: error.message || 'Terjadi kesalahan. Silakan coba lagi.',
                     icon: 'error',
                     confirmButtonText: 'OK',
                     background: isDark ? '#374151' : '#ffffff',

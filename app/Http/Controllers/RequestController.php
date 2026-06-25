@@ -17,21 +17,35 @@ class RequestController extends Controller
      */
     public function importirRequestForm()
     {
-        if (!Auth::check() || Auth::user()->role !== 'importir') {
+        if (!Auth::check() || Auth::user()->role !== 'impor') {
             return redirect()->route('login')->with('error', 'Access denied. Importir only.');
         }
 
         $user = Auth::user();
-        $pendingRequests = ProductRequest::where('importir_user_id', $user->id)
+        
+        // Debug log
+        Log::info('RequestController::importirRequestForm', [
+            'user_id' => $user->user_id,
+            'user_name' => $user->name,
+            'user_role' => $user->role
+        ]);
+        
+        $pendingRequests = ProductRequest::where('importir_user_id', $user->user_id)
                                 ->where('status', ProductRequest::STATUS_PENDING)
                                 ->orderBy('created_at', 'desc')
                                 ->get();
 
-        $approvedRequests = ProductRequest::where('importir_user_id', $user->id)
+        $approvedRequests = ProductRequest::where('importir_user_id', $user->user_id)
                                 ->where('status', ProductRequest::STATUS_APPROVED)
                                 ->with(['eksportir', 'product'])
                                 ->orderBy('approved_at', 'desc')
                                 ->get();
+                                
+        // Debug log
+        Log::info('Fetched requests', [
+            'pending_count' => $pendingRequests->count(),
+            'approved_count' => $approvedRequests->count()
+        ]);
 
         return view('requestimportir', compact('pendingRequests', 'approvedRequests'));
     }
@@ -43,7 +57,7 @@ class RequestController extends Controller
     {
         try {
             // PERBAIKI: Role check untuk importir, bukan eksportir
-            if (!Auth::check() || Auth::user()->role !== 'importir') {
+            if (!Auth::check() || Auth::user()->role !== 'impor') {
                 return response()->json(['error' => 'Access denied. Importir only.'], 403);
             }
 
@@ -84,7 +98,7 @@ class RequestController extends Controller
      */
     public function eksportirRequestList()
     {
-        if (!Auth::check() || Auth::user()->role !== 'eksportir') {
+        if (!Auth::check() || Auth::user()->role !== 'ekspor') {
             return redirect()->route('login')->with('error', 'Access denied. Eksporter only.');
         }
 
@@ -98,6 +112,13 @@ class RequestController extends Controller
                             ->orderBy('updated_at', 'desc')
                             ->get();
 
+        // Debug log
+        Log::info('RequestController::eksportirRequestList', [
+            'pending_count' => $pendingRequests->count(),
+            'my_requests_count' => $myRequests->count(),
+            'pending_ids' => $pendingRequests->pluck('id')->toArray()
+        ]);
+
         return view('requesteksportir', compact('pendingRequests', 'myRequests'));
     }
     
@@ -106,7 +127,7 @@ class RequestController extends Controller
      */
     public function approveRequest(HttpRequest $request, $requestId)
     {
-        if (!Auth::check() || Auth::user()->role !== 'eksportir') {
+        if (!Auth::check() || Auth::user()->role !== 'ekspor') {
             return response()->json(['error' => 'Access denied'], 403);
         }
 
@@ -147,7 +168,7 @@ class RequestController extends Controller
      */
     public function rejectRequest($requestId)
     {
-        if (!Auth::check() || Auth::user()->role !== 'eksportir') {
+        if (!Auth::check() || Auth::user()->role !== 'ekspor') {
             return response()->json(['error' => 'Access denied'], 403);
         }
 
@@ -198,7 +219,7 @@ class RequestController extends Controller
         // PERBAIKI: Gunakan Auth::id(), bukan $user->user_id
         if ($productRequest->importir_user_id !== Auth::id() && 
             $productRequest->eksportir_user_id !== Auth::id() &&
-            $user->role !== 'eksportir') {
+            $user->role !== 'ekspor') {
             return response()->json(['error' => 'Access denied'], 403);
         }
 

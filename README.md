@@ -1,7 +1,7 @@
 # TriadGo 
 Kelompok 3 KOM C 24 — Pemrograman Web Lanjutan
 
-**TriadGo** adalah aplikasi web yang berfokus pada layanan ekspor-impor, dirancang untuk memudahkan pelaku bisnis dalam menjangkau pasar global. Platform ini membantu pengguna dalam mengelola prosedur logistik dan informasi pasar, serta memperluas jaringan perdagangan untuk mempromosikan produk lokal ke kancah internasional.
+**TriadGo** adalah platform web inovatif yang memfasilitasi transaksi perdagangan internasional (ekspor-impor). Aplikasi ini dirancang untuk menjembatani eksportir lokal dengan importir global secara aman, transparan, dan efisien. TriadGo membantu memangkas birokrasi, memantau pengiriman secara real-time, dan mengintegrasikan sistem pembayaran otomatis berskala internasional.
 
 ---
 
@@ -15,60 +15,37 @@ Kelompok 3 KOM C 24 — Pemrograman Web Lanjutan
 
 ---
 
-## FITUR YANG DITAWARKAN
+## FITUR-FITUR UTAMA & SISTEM INTEGRASI
 
-- **Register (Login, Signup, Hash Password, Logout)**  
-  Pengguna dapat membuat akun baru, masuk, keluar, dan data password disimpan dengan aman menggunakan hash.
-
-- **Autentikasi berdasarkan role**  
-  Sistem mengenali pengguna sebagai admin, importir, atau eksportir, dan menyesuaikan akses serta tampilan sesuai peran mereka.
-
-- **Halaman khusus untuk Admin, Importir, dan Eksportir**  
-  Setiap jenis pengguna memiliki halaman dashboard masing-masing sesuai kebutuhannya.
+### 🔑 Autentikasi & Manajemen Pengguna
+* **Sistem Registrasi & Login Aman**: Dilengkapi dengan pengamanan enkripsi password satu arah menggunakan PHP native hashing di level database.
+* **Role-Based Access Control (RBAC)**: Pembagian akses spesifik untuk 3 tipe aktor utama: **Admin**, **Eksportir**, dan **Importir**.
+* **Integrasi Desain Dialog**: Konfirmasi logout dan pop-up aksi menggunakan SweetAlert2 interaktif dengan dukungan dark/light mode yang harmonis.
 
 ---
 
-### FITUR IMPORTIR
-
-- **Search bar untuk mencari produk**  
-  Memudahkan pencarian produk berdasarkan nama.
-
-- **Invoice & Payment Gateway**  
-  Menyediakan detail tagihan dan proses pembayaran langsung melalui platform.
-
-- **Keranjang belanja**  
-  Importir dapat menyimpan produk yang ingin dibeli sebelum checkout.
-
-- **Menampilkan produk berdasarkan negara**  
-  Produk dapat difilter sesuai negara asal eksportir.
-
-- **Melihat Status Pesanan**  
-  Importir bisa memantau apakah pesanan sedang diproses, dikirim, atau sudah sampai.
-
-- **Melakukan Permintaan terhadap barang yang tidak ada di katalog**  
-  Jika barang belum tersedia, importir dapat mengajukan permintaan langsung ke eksportir.
+### 🚢 FITUR IMPORTIR
+* **Pencarian Produk Cerdas**: Pencarian produk secara dinamis berdasarkan nama produk dan filter asal negara eksportir.
+* **Manajemen Keranjang Belanja**: Keranjang interaktif dengan kalkulasi berat otomatis, subtotal harga, ongkos kirim, dan kalkulasi pajak terintegrasi.
+* **Integrasi Payment Gateway Midtrans (Sandbox)**: Mendukung pembayaran multi-channel (E-wallet seperti GoPay, QRIS, Virtual Account Bank BCA/BNI/Permata/Mandiri, dll.).
+* **On-Demand Auto-Paid Synchronization**: Sinkronisasi status pembayaran real-time saat halaman detail dibuka, menjamin status pesanan otomatis terupdate dari `pending` ke `paid` sesaat setelah transfer berhasil tanpa butuh intervensi manual.
+* **Pelacakan Pengiriman (Order Tracking)**: Tampilan visual tahapan logistik (Warehouse -> Packing -> Customs -> Shipping -> Delivered) setelah pesanan sukses dibayar.
+* **Permintaan Produk Khusus (Request Barang)**: Fitur untuk mengajukan pengadaan barang yang belum terdaftar di katalog kepada eksportir tertentu.
 
 ---
 
-### FITUR EKSPORTIR
-
-- **Mengupload / Menambahkan barang yang akan dipesan**  
-  Eksportir bisa mengelola produk yang ingin dijual, termasuk stok dan detail produk.
-
-- **Komentar dari importir pada transaksi**  
-  Eksportir dapat melihat ulasan atau komentar dari importir setelah transaksi berlangsung.
-
-- **Menerima Permintaan barang dari Importir**  
-  Permintaan produk dari importir dapat diterima atau ditolak oleh eksportir.
-
-- **Menampilkan semua komentar importir untuk produk eksportir**  
-  Eksportir bisa melihat semua feedback terkait produknya untuk evaluasi dan peningkatan.
-
-- **Update status pesanan**  
-  Eksportir dapat mengubah status pesanan seperti "diproses", "dikirim", atau "selesai".
-
+### 💼 FITUR EKSPORTIR
+* **Manajemen Produk Ekspor**: Form input detail produk, harga, berat (kg), negara asal, deskripsi, gambar produk, dan penguncian constraint stok produk secara dinamis.
+* **Manajemen Pesanan Masuk (Order Dashboard)**: Dashboard pemantauan status pesanan dari importir beserta integrasi sinkronisasi status pembayaran dengan Midtrans.
+* **Pengiriman Logistik**: Fitur untuk melakukan update status tahapan pengiriman barang pesanan importir.
+* **Review & Feedback**: Fitur untuk melihat ulasan, bintang, dan komentar tertulis dari importir pasca-transaksi selesai.
+* **Persetujuan Request Barang**: Panel untuk melihat, menerima, atau menolak permintaan produk khusus dari importir secara instan.
 
 ---
+
+### 👑 FITUR ADMIN PANEL
+* **Dashboard Statistik Interaktif (Filament)**: Visualisasi grafik penjualan harian, sebaran produk berdasarkan kategori, asal negara eksportir, stok produk, dan distribusi peran pengguna.
+* **Manajemen Data CRUD Terpusat**: Pengelolaan data Users, Products, dan Orders secara aman melalui antarmuka admin yang dioptimalkan kinerjanya.
 
 ## TEKNOLOGI YANG DIGUNAKAN
 - Laravel 12

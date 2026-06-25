@@ -43,7 +43,6 @@
                 },
             },
         }
-        tailwind.scan()
     </script>
 
     <style>

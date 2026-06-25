@@ -40,7 +40,6 @@
                 },
             },
         }
-        tailwind.scan()
     </script>
 
     <style>
@@ -131,7 +130,7 @@
             <!-- Products Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 slide-in" id="productsGrid">
                 @foreach($products as $product)
-                    <div class="product-card bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+                    <div class="product-card bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden flex flex-col justify-between h-full">
                         <div class="relative">
                             @if($product->product_image)
                                 <img src="{{ asset($product->product_image) }}" 
@@ -163,7 +162,7 @@
                             </div>
                         </div>
                         
-                        <div class="p-6">
+                        <div class="p-6 flex flex-col flex-grow">
                             <div class="flex justify-between items-start mb-2">
                                 <h3 class="text-xl font-bold text-gray-900 dark:text-white">{{ $product->product_name }}</h3>
                                 <span class="text-sm text-gray-500 dark:text-gray-400">SKU: {{ $product->product_sku }}</span>
@@ -185,11 +184,11 @@
                                 </span>
                             </div>
                             
-                            <p class="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-2">
+                            <p class="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-2 flex-grow">
                                 {{ Str::limit($product->product_description, 100) }}
                             </p>
                             
-                            <div class="flex justify-between items-center mb-4">
+                            <div class="flex justify-between items-center mb-4 mt-auto">
                                 <div>
                                     <p class="text-2xl font-bold text-blue-600 dark:text-blue-400">${{ number_format($product->price, 2) }}</p>
                                     <p class="text-sm text-gray-500 dark:text-gray-400">Stock: {{ $product->stock_quantity }} units</p>
@@ -201,7 +200,7 @@
                             </div>
                             
                             <div class="flex gap-2">
-    <a href="{{ route('product.detail', $product->product_id) }}" class="bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-500 text-white py-2 px-3 rounded-md text-sm font-medium transition">View</a>
+                                <a href="{{ route('product.detail', $product->product_id) }}" class="bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-500 text-white py-2 px-3 rounded-md text-sm font-medium transition">View</a>
                              
                                 <button onclick="deleteProduct({{ $product->product_id }})" class="bg-red-500 hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-500 text-white py-2 px-3 rounded-md text-sm font-medium transition">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

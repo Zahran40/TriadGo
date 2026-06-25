@@ -50,8 +50,33 @@ class TransactionController extends Controller
                               ->where('user_id', $user->user_id)
                               ->firstOrFail();
         
+        // Sync status with Midtrans API if it is pending
+        $order->syncPaymentWithMidtrans();
+        
         // Refresh the model to get the absolute latest data
         $order->refresh();
+
+        // Generate snap token if missing for pending order
+        if ($order->status === 'pending') {
+            $paymentDetails = $order->payment_details ?: [];
+            if (empty($paymentDetails['snap_token'])) {
+                try {
+                    $midtransService = app(\App\Services\MidtransHttpService::class);
+                    $snapToken = $midtransService->createSnapToken($order);
+                    if ($snapToken) {
+                        $paymentDetails['snap_token'] = $snapToken;
+                        $paymentDetails['created_at'] = now()->toIso8601String();
+                        $order->update([
+                            'payment_gateway_order_id' => $order->order_id,
+                            'payment_details' => $paymentDetails
+                        ]);
+                        $order->refresh();
+                    }
+                } catch (\Exception $e) {
+                    \Illuminate\Support\Facades\Log::warning('Failed to generate snap token on transaction detail page: ' . $e->getMessage());
+                }
+            }
+        }
         
         return view('transactions.show', compact('order'));
     }

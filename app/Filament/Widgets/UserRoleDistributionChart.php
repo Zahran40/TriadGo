@@ -37,7 +37,7 @@ class UserRoleDistributionChart extends ChartWidget
                         'borderWidth' => 0,
                     ],
                 ],
-                'labels' => ['Importir', 'Eksportir'],
+                'labels' => ["Importir ({$importirCount})", "Eksportir ({$eksportirCount})"],
             ];
         });
     }
@@ -47,18 +47,40 @@ class UserRoleDistributionChart extends ChartWidget
         return 'pie';
     }
 
-    protected function getOptions(): array
+    protected function getOptions(): \Filament\Support\RawJs
     {
-        return [
-            'plugins' => [
-                'legend' => [
-                    'position' => 'bottom',
-                    'labels' => [
-                        'padding' => 15,
-                        'usePointStyle' => true,
-                    ],
-                ],
-            ],
-        ];
+        return \Filament\Support\RawJs::make(<<<'JS'
+        {
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        padding: 15,
+                        usePointStyle: true,
+                    },
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            let label = context.label || '';
+                            if (label.includes('(')) {
+                                label = label.substring(0, label.lastIndexOf('(')).trim();
+                            }
+                            let value = context.raw || 0;
+                            return ' ' + label + ': ' + value;
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    display: false,
+                },
+                y: {
+                    display: false,
+                },
+            }
+        }
+        JS);
     }
 }

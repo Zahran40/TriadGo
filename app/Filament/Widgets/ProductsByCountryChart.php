@@ -32,6 +32,10 @@ class ProductsByCountryChart extends ChartWidget
 
             $colors = ['#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6', '#EC4899', '#06B6D4', '#84CC16', '#F97316', '#6366F1'];
 
+            $labels = $countryData->map(function ($item) {
+                return $item->country_of_origin . ' (' . $item->total . ')';
+            })->toArray();
+
             return [
                 'datasets' => [
                     [
@@ -41,7 +45,7 @@ class ProductsByCountryChart extends ChartWidget
                         'borderWidth' => 0,
                     ],
                 ],
-                'labels' => $countryData->pluck('country_of_origin')->toArray(),
+                'labels' => $labels,
             ];
         });
     }
@@ -51,19 +55,41 @@ class ProductsByCountryChart extends ChartWidget
         return 'doughnut';
     }
 
-    protected function getOptions(): array
+    protected function getOptions(): \Filament\Support\RawJs
     {
-        return [
-            'plugins' => [
-                'legend' => [
-                    'position' => 'bottom',
-                    'labels' => [
-                        'padding' => 15,
-                        'usePointStyle' => true,
-                    ],
-                ],
-            ],
-            'cutout' => '55%',
-        ];
+        return \Filament\Support\RawJs::make(<<<'JS'
+        {
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        padding: 15,
+                        usePointStyle: true,
+                    },
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            let label = context.label || '';
+                            if (label.includes('(')) {
+                                label = label.substring(0, label.lastIndexOf('(')).trim();
+                            }
+                            let value = context.raw || 0;
+                            return ' ' + label + ': ' + value;
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    display: false,
+                },
+                y: {
+                    display: false,
+                },
+            },
+            cutout: '55%',
+        }
+        JS);
     }
 }

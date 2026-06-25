@@ -70,6 +70,10 @@ class ProductsByCategoryChart extends ChartWidget
                     });
             }
 
+            $labels = $categoryData->map(function ($item) {
+                return $item['category'] . ' (' . $item['total_quantity'] . ')';
+            })->toArray();
+
             return [
                 'datasets' => [
                     [
@@ -82,7 +86,7 @@ class ProductsByCategoryChart extends ChartWidget
                         'borderWidth' => 0,
                     ],
                 ],
-                'labels' => $categoryData->pluck('category')->toArray(),
+                'labels' => $labels,
             ];
         });
     }
@@ -92,19 +96,41 @@ class ProductsByCategoryChart extends ChartWidget
         return 'doughnut';
     }
 
-    protected function getOptions(): array
+    protected function getOptions(): \Filament\Support\RawJs
     {
-        return [
-            'plugins' => [
-                'legend' => [
-                    'position' => 'bottom',
-                    'labels' => [
-                        'padding' => 15,
-                        'usePointStyle' => true,
-                    ],
-                ],
-            ],
-            'cutout' => '60%',
-        ];
+        return \Filament\Support\RawJs::make(<<<'JS'
+        {
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        padding: 15,
+                        usePointStyle: true,
+                    },
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            let label = context.label || '';
+                            if (label.includes('(')) {
+                                label = label.substring(0, label.lastIndexOf('(')).trim();
+                            }
+                            let value = context.raw || 0;
+                            return ' ' + label + ': ' + value;
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    display: false,
+                },
+                y: {
+                    display: false,
+                },
+            },
+            cutout: '60%',
+        }
+        JS);
     }
 }

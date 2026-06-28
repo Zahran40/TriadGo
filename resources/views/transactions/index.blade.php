@@ -51,7 +51,7 @@
     </style>
 <div class="container mx-auto px-4 py-8">
     <!-- Header -->
-    <div class="flex justify-between items-center mb-8">
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
         <div>
             <h1 class="text-3xl font-bold text-blue-800">Transaction List</h1>
             <p class="text-blue-600 mt-2">Manage and monitor all your orders</p>

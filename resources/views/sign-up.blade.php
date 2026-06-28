@@ -12,42 +12,30 @@
         })();
     </script>
 
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#2563eb',
-                        accent: '#f97316',
-                    },
-                    animation: {
-                        'float': 'float 6s ease-in-out infinite',
-                        'pulse-slow': 'pulse 3s ease-in-out infinite',
-                    },
-                    keyframes: {
-                        float: {
-                            '0%, 100%': {
-                                transform: 'translateY(0)'
-                            },
-                            '50%': {
-                                transform: 'translateY(-10px)'
-                            },
-                        }
-                    }
-                },
-            },
-        }
-    </script>
-
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sign Up</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/css/intlTelInput.min.css" />
     @vite('resources/css/app.css')
+    <style>
+        @media (max-width: 640px) {
+            .signup-container {
+                margin-top: 70px !important;
+                margin-bottom: 24px !important;
+                max-width: calc(100vw - 32px) !important;
+                box-sizing: border-box !important;
+            }
+            .back-btn-wrapper {
+                top: 16px !important;
+                left: 16px !important;
+            }
+        }
+        .iti { width: 100% !important; }
+    </style>
 </head>
 
 <body>
-    <a href="javascript:history.back()"
+    <a href="javascript:history.back()" class="back-btn-wrapper"
         style="position: absolute; top: 24px; left: 24px; z-index: 1000; text-decoration: none;">
         <button style="background: none; border: none; font-size: 2rem; color: #f59e0b; cursor: pointer;">
             &#8592;
@@ -64,17 +52,17 @@
 
         <div class="form-group">
             <label for="name" style="color: var(--dark);">Name</label>
-            <input type="text" id="name" name="name" required autocomplete="off" placeholder="Full name">
+            <input type="text" id="name" name="name" required autocomplete="off" placeholder="Full name" style="width: 100%; box-sizing: border-box;">
         </div>
 
         <div class="form-group">
             <label for="email" style="color: var(--dark);">Email</label>
-            <input type="email" id="email" name="email" required autocomplete="off" placeholder="Email address">
+            <input type="email" id="email" name="email" required autocomplete="off" placeholder="Email address" style="width: 100%; box-sizing: border-box;">
         </div>
 
         <div class="form-group">
             <label for="country" style="color: var(--dark);">Country</label>
-            <select id="country" name="country" required style="color: var(--dark);">
+            <select id="country" name="country" required style="color: var(--dark); width: 100%; box-sizing: border-box;">
                 <option value="">Choose Country</option>
                 <option value="Indonesia" data-code="id" data-dial="+62">Indonesia</option>
                 <option value="Malaysia" data-code="my" data-dial="+60">Malaysia</option>
@@ -92,15 +80,15 @@
         <div class="form-group">
             <label for="phone" style="color: var(--dark);">Phone Number</label>
             <input id="phone" name="phone" type="tel" required autocomplete="off" placeholder="Phone number"
-                style="padding-right:40px;">
+                style="padding-right:40px; width: 100%; box-sizing: border-box;">
             <div id="phone-error" style="color: red; font-size: 0.85em; margin-top: 5px; display: none;"></div>
         </div>
 
         <div class="form-group">
             <label for="password" style="color: var(--dark);">Password</label>
-            <div style="position:relative;">
+            <div style="position:relative; width: 100%;">
                 <input type="password" id="password" name="password" required autocomplete="off" placeholder="Password"
-                    style="padding-right:40px;">
+                    style="padding-right:40px; width: 100%; box-sizing: border-box;">
                 <span id="togglePassword"
                     style="position:absolute; right:10px; top:50%; transform:translateY(-50%); cursor:pointer; width:28px; height:28px; display:flex; align-items:center;">
                     <svg id="eyeOpen" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
@@ -124,9 +112,9 @@
 
         <div class="form-group">
             <label for="password_confirmation" style="color: var(--dark);">Confirm Password</label>
-            <div style="position:relative;">
+            <div style="position:relative; width: 100%;">
                 <input type="password" id="password_confirmation" name="password_confirmation" required
-                    autocomplete="off" placeholder="Ulangi password" style="padding-right:40px;">
+                    autocomplete="off" placeholder="Ulangi password" style="padding-right:40px; width: 100%; box-sizing: border-box;">
                 <span id="toggleConfirmPassword"
                     style="position:absolute; right:10px; top:50%; transform:translateY(-50%); cursor:pointer; width:28px; height:28px; display:flex; align-items:center;">
                     <svg id="eyeOpenConfirm" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"

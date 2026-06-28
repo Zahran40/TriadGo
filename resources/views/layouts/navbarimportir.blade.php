@@ -47,7 +47,7 @@
                     <span class="ml-2 text-sm font-medium text-gray-700 dark:text-gray-200"
                         style="font-size: 30px">🌙</span>
                 </label>
-                <button class="md:hidden text-blue-700 focus:outline-none" aria-label="Open Menu">
+                <button id="openSidebarBtn" class="md:hidden text-blue-700 focus:outline-none" aria-label="Open Menu">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 wiggle" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M4 8h16M4 16h16" />
@@ -77,11 +77,15 @@
             <a href="{{ route('importir.request.form') }}" class="mb-4 text-blue-700 font-semibold hover:text-orange-500 transition nav-gradient-move">Request</a>
             <a href="{{ route('transactions.index') }}" class="mb-4 text-blue-700 font-semibold hover:text-orange-500 transition nav-gradient-move">Transactions</a>
             <a href="{{ route('user.profile') }}" class="mb-4 text-blue-700 font-semibold hover:text-orange-500 transition nav-gradient-move">Account</a>
+            <a href="{{ route('formimportir') }}" class="mb-4 text-blue-700 font-semibold hover:text-orange-500 transition nav-gradient-move flex items-center justify-between">
+                <span>Cart</span>
+                <span class="cart-count bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center hidden">0</span>
+            </a>
 
             <!-- Logout Button -->
-            <form method="POST" action="{{ route('logout') }}" class="mt-auto">
+            <form method="POST" action="{{ route('logout') }}" class="mt-auto" id="logoutFormMobile">
                 @csrf
-                <button type="submit"
+                <button type="button" id="logoutBtnMobile"
                     class="w-full px-4 py-2 bg-red-500 text-white rounded-md font-semibold hover:bg-red-600 transition">
                     Logout
                 </button>
@@ -91,3 +95,55 @@
 
     <!-- Cart Navbar Integration Script -->
     <script src="{{ asset('js/cart-navbar.js') }}"></script>
+    <script>
+        (function() {
+            function initMobileSidebar() {
+                const sidebar = document.getElementById('mobileSidebar');
+                const openBtn = document.getElementById('openSidebarBtn') || document.querySelector('button.md\\:hidden[aria-label="Open Menu"]');
+                const closeBtn = document.getElementById('closeSidebar');
+
+                if (openBtn && sidebar) {
+                    openBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        sidebar.classList.remove('hidden');
+                    });
+                }
+
+                if (closeBtn && sidebar) {
+                    closeBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        sidebar.classList.add('hidden');
+                    });
+                }
+
+                if (sidebar) {
+                    sidebar.addEventListener('click', function(e) {
+                        if (e.target === sidebar) {
+                            sidebar.classList.add('hidden');
+                        }
+                    });
+                }
+
+                const logoutBtnMobile = document.getElementById('logoutBtnMobile');
+                if (logoutBtnMobile) {
+                    logoutBtnMobile.addEventListener('click', function(e) {
+                        // Delay execution slightly to check if a page-specific SweetAlert listener handles it
+                        setTimeout(() => {
+                            if (!e.defaultPrevented && !document.querySelector('.swal2-container')) {
+                                const form = document.getElementById('logoutFormMobile') || document.getElementById('logoutForm');
+                                if (form) form.submit();
+                            }
+                        }, 100);
+                    });
+                }
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initMobileSidebar);
+            } else {
+                initMobileSidebar();
+            }
+        })();
+    </script>

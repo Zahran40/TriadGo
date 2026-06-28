@@ -92,7 +92,7 @@
 
     <main class="flex-grow container mx-auto px-4 py-6">
         <div class="max-w-7xl mx-auto">
-            <div class="flex justify-between items-center mb-8">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
                 <h1 class="text-3xl font-bold text-blue-900 dark:text-blue-100">Checkout</h1>
                 <a href="{{ route('catalog') }}"
                     class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-all">

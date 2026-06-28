@@ -14,10 +14,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login</title>
     @vite('resources/css/app.css')
+    <style>
+        @media (max-width: 640px) {
+            .signup-container {
+                margin-top: 70px !important;
+                margin-bottom: 24px !important;
+                max-width: calc(100vw - 32px) !important;
+                box-sizing: border-box !important;
+            }
+            .back-btn-wrapper {
+                top: 16px !important;
+                left: 16px !important;
+            }
+        }
+    </style>
 </head>
 
 <body>
-    <a href="javascript:history.back()"
+    <a href="javascript:history.back()" class="back-btn-wrapper"
         style="position: absolute; top: 24px; left: 24px; z-index: 1000; text-decoration: none;">
         <button style="background: none; border: none; font-size: 2rem; color: #f59e0b; cursor: pointer;">
             &#8592;
@@ -39,7 +53,7 @@
                     <rect x="2" y="4" width="20" height="16" rx="3" ry="3" />
                     <path d="M22 6l-10 7L2 6" />
                 </svg>
-                <input type="email" id="email" name="email" required autocomplete="off" placeholder="Alamat email">
+                <input type="email" id="email" name="email" required autocomplete="off" placeholder="Alamat email" style="width: 100%; box-sizing: border-box;">
             </div>
         </div>
         <div class="form-group">
@@ -51,9 +65,9 @@
                     <rect x="4" y="10" width="16" height="11" rx="2" />
                     <circle cx="12" cy="16" r="1" />
                 </svg>
-                <div style="position:relative;">
+                <div style="position:relative; width: 100%;">
                     <input type="password" id="password" name="password" required autocomplete="off"
-                        placeholder="Password" style="padding-right:40px;">
+                        placeholder="Password" style="padding-right:40px; width: 100%; box-sizing: border-box;">
                     <span id="togglePassword"
                         style="position:absolute; right:10px; top:50%; transform:translateY(-50%); cursor:pointer; width:28px; height:28px; display:flex; align-items:center;">
                         <!-- Mata terbuka -->

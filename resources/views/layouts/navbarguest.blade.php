@@ -36,7 +36,7 @@
                 <span class="ml-2 text-sm font-medium text-gray-700 dark:text-gray-200"
                     style="font-size: 30px">🌙</span>
             </label>
-            <button class="md:hidden text-blue-700 focus:outline-none" aria-label="Open Menu">
+            <button id="openSidebarBtn" class="md:hidden text-blue-700 focus:outline-none" aria-label="Open Menu">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 wiggle" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M4 8h16M4 16h16" />
@@ -66,3 +66,43 @@
         </a>
     </div>
 </div>
+
+<script>
+    (function() {
+        function initMobileSidebar() {
+            const sidebar = document.getElementById('mobileSidebar');
+            const openBtn = document.getElementById('openSidebarBtn') || document.querySelector('button.md\\:hidden[aria-label="Open Menu"]');
+            const closeBtn = document.getElementById('closeSidebar');
+
+            if (openBtn && sidebar) {
+                openBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    sidebar.classList.remove('hidden');
+                });
+            }
+
+            if (closeBtn && sidebar) {
+                closeBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    sidebar.classList.add('hidden');
+                });
+            }
+
+            if (sidebar) {
+                sidebar.addEventListener('click', function(e) {
+                    if (e.target === sidebar) {
+                        sidebar.classList.add('hidden');
+                    }
+                });
+            }
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initMobileSidebar);
+        } else {
+            initMobileSidebar();
+        }
+    })();
+</script>
